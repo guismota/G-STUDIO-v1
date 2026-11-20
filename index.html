@@ -838,19 +838,38 @@ body.in-session .hw:active,#roll .hw:active,.modal .hw:active,.plug .hw:active{b
 .fproj{line-height:1;white-space:nowrap}
 
 /* ===== faixa de artista (Inspired by) ===== */
-:root{--pur:#A66BFF;--artist:"Syne","Archivo",sans-serif}
+:root{--pur:#B026FF;--artist:"Syne","Archivo",sans-serif}
 .band.artist .ch{background:var(--pur);color:#fff}
 .band.artist .bname{font-family:var(--artist);font-weight:800;font-stretch:125%;text-transform:none;letter-spacing:-.02em;font-size:clamp(28px,min(5vh,6.6vw),52px);line-height:.9;color:#fff;display:flex;flex-direction:column;gap:2px}
 .band.artist .bname small{font-family:"Archivo",sans-serif;font-stretch:80%;font-weight:800;font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--pur)}
-.band.artist .bname span{background:linear-gradient(90deg,#fff 30%,#d9c2ff);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 14px rgba(166,107,255,.35))}
+.band.artist .bname span{background:linear-gradient(90deg,#fff 30%,#e2b8ff);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 14px rgba(176,38,255,.35))}
 .band.artist .screen svg.osc{stroke:var(--pur)}
-.band.artist .bignum{-webkit-text-stroke-color:rgba(166,107,255,.45);background:repeating-linear-gradient(-45deg,rgba(166,107,255,.3) 0 2px,transparent 2px 7px);-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 10px rgba(166,107,255,.3))}
+.band.artist .bignum{-webkit-text-stroke-color:rgba(176,38,255,.45);background:repeating-linear-gradient(-45deg,rgba(176,38,255,.3) 0 2px,transparent 2px 7px);-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 10px rgba(176,38,255,.3))}
 .band.artist .bbpm small{color:var(--pur)}
 .band.artist{background:linear-gradient(90deg,#0b0613,#000 60%)}
 .band.artist:not(.soon):not(:has(.bprev:active)):active{background:var(--pur)}
 .band.artist:not(.soon):not(:has(.bprev:active)):active .bname span{background:none;color:#000;filter:none}
 .band.artist:not(.soon):not(:has(.bprev:active)):active .bname small{color:#000}
 .band.artist .bprev:active,.band.artist.playing .bprev{background:var(--pur);border-color:var(--pur)}
+
+/* ===== faixa e sessão do artista: roxo vibrante ===== */
+.band.artist .bname{flex-direction:row;align-items:baseline;gap:.22em;font-size:clamp(26px,min(4.6vh,5.6vw),48px)}
+.band.artist .bname span{background:none;color:#fff;-webkit-background-clip:border-box;background-clip:border-box;filter:none}
+.band.artist .bname em{font-style:normal;color:var(--pur);text-shadow:0 0 18px rgba(176,38,255,.75)}
+.band.artist:not(.soon):not(:has(.bprev:active)):active .bname em,.band.artist:not(.soon):not(:has(.bprev:active)):active .bname span{color:#000;text-shadow:none}
+.band.artist{background:linear-gradient(90deg,#14051f,#000 60%)}
+body.th-art{--yel:#B026FF;--grad:linear-gradient(#B026FF,#B026FF);--acid:#B026FF;--amb:#B026FF;--grn:#B026FF;--warm:#B026FF}
+body.th-art .bk .val{filter:drop-shadow(0 0 5px rgba(176,38,255,.7))!important}
+body.th-art .pw.on>.led{box-shadow:0 0 8px rgba(176,38,255,.8)!important}
+body.th-art .xfill{background:linear-gradient(90deg,rgba(176,38,255,0),rgba(176,38,255,.2) 70%,rgba(176,38,255,.4))}
+body.th-art .xline{box-shadow:0 0 12px 2px rgba(176,38,255,.8)}
+body.th-art .xglow{background:radial-gradient(closest-side,rgba(176,38,255,.65),rgba(176,38,255,.15) 55%,transparent)!important}
+body.th-art .xseg span.on{text-shadow:0 0 10px rgba(176,38,255,.8)}
+body.th-art .xpad.touch{border-color:rgba(176,38,255,.7)}
+body.th-art #laser{background:#B026FF!important}
+body.th-art .nrow.root .ncell{background:#12041c!important}body.th-art .nrow.root .ncell.beat{background:#1a0628!important}
+body.th-art .clip.q{animation:qp .38s steps(2) infinite!important}
+@keyframes qp{50%{background:#22053a;color:#fff}}
 </style>
 </head>
 <body>
@@ -1286,7 +1305,7 @@ const STYLES={
     ARP('Sparkle',32,[[0,'Cm9'],[16,'Abmaj7']],{oct:2,gate:.6,mask:'x..x..x..x..x.x.'},{syn:'bell'})],
    fx:FX4
   }},
- solomun:{name:'Solomun',bpm:122,swing:.03,key:{root:6,mode:'minor'},artist:true,names:{snare:'Snap',ohat:'Ride',tom:'Tribal'},
+ solomun:{name:"Solomun's Eyes",bpm:122,swing:.03,key:{root:6,mode:'minor'},artist:true,names:{snare:'Snap',ohat:'Ride',tom:'Tribal'},
   snd:{sub:{type:'sine',drive:1.3},pad:{type:'warm'},arp:{type:'pluck',cut:4200},sc:.5,
        kick:{f0:150,f1:46,dec:.46,click:.3,sweep:.1,tail:.45,knock:.7},clap:{f:1500,dec:.3,spread:3},snare:{tone:220,hp:2000,dec:.15,alt:'snap'},
        hat:{metal:false,dec:.04,odec:.9,hp:8200,ride:true},tom:{mult:1.15,dec:.3},perc:{type:'shaker'},
@@ -2996,7 +3015,7 @@ function drawSpec(){
   const dpr=window.devicePixelRatio||1,w=spec.clientWidth,h=spec.clientHeight;
   if(!w||!h)return;
   const W=Math.round(w*dpr),H=Math.round(h*dpr);
-  if(spec.width!==W||spec.height!==H||!VZ.sg){spec.width=W;spec.height=H;VZ.sg=sctx.createLinearGradient(0,H,0,0);VZ.sg.addColorStop(0,'#FFE600');VZ.sg.addColorStop(1,'#FFE600')}
+  if(spec.width!==W||spec.height!==H||!VZ.sg){spec.width=W;spec.height=H;VZ.sg=sctx.createLinearGradient(0,H,0,0);const ac=document.body.classList.contains('th-art')?'#B026FF':'#FFE600';VZ.sg.addColorStop(0,ac);VZ.sg.addColorStop(1,ac)}
   const n=Math.max(16,Math.min(96,Math.floor(w/9)));
   if(!VZ.bars||VZ.bars.length!==n){VZ.bars=new Float32Array(n);VZ.caps=new Float32Array(n)}
   sctx.clearRect(0,0,W,H);
@@ -3017,13 +3036,13 @@ function drawSpec(){
 
 // ---------- Boas-vindas, início e navegação ----------
 const GENRES=[
- {k:'house',gc:'#FFA63D',xpos:'50% 45%',c1:'#3d7bff',c2:'#ff4fd8',pos:'center 70%',fx:'saturate(1.25) contrast(1.1)',tint:.35,desc:'Groove clássico pra mexer o ombro'},
- {k:'deep',gc:'#FF6A3D',xpos:'50% 34%',c1:'#4dff9a',c2:'#8a5cff',pos:'center 32%',desc:'Olho fechado, copo na mão'},
- {k:'acid',gc:'#C8FF3D',xpos:'50% 30%',c1:'#8dff3d',c2:'#d05cff',pos:'center 28%',desc:'303 gritando desde 1987'},
- {k:'techno',gc:'#6C8BFF',xpos:'50% 40%',c1:'#a35cff',c2:'#ff3b4f',pos:'center 38%',desc:'Escuro, repetitivo e lindo'},
- {k:'acidtechno',gc:'#5CFF8A',xpos:'50% 26%',c1:'#ff3b3b',c2:'#ffb37a',pos:'center 24%',desc:'Rápido demais pro seu vizinho'},
- {k:'funk',gc:'#FF3DAE',xpos:'50% 22%',c1:'#FFE600',c2:'#ff2d1a',pos:'center 22%',desc:'Tamborzão no talo'},
- {k:'solomun',artist:true,desc:'Grave rolando e melodia que aperta o peito'}];
+ {k:'house',gc:'#FFA63D',xpos:'50% 45%',c1:'#3d7bff',c2:'#ff4fd8',pos:'center 70%',fx:'saturate(1.25) contrast(1.1)',tint:.35,desc:'Piano de Chicago e chimbal no contratempo'},
+ {k:'deep',gc:'#FF6A3D',xpos:'50% 34%',c1:'#4dff9a',c2:'#8a5cff',pos:'center 32%',desc:'Rhodes molhado e baixo que abraça'},
+ {k:'acid',gc:'#C8FF3D',xpos:'50% 30%',c1:'#8dff3d',c2:'#d05cff',pos:'center 28%',desc:'Uma 303, um smiley e zero juízo'},
+ {k:'techno',gc:'#6C8BFF',xpos:'50% 40%',c1:'#a35cff',c2:'#ff3b4f',pos:'center 38%',desc:'Galpão, fumaça e bumbo de Detroit a Berlim'},
+ {k:'acidtechno',gc:'#5CFF8A',xpos:'50% 26%',c1:'#ff3b3b',c2:'#ffb37a',pos:'center 24%',desc:'303 distorcida a 138, sem freio'},
+ {k:'funk',gc:'#FF3DAE',xpos:'50% 22%',c1:'#FFE600',c2:'#ff2d1a',pos:'center 22%',desc:'Tamborzão, 808 e grave de paredão'},
+ {k:'solomun',artist:true,desc:'Baixo rolando, riff metálico e Ibiza às 6h'}];
 const CHN=i=>'CH'+String(i+1).padStart(2,'0');
 const GSYM={'house':'<path d="M8 22L24 8L40 22V40H8Z"/><circle cx="24" cy="30" r="6"/><rect x="22.5" y="28.5" width="3" height="3" fill="currentColor" stroke="none"/>','deep':'<path d="M8 22L24 8L40 22V40H8Z"/><path d="M14 26H34M17 31H31M20 36H28"/>','acid':'<path d="M8 22L24 8L40 22V40H8Z"/><path d="M11 31Q14.25 24 17.5 31T24 31T30.5 31T37 31"/>','techno':'<path d="M8 8H40V40H8Z"/><g fill="currentColor" stroke="none"><rect x="14" y="14" width="8" height="8"/><rect x="26" y="26" width="8" height="8"/></g><path d="M26 18H34M14 30H22"/>','acidtechno':'<path d="M8 8H40V40H8Z"/><path d="M11 31Q14.25 24 17.5 31T24 31T30.5 31T37 31"/>','funk':'<path d="M12 5H36V43H12Z"/><circle cx="24" cy="16" r="6"/><circle cx="24" cy="32.5" r="7.5"/><rect x="22.5" y="31" width="3" height="3" fill="currentColor" stroke="none"/><rect x="22.5" y="14.5" width="3" height="3" fill="currentColor" stroke="none"/>'};
 const gsym=k=>'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter">'+GSYM[k]+'</svg>';
@@ -3049,7 +3068,7 @@ function buildHome(){
       '<span class="bbpm">'+S.bpm+'<small>BPM</small></span>'+
       '<span class="bprev" role="button" aria-label="Ouvir prévia"><svg viewBox="0 0 16 16"><path d="M2 6h3l4-3v10l-4-3H2z" fill="currentColor"/><path class="sw" d="M11 5.5a3.5 3.5 0 0 1 0 5M13 3.5a6.5 6.5 0 0 1 0 9" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>'+
       '<span class="barrow"><svg viewBox="0 0 16 16"><path d="M2.5 8h10M8.5 3.5L13 8l-4.5 4.5" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>';
-    if(g.artist)b.querySelector('.bname').innerHTML='<small>Inspired by</small><span></span>',b.querySelector('.bname span').textContent=S.name;else b.querySelector('.bname').textContent=S.name;b.querySelector('.bdesc').textContent=g.desc;
+    if(g.artist)b.querySelector('.bname').innerHTML='<span>Solomun’s</span><em>eyes</em>';else b.querySelector('.bname').textContent=S.name;b.querySelector('.bdesc').textContent=g.desc;
     b.onclick=()=>tuneIn(b,g.k);
     b.querySelector('.bprev').onclick=e=>{e.stopPropagation();togglePreview(b,g.k)};
     box.appendChild(b);
@@ -3101,7 +3120,7 @@ function goHome(){
   FXKEYS.forEach(k=>{if(FX[k].win.open)closeFx(k)});closeOs();if(REC.on)recStop();
   document.querySelectorAll('.modal.open').forEach(m=>m.classList.remove('open'));
   const d=document.querySelector('.dev');
-  const done=()=>{d.classList.remove('crtoff');document.body.classList.remove('in-session');buildHome();powerOnHome()};
+  const done=()=>{d.classList.remove('crtoff');document.body.classList.remove('in-session','th-art');buildHome();powerOnHome()};
   if(reduceMotion()||!document.body.classList.contains('in-session'))return done();
   d.classList.add('crtoff');setTimeout(done,380);
 }
@@ -3287,6 +3306,7 @@ function rlTick(){ // atualiza o display do piano roll
 function setBpm(v){bpm=Math.max(70,Math.min(170,Math.round(v)));$('#bpmv').textContent=bpm;setBpmDelay()}
 function setStyle(k){
   style=k;setBpm(STYLES[k].bpm);
+  document.body.classList.toggle('th-art',!!STYLES[k].artist);VZ.sg=null;
   K.sc=STYLES[k].snd.sc!=null?STYLES[k].snd.sc:.5;if(kPump)kPump.set(K.sc);
   document.querySelectorAll('#styleSeg button').forEach(b=>b.classList.toggle('on',b.dataset.k===k));
   refreshPads();lastKey='';
