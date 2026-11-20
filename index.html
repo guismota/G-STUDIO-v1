@@ -872,14 +872,12 @@ body.th-art .clip.q{animation:qp .38s steps(2) infinite!important}
 @keyframes qp{50%{background:#22053a;color:#fff}}
 
 /* logo da tela inicial recolhe */
-#home .fbrand{transition:gap .6s cubic-bezier(.6,0,.2,1)}
-#home .fbrand .fword{display:block;max-width:220px;overflow:hidden;opacity:1;transition:max-width .7s cubic-bezier(.6,0,.2,1),opacity .35s ease,transform .7s cubic-bezier(.6,0,.2,1)}
+#home .fbrand{transition:gap 1.3s cubic-bezier(.65,0,.35,1)}
+#home .fbrand .fword{display:block;max-width:220px;overflow:hidden;opacity:1;clip-path:inset(0 0 0 0);filter:blur(0);
+ transition:max-width 1.3s cubic-bezier(.65,0,.35,1),clip-path 1.1s cubic-bezier(.65,0,.35,1),opacity .9s ease,filter .9s ease}
 #home .fbrand.mini{gap:0}
-#home .fbrand.mini .fword{max-width:0;opacity:0;transform:translateX(-14px)}
-#home .fbrand>svg:first-child{transition:transform .7s cubic-bezier(.6,0,.2,1)}
-#home .fbrand.mini>svg:first-child{animation:gspin .8s cubic-bezier(.6,0,.2,1)}
-@keyframes gspin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-@media (prefers-reduced-motion:reduce){#home .fbrand .fword,#home .fbrand,#home .fbrand>svg:first-child{transition:none}}
+#home .fbrand.mini .fword{max-width:0;opacity:0;clip-path:inset(0 100% 0 0);filter:blur(4px)}
+@media (prefers-reduced-motion:reduce){#home .fbrand .fword,#home .fbrand{transition:opacity .3s}}
 </style>
 </head>
 <body>
@@ -3112,7 +3110,10 @@ let brandT=0;
 function brandIntro(){
   const fb=document.querySelector('#home .fbrand');if(!fb)return;
   if(fb.children[1])fb.children[1].classList.add('fword');
-  fb.classList.remove('mini');clearTimeout(brandT);brandT=setTimeout(()=>fb.classList.add('mini'),2000);
+  fb.classList.remove('mini');clearTimeout(brandT);
+  // some depois de 3,5 s; a cada 10 s reaparece por 2 s
+  const cycle=()=>{brandT=setTimeout(()=>{if(document.body.classList.contains('in-session'))return;fb.classList.remove('mini');brandT=setTimeout(()=>{fb.classList.add('mini');cycle()},2000)},10000)};
+  brandT=setTimeout(()=>{fb.classList.add('mini');cycle()},3500);
 }
 function powerOnHome(){brandIntro();const h=$('#home');h.classList.remove('tvon');void h.offsetWidth;h.classList.add('tvon')}
 function staticBurst(){
