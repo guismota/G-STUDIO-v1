@@ -776,6 +776,23 @@ body.in-session .hw:active,#roll .hw:active,.modal .hw:active,.plug .hw:active{b
 .top .fxbtn .led,.top #osBtn .led{display:none}
 .top .fxbtns{gap:4px}
 @media (max-width:1250px){.top .fxbtn,.top #osBtn{padding:0 8px;font-size:10.5px}.top{gap:8px}}
+
+/* X-Pad mais suave */
+.xpad{background:linear-gradient(180deg,#0c0c0c,#040404)!important;background-image:linear-gradient(180deg,#0c0c0c,#040404)!important;border:1px solid #262626;transition:border-color .25s}
+.xpad::before{content:"";position:absolute;left:0;right:0;bottom:27px;height:10px;pointer-events:none;
+ background:repeating-linear-gradient(90deg,transparent 0 calc(100%/var(--n,5) - 1px),#2a2a2a calc(100%/var(--n,5) - 1px) calc(100%/var(--n,5)))}
+.xseg span{border-top:0;color:#555;transition:color .2s,text-shadow .2s;background:none!important}
+.xseg span.on{color:var(--yel);text-shadow:0 0 10px rgba(255,230,0,.6)}
+.xfill{position:absolute;left:0;top:0;bottom:27px;width:var(--x,0%);background:linear-gradient(90deg,rgba(255,230,0,0),rgba(255,230,0,.16) 70%,rgba(255,230,0,.32));opacity:0;transition:opacity .45s ease,width .07s linear;pointer-events:none}
+.xline{position:absolute;top:0;bottom:27px;left:var(--x,50%);width:2px;margin-left:-1px;background:var(--yel);box-shadow:0 0 12px 2px rgba(255,230,0,.7);opacity:0;transition:opacity .45s ease,left .07s linear;pointer-events:none}
+.xglow{width:120px!important;margin-left:-60px!important;bottom:27px!important;background:radial-gradient(closest-side,rgba(255,230,0,.55),rgba(255,230,0,.12) 55%,transparent)!important;transition:opacity .45s ease,left .07s linear!important}
+.xpad.touch .xfill,.xpad.touch .xline{opacity:1;transition:opacity .08s ease,width .07s linear,left .07s linear}
+.xpad.touch .xglow{transition:opacity .08s ease,left .07s linear!important}
+.xpad.touch{border-color:rgba(255,230,0,.55)}
+.xpad::after{content:"";position:absolute;left:var(--x0,50%);top:40%;width:10px;height:10px;margin:-5px 0 0 -5px;border:2px solid var(--yel);border-radius:50%!important;opacity:0;pointer-events:none}
+.xpad.rip::after{animation:xrip .5s ease-out}
+@keyframes xrip{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(9)}}
+.xhint{transition:opacity .3s}
 </style>
 </head>
 <body>
@@ -2441,9 +2458,9 @@ const XBEAT=k=>k==='dly'||k==='ech';
 function xpadLabels(k){return XBEAT(k)?ECHL:['0','25','50','75','100']}
 function xpadTouch(k,fr,first){
   const F=FX[k],el=F.el,xp=el.querySelector('.xpad');
-  if(first){F.xt=true;xp.classList.add('touch')}
-  let gl=fr;
-  if(XBEAT(k)){const n=ECHB.length,i=Math.min(n-1,Math.floor(fr*n));gl=(i+.5)/n;
+  if(first){F.xt=true;xp.classList.add('touch');xp.style.setProperty('--x0',(fr*100).toFixed(1)+'%');xp.classList.remove('rip');void xp.offsetWidth;xp.classList.add('rip')}
+  const gl=fr;
+  if(XBEAT(k)){const n=ECHB.length,i=Math.min(n-1,Math.floor(fr*n));
     xp.querySelectorAll('.xseg span').forEach((x,j)=>x.classList.toggle('on',j===i));
     if(k==='ech'){const v=i/(n-1);if(v!==F.p.beat)setFxParam(k,'beat',v)}
     else if(F.xb!==ECHB[i]){F.xb=ECHB[i];updDly();updPlugLcd(k)}}
@@ -2469,7 +2486,7 @@ function buildPlug(k){
     '<div class="rocker small pst">'+d.styles.map((s,i)=>'<button data-i="'+i+'"><span class="led"></span>'+s+'</button>').join('')+'</div>'+
     '<div class="rocker small pmode"><button data-m="knob">Knob</button><button data-m="xpad">X-Pad</button></div>'+
     '<div class="bigk">'+bigKnobSVG(k)+'</div>'+
-    '<div class="xpad" style="--n:'+xpadLabels(k).length+'"><div class="xseg">'+xpadLabels(k).map(l=>'<span>'+l+'</span>').join('')+'</div><i class="xglow"></i><small class="xhint">Toque e segure</small></div>'+
+    '<div class="xpad" style="--n:'+xpadLabels(k).length+'"><div class="xseg">'+xpadLabels(k).map(l=>'<span>'+l+'</span>').join('')+'</div><i class="xfill"></i><i class="xline"></i><i class="xglow"></i><small class="xhint">Toque e segure</small></div>'+
     '<div class="plcd"><span class="pv"></span><span class="pi"></span></div>'+
     '<div class="smk"><div></div><div></div></div>'+
     '<button class="hw lk">'+ICON.link+'<span>Link</span><span class="lkc"></span></button>'+
