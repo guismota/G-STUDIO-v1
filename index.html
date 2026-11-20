@@ -1067,6 +1067,57 @@ body.novo .nvkey{display:inline-flex!important;align-items:center;gap:8px;height
 .band.xnovo .bbpm{display:flex;align-items:center}
 .btest{display:inline-block;font-style:normal;text-transform:uppercase;font-family:"Archivo",sans-serif;line-height:1.2;font-size:8.5px;font-weight:900;letter-spacing:.2em;color:var(--nov);border:1px solid rgba(34,225,255,.55);padding:2px 5px 1px;margin-right:8px;vertical-align:1px;opacity:.85}
 .band.xnovo:active .btest{color:#000;border-color:#000}
+
+/* Criar novo com a fonte do Afterparty */
+.band.xnovo .bname{font-family:var(--artist);font-weight:800;font-stretch:125%;text-transform:none;letter-spacing:-.02em;font-size:clamp(26px,min(4.6vh,5.6vw),48px);line-height:.9;color:#fff;display:flex;flex-direction:row;align-items:baseline;gap:.22em}
+.band.xnovo .bname em{font-style:normal;color:var(--nov);text-shadow:0 0 18px rgba(34,225,255,.7)}
+.band.xnovo:not(:has(.bprev:active)):active .bname em,.band.xnovo:not(:has(.bprev:active)):active .bname span{color:#000;text-shadow:none}
+/* troca de página */
+#wipe{position:fixed;inset:0;z-index:7000;pointer-events:none;display:none;overflow:hidden}
+#wipe.on{display:block;pointer-events:auto}
+#wipe .wp{position:absolute;top:-4%;bottom:-4%;left:-15%;right:-15%;background:var(--wc);color:var(--wi);transform:translateX(120%) skewX(-12deg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  background-image:repeating-linear-gradient(-45deg,rgba(0,0,0,.07) 0 2px,transparent 2px 10px)}
+#wipe.in .wp{animation:wpIn .3s cubic-bezier(.75,0,.25,1) forwards}
+#wipe.out .wp{animation:wpOut .34s cubic-bezier(.75,0,.25,1) forwards}
+@keyframes wpIn{from{transform:translateX(120%) skewX(-12deg)}to{transform:translateX(0) skewX(-12deg)}}
+@keyframes wpOut{from{transform:translateX(0) skewX(-12deg)}to{transform:translateX(-120%) skewX(-12deg)}}
+#wipe .wch{transform:skewX(12deg);font:900 13px "Archivo",sans-serif;letter-spacing:.5em;text-transform:uppercase;border:2px solid currentColor;padding:6px 10px 5px 14px}
+#wipe .wnm{transform:skewX(12deg);font:900 clamp(54px,11vw,150px) "Archivo",sans-serif;text-transform:uppercase;letter-spacing:-.03em;line-height:.88;text-align:center}
+#wipe.art .wnm{font-family:var(--artist);font-weight:800;font-stretch:125%;text-transform:none}
+#wipe.art .wnm em{font-style:normal;color:#000;opacity:.85}
+#wipe.in .wnm{animation:wpTxt .3s ease-out both}@keyframes wpTxt{from{letter-spacing:.2em;opacity:0}to{letter-spacing:-.03em;opacity:1}}
+#explore.open{animation:xin .3s cubic-bezier(.2,.8,.2,1)}@keyframes xin{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+/* cena solta */
+#sceneFx{position:fixed;inset:0;z-index:5000;pointer-events:none;display:none;overflow:hidden}
+#sceneFx.go{display:block}
+body.novo #sceneFx{--yel:#22E1FF}
+.sfx-flash{position:absolute;inset:0;background:var(--yel);opacity:0}
+#sceneFx.go .sfx-flash{animation:sfxFlash .55s linear forwards}
+@keyframes sfxFlash{0%{opacity:.42}10%{opacity:0}20%{opacity:.25}30%{opacity:0}42%{opacity:.12}55%,100%{opacity:0}}
+.sfx-ring{position:absolute;left:var(--x);top:var(--y);width:60px;height:60px;margin:-30px 0 0 -30px;border:8px solid var(--yel);border-radius:50%!important;opacity:0;box-shadow:0 0 30px var(--yel)}
+#sceneFx.go .sfx-ring{animation:sfxRing .8s cubic-bezier(.1,.75,.25,1) forwards}
+#sceneFx.go .sfx-ring.r2{animation-delay:.09s;border-color:#fff;border-width:3px}
+@keyframes sfxRing{0%{transform:scale(.2);opacity:1}100%{transform:scale(34);opacity:0;border-width:1px}}
+.sfx-txt{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;color:var(--yel);opacity:0}
+.sfx-txt small{font:900 clamp(16px,2.6vw,28px) "Archivo",sans-serif;letter-spacing:.6em;text-transform:uppercase;color:#fff;margin-right:-.6em}
+.sfx-txt b{font:900 clamp(160px,34vh,330px) "Archivo",sans-serif;line-height:.8;letter-spacing:-.04em;-webkit-text-stroke:3px #000;text-shadow:-8px 0 #FF3DAE,8px 0 #22E1FF,0 0 60px var(--yel)}
+#sceneFx.go .sfx-txt{animation:sfxTxt 1s cubic-bezier(.2,.9,.2,1) forwards}
+@keyframes sfxTxt{0%{opacity:0;transform:translate(-50%,-50%) scale(2.6) rotate(-8deg);filter:blur(10px)}
+  14%{opacity:1;transform:translate(-50%,-50%) scale(.92) rotate(2deg);filter:blur(0)}
+  22%{transform:translate(calc(-50% + 10px),-50%) scale(1.04) skewX(-10deg)}
+  28%{transform:translate(calc(-50% - 8px),-50%) scale(1) skewX(8deg)}
+  34%{transform:translate(-50%,-50%) scale(1) skewX(0)}
+  72%{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(.82) translateY(-30px);filter:blur(4px)}}
+#session.sfx .lane{animation:laneHit .55s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i) * 28ms)}
+@keyframes laneHit{0%{filter:brightness(1)}30%{filter:brightness(2.4) saturate(1.6);transform:translateX(-8px)}100%{filter:none;transform:none}}
+#session.sfx .lane .clip.play{animation:padPop .5s cubic-bezier(.2,.9,.2,1) both;animation-delay:calc(var(--i) * 28ms)}
+@keyframes padPop{0%{transform:scale(1)}35%{transform:scale(1.12);box-shadow:0 0 24px var(--yel)}100%{transform:none}}
+.dev.shake{animation:shk .34s linear}
+@keyframes shk{15%{transform:translate(5px,-4px)}30%{transform:translate(-6px,3px)}45%{transform:translate(4px,4px)}60%{transform:translate(-3px,-2px)}80%{transform:translate(2px,1px)}100%{transform:none}}
+.boom{animation:slotBoom .6s cubic-bezier(.2,.9,.2,1)}
+@keyframes slotBoom{0%{transform:scale(1)}25%{transform:scale(1.18);background:var(--yel);color:#000}100%{transform:none}}
+@media (prefers-reduced-motion:reduce){#sceneFx,#wipe{display:none!important}}
 </style>
 </head>
 <body>
@@ -1103,6 +1154,8 @@ body.novo .nvkey{display:inline-flex!important;align-items:center;gap:8px;height
   <p class="fbeta">G-STUDIO · versão beta, ainda em desenvolvimento · <button id="onbAgain">Como instalar</button></p>
 </div>
 <div id="lights"></div>
+<div id="wipe"><div class="wp"><span class="wch"></span><b class="wnm"></b></div></div>
+<div id="sceneFx"><div class="sfx-flash"></div><div class="sfx-ring rdot"></div><div class="sfx-ring r2 rdot"></div><div class="sfx-txt"><small>Cena</small><b></b></div></div>
 <div id="explore">
   <header class="xh">
     <button class="hw xback" id="xBack"><svg viewBox="0 0 16 16"><path d="M10 3L5 8l5 5" fill="none" stroke="currentColor" stroke-width="2"/></svg>Voltar</button>
@@ -2181,8 +2234,22 @@ function launchScene(i){
   if(!cols.length){flash('Chama um instrumento primeiro');return}
   initAudio();sceneOn=i;
   const slot=c=>{const v=sc[c.key];return Number.isInteger(v)&&getPat(c,v)?v:-1};
-  if(!playing){cols.forEach(c=>{c.active=slot(c);c.queued=null});startTransport();return}
+  if(!playing){cols.forEach(c=>{c.active=slot(c);c.queued=null});startTransport();sceneFx(i);return}
   cols.forEach(c=>{const v=slot(c);c.queued=(v===c.active)?null:v});
+  const sd=60/bpm/4,tb=nextTime+((16-step)%16)*sd,dl=Math.max(0,(tb-ctx.currentTime+(ctx.outputLatency||0))*1000);
+  clearTimeout(launchScene._t);launchScene._t=setTimeout(()=>{if(sceneOn===i&&playing)sceneFx(i)},dl);
+}
+// animação ao soltar uma cena: flash, onda de choque, número gigante com glitch e as linhas acendendo em cascata
+function sceneFx(i){
+  if(reduceMotion())return;
+  const fx=$('#sceneFx'),sl=slotEls[i],r=sl?sl.getBoundingClientRect():{left:innerWidth/2,top:innerHeight/2,width:0,height:0};
+  fx.style.setProperty('--x',(r.left+r.width/2)+'px');fx.style.setProperty('--y',(r.top+r.height/2)+'px');
+  fx.querySelector('.sfx-txt b').textContent=i+1;
+  const s=$('#session'),d=document.querySelector('.dev');
+  [fx,s,d].forEach(e=>e.classList.remove('go','sfx','shake'));void fx.offsetWidth;
+  fx.classList.add('go');s.classList.add('sfx');d.classList.add('shake');
+  if(sl){sl.classList.remove('boom');void sl.offsetWidth;sl.classList.add('boom')}
+  clearTimeout(fx._t);fx._t=setTimeout(()=>{fx.classList.remove('go');s.classList.remove('sfx');d.classList.remove('shake');if(sl)sl.classList.remove('boom')},1100);
 }
 const curMap=()=>{const o={};cols.forEach(c=>o[c.key]=c.active);return o};
 const draftOf=c=>Number.isInteger(draft[c.key])?draft[c.key]:-1;
@@ -2538,7 +2605,7 @@ function colResizer(el,which){
   });
 }
 function buildLane(c,ci){
-  const row=document.createElement('div');row.className='lane'+(c.muted?' muted':'');row.style.setProperty('--c',c.color);
+  const row=document.createElement('div');row.className='lane'+(c.muted?' muted':'');row.style.setProperty('--c',c.color);row.style.setProperty('--i',ci);
   const lh=document.createElement('div');lh.className='lh';
   lh.innerHTML='<span class="tab"></span><span class="ix">'+String(ci+1).padStart(2,'0')+'</span><div class="nmw"><b></b><span class="fxt"></span></div>'+(screen!=='main'?'<button class="rm" aria-label="Remover">'+ICON.x+'</button>':'')+'<button class="mute'+(c.muted?' on':'')+'">M</button><div class="kv"></div>';
   lh.querySelector('b').textContent=LN(c);c.fxEl=lh.querySelector('.fxt');
@@ -3401,7 +3468,7 @@ function buildHome(){
       '<span class="ch">'+CHN(i)+'</span><span class="bname"></span><span class="bdesc"></span><span class="bbpm">'+cnt+'</span><span class="bprev bico" aria-hidden="true">'+
       (k==='explore'?'<svg viewBox="0 0 16 16"><path d="M1.5 3.5h5l1.5 1.5h6.5v8h-13z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>':'<svg viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" fill="none" stroke="currentColor" stroke-width="2"/></svg>')+'</span>'+
       '<span class="barrow"><svg viewBox="0 0 16 16"><path d="M2.5 8h10M8.5 3.5L13 8l-4.5 4.5" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>';
-    b.querySelector('.bname').textContent=name;b.querySelector('.bdesc').textContent=desc;if(k==='novo')b.querySelector('.bbpm').innerHTML='<em class="btest">Em testes</em>';
+    if(k==='novo')b.querySelector('.bname').innerHTML='<span>Criar</span><em>novo</em>';else b.querySelector('.bname').textContent=name;b.querySelector('.bdesc').textContent=desc;if(k==='novo')b.querySelector('.bbpm').innerHTML='<em class="btest">Em testes</em>';
     b.onclick=fn;box.appendChild(b);
   });
 }
@@ -3474,11 +3541,36 @@ function togglePreview(b,k){
   initAudio();b.classList.add('playing');prevOn={b};prevOn.stop=PREVIEW[k](b);
 }
 let tuning=false;
-function tuneInX(b,fn){if(tuning)return;tuning=true;stopPreview();initAudio();staticBurst();b&&b.classList.add('tune');setTimeout(()=>{b&&b.classList.remove('tune');tuning=false;fn()},reduceMotion()?0:420)}
+function tuneInX(b,fn){if(tuning)return;tuning=true;stopPreview();initAudio();genreSting('novo');b&&b.classList.add('tune');pageWipe({c:'#22E1FF',ch:CHN(GENRES.length),nm:'Criar <em>novo</em>',art:true},()=>{b&&b.classList.remove('tune');tuning=false;fn()})}
 function tuneIn(b,k){
-  if(tuning)return;tuning=true;stopPreview();initAudio();staticBurst();
+  if(tuning)return;tuning=true;stopPreview();initAudio();genreSting(k);
   b.classList.add('tune');
-  setTimeout(()=>{b.classList.remove('tune');tuning=false;enterGenre(k)},reduceMotion()?0:420);
+  const G=GENRES.find(g=>g.k===k),art=!!(G&&G.artist);
+  pageWipe({c:art?'#B026FF':'#FFE600',ink:art?'#fff':'#000',ch:CHN(GENRES.indexOf(G)),nm:art?'After<em>party</em>':STYLES[k].name,art},()=>{b.classList.remove('tune');tuning=false;enterGenre(k)});
+}
+// troca de página: uma faixa na cor do canal atravessa a tela
+function pageWipe(o,mid){
+  const w=$('#wipe');if(reduceMotion()||!w){mid();return}
+  w.style.setProperty('--wc',o.c);w.style.setProperty('--wi',o.ink||'#000');
+  w.querySelector('.wch').textContent=o.ch||'';w.querySelector('.wnm').innerHTML=o.nm||'';
+  clearTimeout(w._t1);clearTimeout(w._t2);w.className='on in'+(o.art?' art':'');
+  w._t1=setTimeout(()=>{try{mid()}finally{w.className='on out'+(o.art?' art':'');w._t2=setTimeout(()=>{w.className=''},340)}},330);
+}
+// som ao entrar num canal: subida de fita e um golpe do próprio gênero (kick + acorde)
+function genreSting(k){
+  if(!ctx||!noiseBuf)return;
+  const g=STYLES[k]&&!STYLES[k].novo?k:'house',S=STYLES[g],t=ctx.currentTime+.02,o=ctx.createGain();o.gain.value=.5;o.connect(out);
+  const n=noise(t,.34),f=ctx.createBiquadFilter(),ng=ctx.createGain();f.type='bandpass';f.Q.value=2.2;
+  f.frequency.setValueAtTime(320,t);f.frequency.exponentialRampToValueAtTime(7500,t+.3);
+  ng.gain.setValueAtTime(.0001,t);ng.gain.exponentialRampToValueAtTime(.32,t+.27);ng.gain.linearRampToValueAtTime(.0001,t+.31);n.connect(f);f.connect(ng);ng.connect(o);
+  const th=t+.32,b0=bpm;bpm=S.bpm;LSND=S.snd;
+  try{kick(th,o,1);
+    const cp=(S.p.chord||[]).find(Boolean);let ch=null;
+    if(cp&&Array.isArray(cp.data)){const n0=cp.data.find(x=>Array.isArray(x)&&Array.isArray(x[1]));if(n0)ch=n0[1]}
+    if(k==='novo'){[0,4,7,12].forEach((iv,j)=>lead(th+j*.07,69+iv,.12,o,.6))}
+    else if(ch)chord(th,ch,.34,o,cp.syn);
+  }catch(e){}finally{LSND=null;bpm=b0}
+  setTimeout(()=>{try{o.disconnect()}catch(e){}},3000);
 }
 function enterGenre(k){
   if(k==='novo'){enterNovo();return}
@@ -3498,7 +3590,7 @@ function goHome(){
   const d=document.querySelector('.dev');
   const done=()=>{d.classList.remove('crtoff');document.body.classList.remove('in-session','th-art');buildHome();powerOnHome()};
   if(reduceMotion()||!document.body.classList.contains('in-session'))return done();
-  d.classList.add('crtoff');setTimeout(done,380);
+  pageWipe({c:'#FFE600',ch:'G-STUDIO',nm:'Canais'},()=>{done();const h=$('#home');h.scrollTop=0});
 }
 $('#homeBtn').addEventListener('click',goHome);
 buildHome();
@@ -4030,12 +4122,20 @@ async function saveRec(){
 // ---------- interface do Explorar ----------
 function xToast(m){const t=$('#xToast');t.textContent=m;t.classList.remove('show');void t.offsetWidth;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2400)}
 function openExplore(pick){
+  if(!pick&&!XS.open&&!reduceMotion()){stopPreview();pageWipe({c:'#ffffff',ch:'BIBLIOTECA',nm:'Explorar'},()=>openExplore0(false));return}
+  openExplore0(pick);
+}
+function openExplore0(pick){
   stopPreview();XS.pick=!!pick;XS.open=true;
   const x=$('#explore');x.classList.toggle('pick',XS.pick);x.classList.add('open');document.body.classList.add('in-explore');
   $('#xTitle').textContent=XS.pick?'Adicionar sons':'Explorar';
   xRender();
 }
-function closeExplore(){xStopAud();closeXMenu();XS.open=false;$('#explore').classList.remove('open');document.body.classList.remove('in-explore');
+function closeExplore(){
+  if(!XS.pick&&!reduceMotion()){pageWipe({c:'#FFE600',ch:'G-STUDIO',nm:'Canais'},closeExplore0);return}
+  closeExplore0();
+}
+function closeExplore0(){xStopAud();closeXMenu();XS.open=false;$('#explore').classList.remove('open');document.body.classList.remove('in-explore');
   if(XS.pick&&screen==='novo'){buildSession();refreshSlots()}else if(!document.body.classList.contains('in-session'))buildHome()}
 function xSide(){
   const s=$('#xSide');s.innerHTML='';
