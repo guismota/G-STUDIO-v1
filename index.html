@@ -380,18 +380,18 @@ body.editing .clip:not(.empty){border-color:#555}
 #welcome .wl{animation:wlin .7s cubic-bezier(.2,.8,.2,1) both}
 @keyframes wlin{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
 /* tela inicial */
-#home{position:fixed;inset:0;z-index:2;display:flex;flex-direction:column;gap:20px;padding:26px 34px 34px;overflow:auto;background:#000}
+#home{position:fixed;inset:0;z-index:2;display:flex;flex-direction:column;gap:14px;padding:22px 30px 28px;overflow:auto;background:#000}
 body.in-session #home{display:none}
 body:not(.in-session) .dev{display:none}
 .hhead{display:flex;align-items:center;justify-content:space-between}
-.htitle{margin:22px 0 4px;font-size:clamp(44px,6.4vw,82px);font-weight:900;font-stretch:62%;line-height:.9;letter-spacing:-.005em;text-transform:uppercase}
+.htitle{margin:8px 0 2px;font-size:clamp(38px,4.8vw,64px);font-weight:900;font-stretch:62%;line-height:.9;letter-spacing:-.005em;text-transform:uppercase}
 .gt{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hsub{color:#8a8a8a;font-size:15px;margin:0}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:10px}
-.card{position:relative;overflow:hidden;border-radius:22px;border:1px solid #1e1e1e;background:#0a0a0a;min-height:clamp(260px,44vh,440px);padding:24px;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;text-align:left;color:#fff}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:4px}
+.card{position:relative;overflow:hidden;border-radius:22px;border:1px solid #1e1e1e;background:#0a0a0a;min-height:clamp(180px,26vh,300px);padding:24px;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;text-align:left;color:#fff}
 .card .bg{position:absolute;inset:-25%;background:radial-gradient(circle at 75% 20%,var(--c1),transparent 52%),radial-gradient(circle at 15% 85%,var(--c2),transparent 55%);opacity:.32;filter:blur(8px)}
 .card .wave{position:absolute;left:0;top:26%;width:200%;height:90px}
-.card .cname{position:relative;font-size:38px;font-weight:900;font-stretch:62%;text-transform:uppercase;line-height:.95}
+.card .cname{position:relative;font-size:32px;font-weight:900;font-stretch:62%;text-transform:uppercase;line-height:.95}
 .card .cmeta{position:relative;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#c9c9c9;font-weight:700}
 .card .cgo{position:absolute;right:18px;top:18px;width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--c1),var(--c2));display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px -6px var(--c2)}
 .card .cgo svg{width:16px;height:16px;fill:#000}
@@ -509,6 +509,7 @@ function flash(m){msgTxt=m;clearTimeout(msgT);msgT=setTimeout(()=>{msgTxt=''},26
 // ---------- Dados musicais ----------
 const all16=[...Array(16).keys()];
 const Am7=[57,60,64,67],Fmaj7=[53,57,60,64],Dm7=[50,53,57,60],Am9=[57,60,64,67,71];
+const Am=[57,60,64],Dm=[50,53,57],Dm9=[50,53,57,60,64],Fmaj9=[53,57,60,64,67],Em7=[52,55,59,62];
 const seq=(a,len)=>a.map((m,i)=>[i,m,len]);
 
 const STYLES={
@@ -563,6 +564,110 @@ const STYLES={
     {name:'Zap',data:[[0,81,.5],[2,93,.5],[3,81,.5],[8,84,.5],[11,88,.5],[14,93,.5]]},
     {name:'Sweep',data:'sweep'},
     {name:'Up',data:[[0,69,.8],[2,72,.8],[4,76,.8],[6,79,.8],[8,81,.8],[10,84,.8],[12,88,.8],[14,91,.8]]}]
+  }} ,
+ deep:{name:'Deep House',bpm:120,
+  snd:{kick:[150,45,.45,false],metal:false,clap:[1600,.3],snr:[230,1600,.22],tom:[.9,.4],rim:[800,1400],bass303:false,bassCut:650,chord:['triangle',1],lead:['sine',1,3000]},
+  p:{
+   kick:[{name:'4x4',data:[0,4,8,12]},{name:'Half',data:[0,8]},{name:'Skip',data:[0,4,8,11,12]},{name:'Swing',data:[0,4,7,8,12]}],
+   clap:[{name:'2 & 4',data:[4,12]},{name:'Snap',data:[4,12,15]},{name:'Late',data:[4,13]},{name:'Soft',data:[12]}],
+   snare:[{name:'Backbeat',data:[4,12]},{name:'Ghost',data:[4,6,12,14]},{name:'Brush',data:[2,4,10,12]},{name:'Half',data:[12]}],
+   hat:[{name:'Shuffle',data:[0,2,3,4,6,7,8,10,11,12,14,15]},{name:'8ths',data:[0,2,4,6,8,10,12,14]},{name:'Offbeat',data:[2,6,10,14]},{name:'Swing',data:[0,3,4,7,8,11,12,15]}],
+   ohat:[{name:'Offbeat',data:[2,6,10,14]},{name:'Air',data:[6,14]},{name:'Late',data:[14]},{name:'Sync',data:[3,11]}],
+   tom:[{name:'Conga',data:[[2,200],[3,200],[7,150],[10,200],[14,150]]},{name:'Bongo',data:[[1,200],[4,200],[9,200],[12,150]]},{name:'Soft',data:[[6,150],[14,110]]},{name:'Fill',data:[[12,200],[13,150],[14,150],[15,110]]}],
+   perc:[{name:'Shaker',data:[1,3,5,7,9,11,13,15]},{name:'Rim',data:[3,7,10,13]},{name:'Clave',data:[0,3,6,10,12]},{name:'Sparse',data:[7,15]}],
+   bass:[
+    {name:'Deep',data:[[0,33,3],[6,33,1],[8,36,2],[11,38,1],[14,40,2]]},
+    {name:'Walk',data:[[0,33,2],[4,36,2],[8,38,2],[12,40,2]]},
+    {name:'Offbeat',data:[[2,33,1.5],[6,33,1.5],[10,29,1.5],[14,31,1.5]]},
+    {name:'Groove',data:[[0,33,1],[3,45,1],[6,33,1],[8,29,1.5],[11,41,1],[14,31,1.5]]}],
+   chord:[
+    {name:'Warm',data:[[0,Am9,6],[8,Dm9,6]]},
+    {name:'Stab',data:[[3,Am9,1],[7,Am9,1],[11,Dm9,1]]},
+    {name:'Pad',data:[[0,Fmaj9,16,true]]},
+    {name:'Turn',data:[[0,Dm9,3],[4,Em7,3],[8,Fmaj9,3],[12,Em7,3]]}],
+   lead:[
+    {name:'Keys',data:[[0,76,1],[3,79,1],[6,76,1],[10,74,2]]},
+    {name:'Pluck',data:[[0,69,.5],[2,72,.5],[4,76,.5],[7,74,.5],[10,72,.5],[12,69,.5]]},
+    {name:'Sweep',data:'sweep'},
+    {name:'Bell',data:[[0,88,1],[6,84,1],[12,81,1]]}]
+  }},
+ techno:{name:'Techno',bpm:130,
+  snd:{kick:[190,40,.55,true],metal:true,clap:[1300,.28],snr:[200,2200,.18],tom:[1,.3],rim:[1200,2200],bass303:false,bassCut:900,chord:['sawtooth',4],lead:['square',6,5000]},
+  p:{
+   kick:[{name:'4x4',data:[0,4,8,12]},{name:'Drive',data:[0,4,8,12,15]},{name:'Broken',data:[0,4,7,10,12]},{name:'Pump',data:[0,3,4,8,11,12]}],
+   clap:[{name:'2 & 4',data:[4,12]},{name:'Late',data:[4,13]},{name:'Off',data:[6,14]},{name:'Fill',data:[4,12,14,15]}],
+   snare:[{name:'Backbeat',data:[4,12]},{name:'Ghost',data:[3,4,11,12]},{name:'Half',data:[8]},{name:'Roll',data:[12,13,14,15]}],
+   hat:[{name:'Offbeat',data:[2,6,10,14]},{name:'16ths',data:all16},{name:'Gallop',data:[1,2,5,6,9,10,13,14]},{name:'Sparse',data:[2,10]}],
+   ohat:[{name:'Offbeat',data:[2,6,10,14]},{name:'Long',data:[6,14]},{name:'Sync',data:[3,11]},{name:'Rush',data:[10,14,15]}],
+   tom:[{name:'Ritual',data:[[0,110],[6,150],[10,110],[14,200]]},{name:'Pulse',data:[[2,110],[6,110],[10,110],[14,110]]},{name:'Fill',data:[[12,200],[13,150],[14,150],[15,110]]},{name:'Tribal',data:[[0,150],[3,110],[7,200],[11,150],[13,110]]}],
+   perc:[{name:'Rim A',data:[3,7,11,15]},{name:'Rim B',data:[1,5,9,13]},{name:'Click',data:[1,3,5,7,9,11,13,15]},{name:'Poly',data:[0,3,6,9,12,15]}],
+   bass:[
+    {name:'Rolling',data:all16.filter(i=>i%4!==0).map(i=>[i,33,.7])},
+    {name:'Offbeat',data:[[2,33,1],[6,33,1],[10,33,1],[14,33,1]]},
+    {name:'Dark',data:[[0,33,2],[3,36,1],[6,33,1],[8,31,2],[11,33,1],[14,28,1]]},
+    {name:'Pulse',data:[[2,33,.5],[3,33,.5],[6,45,.5],[7,33,.5],[10,33,.5],[11,33,.5],[14,40,.5],[15,33,.5]]}],
+   chord:[
+    {name:'Dub',data:[[3,Am,1],[10,Am,1]]},
+    {name:'Minor',data:[[0,Am7,1],[6,Am7,1],[12,Dm7,1]]},
+    {name:'Drone',data:[[0,[45,52,57],16,true]]},
+    {name:'Echo',data:[[2,Dm,1],[7,Dm,1],[11,Am,1]]}],
+   lead:[
+    {name:'Stab',data:[[0,69,.5],[3,72,.5],[6,69,.5],[10,76,.5]]},
+    {name:'Hypno',data:seq(all16.map(i=>[69,69,72,69,74,69,72,67][i%8]),.5)},
+    {name:'Sweep',data:'sweep'},
+    {name:'Bleep',data:[[1,81,.25],[7,88,.25],[9,81,.25],[15,84,.25]]}]
+  }},
+ acidtechno:{name:'Acid Techno',bpm:138,
+  snd:{kick:[230,44,.5,true],metal:true,clap:[1100,.3],snr:[180,2800,.2],tom:[1.2,.25],rim:[1600,2600],bass303:true,acid:{q:1.35,f:1.4},chord:['square',8],lead:['sawtooth',12,7000]},
+  p:{
+   kick:[{name:'4x4',data:[0,4,8,12]},{name:'Gallop',data:[0,4,7,8,12,15]},{name:'Stomp',data:[0,2,4,8,10,12]},{name:'Build',data:[0,4,8,10,12,13,14,15]}],
+   clap:[{name:'2 & 4',data:[4,12]},{name:'Double',data:[4,5,12,13]},{name:'Late',data:[5,13]},{name:'Roll',data:[8,10,12,13,14,15]}],
+   snare:[{name:'Backbeat',data:[4,12]},{name:'Shuffle',data:[4,7,12,14]},{name:'Roll',data:[12,13,14,15]},{name:'Hit',data:[15]}],
+   hat:[{name:'16ths',data:all16},{name:'Offbeat',data:[2,6,10,14]},{name:'Drive',data:[0,2,3,4,6,7,8,10,11,12,14,15]},{name:'Tick',data:[1,5,9,13]}],
+   ohat:[{name:'Offbeat',data:[2,6,10,14]},{name:'Wash',data:[2,6,10,14,15]},{name:'Sync',data:[3,7,11,15]},{name:'Late',data:[14]}],
+   tom:[{name:'Run',data:[[8,200],[9,200],[10,150],[11,150],[12,110],[14,110]]},{name:'Gallop',data:[[3,150],[7,150],[11,150],[15,200]]},{name:'Rumble',data:[[1,110],[5,110],[9,110],[13,110]]},{name:'Fill',data:[[12,200],[13,200],[14,150],[15,110]]}],
+   perc:[{name:'Rim A',data:[2,5,10,13]},{name:'Rim B',data:[3,6,11,14]},{name:'Machine',data:[1,3,5,7,9,11,13,15]},{name:'Poly',data:[0,3,6,9,12,15]}],
+   bass:[
+    {name:'Squelch',data:seq([33,45,33,36,33,48,33,45,33,40,45,33,43,33,48,36],1)},
+    {name:'Hammer',data:[[0,33,1],[1,33,1],[3,45,1],[4,33,1],[6,48,1],[7,33,1],[9,36,1],[10,33,1],[12,45,1],[14,43,1],[15,33,1]]},
+    {name:'Climb',data:seq([33,33,36,36,40,40,43,43,45,45,48,48,45,43,40,36],1)},
+    {name:'Minimal',data:[[0,33,1],[3,33,1],[6,45,1],[8,33,1],[11,33,1],[14,48,1]]}],
+   chord:[
+    {name:'Stab',data:[[2,Am7,.5],[10,Am7,.5]]},
+    {name:'Rave',data:[[0,Am7,1],[3,Am7,1],[6,Fmaj7,1],[10,Dm7,1]]},
+    {name:'Drone',data:[[0,[45,52,57,64],16,true]]},
+    {name:'Offbeat',data:[[2,Am7,.5],[6,Am7,.5],[10,Am7,.5],[14,Am7,.5]]}],
+   lead:[
+    {name:'Siren',data:[[0,81,4],[8,84,4]]},
+    {name:'Zap',data:[[0,93,.25],[3,88,.25],[6,93,.25],[11,81,.25],[14,93,.25]]},
+    {name:'Sweep',data:'sweep'},
+    {name:'Arp',data:seq(all16.map(i=>[69,76,81,76][i%4]),.5)}]
+  }},
+ funk:{name:'Funk Brasileiro',bpm:130,
+  snd:{kick:[120,38,.75,false],metal:false,clap:[1300,.25],snr:[260,2000,.16],tom:[1.1,.22],rim:[1000,2000],bass303:false,sub:true,chord:['square',3],lead:['square',2,3500]},
+  p:{
+   kick:[{name:'Tamborzão',data:[0,3,6,10]},{name:'Mandelão',data:[0,3,6,8,11,14]},{name:'Volt',data:[0,6,10,13]},{name:'Simples',data:[0,8]}],
+   clap:[{name:'Tamborzão',data:[4,12]},{name:'Treme',data:[4,7,12,15]},{name:'Palma',data:[4,12,14]},{name:'Final',data:[12,14,15]}],
+   snare:[{name:'Caixa',data:[4,12]},{name:'Repique',data:[4,9,12,14]},{name:'Rufo',data:[12,13,14,15]},{name:'Contra',data:[7,15]}],
+   hat:[{name:'Chiado',data:[2,6,10,14]},{name:'16ths',data:all16},{name:'Groove',data:[0,2,3,6,8,10,11,14]},{name:'Seco',data:[1,5,9,13]}],
+   ohat:[{name:'Off',data:[2,10]},{name:'Atraso',data:[6,14]},{name:'Sync',data:[3,11]},{name:'Abre',data:[14]}],
+   tom:[{name:'Tambor',data:[[7,200],[11,150],[14,150]]},{name:'Batuque',data:[[2,200],[5,150],[7,200],[11,150],[13,110],[14,150]]},{name:'Grave',data:[[3,110],[6,110],[10,110]]},{name:'Virada',data:[[8,200],[9,200],[10,150],[11,150],[12,110],[13,110],[14,110],[15,110]]}],
+   perc:[{name:'Ponto',data:[2,5,10,13]},{name:'Clique',data:[1,3,9,11]},{name:'Corrido',data:[1,3,5,7,9,11,13,15]},{name:'Tic',data:[7,15]}],
+   bass:[
+    {name:'808',data:[[0,33,3],[6,33,2],[10,36,3]]},
+    {name:'Tamborzão',data:[[0,33,2],[3,33,2],[6,31,2],[10,33,3]]},
+    {name:'Desce',data:[[0,40,4],[4,38,4],[8,36,4],[12,33,4]]},
+    {name:'Pulo',data:[[0,33,1],[3,45,1],[6,33,1],[10,43,1],[14,33,1]]}],
+   chord:[
+    {name:'Stab',data:[[0,Am,1],[6,Am,1],[10,Am,1]]},
+    {name:'Brass',data:[[0,Am7,.5],[3,Am7,.5],[6,Dm7,.5],[10,Am7,.5]]},
+    {name:'Pad',data:[[0,Am9,16,true]]},
+    {name:'Corte',data:[[4,Dm7,1],[12,Am7,1]]}],
+   lead:[
+    {name:'Alarme',data:[[0,81,2],[2,84,2],[4,81,2],[6,84,2],[8,81,2],[10,84,2],[12,81,2],[14,84,2]]},
+    {name:'Assobio',data:[[0,88,1],[3,91,.5],[6,88,1],[10,84,1]]},
+    {name:'Sweep',data:'sweep'},
+    {name:'Riff',data:[[0,69,.5],[3,69,.5],[6,72,.5],[8,74,.5],[11,72,.5],[14,69,.5]]}]
   }}
 };
 let style='house';
@@ -647,7 +752,7 @@ function saveScenes(){try{localStorage.setItem('gstudio_scenes',JSON.stringify(S
 function initAudio(){
   if(ctx){ctx.resume&&ctx.resume();return}
   ctx=new (window.AudioContext||window.webkitAudioContext)();
-  const comp=ctx.createDynamicsCompressor();fin=ctx.createGain();comp.connect(fin);fin.connect(ctx.destination);setupMeters();
+  const comp=ctx.createDynamicsCompressor();comp.threshold.value=-10;comp.knee.value=6;comp.ratio.value=20;comp.attack.value=.002;comp.release.value=.15;fin=ctx.createGain();fin.gain.value=.9;comp.connect(fin);fin.connect(ctx.destination);setupMeters();
   out=ctx.createGain();out.gain.value=K.mv;out.connect(comp);
   filt=ctx.createBiquadFilter();filt.type='lowpass';filt.Q.value=3;setFilter();
   mix=ctx.createGain();mix.connect(filt);filt.connect(out);
@@ -709,13 +814,20 @@ function acid303(t,m,dur,o,pos){
   const acc=(pos%4===2),gate=Math.min(Math.max(dur,.06),.35);
   const a=ctx.createOscillator(),f=ctx.createBiquadFilter(),g=ctx.createGain();
   a.type='sawtooth';a.frequency.value=m2f(m+12);
-  f.type='lowpass';f.Q.value=acc?18:13;
-  f.frequency.setValueAtTime(acc?5200:2600,t);f.frequency.exponentialRampToValueAtTime(260,t+(acc?.22:.16));
+  const A=snd().acid||{};f.type='lowpass';f.Q.value=(acc?18:13)*(A.q||1);
+  f.frequency.setValueAtTime(Math.min(14000,(acc?5200:2600)*(A.f||1)),t);f.frequency.exponentialRampToValueAtTime(260,t+(acc?.22:.16));
   g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(acc?.62:.42,t+.006);g.gain.setTargetAtTime(.0001,t+gate,.03);
   a.connect(f).connect(g).connect(o);a.start(t);a.stop(t+gate+.3)}
 function bass(t,m,dur,o,pos){
   if(snd().bass303){acid303(t,m,dur,o,pos);return}
-  dur=Math.max(dur,.06);const a=ctx.createOscillator(),b=ctx.createOscillator(),f=ctx.createBiquadFilter(),g=ctx.createGain();a.type='sawtooth';a.frequency.value=m2f(m);b.type='sine';b.frequency.value=m2f(m);f.type='lowpass';f.Q.value=6;f.frequency.setValueAtTime(1200,t);f.frequency.exponentialRampToValueAtTime(180,t+.15);g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.5,t+.008);g.gain.setTargetAtTime(.0001,t+dur,.04);a.connect(f);b.connect(f);f.connect(g).connect(o);a.start(t);b.start(t);a.stop(t+dur+.3);b.stop(t+dur+.3)}
+  if(snd().sub){ // 808: seno grave longo + harmônico para soar em alto-falante pequeno
+    const d=Math.max(dur,.15),x=ctx.createOscillator(),h=ctx.createOscillator(),g=ctx.createGain(),gh=ctx.createGain();
+    x.type='sine';x.frequency.setValueAtTime(m2f(m)*1.5,t);x.frequency.exponentialRampToValueAtTime(m2f(m),t+.05);
+    h.type='triangle';h.frequency.setValueAtTime(m2f(m)*3,t);h.frequency.exponentialRampToValueAtTime(m2f(m)*2,t+.05);gh.gain.value=.22;
+    g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.62,t+.006);g.gain.setTargetAtTime(.0001,t+d,.09);
+    x.connect(g);h.connect(gh);gh.connect(g);g.connect(o);x.start(t);h.start(t);x.stop(t+d+.7);h.stop(t+d+.7);return;
+  }
+  dur=Math.max(dur,.06);const a=ctx.createOscillator(),b=ctx.createOscillator(),f=ctx.createBiquadFilter(),g=ctx.createGain();a.type='sawtooth';a.frequency.value=m2f(m);b.type='sine';b.frequency.value=m2f(m);f.type='lowpass';f.Q.value=6;f.frequency.setValueAtTime(snd().bassCut||1200,t);f.frequency.exponentialRampToValueAtTime(180,t+.15);g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.5,t+.008);g.gain.setTargetAtTime(.0001,t+dur,.04);a.connect(f);b.connect(f);f.connect(g).connect(o);a.start(t);b.start(t);a.stop(t+dur+.3);b.stop(t+dur+.3)}
 function chord(t,notes,dur,pad,o){
   dur=Math.max(dur,.08);const C=snd().chord,f=ctx.createBiquadFilter(),g=ctx.createGain();f.type='lowpass';f.Q.value=C[1];
   if(pad){f.frequency.setValueAtTime(700,t);f.frequency.linearRampToValueAtTime(1800,t+dur*.6)}else{f.frequency.setValueAtTime(3200,t);f.frequency.exponentialRampToValueAtTime(700,t+dur)}
@@ -1622,7 +1734,13 @@ function drawSpec(){
 }
 
 // ---------- Boas-vindas, início e navegação ----------
-const GENRES=[{k:'house',c1:'#ffb000',c2:'#ff6a3d',desc:'Groove clássico'},{k:'acid',c1:'#ff2bd6',c2:'#8a5cff',desc:'Baixo 303 ácido'}];
+const GENRES=[
+ {k:'house',c1:'#ffb000',c2:'#ff6a3d',desc:'Groove clássico'},
+ {k:'deep',c1:'#ffcf7a',c2:'#ff6a8a',desc:'Acordes quentes'},
+ {k:'acid',c1:'#ff2bd6',c2:'#8a5cff',desc:'Baixo 303 ácido'},
+ {k:'techno',c1:'#8a5cff',c2:'#2b7bff',desc:'Escuro e hipnótico'},
+ {k:'acidtechno',c1:'#ff2bd6',c2:'#ff3d3d',desc:'303 rápido e agressivo'},
+ {k:'funk',c1:'#ffd23d',c2:'#28c76f',desc:'Tamborzão e 808'}];
 function wavePath(amp,y0,per){let d='';for(let x=0;x<=800;x+=8){const y=y0+amp*Math.sin(2*Math.PI*x/per);d+=(x?'L':'M')+x+' '+y.toFixed(1)}return d}
 function buildHome(){
   const box=$('#cards');box.innerHTML='';
