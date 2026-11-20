@@ -1718,6 +1718,53 @@ const STYLES={
     B('Siren',32,[[0,'F#4',14],[16,'E4',14]],{syn:'saw'})],
    fx:FX4
   }},
+// drum and bass: 174, quebrada em dois tempos, reese sujo, wobble de jump-up e toques de UK garage
+ dnb:{name:'Drum & Bass',bpm:174,swing:.04,key:{root:4,mode:'minor'},names:{chord:'Keys',arp:'Pluck',lead:'Chops'},
+  snd:{sub:{type:'sine',cut:160},pad:{type:'air'},arp:{type:'pluck',cut:3200},sc:.35,
+       kick:{f0:210,f1:55,dec:.28,click:.75,sweep:.05,drive:2.2},clap:{f:1700,dec:.18,spread:2},snare:{tone:196,hp:1500,dec:.24},
+       hat:{metal:false,dec:.022,odec:.2,hp:9500},tom:{mult:1,dec:.22,map:{200:246.94,150:196,110:164.81}},perc:{type:'shaker'},
+       bass:{type:'reese',cut:850,drive:2.4},chord:{type:'keys'},lead:{type:'vox'}},
+  p:{
+   kick:[D('Two-step','X.........X.....'),D('Rolling','X.........X..x..'),D('Jump','X.....x...X.....'),D('Build','X.........X..... X...x...X.x.xXxX')],
+   clap:[D('Layer','....x.......x...'),D('Garage','....x......o.x..'),D('Off','......x.......x.'),D('Fill','....x.......x... ....x...x.x.xxxx')],
+   snare:[D('Back','....X.......X...'),D('Ghost','....X..o.o..X..o'),D('Break','....X.o..o.oX.o.'),D('Roll','................ x.x.x.x.xxxxXXXX')],
+   hat:[D('8ths','x.x.x.x.x.x.x.x.'),D('16ths','xoxoxoxoxoxoxoxo'),D('Garage','x.ox.ox.x.ox.oxo'),D('Roll','x.xxx.x.x.xxx.xx')],
+   ohat:[D('Off','..x...x...x...x.'),D('Late','.......x.......x'),D('Sync','...x..x....x..x.'),D('Wash','x...............')],
+   tom:[T('Roll','..h.m...h.m.l...'),T('Tribal','h..m..l.h..m.l..'),T('Low','l.......l..l....'),T('Fill','................ ..h.hhm.mml.lll.')],
+   perc:[D('Shaker','oxoxoxoxoxoxoxox'),D('Rim','..x..x....x..x..',{syn:'rim'}),D('Clave','x..x..x...x.x...',{syn:'clave'}),D('Rattle','.....x.......x..',{syn:'rattle'})],
+   bass:[
+    B('Reese',32,[[0,'E2',6],[6,'G2',2],[8,'E2',4],[12,'D2',4],[16,'C2',6],[22,'D2',2],[24,'B1',8]]),
+    B('Wobble',16,[[0,'E1',2],[3,'E1',1],[6,'E1',2],[10,'G1',2],[14,'E1',2]],{syn:'wobble'}),
+    B('Stab',16,[[0,'E2',.5],[3,'E2',.5],[6,'G2',.5],[10,'E2',.5],[11,'D2',.5],[14,'B1',.5]]),
+    B('Garage',16,[[0,'E2',1],[3,'E2',.5],[6,'E2',1],[10,'D2',.5],[11,'E2',1],[14,'G2',.5]],{syn:'wobble2'})],
+   sub:[
+    B('Long',32,[[0,'E1',16],[16,'C2',8],[24,'B1',8]]),
+    B('Roots',32,[[0,'E1',6],[8,'E1',4],[12,'D1',4],[16,'C2',6],[24,'B1',8]]),
+    B('Pulse',16,[[0,'E1',2],[10,'E1',2]]),
+    B('Drop',32,[[0,'E1',2],[10,'E1',2],[16,'E1',2],[26,'G1',2],[30,'D1',2]])],
+   chord:[
+    C('Liquid',32,[[0,'Em9',8],[8,'Cmaj7',8],[16,'Am9',8],[24,'Bm7',8]]),
+    C('Organ',16,[[0,'Em7',.5],[3,'Em7',.5],[6,'Em7',.5],[10,'Am7',.5],[11,'Am7',.5],[14,'Em7',.5]],{syn:'organ'}),
+    C('Stab',16,[[0,'Em7',.5],[10,'Em7',.5]],{syn:'stab'}),
+    C('Dub',32,[[0,'Em9',1],[16,'Cmaj7',1]],{syn:'dub'})],
+   pad:[
+    C('Atmos',32,[[0,'Em11',16],[16,'Cmaj7',16]],{syn:'air'}),
+    C('Dark',32,[[0,'Em',32]],{syn:'dark'}),
+    C('Strings',32,[[0,'Em9',16],[16,'Am9',16]],{syn:'strings'}),
+    C('Swell',16,[[0,'Em9',16]],{syn:'swell'})],
+   arp:[
+    ARP('Pluck',16,[[0,'Em']],{oct:1,gate:.3,mask:'x.x.xx.x.x.xx.x.'}),
+    ARP('Liquid',32,[[0,'Em9'],[16,'Cmaj7']],{oct:2,gate:.4},{syn:'bell'}),
+    ARP('Rave',16,[[0,'Em7']],{oct:1,gate:.25,mask:'xx.xx.x.xx.xx.x.'},{syn:'square'}),
+    ARP('Acid',16,[[0,'Em']],{oct:0,gate:.5,mask:'x.xxx.x.x.xx.x.x'},{syn:'acid'})],
+   lead:[
+    B('Chops',16,[[0,'B4',.25],[2,'B4',.25],[3,'D5',.5],[6,'E5',.25],[8,'B4',.5],[11,'G4',.25],[14,'A4',.5]]),
+    B('Call',32,[[0,'E5',1],[2,'D5',1],[4,'B4',2],[16,'G5',1],[18,'F#5',1],[20,'E5',4]]),
+    B('Hoover',32,[[0,'E4',6],[6,'G4',2],[8,'F#4',8],[16,'E4',6],[22,'D4',2],[24,'B3',8]],{syn:'saw'}),
+    B('Whistle',16,[[0,'E6',.5],[3,'D6',.5],[6,'B5',1],[10,'G5',.5],[12,'A5',1]],{syn:'whistle'})],
+   fx:FX4
+  }},
+ 
 // gênero especial Afrohouse: a percussão conduz, kick macio, muito swing, coro, kalimba e baixo redondo
  afro:{name:'Afrohouse',bpm:121,swing:.16,key:{root:9,mode:'minor'},artist:true,theme:'afro',names:{snare:'Snap',ohat:'Aberto',tom:'Congas',perc:'Madeira',chord:'Keys',pad:'Coro',arp:'Kalimba',lead:'Voz'},
   scenes:[{kick:0,hat:0,perc:0,tom:0,sub:0},{kick:0,clap:0,hat:0,ohat:0,tom:0,perc:1,bass:0,pad:0,arp:0},{pad:0,arp:1,lead:0,perc:0,tom:2,sub:1,fx:0},
@@ -2029,9 +2076,28 @@ function bassSaw(t,m,dur,o,v,B){
   f.type='lowpass';f.Q.value=B.q||6;f.frequency.setValueAtTime(B.cut||1200,t);f.frequency.exponentialRampToValueAtTime(180,t+.15);
   g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.5*v,t+.008);g.gain.setTargetAtTime(.0001,t+d,.04);
   a.connect(f);b.connect(f);f.connect(g).connect(o);a.start(t);b.start(t);a.stop(t+d+.3);b.stop(t+d+.3)}
-function bass(t,m,dur,o,v,slide,c){
+// reese: três serras desafinadas, filtro com movimento lento; wobble: o mesmo com LFO no tempo (jump-up / garage)
+function bassReese(t,m,dur,o,v,B,wob){
+  const d=Math.max(dur,.08),f=m2f(m),g=ctx.createGain(),lp=ctx.createBiquadFilter(),ws=ctx.createWaveShaper(),pre=ctx.createGain();
+  const xs=[-14,0,13].map(dt=>{const x=ctx.createOscillator();x.type='sawtooth';x.frequency.value=f;x.detune.value=dt;x.connect(pre);return x});
+  pre.gain.value=.33;ws.curve=softCurve(B.drive||2.2);lp.type='lowpass';lp.Q.value=wob?7:4;
+  const base=(B.cut||850)*(wob?.55:1);lp.frequency.setValueAtTime(base,t);
+  const lfo=ctx.createOscillator(),lg=ctx.createGain();
+  if(wob){lfo.type=wob===2?'triangle':'sine';lfo.frequency.value=bpm/60*(wob===2?1:2);lg.gain.value=base*1.6}
+  else{lfo.type='sine';lfo.frequency.value=.35;lg.gain.value=base*.45}
+  lfo.connect(lg);lg.connect(lp.frequency);
+  pre.connect(ws);ws.connect(lp);lp.connect(g);
+  const sub=ctx.createOscillator(),sg=ctx.createGain();sub.type='sine';sub.frequency.value=wob?f:f/2;sg.gain.value=.5;sub.connect(sg);sg.connect(g);
+  const lv=.5*v;g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(lv,t+.01);g.gain.setValueAtTime(lv,t+d);g.gain.exponentialRampToValueAtTime(.0001,t+d+.08);
+  g.connect(o);
+  xs.concat([sub,lfo]).forEach(x=>{x.start(t);x.stop(t+d+.12)});
+}
+function bass(t,m,dur,o,v,slide,c,syn){
   v=v||1;const B=snd().bass;
-  switch(B.type){
+  switch(syn||B.type){
+    case 'reese':return bassReese(t,m,dur,o,v,B,0);
+    case 'wobble':return bassReese(t,m,dur,o,v,B,1);
+    case 'wobble2':return bassReese(t,m,dur,o,v,B,2);
     case '303':return acid303(t,m,dur,o,v,slide,c&&c.lastM,B);
     case '808':return bass808(t,m,dur,o,v,B,slide,c&&c.lastM);
     case 'round':return bassRound(t,m,dur,o,v,B);
@@ -2293,7 +2359,7 @@ function playCol0(c,s,t,P){
     if(c.type==='chord'){chord(t,n[1],n[2]*sd,o,n[3]===true?'pad':syn);return}
     if(c.type==='pad'){padSynth(t,n[1],n[2]*sd,o,syn);return}
     const v=typeof n[3]==='number'&&n[3]>0?n[3]:1;
-    if(c.type==='bass'){bass(t,n[1],n[2]*sd,o,v,n[4],c);c.lastM=n[1]}
+    if(c.type==='bass'){bass(t,n[1],n[2]*sd,o,v,n[4],c,syn);c.lastM=n[1]}
     else if(c.type==='sub')subBass(t,n[1],n[2]*sd,o,v);
     else if(c.type==='arp')arpSynth(t,n[1],n[2]*sd,o,v,syn);
     else lead(t,n[1],n[2]*sd,o,v,syn);
@@ -3559,6 +3625,7 @@ const GENRES=[
  {k:'techno',gc:'#6C8BFF',xpos:'50% 40%',c1:'#a35cff',c2:'#ff3b4f',pos:'center 38%',desc:'Escuro, repetitivo e lindo'},
  {k:'acidtechno',gc:'#5CFF8A',xpos:'50% 26%',c1:'#ff3b3b',c2:'#ffb37a',pos:'center 24%',desc:'Rápido demais pro seu vizinho'},
  {k:'funk',gc:'#FF3DAE',xpos:'50% 22%',c1:'#FFE600',c2:'#ff2d1a',pos:'center 22%',desc:'Música popular eletrônica brasileira'},
+ {k:'dnb',gc:'#22E1FF',desc:'Quebrada rápida, grave sujo e um pé no garage'},
  {k:'solomun',artist:true,desc:'Baixo rolando, riff metálico e Ibiza às 6h'},
  {k:'afro',artist:true,theme:'afro',html:'<span>Afro</span><em>house</em><i class="cherry" aria-hidden="true"></i>',desc:'Tambores, coro e pôr do sol'}];
 const CHN=i=>'CH'+String(i+1).padStart(2,'0');
@@ -3573,6 +3640,8 @@ function genreWave(k){const W=1200,H=100,m=50,pts=[];
   else if(k==='acid'){p=(t*12)%1;y=(p*2-1)*26+Math.sin(p*Math.PI*10)*12*Math.exp(-p*3)}
   else if(k==='techno')y=(Math.sin(t*Math.PI*16)>0?1:-1)*26;
   else if(k==='acidtechno'){p=(t*16)%1;y=(p<.5?1:-1)*20+Math.sin(p*Math.PI*14)*14*Math.exp(-p*4)}
+  else if(k==='dnb'){p=(t*8)%1;y=(p<.08?40:p<.5?-Math.sin(p*Math.PI*30)*18*Math.exp(-p*4):(p>.6&&p<.66?-34:Math.sin(p*Math.PI*40)*8))}
+  else if(k==='afro')y=Math.sin(t*Math.PI*10)*16+Math.sin(t*Math.PI*30)*10*Math.abs(Math.sin(t*Math.PI*5));
   else if(k==='solomun')y=Math.sin(t*Math.PI*8)*24+Math.sin(t*Math.PI*24)*9+Math.sin(t*Math.PI*40)*4;
   else if(k==='funk'){p=(t*10)%1;y=Math.sin(p*Math.PI*18)*40*Math.exp(-p*7)+(p>.5?Math.sin(p*Math.PI*30)*16*Math.exp(-(p-.5)*9):0)}
   pts.push((x?'L':'M')+x+' '+(m-y).toFixed(1))}
