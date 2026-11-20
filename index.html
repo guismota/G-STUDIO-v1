@@ -870,6 +870,16 @@ body.th-art #laser{background:#B026FF!important}
 body.th-art .nrow.root .ncell{background:#12041c!important}body.th-art .nrow.root .ncell.beat{background:#1a0628!important}
 body.th-art .clip.q{animation:qp .38s steps(2) infinite!important}
 @keyframes qp{50%{background:#22053a;color:#fff}}
+
+/* logo da tela inicial recolhe */
+#home .fbrand{transition:gap .6s cubic-bezier(.6,0,.2,1)}
+#home .fbrand .fword{display:block;max-width:220px;overflow:hidden;opacity:1;transition:max-width .7s cubic-bezier(.6,0,.2,1),opacity .35s ease,transform .7s cubic-bezier(.6,0,.2,1)}
+#home .fbrand.mini{gap:0}
+#home .fbrand.mini .fword{max-width:0;opacity:0;transform:translateX(-14px)}
+#home .fbrand>svg:first-child{transition:transform .7s cubic-bezier(.6,0,.2,1)}
+#home .fbrand.mini>svg:first-child{animation:gspin .8s cubic-bezier(.6,0,.2,1)}
+@keyframes gspin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){#home .fbrand .fword,#home .fbrand,#home .fbrand>svg:first-child{transition:none}}
 </style>
 </head>
 <body>
@@ -3097,7 +3107,14 @@ function flickLoop(){clearTimeout(flickT);flickT=setTimeout(()=>{
     if(b){b.classList.add('flick');setTimeout(()=>b.classList.remove('flick'),520)}}
   flickLoop()},5000+Math.random()*5000)}
 flickLoop();
-function powerOnHome(){const h=$('#home');h.classList.remove('tvon');void h.offsetWidth;h.classList.add('tvon')}
+// logo do topo: depois de 2 s na tela inicial a escrita recolhe e fica só o G
+let brandT=0;
+function brandIntro(){
+  const fb=document.querySelector('#home .fbrand');if(!fb)return;
+  if(fb.children[1])fb.children[1].classList.add('fword');
+  fb.classList.remove('mini');clearTimeout(brandT);brandT=setTimeout(()=>fb.classList.add('mini'),2000);
+}
+function powerOnHome(){brandIntro();const h=$('#home');h.classList.remove('tvon');void h.offsetWidth;h.classList.add('tvon')}
 function staticBurst(){
   if(!ctx||!noiseBuf)return;const t=ctx.currentTime,n=noise(t,.4),f=ctx.createBiquadFilter(),g=ctx.createGain();
   f.type='bandpass';f.frequency.value=3200;f.Q.value=.6;g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.09,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.38);
