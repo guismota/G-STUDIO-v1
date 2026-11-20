@@ -1055,22 +1055,22 @@ body.novo .nvkey{display:inline-flex!important;align-items:center;gap:8px;height
 .fexp:active{background:var(--yel);border-color:var(--yel);color:#000}.fexp:active svg{color:#000}
 @media (max-width:700px){.fexp span{display:none}}
 /* Criar novo: cor própria */
-:root{--nov:#22E1FF}
+:root{--nov:#5CFF8A;--ug:#1FA855}
 .band.xnovo .ch{background:var(--nov);color:#000}
 .band.xnovo{background:linear-gradient(90deg,#021418,#000 60%)}
-.band.xnovo .bignum{-webkit-text-stroke-color:rgba(34,225,255,.45);background:repeating-linear-gradient(-45deg,rgba(34,225,255,.28) 0 2px,transparent 2px 7px);-webkit-background-clip:text;background-clip:text}
+.band.xnovo .bignum{-webkit-text-stroke-color:rgba(92,255,138,.45);background:repeating-linear-gradient(-45deg,rgba(92,255,138,.28) 0 2px,transparent 2px 7px);-webkit-background-clip:text;background-clip:text}
 .band.xnovo .bico{border-color:var(--nov);color:var(--nov)}
 .band.xnovo .barrow{border-color:var(--nov);color:var(--nov)}
 .band.xnovo .bbpm small{color:var(--nov)}
 .band.xnovo:not(:has(.bprev:active)):active{background:var(--nov)}
 .band.xnovo:not(:has(.bprev:active)):active .bico,.band.xnovo:not(:has(.bprev:active)):active .barrow{border-color:#000;color:#000}
 .band.xnovo .bbpm{display:flex;align-items:center}
-.btest{display:inline-block;font-style:normal;text-transform:uppercase;font-family:"Archivo",sans-serif;line-height:1.2;font-size:8.5px;font-weight:900;letter-spacing:.2em;color:var(--nov);border:1px solid rgba(34,225,255,.55);padding:2px 5px 1px;margin-right:8px;vertical-align:1px;opacity:.85}
+.btest{display:inline-block;font-style:normal;text-transform:uppercase;font-family:"Archivo",sans-serif;line-height:1.2;font-size:8.5px;font-weight:900;letter-spacing:.2em;color:var(--nov);border:1px solid rgba(92,255,138,.55);padding:2px 5px 1px;margin-right:8px;vertical-align:1px;opacity:.85}
 .band.xnovo:active .btest{color:#000;border-color:#000}
 
 /* Criar novo com a fonte do Afterparty */
 .band.xnovo .bname{font-family:var(--artist);font-weight:800;font-stretch:125%;text-transform:none;letter-spacing:-.02em;font-size:clamp(26px,min(4.6vh,5.6vw),48px);line-height:.9;color:#fff;display:flex;flex-direction:row;align-items:baseline;gap:.22em}
-.band.xnovo .bname em{font-style:normal;color:var(--nov);text-shadow:0 0 18px rgba(34,225,255,.7)}
+.band.xnovo .bname em{font-style:normal;color:var(--nov);text-shadow:0 0 18px rgba(92,255,138,.7)}
 .band.xnovo:not(:has(.bprev:active)):active .bname em,.band.xnovo:not(:has(.bprev:active)):active .bname span{color:#000;text-shadow:none}
 /* troca de página */
 #wipe{position:fixed;inset:0;z-index:7000;pointer-events:none;display:none;overflow:hidden}
@@ -1090,7 +1090,7 @@ body.novo .nvkey{display:inline-flex!important;align-items:center;gap:8px;height
 /* cena solta */
 #sceneFx{position:fixed;inset:0;z-index:5000;pointer-events:none;display:none;overflow:hidden}
 #sceneFx.go{display:block}
-body.novo #sceneFx{--yel:#22E1FF}
+body.novo #sceneFx{--yel:#5CFF8A}
 .sfx-flash{position:absolute;inset:0;background:var(--yel);opacity:0}
 #sceneFx.go .sfx-flash{animation:sfxFlash .55s linear forwards}
 @keyframes sfxFlash{0%{opacity:.42}10%{opacity:0}20%{opacity:.25}30%{opacity:0}42%{opacity:.12}55%,100%{opacity:0}}
@@ -1118,6 +1118,22 @@ body.novo #sceneFx{--yel:#22E1FF}
 .boom{animation:slotBoom .6s cubic-bezier(.2,.9,.2,1)}
 @keyframes slotBoom{0%{transform:scale(1)}25%{transform:scale(1.18);background:var(--yel);color:#000}100%{transform:none}}
 @media (prefers-reduced-motion:reduce){#sceneFx,#wipe{display:none!important}}
+
+/* gêneros criados pelo usuário: verde mais escuro */
+.band.xugen .ch{background:var(--ug);color:#000}
+.band.xugen{background:linear-gradient(90deg,#03140a,#000 60%)}
+.band.xugen .bignum{-webkit-text-stroke-color:rgba(31,168,85,.5);background:repeating-linear-gradient(-45deg,rgba(31,168,85,.3) 0 2px,transparent 2px 7px);-webkit-background-clip:text;background-clip:text}
+.band.xugen .bbpm small{color:var(--ug)}
+.band.xugen:not(:has(.bprev:active)):active{background:var(--ug)}
+.band.xugen .bprev:active,.band.xugen.playing .bprev{background:var(--ug);border-color:var(--ug);color:#000}
+.nvsave,.nvug{display:none!important}
+body.novo:not(.ugen) .nvsave{display:inline-flex!important;align-items:center;height:34px;padding:0 12px;font:800 11px "Archivo",sans-serif;letter-spacing:.08em;text-transform:uppercase;background:#5CFF8A!important;border-color:#5CFF8A!important;color:#000!important}
+body.novo.ugen .nvug{display:inline-flex!important;align-items:center;height:34px;padding:0 12px;font:800 11px "Archivo",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#1FA855!important;border-color:#1FA855!important}
+body.ugen #sceneFx{--yel:#1FA855}
+.ugd b{font:900 20px "Archivo",sans-serif;text-transform:uppercase}.ugp{color:#9a9a9a!important;font-weight:500!important;font-size:13px!important}
+.xdlg .xrn input{height:44px;background:#000;border:1px solid #333;color:#fff;padding:0 12px;font:600 16px "Archivo",sans-serif;outline:0;-webkit-user-select:text;user-select:text;border-radius:0;text-transform:none;letter-spacing:0}
+
+#lcdMsg{max-width:168px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
 </style>
 </head>
 <body>
@@ -1174,8 +1190,6 @@ body.novo #sceneFx{--yel:#22E1FF}
     </main>
   </div>
   <input type="file" id="xFile" accept="audio/*,.wav,.mp3,.m4a,.aif,.aiff,.caf,.aac,.flac" multiple hidden>
-  <div id="xMenu" class="xmenu"></div>
-  <div id="xAsk" class="xdlg"><div class="xdb"><p></p><input type="text" maxlength="40"><div class="xda"><button class="hw no">Cancelar</button><button class="hw pri ok">OK</button></div></div></div>
   <div id="xRec" class="xdlg"><div class="xdb xrecb">
     <div class="xrh"><b>Gravar som</b><button class="hw" id="xRecX">Fechar</button></div>
     <p class="xrt" id="xRecT"></p><div class="xlv"><i id="xRecLv"></i></div>
@@ -1184,8 +1198,17 @@ body.novo #sceneFx{--yel:#22E1FF}
     <div class="xda"><button class="hw" id="xRecPlay" disabled>Ouvir</button><button class="hw pri" id="xRecSave" disabled>Salvar em Meus sons</button></div>
     <small class="xrs">O silêncio do começo e do fim é cortado sozinho. Até 60 segundos.</small>
   </div></div>
-  <div id="xToast"></div>
 </div>
+<div id="xMenu" class="xmenu"></div>
+<div id="xAsk" class="xdlg"><div class="xdb"><p></p><input type="text" maxlength="40"><div class="xda"><button class="hw no">Cancelar</button><button class="hw pri ok">OK</button></div></div></div>
+<div id="xToast"></div>
+<div id="ugDlg" class="xdlg"><div class="xdb ugd">
+  <b>Salvar como gênero</b>
+  <p class="ugp">Vira um canal novo na tela inicial, com estes sons, loops e cenas.</p>
+  <label class="xrn">Nome<input type="text" id="ugName" maxlength="18" placeholder="Ex.: Baile da Lua"></label>
+  <label class="xrn">Frase (opcional)<input type="text" id="ugDesc" maxlength="44" placeholder="Ex.: Grave pesado e palma pra cima"></label>
+  <div class="xda"><button class="hw no" id="ugNo">Cancelar</button><button class="hw pri" id="ugOk">Salvar na tela inicial</button></div>
+</div></div>
 <div id="nvKeyDlg" class="xdlg"><div class="xdb nvk">
   <b>Tom da página</b>
   <div class="nkr"></div><div class="nkm"></div>
@@ -1214,7 +1237,7 @@ body.novo #sceneFx{--yel:#22E1FF}
     <div class="knobs"><div id="kPump"></div><div id="kFilt"></div><div id="kMst"></div><div class="mm"><button id="clipLed" class="clipled" aria-label="Clip (toque para zerar)"></button><div class="mmb"><i><span id="mL"></span></i><i><span id="mR"></span></i></div><span class="lbl">Out</span></div></div>
   </div>
   <div class="tape stape" aria-hidden="true"><div class="tk"><span>Você está ouvindo G-STUDIO</span><b></b><span>Transmitindo de algum lugar</span><b></b><span>Não mexa na antena</span><b></b><span>No photos on the dancefloor</span><b></b><span>Sinal fraco, grave forte</span><b></b><span>Frequência pirata</span><b></b><span>Open till late</span><b></b><span>One more tune</span><b></b><span>Você está ouvindo G-STUDIO</span><b></b><span>Transmitindo de algum lugar</span><b></b><span>Não mexa na antena</span><b></b><span>No photos on the dancefloor</span><b></b><span>Sinal fraco, grave forte</span><b></b><span>Frequência pirata</span><b></b><span>Open till late</span><b></b><span>One more tune</span><b></b></div></div>
-  <div class="tabs"><button class="tab on" data-s="main">Principal</button><button class="tab" data-s="free">Livre</button><button class="hw nvkey" id="nvKey"></button><canvas id="spec"></canvas><button class="hw" id="saveBtn" aria-label="Salvar projeto"><svg viewBox="0 0 16 16" width="16" height="16"><path d="M2 2h9.5L14 4.5V14H2z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 2v3.6h5.2V2M4.6 14V9.4h6.8V14" fill="none" stroke="currentColor" stroke-width="1.4"/></svg><span>Salvar</span></button></div>
+  <div class="tabs"><button class="tab on" data-s="main">Principal</button><button class="tab" data-s="free">Livre</button><button class="hw nvkey" id="nvKey"></button><button class="hw nvsave" id="nvSave">Salvar como gênero</button><button class="hw nvug" id="ugMenuBtn">Gênero ⋯</button><canvas id="spec"></canvas><button class="hw" id="saveBtn" aria-label="Salvar projeto"><svg viewBox="0 0 16 16" width="16" height="16"><path d="M2 2h9.5L14 4.5V14H2z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 2v3.6h5.2V2M4.6 14V9.4h6.8V14" fill="none" stroke="currentColor" stroke-width="1.4"/></svg><span>Salvar</span></button></div>
   <div class="well" id="session"></div>
   <div id="scenes"></div>
 </div>
@@ -1716,11 +1739,11 @@ function loadUser(){
   ALL().forEach(l=>{if(!u[l.key])u[l.key]=[null,null,null,null]});
   return u;
 }
-function saveUser(){try{localStorage.setItem('looppads_user',JSON.stringify(userPats))}catch(e){}}
+function saveUser(){try{localStorage.setItem('looppads_user',JSON.stringify(userPats))}catch(e){}if(typeof NV!=='undefined'&&NV&&NV.ctx&&NV.ctx!=='draft'&&screen==='novo')saveNovo()}
 function getPat(c,i){
   if(i<0)return null;
   if(i<4){if(c.src)return novoPat(c,i);if(c.bpats)return c.bpats[i]||null;return (STYLES[style].p[c.type]||[])[i]||null}
-  const u=userPats[c.key];return u?u[i-4]||null:null;
+  const u=c.upats||userPats[c.key];return u?u[i-4]||null:null;
 }
 
 // Tamanhos: largura das colunas e altura das linhas
@@ -1760,7 +1783,7 @@ function loadScenes(){
 }
 loadScenes();
 let scenes=SC.main,sceneOn=-1,editMode=false,editing=-1,draft={};
-function saveScenes(){try{localStorage.setItem('gstudio_scenes',JSON.stringify(SC))}catch(e){}}
+function saveScenes(){try{localStorage.setItem('gstudio_scenes',JSON.stringify(SC))}catch(e){}if(typeof NV!=='undefined'&&NV&&screen==='novo')saveNovo()}
 
 // ---------- Áudio ----------
 function initAudio(){
@@ -3219,7 +3242,7 @@ function restore(d){
   Object.keys(userPats).forEach(k=>delete userPats[k]);Object.assign(userPats,d.user||{});saveUser();userVer++;
   const ok8=a=>Array.isArray(a)&&a.length===8?a:Array(8).fill(null);
   SC.main=ok8(d.scenes&&d.scenes.main);SC.free=ok8(d.scenes&&d.scenes.free);SC.novo=ok8(d.scenes&&d.scenes.novo);saveScenes();
-  if(d.novo){NOVO.forEach(c=>stopLaneSrc(c));NOVO.length=0;Object.assign(NV,d.novo.nv||{});(d.novo.lanes||[]).forEach(o=>{if(o&&TYPES[o.type])NOVO.push(novoLane(o))});NOVO_STY.key={root:NV.root,mode:NV.mode};NOVO_STY.bpm=NV.bpm;saveNovo()}
+  if(d.novo){novoFill({nv:d.novo.nv,lanes:d.novo.lanes,scenes:SC.novo},'draft');NOVO_STY.name='Criar novo';saveNovo()}
   FREE.length=0;freeN=d.free?d.free.n|0:0;((d.free&&d.free.lanes)||[]).forEach(l=>{if(l&&TYPES[l.type])FREE.push(makeLane(l.type,l.key,l.name))});saveFree();
   ALL().forEach(l=>{const T=TYPES[l.type];l.vol=T.vol;l.muted=false});
   (d.mix||[]).forEach(m=>{const l=ALL().find(x=>x.key===m.key);if(l){l.vol=Math.max(0,Math.min(1.5,+m.vol||0));l.muted=!!m.muted}});
@@ -3459,9 +3482,23 @@ function buildHome(){
     b.querySelector('.bprev').onclick=e=>{e.stopPropagation();togglePreview(b,g.k)};
     box.appendChild(b);
   });
+  ugenList().forEach((g,j)=>{
+    const i=GENRES.length+j,b=document.createElement('button');b.className='band xugen';b.style.setProperty('--d',(i*90)+'ms');b.style.setProperty('--gc','var(--ug)');
+    b.innerHTML='<span class="screen"><span class="bignum">'+String(i+1).padStart(2,'0')+'</span></span><span class="static"></span>'+
+      '<span class="ch">'+CHN(i)+'</span><span class="bname"></span><span class="bdesc"></span>'+
+      '<span class="bbpm">'+((g.nv&&g.nv.bpm)||124)+'<small>BPM</small></span>'+
+      '<span class="bprev" role="button" aria-label="Ouvir prévia"><svg viewBox="0 0 16 16"><path d="M2 6h3l4-3v10l-4-3H2z" fill="currentColor"/><path class="sw" d="M11 5.5a3.5 3.5 0 0 1 0 5M13 3.5a6.5 6.5 0 0 1 0 9" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>'+
+      '<span class="barrow"><svg viewBox="0 0 16 16"><path d="M2.5 8h10M8.5 3.5L13 8l-4.5 4.5" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>';
+    b.querySelector('.bname').textContent=g.name;b.querySelector('.bdesc').textContent=g.desc||('Criado por você · '+((g.lanes||[]).length)+((g.lanes||[]).length===1?' som':' sons'));
+    PREVIEW[g.id]=bb=>{let can=false;ugenPreview(g.id,()=>{if(prevOn&&prevOn.b===bb){bb.classList.remove('playing');prevOn=null}},()=>can);return()=>{can=true;pvStop(false)}};
+    b.querySelector('.bprev').onclick=e=>{e.stopPropagation();togglePreview(b,g.id)};
+    b.onclick=()=>tuneInX(b,()=>enterUgen(g.id),{c:'#1FA855',ch:CHN(i),nm:g.name.replace(/[<>&]/g,'')},ugenStingKey(g));
+    box.appendChild(b);
+  });
+  const nU=ugenList().length;
   const ex=[['novo','Criar novo','Página em branco: escolha os sons e monte o seu',()=>{const b=box.querySelector('.band.xnovo');tuneInX(b,enterNovo)}]];
   ex.forEach(([k,name,desc,fn],j)=>{
-    const i=GENRES.length+j,b=document.createElement('button');b.className='band xband x'+k;b.style.setProperty('--d',((GENRES.length+j)*90)+'ms');b.style.setProperty('--gc','var(--nov)');
+    const i=GENRES.length+nU+j,b=document.createElement('button');b.className='band xband x'+k;b.style.setProperty('--d',(i*90)+'ms');b.style.setProperty('--gc','var(--nov)');
     let cnt='';try{const L=JSON.parse(localStorage.getItem(k==='explore'?'gstudio_lib':'gstudio_novo')||'null');
       if(k==='explore')cnt=(GENRES.length*14+10+((L&&L.items)||[]).length)+'<small>SONS</small>';else if(L&&L.lanes&&L.lanes.length)cnt=L.lanes.length+'<small>'+(L.lanes.length===1?'FAIXA':'FAIXAS')+'</small>'}catch(e){}
     b.innerHTML='<span class="screen"><span class="bignum">'+String(i+1).padStart(2,'0')+'</span></span><span class="static"></span>'+
@@ -3505,19 +3542,20 @@ function pvTick(){
       return;
     }
     const sec=PV.plan?PV.plan(PV.bar):pvSection(PV.bar>>1),pos=(PV.bar%2)*16+PV.step;
-    for(const k in sec){const pat=S.p[k]&&S.p[k][sec[k]],c=PV.lanes[k];if(pat&&c)playCol(c,PV.step,t+sw,{pat,pos})}
+    for(const k in sec){let c,pat;if(PV.cl){c=PV.cl[k];pat=c?getPat(c,sec[k]):null}else{pat=S.p[k]&&S.p[k][sec[k]];c=PV.lanes[k]}if(pat&&c)playCol(c,PV.step,t+sw,{pat,pos})}
     PV.next+=sd;PV.step++;if(PV.step===16){PV.step=0;PV.bar++}
   }
 }
 function pvStart(k,onDone,opt){
   pvStop(false);initAudio();opt=opt||{};
   PV.plan=opt.plan||null;PV.bars=opt.bars||8;PV.endHit=opt.end!==false;PV.vol=opt.vol||.6;
-  PV.k=k;PV.done=onDone;PV.bpm0=bpm;bpm=STYLES[k].bpm;
+  PV.k=k;PV.done=onDone;PV.bpm0=bpm;bpm=opt.bpm||STYLES[k].bpm;PV.cl=null;
   PV.out=ctx.createGain();PV.out.gain.value=.0001;PV.out.connect(out);
   const rv=ctx.createConvolver();rv.buffer=makeIR(1.6,.35);const rg=ctx.createGain();rg.gain.value=.16;rv.connect(rg);rg.connect(PV.out);
   PV.dk=ctx.createGain();PV.dk.connect(PV.out);PV.dk.connect(rv);
   PV.lanes={};Object.keys(TYPES).forEach(t=>{const T=TYPES[t],g=ctx.createGain();g.gain.value=T.vol;g.connect(t==='kick'?PV.out:PV.dk);
     PV.lanes[t]={key:t,type:t,kind:T.kind||'drum',gain:g,vol:T.vol,lastM:null,muted:false}});
+  if(opt.custom){PV.cl={};opt.custom.forEach(c=>{const g=ctx.createGain();g.gain.value=c.muted?0:c.vol;g.connect(c.type==='kick'?PV.out:PV.dk);c.gain=g;PV.cl[c.key]=c})}
   const t0=ctx.currentTime+.08;PV.out.gain.setValueAtTime(.0001,ctx.currentTime);PV.out.gain.linearRampToValueAtTime(PV.vol,t0+.02);
   PV.next=t0;PV.step=0;PV.bar=0;PV.endAt=0;PV.timer=setInterval(pvTick,25);pvTick();
 }
@@ -3526,7 +3564,7 @@ function pvStop(natural){
   clearInterval(PV.timer);PV.timer=null;
   if(PV.out&&ctx){const o=PV.out,n=ctx.currentTime;try{o.gain.cancelScheduledValues(n);o.gain.setValueAtTime(o.gain.value,n);o.gain.linearRampToValueAtTime(.0001,n+.25)}catch(e){}setTimeout(()=>{try{o.disconnect()}catch(e){}},600)}
   if(PV.bpm0){bpm=PV.bpm0;PV.bpm0=0}
-  PV.k=null;PV.out=null;PV.dk=null;PV.lanes=null;
+  if(PV.cl)Object.values(PV.cl).forEach(c=>stopLaneSrc(c));PV.k=null;PV.out=null;PV.dk=null;PV.lanes=null;PV.cl=null;
   const d=PV.done;PV.done=null;if(natural&&d)d();
 }
 const PREVIEW={};let prevOn=null;
@@ -3541,7 +3579,7 @@ function togglePreview(b,k){
   initAudio();b.classList.add('playing');prevOn={b};prevOn.stop=PREVIEW[k](b);
 }
 let tuning=false;
-function tuneInX(b,fn){if(tuning)return;tuning=true;stopPreview();initAudio();genreSting('novo');b&&b.classList.add('tune');pageWipe({c:'#22E1FF',ch:CHN(GENRES.length),nm:'Criar <em>novo</em>',art:true},()=>{b&&b.classList.remove('tune');tuning=false;fn()})}
+function tuneInX(b,fn,w,sk){if(tuning)return;tuning=true;stopPreview();initAudio();genreSting(sk||'novo');b&&b.classList.add('tune');pageWipe(w||{c:'#5CFF8A',ch:b&&b.querySelector('.ch')?b.querySelector('.ch').textContent:'',nm:'Criar <em>novo</em>',art:true},()=>{b&&b.classList.remove('tune');tuning=false;fn()})}
 function tuneIn(b,k){
   if(tuning)return;tuning=true;stopPreview();initAudio();genreSting(k);
   b.classList.add('tune');
@@ -3575,7 +3613,7 @@ function genreSting(k){
 function enterGenre(k){
   if(k==='novo'){enterNovo();return}
   try{localStorage.setItem(LASTK,k)}catch(e){}
-  if(screen==='novo'){screen='main';cols=MAIN;scenes=SC.main}document.body.classList.remove('novo');
+  if(screen==='novo'){saveNovo();screen='main';cols=MAIN;scenes=SC.main}document.body.classList.remove('novo','ugen');
   initAudio();setStyle(k);
   document.body.classList.add('in-session');
   const d=document.querySelector('.dev');d.classList.remove('enter');void d.offsetWidth;d.classList.add('enter');
@@ -3584,13 +3622,13 @@ function enterGenre(k){
 function goHome(){
   if(RL.open)closeRoll();
   if(playing)stopTransport();
-  if(screen==='novo'){saveNovo();screen='main';cols=MAIN;scenes=SC.main}document.body.classList.remove('novo');
+  if(screen==='novo'){saveNovo();screen='main';cols=MAIN;scenes=SC.main}document.body.classList.remove('novo','ugen');
   FXKEYS.forEach(k=>{if(FX[k].win.open)closeFx(k)});closeOs();if(REC.on)recStop();
   document.querySelectorAll('.modal.open').forEach(m=>m.classList.remove('open'));
   const d=document.querySelector('.dev');
   const done=()=>{d.classList.remove('crtoff');document.body.classList.remove('in-session','th-art');buildHome();powerOnHome()};
   if(reduceMotion()||!document.body.classList.contains('in-session'))return done();
-  pageWipe({c:'#FFE600',ch:'G-STUDIO',nm:'Canais'},()=>{done();const h=$('#home');h.scrollTop=0});
+  pageWipe({c:'#FFE600',ch:'G-STUDIO',nm:'Início'},()=>{done();const h=$('#home');h.scrollTop=0});
 }
 $('#homeBtn').addEventListener('click',goHome);
 buildHome();
@@ -3859,7 +3897,7 @@ function render(){
 // ===================== EXPLORAR + CRIAR NOVO =====================
 // Biblioteca: instrumentos dos gêneros (4 loops cada), amostras gravadas do G-STUDIO e sons do usuário (importados ou gravados)
 var LSND=null;
-var NOVO=[],NV={n:0,root:9,mode:'minor',auto:true,bpm:124};
+var NOVO=[],NV={n:0,root:9,mode:'minor',auto:true,bpm:124,ctx:'draft'},UGEN=null;
 var LIBM={items:[],folders:[],favs:[]};
 var UBUF={},UPEND={};
 var XS={open:false,pick:false,view:'all',type:'all',genre:'all',q:'',aud:null,menuId:null};
@@ -3886,19 +3924,100 @@ function novoLane(o){
     loadBuf(o.smp)}
   return l;
 }
-function loadNovo(){
-  try{const j=JSON.parse(localStorage.getItem('gstudio_novo'));
-    if(j){Object.assign(NV,j.nv||{});(j.lanes||[]).forEach(o=>{if(o&&TYPES[o.type]&&typeof o.key==='string')NOVO.push(novoLane(o))})}}catch(e){}
+// carrega um conjunto de faixas na página (o rascunho do Criar novo ou um gênero do usuário)
+function novoFill(data,cx){
+  NOVO.forEach(c=>{stopLaneSrc(c);if(c.gain){try{c.gain.disconnect();c.post.disconnect()}catch(e){}}});NOVO.length=0;
+  Object.assign(NV,{n:0,root:9,mode:'minor',auto:true,bpm:124},data.nv||{});NV.ctx=cx;
+  (data.lanes||[]).forEach(o=>{if(!o||!TYPES[o.type]||typeof o.key!=='string')return;const l=novoLane(o);
+    if(cx!=='draft'){l.upats=(data.pats&&Array.isArray(data.pats[o.key]))?data.pats[o.key]:[null,null,null,null];userPats[o.key]=l.upats}
+    else if(!userPats[o.key])userPats[o.key]=[null,null,null,null];
+    NOVO.push(l)});
+  (data.mix||[]).forEach(m=>{const l=NOVO.find(x=>x.key===m.key);if(l){l.vol=Math.max(0,Math.min(1.5,+m.vol||0));l.muted=!!m.muted}});
+  SC.novo=Array.isArray(data.scenes)&&data.scenes.length===8?data.scenes:Array(8).fill(null);
   NOVO_STY.bpm=NV.bpm;NOVO_STY.key={root:NV.root,mode:NV.mode};
-  NOVO.forEach(l=>{if(!userPats[l.key])userPats[l.key]=[null,null,null,null]});
-  if(!Array.isArray(SC.novo)){let j=null;try{j=JSON.parse(localStorage.getItem('gstudio_scenes'))}catch(e){}SC.novo=j&&Array.isArray(j.novo)&&j.novo.length===8?j.novo:Array(8).fill(null)}
+  if(ctxReady())NOVO.forEach(ensureGain);
+  if(screen==='novo')scenes=SC.novo;
 }
-function saveNovo(){try{localStorage.setItem('gstudio_novo',JSON.stringify({nv:NV,lanes:NOVO.map(novoSer)}))}catch(e){}}
-function novoShift(g){let d=((NV.root-(STYLES[g].key||{root:9}).root)%12+12)%12;if(d>6)d-=12;return d}
+function ctxReady(){return !!ctx}
+function novoLoadDraft(){
+  let j=null;try{j=JSON.parse(localStorage.getItem('gstudio_novo'))}catch(e){}
+  let sc=j&&j.scenes;if(!sc){try{const k=JSON.parse(localStorage.getItem('gstudio_scenes'));sc=k&&k.novo}catch(e){}}
+  novoFill({nv:j&&j.nv,lanes:j&&j.lanes,scenes:sc,mix:j&&j.mix},'draft');NOVO_STY.name='Criar novo';
+}
+function loadNovo(){novoLoadDraft();UGEN=ugenList()}
+function saveNovo(){
+  const mix=NOVO.map(c=>({key:c.key,vol:c.vol,muted:c.muted}));
+  if(NV.ctx&&NV.ctx!=='draft'){const g=(UGEN||[]).find(x=>x.id===NV.ctx);if(!g)return;
+    g.nv={root:NV.root,mode:NV.mode,auto:NV.auto,bpm:NV.bpm,n:NV.n};g.lanes=NOVO.map(novoSer);g.pats={};NOVO.forEach(c=>{g.pats[c.key]=c.upats||userPats[c.key]||[null,null,null,null]});
+    g.scenes=SC.novo;g.mix=mix;saveUgens();return}
+  try{localStorage.setItem('gstudio_novo',JSON.stringify({nv:Object.assign({},NV,{ctx:'draft'}),lanes:NOVO.map(novoSer),scenes:SC.novo,mix}))}catch(e){}
+}
+// ---------- gêneros criados pelo usuário ----------
+function ugenList(){if(typeof UGEN!=='undefined'&&Array.isArray(UGEN))return UGEN;let a=null;try{a=JSON.parse(localStorage.getItem('gstudio_ugen'))}catch(e){}return Array.isArray(a)?a:[]}
+function saveUgens(){try{localStorage.setItem('gstudio_ugen',JSON.stringify(UGEN||[]))}catch(e){xToast('Sem espaço para salvar o gênero')}}
+function ugenStingKey(g){const l=(g.lanes||[]).find(x=>x.src);return l?l.src:'novo'}
+function ugenPlan(g){
+  const sc=(g.scenes||[]).filter(Boolean).slice(0,4);
+  if(sc.length)return {plan:b=>sc[Math.min(sc.length-1,b>>1)],bars:sc.length*2};
+  const all={},dr={};(g.lanes||[]).forEach(l=>{all[l.key]=0;if(TYPES[l.type]&&(TYPES[l.type].kind||'drum')==='drum')dr[l.key]=0});
+  return {plan:b=>b<2&&Object.keys(dr).length?dr:all,bars:6};
+}
+function ugenPreview(id,done,isCan){
+  const g=ugenList().find(x=>x.id===id);if(!g||!(g.lanes||[]).length){done&&done();return}
+  initAudio();
+  const nk={root:(g.nv||{}).root??9,mode:(g.nv||{}).mode||'minor',auto:(g.nv||{}).auto!==false};
+  const lanes=g.lanes.map(o=>{const l=novoLane(o);l.nvk=nk;l.upats=(g.pats&&g.pats[o.key])||[null,null,null,null];const m=(g.mix||[]).find(x=>x.key===o.key);if(m){l.vol=+m.vol;l.muted=!!m.muted}return l});
+  const P=ugenPlan(g),k=ugenStingKey(g)==='novo'?'house':ugenStingKey(g);
+  Promise.all(lanes.filter(l=>l.smp).map(l=>loadBuf(l.smp))).then(()=>{if(isCan&&isCan())return;
+    pvStart(k,()=>{done&&done()},{custom:lanes,plan:P.plan,bars:P.bars,end:false,vol:.62,bpm:(g.nv&&g.nv.bpm)||124});
+  });
+}
+function openNovoSession(){
+  stopPreview();initAudio();
+  NOVO_STY.bpm=NV.bpm;screen='novo';setStyle('novo');
+  document.body.classList.add('in-session','novo');document.body.classList.toggle('ugen',NV.ctx!=='draft');
+  const d=document.querySelector('.dev');d.classList.remove('enter');void d.offsetWidth;d.classList.add('enter');
+  if(ctx){NOVO.forEach(ensureGain);routeAll()}
+  setScreen('novo');updNvKey();
+}
+function enterUgen(id){
+  const g=ugenList().find(x=>x.id===id);if(!g)return;
+  if(playing)stopTransport();
+  if(NV.ctx==='draft')saveNovo();
+  novoFill({nv:g.nv,lanes:g.lanes,scenes:g.scenes,pats:g.pats,mix:g.mix},id);NOVO_STY.name=g.name;
+  openNovoSession();
+}
+function saveAsGenre(){
+  if(!NOVO.length){flash('Adicione pelo menos um som antes');return}
+  $('#ugName').value='';$('#ugDesc').value='';$('#ugDlg').classList.add('open');setTimeout(()=>{try{$('#ugName').focus()}catch(e){}},60);
+}
+function saveAsGenreGo(){
+  const name=($('#ugName').value||'').trim().slice(0,18);if(!name){$('#ugName').focus();return}
+  const desc=($('#ugDesc').value||'').trim().slice(0,44);
+  if(playing)stopTransport();
+  NV.bpm=bpm;const id='g'+Date.now().toString(36),map={};
+  const lanes=NOVO.map((c,i)=>{const o=novoSer(c),nk=id+'_'+(i+1);map[c.key]=nk;o.key=nk;return o});
+  const pats={};NOVO.forEach(c=>{pats[map[c.key]]=JSON.parse(JSON.stringify(c.upats||userPats[c.key]||[null,null,null,null]))});
+  const scenes=(SC.novo||Array(8).fill(null)).map(sc=>{if(!sc)return null;const o={};for(const k in sc)if(map[k])o[map[k]]=sc[k];return o});
+  const mix=NOVO.map(c=>({key:map[c.key],vol:c.vol,muted:c.muted}));
+  UGEN=ugenList();UGEN.push({id,name,desc,created:Date.now(),nv:{root:NV.root,mode:NV.mode,auto:NV.auto,bpm:NV.bpm,n:lanes.length},lanes,pats,scenes,mix});saveUgens();
+  NOVO.forEach(c=>{stopLaneSrc(c);delete userPats[c.key]});NOVO.length=0;SC.novo=Array(8).fill(null);saveNovo();saveUser();
+  $('#ugDlg').classList.remove('open');buildSession();refreshSlots();
+  flash(name+' está na tela inicial');xToast('Gênero salvo: '+name+'. Ele está na tela inicial.');
+}
+function ugenMenu(anchor){
+  const g=ugenList().find(x=>x.id===NV.ctx);if(!g)return;
+  showXMenu(anchor,[{sep:g.name},
+    {l:'Renomear',f:()=>xAsk('Nome do gênero',g.name,v=>{if(!v)return;g.name=v.slice(0,18);NOVO_STY.name=g.name;saveUgens();flash('Agora se chama '+g.name)})},
+    {l:'Trocar a frase',f:()=>xAsk('Frase do gênero',g.desc||'',v=>{g.desc=(v||'').slice(0,44);saveUgens()})},
+    {l:'Apagar gênero',danger:true,f:()=>xAsk('Apagar o gênero "'+g.name+'"? Os sons da biblioteca continuam.',null,()=>{
+      UGEN=ugenList().filter(x=>x!==g);saveUgens();(g.lanes||[]).forEach(l=>delete userPats[l.key]);NV.ctx='x';goHome();},'Apagar')}]);
+}
+function novoShift(g,K){K=K||NV;let d=((K.root-(STYLES[g].key||{root:9}).root)%12+12)%12;if(d>6)d-=12;return d}
 function novoPat(c,i){
   const base=(STYLES[c.src].p[c.type]||[])[i];if(!base)return null;
-  if(!NV.auto||TYPES[c.type].kind!=='note')return base;
-  const sh=novoShift(c.src);if(!sh)return base;
+  const K=c.nvk||NV;if(!K.auto||TYPES[c.type].kind!=='note')return base;
+  const sh=novoShift(c.src,K);if(!sh)return base;
   c._tp=c._tp||{};const k=i+':'+sh;if(c._tp[k])return c._tp[k];
   if(!Array.isArray(base.data))return base;
   const p=Object.assign({},base,{data:base.data.map(n=>{if(!Array.isArray(n))return n;const m=n.slice();m[1]=Array.isArray(m[1])?m[1].map(x=>x+sh):(typeof m[1]==='number'?m[1]+sh:m[1]);return m})});
@@ -4043,24 +4162,21 @@ function novoBpmChanged(){if(!ctx)return;const n=ctx.currentTime;NOVO.forEach(c=
 
 // ---------- adicionar à página em branco ----------
 function novoAdd(it){
-  NV.n++;const key='n'+NV.n;
+  NV.n++;const key=(NV.ctx&&NV.ctx!=='draft'?NV.ctx+'_x':'n')+NV.n;
   let o;
   if(it.kind==='inst')o={key,type:it.t,name:it.name+' · '+genreName(it.g).replace(' House','').replace('Acid Techno','Acid T.'),src:it.g};
   else if(it.kind==='loop')o={key,type:'loopa',name:it.name,smp:it.id,cat:it.cat,lbpm:it.bpm,bars:it.bars};
   else o={key,type:'smp',name:it.name,smp:it.id,cat:it.cat,h:it.h||guessHit(it.name,it.cat)};
-  const l=novoLane(o);NOVO.push(l);sortByKind(NOVO);userPats[key]=[null,null,null,null];
+  const l=novoLane(o);NOVO.push(l);sortByKind(NOVO);userPats[key]=[null,null,null,null];if(NV.ctx!=='draft')l.upats=userPats[key];
   if(ctx)ensureGain(l),routeAll&&routeAll();
   saveNovo();saveUser();
   if(screen==='novo')buildSession();
   xToast(l.name+' entrou na página');xRender();
 }
 function enterNovo(){
-  stopPreview();initAudio();
-  NOVO_STY.bpm=NV.bpm;screen='novo';setStyle('novo');
-  document.body.classList.add('in-session','novo');
-  const d=document.querySelector('.dev');d.classList.remove('enter');void d.offsetWidth;d.classList.add('enter');
-  if(ctx){NOVO.forEach(ensureGain);routeAll()}
-  setScreen('novo');updNvKey();
+  if(playing)stopTransport();
+  if(NV.ctx!=='draft')novoLoadDraft();
+  NOVO_STY.name='Criar novo';openNovoSession();
 }
 
 // ---------- tom do Criar novo ----------
@@ -4132,7 +4248,7 @@ function openExplore0(pick){
   xRender();
 }
 function closeExplore(){
-  if(!XS.pick&&!reduceMotion()){pageWipe({c:'#FFE600',ch:'G-STUDIO',nm:'Canais'},closeExplore0);return}
+  if(!XS.pick&&!reduceMotion()){pageWipe({c:'#FFE600',ch:'G-STUDIO',nm:'Início'},closeExplore0);return}
   closeExplore0();
 }
 function closeExplore0(){xStopAud();closeXMenu();XS.open=false;$('#explore').classList.remove('open');document.body.classList.remove('in-explore');
@@ -4237,7 +4353,8 @@ function xAsk(msg,val,cb,okLabel){
   $('#xRecPlay').onclick=()=>{if(!MIC.buf)return;xStopAud();const s=ctx.createBufferSource();s.buffer=MIC.buf;s.connect(out);s.start();XS.aud={id:'rec',stop:()=>{try{s.stop()}catch(e){}}}};
   $('#xRecSave').onclick=saveRec;$('#xRecX').onclick=closeRecDlg;
   document.addEventListener('pointerdown',e=>{const m=$('#xMenu');if(m.classList.contains('open')&&!m.contains(e.target)&&!e.target.closest('.xmore,.xfm'))closeXMenu()},true);
-  $('#nvKey').onclick=openNvKey;$('#nvKeyOk').onclick=()=>$('#nvKeyDlg').classList.remove('open');
+  $('#nvKey').onclick=openNvKey;$('#nvSave').onclick=saveAsGenre;$('#ugOk').onclick=saveAsGenreGo;$('#ugNo').onclick=()=>$('#ugDlg').classList.remove('open');
+  $('#ugMenuBtn').onclick=e=>ugenMenu(e.currentTarget);$('#ugName').onkeydown=e=>{if(e.key==='Enter')saveAsGenreGo()};$('#nvKeyOk').onclick=()=>$('#nvKeyDlg').classList.remove('open');
   $('#nvAuto').onchange=e=>{NV.auto=e.target.checked;nvKeyApply()};
   loadLib();loadNovo();
 })();
