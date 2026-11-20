@@ -618,6 +618,22 @@ body:not(.in-session) .dev{display:none}
  mask-image:radial-gradient(circle,#000 62%,transparent 72%),linear-gradient(90deg,transparent 0,#000 30%);mask-size:4px 4px,100% 100%}
 .band .screen img{filter:brightness(1.15) contrast(1.1)}
 @media (max-width:900px){.band .screen{aspect-ratio:4/1}}
+
+/* v6: ondas + número gigante */
+.band .screen{left:34%;right:0;top:0;bottom:0;aspect-ratio:auto;opacity:1;display:block;background:none;border:0;
+ -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 30%);mask-image:linear-gradient(90deg,transparent 0,#000 30%);-webkit-mask-size:100% 100%;mask-size:100% 100%}
+.band .bignum{position:absolute;right:118px;top:50%;transform:translateY(-50%);font-family:var(--poster);font-weight:900;font-stretch:62%;font-size:calc(100% * 0 + 230px);line-height:.8;color:transparent;-webkit-text-stroke:2px rgba(255,230,0,.35);background:repeating-linear-gradient(-45deg,rgba(255,230,0,.28) 0 2px,transparent 2px 7px);-webkit-background-clip:text;background-clip:text}
+.band .oscw{position:absolute;inset:14% 0;overflow:hidden;-webkit-mask-image:radial-gradient(circle,#000 58%,transparent 66%);-webkit-mask-size:4px 4px;mask-image:radial-gradient(circle,#000 58%,transparent 66%);mask-size:4px 4px}
+.band .screen svg.osc{position:absolute;top:0;left:0;height:100%;width:100%;filter:none;fill:none;stroke:var(--yel);stroke-width:6;vector-effect:non-scaling-stroke}
+.band .screen svg.osc+svg.osc{left:100%}
+@media (prefers-reduced-motion:no-preference){.band .osc{animation:oscm var(--loop) linear infinite}@keyframes oscm{to{transform:translateX(-100%)}}}
+.band:not(.soon):active .osc{stroke:#000}
+.band:not(.soon):active .bignum{-webkit-text-stroke-color:rgba(0,0,0,.4);background:repeating-linear-gradient(-45deg,rgba(0,0,0,.3) 0 2px,transparent 2px 7px);-webkit-background-clip:text;background-clip:text}
+@media (max-width:900px){.band .screen{left:24%}.band .bignum{right:80px}}
+
+.band .oscw{-webkit-mask-image:radial-gradient(circle,#000 58%,transparent 66%),linear-gradient(90deg,transparent 0,#000 25%,#000 66%,transparent 80%);-webkit-mask-size:4px 4px,100% 100%;-webkit-mask-composite:source-in;
+ mask-image:radial-gradient(circle,#000 58%,transparent 66%),linear-gradient(90deg,transparent 0,#000 25%,#000 66%,transparent 80%);mask-size:4px 4px,100% 100%;mask-composite:intersect}
+.band .screen{-webkit-mask-image:none;mask-image:none}
 </style>
 </head>
 <body>
@@ -2164,11 +2180,21 @@ const GSYM={'house':'<path d="M8 22L24 8L40 22V40H8Z"/><circle cx="24" cy="30" r
 const gsym=k=>'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter">'+GSYM[k]+'</svg>';
 const LASTK='gstudio_last';
 function homeOrder(){let l=null;try{l=localStorage.getItem(LASTK)}catch(e){}const a=GENRES.map((g,i)=>({g,i}));const j=a.findIndex(x=>x.g.k===l);if(j>0)a.unshift(a.splice(j,1)[0]);return a}
+function genreWave(k){const W=1200,H=100,m=50,pts=[];
+ for(let x=0;x<=W;x+=2){const t=x/W;let y=0,p;
+  if(k==='house')y=Math.sin(t*Math.PI*16)*30;
+  else if(k==='deep')y=Math.sin(t*Math.PI*6)*18+Math.sin(t*Math.PI*22)*6;
+  else if(k==='acid'){p=(t*12)%1;y=(p*2-1)*26+Math.sin(p*Math.PI*10)*12*Math.exp(-p*3)}
+  else if(k==='techno')y=(Math.sin(t*Math.PI*16)>0?1:-1)*26;
+  else if(k==='acidtechno'){p=(t*16)%1;y=(p<.5?1:-1)*20+Math.sin(p*Math.PI*14)*14*Math.exp(-p*4)}
+  else if(k==='funk'){p=(t*10)%1;y=Math.sin(p*Math.PI*18)*40*Math.exp(-p*7)+(p>.5?Math.sin(p*Math.PI*30)*16*Math.exp(-(p-.5)*9):0)}
+  pts.push((x?'L':'M')+x+' '+(m-y).toFixed(1))}
+ const sv='<svg class="osc" viewBox="0 0 '+W+' 100" preserveAspectRatio="none"><path d="'+pts.join('')+'"/></svg>';return sv+sv}
 function buildHome(){
   const box=$('#cards');box.innerHTML='';
   homeOrder().forEach(({g,i},pos)=>{
-    const S=STYLES[g.k],b=document.createElement('button');b.className='band';b.style.setProperty('--d',(pos*90)+'ms');b.style.setProperty('--gc','var(--yel)');b.style.setProperty('--beat',(60/S.bpm).toFixed(3)+'s');
-    b.innerHTML='<span class="screen"><img src="img/y-'+g.k+'.png" alt=""></span><span class="static"></span>'+
+    const S=STYLES[g.k],b=document.createElement('button');b.className='band';b.style.setProperty('--d',(pos*90)+'ms');b.style.setProperty('--gc','var(--yel)');b.style.setProperty('--beat',(60/S.bpm).toFixed(3)+'s');b.style.setProperty('--loop',(60/S.bpm*16).toFixed(2)+'s');
+    b.innerHTML='<span class="screen"><span class="bignum">'+String(i+1).padStart(2,'0')+'</span><span class="oscw">'+genreWave(g.k)+'</span></span><span class="static"></span>'+
       '<span class="ch">'+CHN(i)+'</span><span class="bname"></span><span class="bdesc"></span>'+
       '<span class="bbpm">'+S.bpm+'<small>BPM</small></span>'+
       '<span class="barrow"><svg viewBox="0 0 16 16"><path d="M2.5 8h10M8.5 3.5L13 8l-4.5 4.5" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>';
