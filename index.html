@@ -1126,6 +1126,8 @@ body.ugen #sceneFx{--yel:#1FA855}
 .xdlg .xrn input{height:44px;background:#000;border:1px solid #333;color:#fff;padding:0 12px;font:600 16px "Archivo",sans-serif;outline:0;-webkit-user-select:text;user-select:text;border-radius:0;text-transform:none;letter-spacing:0}
 
 #lcdMsg{max-width:168px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+
+.band.xnovo .bname .nplus{font-family:"Archivo",sans-serif;font-weight:900;font-size:clamp(44px,min(7vh,8vw),76px);line-height:.8;color:var(--nov);text-shadow:0 0 22px rgba(92,255,138,.6)}
 </style>
 </head>
 <body>
@@ -3497,7 +3499,7 @@ function buildHome(){
       '<span class="ch">'+CHN(i)+'</span><span class="bname"></span><span class="bdesc"></span><span class="bbpm">'+cnt+'</span><span class="bprev bico" aria-hidden="true">'+
       (k==='explore'?'<svg viewBox="0 0 16 16"><path d="M1.5 3.5h5l1.5 1.5h6.5v8h-13z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>':'<svg viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" fill="none" stroke="currentColor" stroke-width="2"/></svg>')+'</span>'+
       '<span class="barrow"><svg viewBox="0 0 16 16"><path d="M2.5 8h10M8.5 3.5L13 8l-4.5 4.5" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>';
-    if(k==='novo')b.querySelector('.bname').innerHTML='<span>Criar</span><em>novo</em>';else b.querySelector('.bname').textContent=name;b.querySelector('.bdesc').textContent=desc;if(k==='novo')b.querySelector('.bbpm').innerHTML='<em class="btest">Em testes</em>';
+    if(k==='novo'){b.querySelector('.bname').innerHTML='<em class="nplus">+</em>';b.setAttribute('aria-label','Criar novo')}else b.querySelector('.bname').textContent=name;b.querySelector('.bdesc').textContent=desc;if(k==='novo')b.querySelector('.bbpm').innerHTML='<em class="btest">Em testes</em>';
     b.onclick=fn;box.appendChild(b);
   });
 }
