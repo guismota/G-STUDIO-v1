@@ -945,6 +945,8 @@ body.th-art .clip.q{animation:qp .38s steps(2) infinite!important}
 .oblite{align-self:flex-start;background:none;border:1px solid #333;color:#8a8a8a;font-size:10.5px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;padding:11px 16px;cursor:pointer}
 .oblite:active{color:#fff;border-color:#666}
 .obbtns{justify-content:flex-start}
+
+.band.artist .bname{gap:0}
 </style>
 </head>
 <body>
@@ -1407,7 +1409,7 @@ const STYLES={
     B('Alarme',32,[[0,'C6',8],[16,'C6',8]],{syn:'siren'})],
    fx:FX4
   }},
- solomun:{name:"Solomun's Eyes",bpm:123,swing:.05,key:{root:6,mode:'minor'},artist:true,names:{snare:'Snap',ohat:'Ride',tom:'Tribal'},
+ solomun:{name:'Afterparty',bpm:123,swing:.05,key:{root:6,mode:'minor'},artist:true,names:{snare:'Snap',ohat:'Ride',tom:'Tribal'},
   snd:{sub:{type:'sine',drive:1.2,cut:200},pad:{type:'air'},arp:{type:'pluck',cut:2400},sc:.45,
        kick:{f0:140,f1:46.2,dec:.5,click:.18,sweep:.09,tail:.5,knock:.55},clap:{f:1350,dec:.34,spread:3},snare:{tone:220,hp:2000,dec:.15,alt:'snap'},
        hat:{metal:false,dec:.035,odec:1,hp:8600,ride:true},tom:{mult:1,dec:.28,map:{200:277.2,150:185,110:138.6}},perc:{type:'shaker'},
@@ -3209,7 +3211,7 @@ function buildHome(){
       '<span class="bbpm">'+S.bpm+'<small>BPM</small></span>'+
       '<span class="bprev" role="button" aria-label="Ouvir prévia"><svg viewBox="0 0 16 16"><path d="M2 6h3l4-3v10l-4-3H2z" fill="currentColor"/><path class="sw" d="M11 5.5a3.5 3.5 0 0 1 0 5M13 3.5a6.5 6.5 0 0 1 0 9" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>'+
       '<span class="barrow"><svg viewBox="0 0 16 16"><path d="M2.5 8h10M8.5 3.5L13 8l-4.5 4.5" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>';
-    if(g.artist)b.querySelector('.bname').innerHTML='<span>Solomun’s</span><em>eyes</em>';else b.querySelector('.bname').textContent=S.name;b.querySelector('.bdesc').textContent=g.desc;
+    if(g.artist)b.querySelector('.bname').innerHTML='<span>After</span><em>party</em>';else b.querySelector('.bname').textContent=S.name;b.querySelector('.bdesc').textContent=g.desc;
     b.onclick=()=>tuneIn(b,g.k);
     b.querySelector('.bprev').onclick=e=>{e.stopPropagation();togglePreview(b,g.k)};
     box.appendChild(b);
