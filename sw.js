@@ -1,6 +1,6 @@
 // G-STUDIO: guarda o app no aparelho para abrir mesmo sem internet
-const CACHE='gstudio-v6';
-const CORE=['./','./index.html','./manifest.webmanifest','./icon-180.png','./icon-192.png','./icon-512.png','./img/w-house.png','./img/w-deep.png','./img/w-acid.png','./img/w-techno.png','./img/w-acidtechno.png','./img/w-funk.png'];
+const CACHE='gstudio-v7';
+const CORE=['./','./index.html','./manifest.webmanifest','./icon-180.png','./icon-192.png','./icon-512.png','./img/t-house.jpg','./img/t-deep.jpg','./img/t-acid.jpg','./img/t-techno.jpg','./img/t-acidtechno.jpg','./img/t-funk.jpg'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)));self.skipWaiting()});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener('fetch',e=>{
