@@ -1088,6 +1088,7 @@ body.novo .nvkey{display:inline-flex!important;align-items:center;gap:8px;height
 #wipe .wnm{transform:skewX(12deg);font:900 clamp(54px,11vw,150px) "Archivo",sans-serif;text-transform:uppercase;letter-spacing:-.03em;line-height:.88;text-align:center}
 #wipe.art .wnm{font-family:var(--artist);font-weight:800;font-stretch:125%;text-transform:none}
 #wipe.art .wnm em{font-style:normal;color:#000;opacity:.85}
+#wipe .wnm .cherry{width:.55em;height:.62em;vertical-align:.05em}
 #wipe.in .wnm{animation:wpTxt .3s ease-out both}@keyframes wpTxt{from{letter-spacing:.2em;opacity:0}to{letter-spacing:-.03em;opacity:1}}
 #explore.open{animation:xin .3s cubic-bezier(.2,.8,.2,1)}@keyframes xin{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 /* cena solta */
@@ -1147,6 +1148,23 @@ body.ugen #sceneFx{--yel:#2F5BEA}
 #tour .tgo{height:40px;padding:0 18px;background:#FFE600;border:0;color:#000;font:900 12px "Archivo",sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:0}
 #tourAgain{background:none;border:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;text-decoration:underline;cursor:pointer;padding:0}
 
+
+/* ===== Afrohouse: laranja de pôr do sol + cerejas ===== */
+.band.artist.afro{--pur:#FF6B2C;background:linear-gradient(90deg,#1f0b03,#000 60%)}
+.band.artist.afro .bignum{-webkit-text-stroke-color:rgba(255,107,44,.5);background:repeating-linear-gradient(-45deg,rgba(255,107,44,.3) 0 2px,transparent 2px 7px);-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 10px rgba(255,107,44,.3))}
+.band.artist.afro .bname em{text-shadow:0 0 18px rgba(255,107,44,.75)}
+.band.artist.afro .ch{color:#000}
+.cherry{display:inline-block;width:.62em;height:.7em;margin-left:.18em;align-self:center;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 46'><path d='M14 30C16 18 22 8 33 3' fill='none' stroke='%2335c46a' stroke-width='3' stroke-linecap='round'/><path d='M28 32C27 20 29 10 33 3' fill='none' stroke='%2335c46a' stroke-width='3' stroke-linecap='round'/><path d='M33 3c4 0 7 2 6 5-4 1-7-1-6-5z' fill='%2335c46a'/><circle cx='12' cy='35' r='10' fill='%23e8253b'/><circle cx='29' cy='36' r='9.5' fill='%23ff3b4f'/><circle cx='8.5' cy='31' r='2.6' fill='%23fff' opacity='.55'/><circle cx='26' cy='32' r='2.4' fill='%23fff' opacity='.55'/></svg>") center/contain no-repeat;filter:drop-shadow(0 0 8px rgba(255,59,79,.55))}
+body.th-art.th-afro{--yel:#FF6B2C;--grad:linear-gradient(#FF6B2C,#FF6B2C);--acid:#FF6B2C;--amb:#FF6B2C;--grn:#FF6B2C;--warm:#FF6B2C}
+body.th-afro .bk .val{filter:drop-shadow(0 0 5px rgba(255,107,44,.7))!important}
+body.th-afro .pw.on>.led{box-shadow:0 0 8px rgba(255,107,44,.8)!important}
+body.th-afro .xfill{background:linear-gradient(90deg,rgba(255,107,44,0),rgba(255,107,44,.2) 70%,rgba(255,107,44,.4))}
+body.th-afro .xline{box-shadow:0 0 12px 2px rgba(255,107,44,.8)}
+body.th-afro .xglow{background:radial-gradient(closest-side,rgba(255,107,44,.65),rgba(255,107,44,.15) 55%,transparent)!important}
+body.th-afro .xseg span.on{text-shadow:0 0 10px rgba(255,107,44,.8)}
+body.th-afro .xpad.touch{border-color:rgba(255,107,44,.7)}
+body.th-afro #laser{background:#FF6B2C!important}
+body.th-afro .nrow.root .ncell{background:#1c0a03!important}body.th-afro .nrow.root .ncell.beat{background:#28100a!important}
 </style>
 </head>
 <body>
@@ -1700,33 +1718,35 @@ const STYLES={
     B('Siren',32,[[0,'F#4',14],[16,'E4',14]],{syn:'saw'})],
    fx:FX4
   }},
- // gênero especial &Afro: afro house (percussão tribal, coro, kalimba, baixo rolando)
- afro:{name:'&Afro',bpm:122,swing:.07,key:{root:9,mode:'minor'},artist:true,names:{snare:'Rim',ohat:'Aberto',tom:'Congas',perc:'Shaker',chord:'Keys',pad:'Coro',arp:'Kalimba',lead:'Voz'},
-  snd:{sub:{type:'sine',drive:1.1,cut:180},pad:{type:'choir'},arp:{type:'kalimba'},sc:.4,
-       kick:{f0:128,f1:49,dec:.55,click:.12,sweep:.08,tail:.55,knock:.5},clap:{f:1500,dec:.3,spread:3,smp:'clap909',sv:.8},snare:{tone:220,hp:2600,dec:.08},
-       hat:{metal:false,dec:.03,odec:.26,hp:9000,smp:'hat_c',osmp:'hat_o',sdur:.12,sv:.65},tom:{mult:1,dec:.3,smp:1,map:{200:220,150:164.81,110:130.81}},perc:{type:'shaker'},
-       bass:{type:'solo',cut:820,q:3},chord:{type:'keys'},lead:{type:'vox'}},
+// gênero especial Afrohouse: a percussão conduz, kick macio, muito swing, coro, kalimba e baixo redondo
+ afro:{name:'Afrohouse',bpm:121,swing:.16,key:{root:9,mode:'minor'},artist:true,theme:'afro',names:{snare:'Snap',ohat:'Aberto',tom:'Congas',perc:'Madeira',chord:'Keys',pad:'Coro',arp:'Kalimba',lead:'Voz'},
+  scenes:[{kick:0,hat:0,perc:0,tom:0,sub:0},{kick:0,clap:0,hat:0,ohat:0,tom:0,perc:1,bass:0,pad:0,arp:0},{pad:0,arp:1,lead:0,perc:0,tom:2,sub:1,fx:0},
+          {kick:1,clap:1,snare:0,hat:1,ohat:1,tom:1,perc:2,bass:1,chord:0,pad:0,arp:0,lead:1,fx:1}],
+  snd:{sub:{type:'sine',cut:170},pad:{type:'choir'},arp:{type:'kalimba'},sc:.22,
+       kick:{f0:105,f1:49,dec:.5,click:.03,sweep:.06,tail:.4,lvl:.72},clap:{f:1500,dec:.3,spread:2,smp:'palma',sv:.5},snare:{tone:220,hp:2600,dec:.08,alt:'snap'},
+       hat:{metal:false,dec:.03,odec:.24,hp:9000,smp:'hat_c',osmp:'hat_o',sdur:.1,sv:.45},tom:{mult:1,dec:.3,smp:1,sv:.85,map:{200:220,150:164.81,110:130.81}},perc:{type:'shaker'},
+       bass:{type:'round',cut:520},chord:{type:'keys'},lead:{type:'vox'}},
   p:{
-   kick:[D('4x4','X...x...X...x...'),D('Tribal','X...x..oX...x...'),D('Break','X.......x.......'),D('Build','X...x...X...x... X...x...X.x.xXxX')],
-   clap:[D('2 & 4','....X.......X...'),D('Ghost','....X..o....X...'),D('Late','.....X.......X..'),D('Fill','....X.......X... ....X...o.X.oXXX')],
-   snare:[D('Rim','..x..x....x..x..'),D('Clave','x..x..x...x.x...'),D('Sparse','......x.......x.'),D('Roll','................ ........o.o.xoxX')],
-   hat:[D('Shuffle','x.xox.xox.xox.xo'),D('16ths','oxoxoxoxoxoxoxox'),D('Offbeat','..x...x...x...x.'),D('Groove','o.xxo.x.o.xxo.xo')],
-   ohat:[D('Off','..x...x...x...x.'),D('Swing','..x..x....x..x..'),D('Late','...x.......x....'),D('Wash','x...............')],
-   tom:[T('Djembe','h.m..h.mh..m.hl.'),T('Conga','..h.m..h..m.h.l.'),T('Talk','m..l..m...l..m..'),T('Fill','................ ......h.hmm.mll.')],
-   perc:[D('Shaker','oxoxoxoxoxoxoxox'),D('Trio','x.ox.ox.ox.ox.ox'),D('Clave','x..x..x...x.x...',{syn:'clave'}),D('Rattle','...x.......x..x.',{syn:'rattle'})],
+   kick:[D('4x4','x...x...x...x...'),D('Deep','x...x...x...x..o'),D('Half','x.......x.......'),D('Build','x...x...x...x... x...x...x.x.xxxx')],
+   clap:[D('Leve','....x.......x...'),D('Shuffle','....x..o....x.o.'),D('Sparse','............x...'),D('Fill','....x.......x... ....x...o.x.oxxx')],
+   snare:[D('Snap','......o.......x.'),D('Clave','x..x..x...x.x...'),D('Rumba','x..x...x..x.x...'),D('Roll','................ ........o.o.ooxx')],
+   hat:[D('Swing','o.x.o.xoo.x.o.xo'),D('16ths','oxoxoxoxoxoxoxox'),D('Off','..x...x...x...x.'),D('Tique','x.o.x.o.x.o.x.o.')],
+   ohat:[D('Ar','......x.......x.'),D('Off','..x...x...x...x.'),D('Late','...x.......x....'),D('Wash','x...............')],
+   tom:[T('Tumba','..m.m.l...m.H.l.'),T('Bongô','h.hm..h.h.hm..h.'),T('Fala','m..l..m...l..m..'),T('Fill','................ ......h.hmm.mll.')],
+   perc:[D('Shaker','oxxooxxooxxooxxo'),D('Log','..x..x....x..x..',{syn:'smp:logdrum'}),D('Bongô','x.o..x.ox.o..x.o',{syn:'smp:bongo_hi'}),D('Grave','...x......x..x..',{syn:'smp:bongo_lo'})],
    bass:[
-    B('Rolling',16,[[2,'A1',.5],[3,'A1',.5],[6,'A1',.5],[7,'C2',.5],[10,'A1',.5],[11,'E2',.5],[14,'G1',.5],[15,'A1',.5]]),
-    B('Deep',32,[[2,'A1',1.5],[6,'A1',1],[10,'C2',1],[14,'A1',1],[18,'F1',1.5],[22,'F1',1],[26,'G1',1],[30,'E1',1]]),
-    B('Pluck',16,[[1,'A1',.25],[3,'A2',.25],[6,'A1',.5],[9,'E2',.25],[11,'G2',.25],[14,'A1',.5]]),
-    B('Walk',32,[[0,'A1',1],[3,'C2',.5],[6,'D2',1],[10,'E2',1],[14,'G2',.5],[16,'F1',1],[19,'A1',.5],[22,'C2',1],[26,'E2',1],[30,'D2',.5]])],
+    B('Redondo',32,[[2,'A1',1.5],[6,'A1',.5],[7,'C2',1],[10,'A1',1.5],[14,'G1',1],[18,'F1',1.5],[22,'F1',.5],[23,'A1',1],[26,'G1',1.5],[30,'E1',1]]),
+    B('Rolando',16,[[2,'A1',.5],[3,'A1',.5],[6,'A1',.5],[7,'C2',.5],[10,'A1',.5],[11,'E2',.5],[14,'G1',.5],[15,'A1',.5]]),
+    B('Longo',32,[[0,'A1',6],[7,'C2',2],[10,'E2',4],[16,'F1',6],[23,'G1',2],[26,'E1',4]]),
+    B('Pulo',16,[[3,'A1',.5],[6,'A2',.25],[7,'A1',.5],[11,'E1',.5],[14,'G1',.5]])],
    sub:[
     B('Offbeat',32,[[2,'A1',1.5],[6,'A1',1.5],[10,'A1',1.5],[14,'A1',1.5],[18,'F1',1.5],[22,'F1',1.5],[26,'G1',1.5],[30,'E1',1.5]]),
     B('Long',32,[[0,'A1',16],[16,'F1',16]]),
-    B('Pulse',16,[[2,'A1',1],[3,'A1',.5],[6,'A1',1],[7,'A1',.5],[10,'A1',1],[11,'A1',.5],[14,'C2',1],[15,'A1',.5]]),
+    B('Pulse',16,[[2,'A1',1],[6,'A1',1],[10,'A1',1],[14,'C2',1]]),
     B('Follow',32,[[0,'A1',3],[6,'A1',2],[10,'C2',2],[16,'F1',3],[22,'F1',2],[26,'E1',4]])],
    chord:[
-    C('Keys',32,[[0,'Am9',3],[6,'Am9',2],[11,'Am9',1],[16,'Fmaj9',3],[22,'Fmaj9',2],[27,'Em7',2]]),
-    C('Stab',16,[[3,'Am7',.5],[6,'Am7',.5],[11,'Am7',.5],[14,'Am7',.5]],{syn:'stab'}),
+    C('Keys',32,[[3,'Am9',1],[6,'Am9',1],[11,'Am9',1],[19,'Fmaj9',1],[22,'Fmaj9',1],[27,'Em7',1]]),
+    C('Stab',16,[[3,'Am7',.5],[11,'Am7',.5]],{syn:'stab'}),
     C('Prog',32,[[0,'Am9',4],[4,'Fmaj9',4],[8,'Dm9',4],[12,'Em7',4],[16,'Am9',4],[20,'Fmaj9',4],[24,'Gadd9',4],[28,'Em7',4]]),
     C('Organ',32,[[0,'Am9',8],[8,'Fmaj9',8],[16,'Dm9',8],[24,'Esus4',4],[28,'Em7',4]],{syn:'organ'})],
    pad:[
@@ -1735,10 +1755,10 @@ const STYLES={
     C('Air',32,[[0,'Am11',16],[16,'Fmaj9',16]],{syn:'air'}),
     C('Swell',16,[[0,'Am9',16]],{syn:'swell'})],
    arp:[
-    ARP('Kalimba',32,[[0,'Am9'],[16,'Fmaj9']],{oct:1,gate:.5,mask:'x.xx.x.x..x.x.x.'}),
-    ARP('Marimba',16,[[0,'Am7']],{mode:'updown',oct:1,gate:.4,mask:'x..x..x...x..x..'}),
-    ARP('Gotas',32,[[0,'Am9'],[16,'Dm9']],{oct:2,gate:.3,mask:'..x...x..x...x..'},{syn:'bell'}),
-    ARP('Pluck',16,[[0,'Am']],{oct:0,gate:.35,mask:'x.x..x.x..x.x..x'},{syn:'pluck'})],
+    ARP('Kalimba',32,[[0,'Am9'],[16,'Fmaj9']],{oct:1,gate:.5,mask:'x..x..x...x..x..'}),
+    ARP('Gotas',32,[[0,'Am9'],[16,'Dm9']],{oct:2,gate:.3,mask:'..x...x..x...x..'}),
+    ARP('Marimba',16,[[0,'Am7']],{mode:'updown',oct:1,gate:.4,mask:'x.xx.x.x..x.x.x.'}),
+    ARP('Sino',32,[[0,'Am9'],[16,'Fmaj9']],{oct:2,gate:.3,mask:'x.......x.......'},{syn:'bell'})],
    lead:[
     B('Chant',32,[[0,'E5',2],[3,'D5',1],[4,'C5',2],[8,'A4',4],[16,'E5',2],[19,'G5',1],[20,'E5',2],[24,'D5',4]]),
     B('Eco',16,[[2,'A4',.5],[6,'C5',.5],[10,'E5',.5],[14,'D5',.5]]),
@@ -1887,7 +1907,7 @@ function setBpmDelay(){if(ctx&&FXA.dly.in){updDly();updEch()}if(FX.ech.el)updPlu
 
 // ----- amostras gravadas (CC0, domínio público) com síntese como reserva -----
 const SMP={},SMPRAW={},SMPF={conga_hi:215.3,conga_mid:163.5,conga_lo:137.9};
-const SMPN=['conga_hi','conga_mid','conga_lo','clap909','palma','hat_c','hat_o','ride','crash','letsgo'];
+const SMPN=['conga_hi','conga_mid','conga_lo','clap909','palma','hat_c','hat_o','ride','crash','letsgo','bongo_hi','bongo_lo','logdrum'];
 SMPN.forEach(n=>{try{fetch('smp/'+n+'.wav').then(r=>r.ok?r.arrayBuffer():null).then(b=>{if(b){SMPRAW[n]=b;smpDecode()}}).catch(()=>{})}catch(e){}});
 function smpDecode(){if(!ctx)return;for(const n in SMPRAW){const b=SMPRAW[n];delete SMPRAW[n];try{const ok=x=>{SMP[n]=x},p=ctx.decodeAudioData(b,ok,()=>{});if(p&&p.catch)p.catch(()=>{})}catch(e){}}}
 function smp(n,t,o,v,rate,dur){const b=SMP[n];if(!b)return false;const s=ctx.createBufferSource(),g=ctx.createGain();s.buffer=b;if(rate)s.playbackRate.setValueAtTime(rate,t);g.gain.setValueAtTime(v,t);
@@ -1899,7 +1919,7 @@ function env(g,t,peak,att,dec){g.gain.setValueAtTime(.0001,t);g.gain.linearRampT
 
 // ----- bateria -----
 function kick(t,o,v){
-  v=v||1;const K=snd().kick,x=ctx.createOscillator(),g=ctx.createGain();
+  const K=snd().kick;v=(v||1)*(K.lvl||1);const x=ctx.createOscillator(),g=ctx.createGain();
   x.frequency.setValueAtTime(K.f0,t);x.frequency.exponentialRampToValueAtTime(K.f1,t+(K.sweep||.12));
   g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+K.dec);x.connect(g);
   if(K.drive){const ws=ctx.createWaveShaper(),gg=ctx.createGain();ws.curve=softCurve(K.drive);gg.gain.value=.85;g.connect(ws);ws.connect(gg);gg.connect(o)}else g.connect(o);
@@ -1953,7 +1973,8 @@ function hat(t,o,open,v){
   }
   const n=noise(t,dec+.05),f=ctx.createBiquadFilter(),g=ctx.createGain();f.type='highpass';f.frequency.value=H.hp||7500;g.gain.setValueAtTime((open?.22:.2)*v,t);g.gain.exponentialRampToValueAtTime(.001,t+dec);n.connect(f).connect(g).connect(o)}
 function perc(t,o,v,syn){
-  v=v||1;const type=syn||snd().perc.type;
+  v=v||1;let type=syn||snd().perc.type;
+  if(type&&type.startsWith('smp:')){const n=type.slice(4);if(smp(n,t,o,.75*v,{logdrum:1.06,bongo_hi:.953}[n]||1))return;type=n==='logdrum'?'clave':'rim'}
   if(type==='shaker'){const n=noise(t,.1),f=ctx.createBiquadFilter(),g=ctx.createGain();f.type='bandpass';f.frequency.value=6500;f.Q.value=.8;env(g,t,.32*v,.006,.06);n.connect(f).connect(g).connect(o);return}
   if(type==='cowbell'){const f=ctx.createBiquadFilter(),g=ctx.createGain();f.type='bandpass';f.frequency.value=900;f.Q.value=2;g.gain.setValueAtTime(.3*v,t);g.gain.exponentialRampToValueAtTime(.001,t+.25);
     [540,800].forEach(fr=>{const x=ctx.createOscillator();x.type='square';x.frequency.value=fr;x.connect(f);x.start(t);x.stop(t+.27)});f.connect(g).connect(o);return}
@@ -3539,7 +3560,7 @@ const GENRES=[
  {k:'acidtechno',gc:'#5CFF8A',xpos:'50% 26%',c1:'#ff3b3b',c2:'#ffb37a',pos:'center 24%',desc:'Rápido demais pro seu vizinho'},
  {k:'funk',gc:'#FF3DAE',xpos:'50% 22%',c1:'#FFE600',c2:'#ff2d1a',pos:'center 22%',desc:'Música popular eletrônica brasileira'},
  {k:'solomun',artist:true,desc:'Baixo rolando, riff metálico e Ibiza às 6h'},
- {k:'afro',artist:true,html:'<em>&amp;</em><span>Afro</span>',desc:'Tambores, coro e pôr do sol'}];
+ {k:'afro',artist:true,theme:'afro',html:'<span>Afro</span><em>house</em><i class="cherry" aria-hidden="true"></i>',desc:'Tambores, coro e pôr do sol'}];
 const CHN=i=>'CH'+String(i+1).padStart(2,'0');
 const GSYM={'house':'<path d="M8 22L24 8L40 22V40H8Z"/><circle cx="24" cy="30" r="6"/><rect x="22.5" y="28.5" width="3" height="3" fill="currentColor" stroke="none"/>','deep':'<path d="M8 22L24 8L40 22V40H8Z"/><path d="M14 26H34M17 31H31M20 36H28"/>','acid':'<path d="M8 22L24 8L40 22V40H8Z"/><path d="M11 31Q14.25 24 17.5 31T24 31T30.5 31T37 31"/>','techno':'<path d="M8 8H40V40H8Z"/><g fill="currentColor" stroke="none"><rect x="14" y="14" width="8" height="8"/><rect x="26" y="26" width="8" height="8"/></g><path d="M26 18H34M14 30H22"/>','acidtechno':'<path d="M8 8H40V40H8Z"/><path d="M11 31Q14.25 24 17.5 31T24 31T30.5 31T37 31"/>','funk':'<path d="M12 5H36V43H12Z"/><circle cx="24" cy="16" r="6"/><circle cx="24" cy="32.5" r="7.5"/><rect x="22.5" y="31" width="3" height="3" fill="currentColor" stroke="none"/><rect x="22.5" y="14.5" width="3" height="3" fill="currentColor" stroke="none"/>'};
 const gsym=k=>'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter">'+GSYM[k]+'</svg>';
@@ -3588,7 +3609,7 @@ function buildHome(){
   ex.forEach(([k,name,desc,fn],j)=>{
     const i=GENRES.length+nU+j,b=document.createElement('button');b.className='band xband x'+k;b.style.setProperty('--d',(i*90)+'ms');b.style.setProperty('--gc','var(--nov)');
     let cnt='';try{const L=JSON.parse(localStorage.getItem(k==='explore'?'gstudio_lib':'gstudio_novo')||'null');
-      if(k==='explore')cnt=(GENRES.length*14+10+((L&&L.items)||[]).length)+'<small>SONS</small>';else if(L&&L.lanes&&L.lanes.length)cnt=L.lanes.length+'<small>'+(L.lanes.length===1?'FAIXA':'FAIXAS')+'</small>'}catch(e){}
+      if(k==='explore')cnt=(GENRES.length*14+13+((L&&L.items)||[]).length)+'<small>SONS</small>';else if(L&&L.lanes&&L.lanes.length)cnt=L.lanes.length+'<small>'+(L.lanes.length===1?'FAIXA':'FAIXAS')+'</small>'}catch(e){}
     b.innerHTML='<span class="screen"><span class="bignum">'+String(i+1).padStart(2,'0')+'</span></span><span class="static"></span>'+
       '<span class="ch">'+CHN(i)+'</span><span class="bname"></span><span class="bdesc"></span><span class="bbpm">'+cnt+'</span><span class="bprev bico" aria-hidden="true">'+
       (k==='explore'?'<svg viewBox="0 0 16 16"><path d="M1.5 3.5h5l1.5 1.5h6.5v8h-13z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>':'<svg viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" fill="none" stroke="currentColor" stroke-width="2"/></svg>')+'</span>'+
@@ -3617,7 +3638,7 @@ const PV_SECTIONS=[0,1,3,2];
 const PV={vol:.6,k:null,timer:null,next:0,step:0,bar:0,lanes:null,out:null,dk:null,bpm0:0,endAt:0,done:null};
 function pvDuck(t,v){if(!PV.dk)return;const sc=STYLES[PV.k].snd.sc!=null?STYLES[PV.k].snd.sc:.5,g=PV.dk.gain,depth=Math.min(.92,sc*.9*Math.min(1,v));
   g.setTargetAtTime(1-depth,t,.003);g.setTargetAtTime(1,t+.025,60/bpm*.16)}
-function pvSection(i){const sc=DEF_SCENES[PV_SECTIONS[i]],r=Object.assign({},sc);if(i===3)r.fx=1;return r}
+function pvSection(i){const G=STYLES[PV.k]&&STYLES[PV.k].scenes;if(G)return Object.assign({},G[i]);const sc=DEF_SCENES[PV_SECTIONS[i]],r=Object.assign({},sc);if(i===3)r.fx=1;return r}
 function pvTick(){
   const S=STYLES[PV.k];
   if(PV.endAt){if(ctx.currentTime>PV.endAt)pvStop(true);return}
@@ -3994,6 +4015,7 @@ const XCAT=[['drums','Drums','#FFA63D'],['perc','Percussão','#FF6A3D'],['bass',
 const XCATN=Object.fromEntries(XCAT.map(c=>[c[0],c[1]])),XCATC=Object.fromEntries(XCAT.map(c=>[c[0],c[2]]));
 const LANECAT={kick:'drums',clap:'drums',snare:'drums',hat:'drums',ohat:'drums',tom:'perc',perc:'perc',bass:'bass',sub:'bass',chord:'keys',pad:'keys',arp:'synth',lead:'synth',fx:'fx'};
 const CC0=[
+ {f:'bongo_hi',name:'Bongô agudo',cat:'perc',h:'perc'},{f:'bongo_lo',name:'Bongô grave',cat:'perc',h:'perc'},{f:'logdrum',name:'Log drum',cat:'perc',h:'perc'},
  {f:'conga_hi',name:'Conga aguda',cat:'perc',h:'perc'},{f:'conga_mid',name:'Conga média',cat:'perc',h:'perc'},{f:'conga_lo',name:'Tumba',cat:'perc',h:'perc'},
  {f:'clap909',name:'Palma eletrônica',cat:'drums',h:'clap'},{f:'palma',name:'Palma de mão',cat:'drums',h:'clap'},
  {f:'hat_c',name:'Chimbal fechado',cat:'drums',h:'hat'},{f:'hat_o',name:'Chimbal aberto',cat:'drums',h:'ohat'},

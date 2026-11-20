@@ -11,3 +11,5 @@ crash                          Karoryfer Samples: crash_BRD_17
 letsgo                         microlag: One_Two_Three_Let's_Go
 
 Os arquivos foram cortados, normalizados e convertidos para mono.
+bongo_hi, bongo_lo             VCSL (sgossner): BongoH / BongoL
+logdrum                        VCSO-2-CE (sgossner): LogDrumHi
