@@ -1147,21 +1147,6 @@ body.ugen #sceneFx{--yel:#2F5BEA}
 #tour .tgo{height:40px;padding:0 18px;background:#FFE600;border:0;color:#000;font:900 12px "Archivo",sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:0}
 #tourAgain{background:none;border:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;text-decoration:underline;cursor:pointer;padding:0}
 
-/* ===== Savana (afro house): laranja de pôr do sol ===== */
-.band.artist.afro{--pur:#FF6B2C;background:linear-gradient(90deg,#1f0b03,#000 60%)}
-.band.artist.afro .bignum{-webkit-text-stroke-color:rgba(255,107,44,.5);background:repeating-linear-gradient(-45deg,rgba(255,107,44,.3) 0 2px,transparent 2px 7px);-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 10px rgba(255,107,44,.3))}
-.band.artist.afro .bname em{text-shadow:0 0 18px rgba(255,107,44,.75)}
-.band.artist.afro .ch{color:#000}
-body.th-art.th-afro{--yel:#FF6B2C;--grad:linear-gradient(#FF6B2C,#FF6B2C);--acid:#FF6B2C;--amb:#FF6B2C;--grn:#FF6B2C;--warm:#FF6B2C}
-body.th-afro .bk .val{filter:drop-shadow(0 0 5px rgba(255,107,44,.7))!important}
-body.th-afro .pw.on>.led{box-shadow:0 0 8px rgba(255,107,44,.8)!important}
-body.th-afro .xfill{background:linear-gradient(90deg,rgba(255,107,44,0),rgba(255,107,44,.2) 70%,rgba(255,107,44,.4))}
-body.th-afro .xline{box-shadow:0 0 12px 2px rgba(255,107,44,.8)}
-body.th-afro .xglow{background:radial-gradient(closest-side,rgba(255,107,44,.65),rgba(255,107,44,.15) 55%,transparent)!important}
-body.th-afro .xseg span.on{text-shadow:0 0 10px rgba(255,107,44,.8)}
-body.th-afro .xpad.touch{border-color:rgba(255,107,44,.7)}
-body.th-afro #laser{background:#FF6B2C!important}
-body.th-afro .nrow.root .ncell{background:#1c0a03!important}body.th-afro .nrow.root .ncell.beat{background:#28100a!important}
 </style>
 </head>
 <body>
@@ -1715,8 +1700,8 @@ const STYLES={
     B('Siren',32,[[0,'F#4',14],[16,'E4',14]],{syn:'saw'})],
    fx:FX4
   }},
- // gênero especial: afro house (percussão tribal, coro, kalimba, baixo rolando)
- afro:{name:'Savana',bpm:122,swing:.07,key:{root:9,mode:'minor'},artist:true,theme:'afro',names:{snare:'Rim',ohat:'Aberto',tom:'Congas',perc:'Shaker',chord:'Keys',pad:'Coro',arp:'Kalimba',lead:'Voz'},
+ // gênero especial &Afro: afro house (percussão tribal, coro, kalimba, baixo rolando)
+ afro:{name:'&Afro',bpm:122,swing:.07,key:{root:9,mode:'minor'},artist:true,names:{snare:'Rim',ohat:'Aberto',tom:'Congas',perc:'Shaker',chord:'Keys',pad:'Coro',arp:'Kalimba',lead:'Voz'},
   snd:{sub:{type:'sine',drive:1.1,cut:180},pad:{type:'choir'},arp:{type:'kalimba'},sc:.4,
        kick:{f0:128,f1:49,dec:.55,click:.12,sweep:.08,tail:.55,knock:.5},clap:{f:1500,dec:.3,spread:3,smp:'clap909',sv:.8},snare:{tone:220,hp:2600,dec:.08},
        hat:{metal:false,dec:.03,odec:.26,hp:9000,smp:'hat_c',osmp:'hat_o',sdur:.12,sv:.65},tom:{mult:1,dec:.3,smp:1,map:{200:220,150:164.81,110:130.81}},perc:{type:'shaker'},
@@ -3554,7 +3539,7 @@ const GENRES=[
  {k:'acidtechno',gc:'#5CFF8A',xpos:'50% 26%',c1:'#ff3b3b',c2:'#ffb37a',pos:'center 24%',desc:'Rápido demais pro seu vizinho'},
  {k:'funk',gc:'#FF3DAE',xpos:'50% 22%',c1:'#FFE600',c2:'#ff2d1a',pos:'center 22%',desc:'Música popular eletrônica brasileira'},
  {k:'solomun',artist:true,desc:'Baixo rolando, riff metálico e Ibiza às 6h'},
- {k:'afro',artist:true,theme:'afro',html:'<span>Sa</span><em>vana</em>',desc:'Tambores, coro e pôr do sol'}];
+ {k:'afro',artist:true,html:'<em>&amp;</em><span>Afro</span>',desc:'Tambores, coro e pôr do sol'}];
 const CHN=i=>'CH'+String(i+1).padStart(2,'0');
 const GSYM={'house':'<path d="M8 22L24 8L40 22V40H8Z"/><circle cx="24" cy="30" r="6"/><rect x="22.5" y="28.5" width="3" height="3" fill="currentColor" stroke="none"/>','deep':'<path d="M8 22L24 8L40 22V40H8Z"/><path d="M14 26H34M17 31H31M20 36H28"/>','acid':'<path d="M8 22L24 8L40 22V40H8Z"/><path d="M11 31Q14.25 24 17.5 31T24 31T30.5 31T37 31"/>','techno':'<path d="M8 8H40V40H8Z"/><g fill="currentColor" stroke="none"><rect x="14" y="14" width="8" height="8"/><rect x="26" y="26" width="8" height="8"/></g><path d="M26 18H34M14 30H22"/>','acidtechno':'<path d="M8 8H40V40H8Z"/><path d="M11 31Q14.25 24 17.5 31T24 31T30.5 31T37 31"/>','funk':'<path d="M12 5H36V43H12Z"/><circle cx="24" cy="16" r="6"/><circle cx="24" cy="32.5" r="7.5"/><rect x="22.5" y="31" width="3" height="3" fill="currentColor" stroke="none"/><rect x="22.5" y="14.5" width="3" height="3" fill="currentColor" stroke="none"/>'};
 const gsym=k=>'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter">'+GSYM[k]+'</svg>';
