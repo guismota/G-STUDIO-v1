@@ -1098,25 +1098,14 @@ body.novo #sceneFx{--yel:#5CFF8A}
 #sceneFx.go .sfx-ring{animation:sfxRing .8s cubic-bezier(.1,.75,.25,1) forwards}
 #sceneFx.go .sfx-ring.r2{animation-delay:.09s;border-color:#fff;border-width:3px}
 @keyframes sfxRing{0%{transform:scale(.2);opacity:1}100%{transform:scale(34);opacity:0;border-width:1px}}
-.sfx-txt{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;color:var(--yel);opacity:0}
-.sfx-txt small{font:900 clamp(16px,2.6vw,28px) "Archivo",sans-serif;letter-spacing:.6em;text-transform:uppercase;color:#fff;margin-right:-.6em}
-.sfx-txt b{font:900 clamp(160px,34vh,330px) "Archivo",sans-serif;line-height:.8;letter-spacing:-.04em;-webkit-text-stroke:3px #000;text-shadow:-8px 0 #FF3DAE,8px 0 #22E1FF,0 0 60px var(--yel)}
-#sceneFx.go .sfx-txt{animation:sfxTxt 1s cubic-bezier(.2,.9,.2,1) forwards}
-@keyframes sfxTxt{0%{opacity:0;transform:translate(-50%,-50%) scale(2.6) rotate(-8deg);filter:blur(10px)}
-  14%{opacity:1;transform:translate(-50%,-50%) scale(.92) rotate(2deg);filter:blur(0)}
-  22%{transform:translate(calc(-50% + 10px),-50%) scale(1.04) skewX(-10deg)}
-  28%{transform:translate(calc(-50% - 8px),-50%) scale(1) skewX(8deg)}
-  34%{transform:translate(-50%,-50%) scale(1) skewX(0)}
-  72%{opacity:1;transform:translate(-50%,-50%) scale(1)}
-  100%{opacity:0;transform:translate(-50%,-50%) scale(.82) translateY(-30px);filter:blur(4px)}}
-#session.sfx .lane{animation:laneHit .55s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i) * 28ms)}
-@keyframes laneHit{0%{filter:brightness(1)}30%{filter:brightness(2.4) saturate(1.6);transform:translateX(-8px)}100%{filter:none;transform:none}}
-#session.sfx .lane .clip.play{animation:padPop .5s cubic-bezier(.2,.9,.2,1) both;animation-delay:calc(var(--i) * 28ms)}
-@keyframes padPop{0%{transform:scale(1)}35%{transform:scale(1.12);box-shadow:0 0 24px var(--yel)}100%{transform:none}}
+#session.sfx .lane::after{content:"";position:absolute;inset:-2px;pointer-events:none;z-index:3;mix-blend-mode:screen;opacity:0;
+  background:linear-gradient(90deg,var(--c) 0%,var(--yel) 35%,rgba(255,61,174,.6) 60%,transparent 90%);background-size:220% 100%;
+  animation:laneSweep .6s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(var(--i) * 26ms)}
+@keyframes laneSweep{0%{opacity:0;background-position:120% 0}25%{opacity:.75}100%{opacity:0;background-position:-40% 0}}
 .dev.shake{animation:shk .34s linear}
-@keyframes shk{15%{transform:translate(5px,-4px)}30%{transform:translate(-6px,3px)}45%{transform:translate(4px,4px)}60%{transform:translate(-3px,-2px)}80%{transform:translate(2px,1px)}100%{transform:none}}
-.boom{animation:slotBoom .6s cubic-bezier(.2,.9,.2,1)}
-@keyframes slotBoom{0%{transform:scale(1)}25%{transform:scale(1.18);background:var(--yel);color:#000}100%{transform:none}}
+@keyframes shk{0%{left:0;top:0}15%{left:5px;top:-4px}30%{left:-6px;top:3px}45%{left:4px;top:4px}60%{left:-3px;top:-2px}80%{left:2px;top:1px}100%{left:0;top:0}}
+.sc.boom{position:relative}.sc.boom::after{content:"";position:absolute;inset:-3px;background:var(--yel);mix-blend-mode:screen;pointer-events:none;animation:slotBoom .5s ease-out forwards}
+@keyframes slotBoom{0%{opacity:.9}100%{opacity:0}}
 @media (prefers-reduced-motion:reduce){#sceneFx,#wipe{display:none!important}}
 
 /* gêneros criados pelo usuário: verde mais escuro */
@@ -1171,7 +1160,7 @@ body.ugen #sceneFx{--yel:#1FA855}
 </div>
 <div id="lights"></div>
 <div id="wipe"><div class="wp"><span class="wch"></span><b class="wnm"></b></div></div>
-<div id="sceneFx"><div class="sfx-flash"></div><div class="sfx-ring rdot"></div><div class="sfx-ring r2 rdot"></div><div class="sfx-txt"><small>Cena</small><b></b></div></div>
+<div id="sceneFx"><div class="sfx-flash"></div><div class="sfx-ring rdot"></div><div class="sfx-ring r2 rdot"></div></div>
 <div id="explore">
   <header class="xh">
     <button class="hw xback" id="xBack"><svg viewBox="0 0 16 16"><path d="M10 3L5 8l5 5" fill="none" stroke="currentColor" stroke-width="2"/></svg>Voltar</button>
@@ -2267,12 +2256,12 @@ function sceneFx(i){
   if(reduceMotion())return;
   const fx=$('#sceneFx'),sl=slotEls[i],r=sl?sl.getBoundingClientRect():{left:innerWidth/2,top:innerHeight/2,width:0,height:0};
   fx.style.setProperty('--x',(r.left+r.width/2)+'px');fx.style.setProperty('--y',(r.top+r.height/2)+'px');
-  fx.querySelector('.sfx-txt b').textContent=i+1;
   const s=$('#session'),d=document.querySelector('.dev');
   [fx,s,d].forEach(e=>e.classList.remove('go','sfx','shake'));void fx.offsetWidth;
   fx.classList.add('go');s.classList.add('sfx');d.classList.add('shake');
   if(sl){sl.classList.remove('boom');void sl.offsetWidth;sl.classList.add('boom')}
-  clearTimeout(fx._t);fx._t=setTimeout(()=>{fx.classList.remove('go');s.classList.remove('sfx');d.classList.remove('shake');if(sl)sl.classList.remove('boom')},1100);
+  d.addEventListener('animationend',function f(e){if(e.target===d&&e.animationName==='shk'){d.classList.remove('shake');d.removeEventListener('animationend',f)}});
+  clearTimeout(fx._t);fx._t=setTimeout(()=>{fx.classList.remove('go');s.classList.remove('sfx');d.classList.remove('shake');if(sl)sl.classList.remove('boom')},1000);
 }
 const curMap=()=>{const o={};cols.forEach(c=>o[c.key]=c.active);return o};
 const draftOf=c=>Number.isInteger(draft[c.key])?draft[c.key]:-1;
