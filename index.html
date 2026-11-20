@@ -1150,7 +1150,7 @@ const FX4=[FXP('Riser','R...............................'),FXP('Impact','I......
 
 const STYLES={
  house:{name:'House',bpm:124,swing:.08,key:{root:5,mode:'minor'},
-  snd:{sub:{type:'sine',drive:1.4},pad:{type:'strings'},arp:{type:'pluck'},sc:.55,kick:{f0:170,f1:48,dec:.42,click:.6,sweep:.11,tail:.5},clap:{f:1500,dec:.25,spread:3},snare:{tone:220,hp:1800,dec:.18},hat:{metal:false,dec:.045,odec:.28,hp:7500},tom:{mult:1,dec:.35},perc:{type:'shaker'},
+  snd:{sub:{type:'sine',drive:1.4},pad:{type:'strings'},arp:{type:'pluck'},sc:.55,kick:{f0:170,f1:48,dec:.42,click:.6,sweep:.11,tail:.5},clap:{f:1500,dec:.25,spread:3,smp:'clap909'},snare:{tone:207.65,hp:1800,dec:.18},hat:{metal:false,dec:.045,odec:.28,hp:7500},tom:{mult:1,dec:.35,smp:1,map:{200:196,150:155.56,110:116.54}},perc:{type:'shaker'},
        bass:{type:'saw',cut:1100,q:6},chord:{type:'piano'},lead:{type:'pluck',wave:'square',q:2,cut:4000}},
   p:{
    kick:[D('4x4','X...x...X...x...'),D('Pump','X...x...X...x..o'),D('Skip','X...x...X..ox...'),D('Breakdown','X.......x.......')],
@@ -1169,7 +1169,7 @@ const STYLES={
     C('Piano',32,[[0,'Fm9',1],[3,'Fm9',1],[6,'Fm9',2],[10,'Fm9',1],[16,'Dbmaj9',1],[19,'Dbmaj9',1],[22,'Dbmaj9',2],[26,'Ebadd9',1],[28,'Ebadd9',2]]),
     C('Organ',16,[[2,'Fm7',.5],[6,'Fm7',.5],[10,'Fm7',.5],[14,'Fm7',.5]],{syn:'organ'}),
     C('Chop',16,[[0,'Fm9',.5],[3,'Fm9',.5],[7,'Fm9',.5],[10,'Fm9',.5],[12,'Ebadd9',.5],[14,'Ebadd9',.5]],{syn:'piano'}),
-    C('Gospel',32,[[0,'Fm9',4],[4,'Bbm9',4],[8,'Ebmaj9',4],[12,'Abmaj9',4],[16,'Dbmaj9',8],[24,'C7sus4',4],[28,'C7',4]])],
+    C('Gospel',32,[[0,'Fm9',4],[4,'Bbm9',4],[8,'Eb9',4],[12,'Abmaj9',4],[16,'Dbmaj9',8],[24,'C7sus4',4],[28,'C7',4]])],
    lead:[
     B('Hook',32,[[0,'C5',1],[2,'Eb5',1],[4,'F5',2],[7,'Eb5',1],[10,'C5',1],[12,'Ab4',2],[16,'C5',1],[18,'Eb5',1],[20,'F5',2],[24,'G5',1],[26,'F5',1],[28,'Eb5',2]]),
     B('Arp',16,[[0,'F4',.5],[2,'Ab4',.5],[4,'C5',.5],[6,'Eb5',.5],[8,'F5',.5],[10,'Eb5',.5],[12,'C5',.5],[14,'Ab4',.5]]),
@@ -1193,7 +1193,7 @@ const STYLES={
    fx:FX4
   }},
  deep:{name:'Deep House',bpm:120,swing:.2,key:{root:2,mode:'dorian'},
-  snd:{sub:{type:'sine'},pad:{type:'warm'},arp:{type:'bell'},sc:.45,kick:{f0:140,f1:45,dec:.5,click:.15,sweep:.09,tail:.6,knock:.6},clap:{f:1700,dec:.32,spread:4},snare:{tone:230,hp:1500,dec:.22},hat:{metal:false,dec:.035,odec:.22,hp:8000},tom:{mult:.9,dec:.4},perc:{type:'shaker'},
+  snd:{sub:{type:'sine'},pad:{type:'warm'},arp:{type:'bell'},sc:.45,kick:{f0:140,f1:43.65,dec:.5,click:.15,sweep:.09,tail:.6,knock:.6},clap:{f:1700,dec:.32,spread:4,smp:'clap909',sv:.85},snare:{tone:220,hp:1500,dec:.22},hat:{metal:false,dec:.035,odec:.22,hp:8000,smp:'hat_c',osmp:'hat_o',sdur:.2},tom:{mult:.9,dec:.4,smp:1,map:{200:196,150:146.83,110:110}},perc:{type:'shaker'},
        bass:{type:'round',cut:700},chord:{type:'keys'},lead:{type:'fm'}},
   p:{
    kick:[D('Deep','X...x...X...x...'),D('Soft','x...o...x...o..o'),D('Skip','X...x..oX...x...'),D('Half','X.......x.....o.')],
@@ -1236,7 +1236,7 @@ const STYLES={
    fx:FX4
   }},
  acid:{name:'Acid House',bpm:126,swing:.06,key:{root:9,mode:'minor'},
-  snd:{sub:{type:'sine',drive:1.6},pad:{type:'dark'},arp:{type:'acid',q:1,f:1},sc:.45,kick:{f0:180,f1:46,dec:.48,click:.5,sweep:.12},clap:{f:1250,dec:.3,spread:3},snare:{tone:200,hp:2400,dec:.2},hat:{metal:true,dec:.05,odec:.3},tom:{mult:1.2,dec:.3},perc:{type:'cowbell'},
+  snd:{sub:{type:'sine',drive:1.6},pad:{type:'dark'},arp:{type:'acid',q:1,f:1},sc:.45,kick:{f0:180,f1:43.65,dec:.48,click:.5,sweep:.12},clap:{f:1250,dec:.3,spread:3},snare:{tone:200,hp:2400,dec:.2},hat:{metal:true,dec:.05,odec:.3},tom:{mult:1.2,dec:.3,map:{200:220,150:164.81,110:110}},perc:{type:'cowbell'},
        bass:{type:'303',q:1,f:1},chord:{type:'stab',wave:'square',q:6},lead:{type:'pluck',wave:'sawtooth',q:10,cut:6000}},
   p:{
    kick:[D('4x4','X...X...X...X...'),D('Skip','X...X...X...X.o.'),D('Half','X.......X...X...'),D('Build','X...X...X...X... X...X...X.X.XXXX')],
@@ -1279,7 +1279,7 @@ const STYLES={
    fx:FX4
   }},
  techno:{name:'Techno',bpm:130,swing:0,key:{root:7,mode:'minor'},
-  snd:{sub:{type:'tri',drive:2.2,cut:200},pad:{type:'dark'},arp:{type:'square'},sc:.5,kick:{f0:200,f1:42,dec:.5,click:.4,sweep:.1,rumble:1,rumbleDec:.45,drive:2},clap:{f:1200,dec:.3,spread:3},snare:{tone:190,hp:2600,dec:.2},hat:{metal:true,dec:.04,odec:.25},tom:{mult:1,dec:.3},perc:{type:'rim'},
+  snd:{sub:{type:'tri',drive:2.2,cut:200},pad:{type:'dark'},arp:{type:'square'},sc:.5,kick:{f0:200,f1:43.65,dec:.5,click:.4,sweep:.1,rumble:1,rumbleDec:.45,drive:2},clap:{f:1200,dec:.3,spread:3},snare:{tone:196,hp:2600,dec:.2},hat:{metal:true,dec:.04,odec:.25},tom:{mult:1,dec:.3,map:{200:196,150:146.83,110:110}},perc:{type:'rim'},
        bass:{type:'pluck',cut:1400},chord:{type:'stab',wave:'sawtooth',q:4},lead:{type:'pluck',wave:'square',q:6,cut:5000}},
   p:{
    kick:[D('Rumble','X...X...X...X...'),D('Drive','X...X...X...X..o'),D('Broken','X...X..X..X.X...'),D('Build','X...X...X...X... X...X...X.X.XXXX')],
@@ -1322,7 +1322,7 @@ const STYLES={
    fx:FX4
   }},
  acidtechno:{name:'Acid Techno',bpm:138,swing:0,key:{root:4,mode:'phrygian'},
-  snd:{sub:{type:'sine',drive:2.4},pad:{type:'dark'},arp:{type:'acid',q:1.2,f:1.3},sc:.5,kick:{f0:240,f1:46,dec:.45,click:.8,sweep:.1,drive:3},clap:{f:1100,dec:.3,spread:3},snare:{tone:180,hp:3000,dec:.2},hat:{metal:true,dec:.05,odec:.3},tom:{mult:1.2,dec:.25},perc:{type:'rim'},
+  snd:{sub:{type:'sine',drive:2.4},pad:{type:'dark'},arp:{type:'acid',q:1.2,f:1.3},sc:.5,kick:{f0:240,f1:41.2,dec:.45,click:.8,sweep:.1,drive:3},clap:{f:1100,dec:.3,spread:3},snare:{tone:174.6,hp:3000,dec:.2},hat:{metal:true,dec:.05,odec:.3},tom:{mult:1.2,dec:.25,map:{200:196,150:146.83,110:110}},perc:{type:'rim'},
        bass:{type:'303',q:1.35,f:1.4,drive:1},chord:{type:'stab',wave:'square',q:8},lead:{type:'saw'}},
   p:{
    kick:[D('4x4','X...X...X...X...'),D('Gallop','X...X..xX...X..x'),D('Stomp','X.x.X...X.x.X...'),D('Build','X...X...X...X... X...X...X.X.XXXX')],
@@ -1366,8 +1366,8 @@ const STYLES={
   }},
  funk:{name:'MPEB',bpm:130,swing:.03,key:{root:0,mode:'phrygian'},names:{snare:'Caixa',tom:'Atabaque',perc:'Tuim'},
   snd:{sub:{type:'808',rel:.15,drive:1.6},pad:{type:'choir'},arp:{type:'bolha'},sc:.25,
-       kick:{f0:125,f1:43.65,dec:.9,click:.25,sweep:.07,drive:3,knock:.7},clap:{f:1300,dec:.22,spread:2},snare:{tone:280,hp:2400,dec:.13},
-       hat:{metal:false,dec:.035,odec:.2,hp:8000},tom:{mult:1,dec:.22,map:{200:311.13,150:196,110:130.81}},perc:{type:'tuim'},
+       kick:{f0:125,f1:43.65,dec:.9,click:.25,sweep:.07,drive:3,knock:.7},clap:{f:1300,dec:.22,spread:2,smp:'palma'},snare:{tone:280,hp:2400,dec:.13},
+       hat:{metal:false,dec:.035,odec:.2,hp:8000},tom:{mult:1,dec:.22,smp:1,map:{200:311.13,150:196,110:130.81}},perc:{type:'tuim'},
        bass:{type:'808',drive:2.6,cut:2400},chord:{type:'brass'},lead:{type:'agudo'}},
   p:{
    kick:[D('Tamborzão','X..x..X...X..x..'),D('Pancadão','X...X...X...X...'),D('Bruxaria','X.....X...X.....'),D('Automotivo','X...X...X...X... X...X...X.X.XXXX')],
@@ -1412,7 +1412,7 @@ const STYLES={
  solomun:{name:'Afterparty',bpm:123,swing:.05,key:{root:6,mode:'minor'},artist:true,names:{snare:'Snap',ohat:'Ride',tom:'Tribal'},
   snd:{sub:{type:'sine',drive:1.2,cut:200},pad:{type:'air'},arp:{type:'pluck',cut:2400},sc:.45,
        kick:{f0:140,f1:46.2,dec:.5,click:.18,sweep:.09,tail:.5,knock:.55},clap:{f:1350,dec:.34,spread:3},snare:{tone:220,hp:2000,dec:.15,alt:'snap'},
-       hat:{metal:false,dec:.035,odec:1,hp:8600,ride:true},tom:{mult:1,dec:.28,map:{200:277.2,150:185,110:138.6}},perc:{type:'shaker'},
+       hat:{metal:false,dec:.035,odec:1,hp:8600,ride:true,rsmp:1,smp:'hat_c',sdur:.16,sv:.8},tom:{mult:1,dec:.28,smp:1,map:{200:277.2,150:185,110:138.6}},perc:{type:'shaker'},
        bass:{type:'solo',cut:1150,q:5},chord:{type:'dub'},lead:{type:'metal'}},
   p:{
    kick:[D('4x4','X...x...X...x...'),D('Roll','X...x...X...x.o.'),D('Half','X.......X.......'),D('Build','X...x...X...x... X...x...X.x.x.xX')],
@@ -1562,6 +1562,7 @@ function initAudio(){
   duck=ctx.createGain();duck.connect(mix);
   buildFxAudio();buildMaster();
   ALL().forEach(ensureGain);
+  smpDecode();
   noiseBuf=ctx.createBuffer(1,ctx.sampleRate*2,ctx.sampleRate);
   const d=noiseBuf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
   ctx.resume&&ctx.resume();
@@ -1590,6 +1591,13 @@ function setFilter(){if(filt)filt.frequency.value=200*Math.pow(100,K.fv)}
 function setMaster(){if(out)out.gain.value=K.mv}
 function setBpmDelay(){if(ctx&&FXA.dly.in){updDly();updEch()}if(FX.ech.el)updPlugLcd('ech');if(FX.dly.el)updPlugLcd('dly');updFltLfo()}
 
+// ----- amostras gravadas (CC0, domínio público) com síntese como reserva -----
+const SMP={},SMPRAW={},SMPF={conga_hi:215.3,conga_mid:163.5,conga_lo:137.9};
+const SMPN=['conga_hi','conga_mid','conga_lo','clap909','palma','hat_c','hat_o','ride','crash','letsgo'];
+SMPN.forEach(n=>{try{fetch('smp/'+n+'.wav').then(r=>r.ok?r.arrayBuffer():null).then(b=>{if(b){SMPRAW[n]=b;smpDecode()}}).catch(()=>{})}catch(e){}});
+function smpDecode(){if(!ctx)return;for(const n in SMPRAW){const b=SMPRAW[n];delete SMPRAW[n];try{const ok=x=>{SMP[n]=x},p=ctx.decodeAudioData(b,ok,()=>{});if(p&&p.catch)p.catch(()=>{})}catch(e){}}}
+function smp(n,t,o,v,rate,dur){const b=SMP[n];if(!b)return false;const s=ctx.createBufferSource(),g=ctx.createGain();s.buffer=b;if(rate)s.playbackRate.setValueAtTime(rate,t);g.gain.setValueAtTime(v,t);
+  if(dur){g.gain.setValueAtTime(v,t+dur*.7);g.gain.linearRampToValueAtTime(.0001,t+dur)}s.connect(g).connect(o);s.start(t);if(dur)s.stop(t+dur+.02);return true}
 function noise(t,dur){const s=ctx.createBufferSource();s.buffer=noiseBuf;s.loop=true;s.start(t,Math.random());s.stop(t+dur);return s}
 const SOFT={};
 function softCurve(k){if(SOFT[k])return SOFT[k];const n=1024,c=new Float32Array(n);for(let i=0;i<n;i++){const x=i/(n-1)*2-1;c[i]=Math.tanh(k*x)/Math.tanh(k)}return SOFT[k]=c}
@@ -1613,7 +1621,7 @@ function kick(t,o,v){
   }
 }
 function clapOnly(t,o,v){
-  v=v||1;const c=snd().clap,f=ctx.createBiquadFilter(),g=ctx.createGain();f.type='bandpass';f.frequency.value=c.f;f.Q.value=1;
+  v=v||1;if(snd().clap.smp&&smp(snd().clap.smp,t,o,.8*v*(snd().clap.sv||1)))return;const c=snd().clap,f=ctx.createBiquadFilter(),g=ctx.createGain();f.type='bandpass';f.frequency.value=c.f;f.Q.value=1;
   const n=noise(t,c.dec+.1),k=c.spread||3;g.gain.setValueAtTime(.0001,t);
   for(let i=0;i<k;i++){const d=i*.011;g.gain.setValueAtTime(.8*v,t+d);g.gain.exponentialRampToValueAtTime(.15*v,t+d+.009)}
   g.gain.setValueAtTime(.7*v,t+k*.011);g.gain.exponentialRampToValueAtTime(.001,t+c.dec);
@@ -1631,9 +1639,12 @@ function snare(t,o,v){
   g.gain.setValueAtTime(.55*v,t);g.gain.exponentialRampToValueAtTime(.001,t+.14);x.connect(g).connect(o);x.start(t);x.stop(t+.16);
   const x2=ctx.createOscillator(),gx=ctx.createGain();x2.type='sine';x2.frequency.setValueAtTime(S.tone*1.75,t);x2.frequency.exponentialRampToValueAtTime(S.tone*1.2,t+.05);gx.gain.setValueAtTime(.25*v,t);gx.gain.exponentialRampToValueAtTime(.001,t+.07);x2.connect(gx).connect(o);x2.start(t);x2.stop(t+.09);
   const n=noise(t,S.dec+.05),f=ctx.createBiquadFilter(),g2=ctx.createGain();f.type='highpass';f.frequency.value=S.hp;g2.gain.setValueAtTime(.55*v,t);g2.gain.exponentialRampToValueAtTime(.001,t+S.dec);n.connect(f).connect(g2).connect(o)}
-function tom(t,fr,o,v){v=v||1;const T=snd().tom,f0=(T.map&&T.map[fr])||fr*T.mult,x=ctx.createOscillator(),g=ctx.createGain();x.frequency.setValueAtTime(f0*1.6,t);x.frequency.exponentialRampToValueAtTime(f0,t+.09);g.gain.setValueAtTime(.9*v,t);g.gain.exponentialRampToValueAtTime(.001,t+T.dec);x.connect(g).connect(o);x.start(t);x.stop(t+T.dec+.03)}
+function tom(t,fr,o,v){v=v||1;const T=snd().tom,f0=(T.map&&T.map[fr])||fr*T.mult;if(T.smp){const n=fr>=180?'conga_hi':fr>=130?'conga_mid':'conga_lo';if(smp(n,t,o,.95*v*(T.sv||1),f0/SMPF[n]))return}const x=ctx.createOscillator(),g=ctx.createGain();x.frequency.setValueAtTime(f0*1.6,t);x.frequency.exponentialRampToValueAtTime(f0,t+.09);g.gain.setValueAtTime(.9*v,t);g.gain.exponentialRampToValueAtTime(.001,t+T.dec);x.connect(g).connect(o);x.start(t);x.stop(t+T.dec+.03)}
 function hat(t,o,open,v){
   v=v||1;const H=snd().hat,dec=open?H.odec:H.dec;
+  if(open&&H.ride&&H.rsmp&&smp('ride',t,o,.42*v,0,Math.max(.4,dec*1.6)))return;
+  if(!open&&H.smp&&smp(H.smp,t,o,.5*v*(H.sv||1),0,H.sdur||.25))return;
+  if(open&&H.osmp&&!H.ride&&smp(H.osmp,t,o,.42*v*(H.sv||1),0,Math.max(.15,dec*1.4)))return;
   if(open&&H.ride){ // prato de condução: metálico e longo
     const f=ctx.createBiquadFilter(),hp=ctx.createBiquadFilter(),g=ctx.createGain();f.type='bandpass';f.frequency.value=7800;f.Q.value=.9;hp.type='highpass';hp.frequency.value=4200;
     g.gain.setValueAtTime(.075*v,t);g.gain.exponentialRampToValueAtTime(.03*v,t+.06);g.gain.exponentialRampToValueAtTime(.0005,t+dec);
@@ -2906,7 +2917,7 @@ function osCrash(t,o){
   [340,515,733,1012].forEach(fr=>{const x=ctx.createOscillator();x.type='square';x.frequency.value=fr;x.connect(mf);x.start(t);x.stop(t+1.5)});mf.connect(mg);mg.connect(o)}
 const OSDEF=[
  {n:'Air Horn',c:'#FFA63D',f:osHorn},{n:'Siren',c:'#FF6A3D',f:osSiren},{n:'Laser',c:'#C8FF3D',f:osLaser},{n:'Boom',c:'#6C8BFF',f:(t,o)=>fxHit(t,3,2,o,1)},
- {n:'Rewind',c:'#5CFF8A',f:osRewind},{n:'Hey',c:'#FF3DAE',f:osHey},{n:'Riser',c:'#FFA63D',f:(t,o)=>fxHit(t,1,60/bpm*4,o,1)},{n:'Crash',c:'#C8FF3D',f:osCrash}];
+ {n:'Rewind',c:'#5CFF8A',f:osRewind},{n:'Let\'s Go',c:'#FF3DAE',f:(t,o)=>{if(!smp('letsgo',t,o,1))osHey(t,o)}},{n:'Riser',c:'#FFA63D',f:(t,o)=>fxHit(t,1,60/bpm*4,o,1)},{n:'Crash',c:'#C8FF3D',f:(t,o)=>{if(!smp('crash',t,o,.8))osCrash(t,o)}}];
 const OS=(()=>{let j=null;try{j=JSON.parse(localStorage.getItem('gstudio_os'))}catch(e){}j=j||{};const w=j.win||{},num=v=>Number.isFinite(+v)&&v!==null?+v:null;
   return {vol:Number.isFinite(+j.vol)?+j.vol:.8,q:!!j.q,win:{open:false,x:num(w.x),y:num(w.y),w:num(w.w)},el:null,g:null}})();
 function saveOs(){try{localStorage.setItem('gstudio_os',JSON.stringify({vol:OS.vol,q:OS.q,win:{x:OS.win.x,y:OS.win.y,w:OS.win.w}}))}catch(e){}}

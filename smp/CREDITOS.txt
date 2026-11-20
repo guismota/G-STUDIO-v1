@@ -1,0 +1,13 @@
+Amostras gravadas usadas no G-STUDIO
+Todas em domínio público (Creative Commons Zero, CC0 1.0), sem exigência de crédito.
+Fonte: Stargate DAW sample pack (github.com/stargatedaw/stargate-sample-pack)
+
+conga_hi, conga_mid, conga_lo  VCSL (Versilian Community Sample Library), sgossner: Quinto, Conga, Tumba
+clap909                        Fugue State Audio: x0xproc1-clap
+palma                          Freesound 493707, bastianpusch: handclap01
+hat_c, hat_o                   Karoryfer Samples: hihat_BRD_closed / hihat_BRD_open
+ride                           Karoryfer Samples: ride_BRD_22
+crash                          Karoryfer Samples: crash_BRD_17
+letsgo                         microlag: One_Two_Three_Let's_Go
+
+Os arquivos foram cortados, normalizados e convertidos para mono.
