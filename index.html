@@ -872,11 +872,11 @@ body.th-art .clip.q{animation:qp .38s steps(2) infinite!important}
 @keyframes qp{50%{background:#22053a;color:#fff}}
 
 /* logo da tela inicial recolhe */
-#home .fbrand{transition:gap 1.3s cubic-bezier(.65,0,.35,1)}
+#home .fbrand{transition:gap 2.8s cubic-bezier(.45,0,.2,1)}
 #home .fbrand .fword{display:block;max-width:220px;overflow:hidden;opacity:1;clip-path:inset(0 0 0 0);filter:blur(0);
- transition:max-width 1.3s cubic-bezier(.65,0,.35,1),clip-path 1.1s cubic-bezier(.65,0,.35,1),opacity .9s ease,filter .9s ease}
+ transition:max-width 2.8s cubic-bezier(.45,0,.2,1),clip-path 2.6s cubic-bezier(.45,0,.2,1),opacity 2.4s cubic-bezier(.4,0,.2,1),filter 2.4s cubic-bezier(.4,0,.2,1)}
 #home .fbrand.mini{gap:0}
-#home .fbrand.mini .fword{max-width:0;opacity:0;clip-path:inset(0 100% 0 0);filter:blur(4px)}
+#home .fbrand.mini .fword{max-width:0;opacity:0;clip-path:inset(0 100% 0 0);filter:blur(6px)}
 @media (prefers-reduced-motion:reduce){#home .fbrand .fword,#home .fbrand{transition:opacity .3s}}
 </style>
 </head>
@@ -3112,7 +3112,7 @@ function brandIntro(){
   if(fb.children[1])fb.children[1].classList.add('fword');
   fb.classList.remove('mini');clearTimeout(brandT);
   // some depois de 3,5 s; a cada 10 s reaparece por 2 s
-  const cycle=()=>{brandT=setTimeout(()=>{if(document.body.classList.contains('in-session'))return;fb.classList.remove('mini');brandT=setTimeout(()=>{fb.classList.add('mini');cycle()},2000)},10000)};
+  const cycle=()=>{brandT=setTimeout(()=>{if(document.body.classList.contains('in-session'))return;fb.classList.remove('mini');brandT=setTimeout(()=>{fb.classList.add('mini');cycle()},4800)},10000)}; // 2,8 s abrindo + 2 s parado
   brandT=setTimeout(()=>{fb.classList.add('mini');cycle()},3500);
 }
 function powerOnHome(){brandIntro();const h=$('#home');h.classList.remove('tvon');void h.offsetWidth;h.classList.add('tvon')}
