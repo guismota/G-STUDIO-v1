@@ -820,6 +820,40 @@ body.in-session .hw:active,#roll .hw:active,.modal .hw:active,.plug .hw:active{b
 .pacts{display:flex;gap:6px;flex:none}
 .pacts .hw{padding:0 11px;min-height:34px}
 .hw.armed{background:#ff3b3b!important;color:#fff!important;border-color:#ff3b3b!important}
+.fcfg{display:inline-flex;align-items:center;justify-content:center;width:34px;height:31px;background:none;border:1px solid #3a3a3a;color:#fff;cursor:pointer;padding:0}
+.fcfg svg{width:19px;height:19px}.fcfg:active{background:var(--yel);border-color:var(--yel);color:#000}
+.cfgsheet{width:min(660px,100%)}
+.cfgbody{overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;gap:18px;max-height:calc(100dvh - 150px);min-height:0}
+.cfgsec h3{margin:0 0 7px;font-size:10.5px;font-weight:900;letter-spacing:.24em;text-transform:uppercase;font-stretch:80%;color:var(--yel)}
+.cfgrow{display:flex;align-items:center;gap:12px;padding:11px 12px;background:#050505;border:1px solid #1e1e1e}
+.cfgrow+.cfgrow{border-top:none}
+.cfgrow .ct{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.cfgrow .ct b{font-size:13.5px;font-weight:700;color:#fff;letter-spacing:.01em}
+.cfgrow .ct small{font-size:11.5px;color:#7a7a7a;line-height:1.4}
+.cfgrow .cc{display:flex;align-items:center;gap:6px;flex:none}
+.cfgrow .cc .hw{min-height:34px;padding:0 12px}
+.tg{position:relative;width:48px;height:28px;border-radius:14px;background:#2a2a2a;border:1px solid #3a3a3a;cursor:pointer;padding:0;flex:none;transition:background .15s}
+.tg::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#8a8a8a;transition:transform .15s,background .15s}
+.tg[aria-checked=true]{background:var(--yel);border-color:var(--yel)}.tg[aria-checked=true]::after{transform:translateX(20px);background:#000}
+.seg{display:flex;border:1px solid #333}
+.seg button{background:none;border:0;border-left:1px solid #333;color:#bdbdbd;font-size:10.5px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;font-stretch:80%;padding:0 11px;height:32px;cursor:pointer;white-space:nowrap}
+.seg button:first-child{border-left:0}.seg button.on{background:var(--yel);color:#000}
+.cfgrow input[type=range]{width:150px;accent-color:var(--yel)}
+.cfgrow .rv{width:40px;text-align:right;font-size:11px;color:#bdbdbd;font-variant-numeric:tabular-nums}
+.cfgrow.det{display:block;padding:0}
+.cfgrow.det summary{display:flex;align-items:center;gap:12px;padding:11px 12px;cursor:pointer;list-style:none}
+.cfgrow.det summary::-webkit-details-marker{display:none}
+.cfgrow.det .chev{width:9px;height:9px;border-right:2px solid #777;border-bottom:2px solid #777;transform:rotate(45deg);margin:0 6px 4px 0;transition:transform .15s}
+.cfgrow.det[open] .chev{transform:rotate(-135deg);margin-bottom:-4px}
+.cfgrow .dtx{padding:0 12px 12px;color:#a8a8a8;font-size:12.5px;line-height:1.55}
+.cfgrow .dtx p{margin:0 0 8px}.cfgrow .dtx ul{margin:0 0 8px;padding-left:18px}
+@media (max-width:560px){.seg button{padding:0 6px;letter-spacing:.06em}.cfgrow.wide{flex-wrap:wrap}.cfgrow.wide .cc{flex-basis:100%}.cfgrow.wide .seg{flex:1}.cfgrow.wide .seg button{flex:1}.cfgrow.wide input[type=range]{flex:1}}
+body.eco #lights,body.eco #laser,body.eco #spec{display:none!important}
+body.eco.in-session::after{display:none}
+body.eco .ticker .tk,body.eco .band .osc,body.eco .band .static,body.eco .band .screen img,body.eco .band .eq i,body.eco .fhead h1 mark,body.eco .card .art img,body.eco .card .grain{animation:none!important}
+body.eco .modal{-webkit-backdrop-filter:none;backdrop-filter:none}
+body.sz-l #scenes .sc{height:60px}body.sz-l .clip{font-size:14px}body.sz-l .lh b{font-size:12.5px}body.sz-l .mute{width:32px;height:28px}
+body.sz-s #scenes .sc{height:38px}body.sz-s .clip{font-size:10.5px}
 .bkrow{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px dashed #333;background:transparent}
 .bkrow .pinfo b{font-size:20px}
 .bkmsg{display:flex;flex-direction:column;gap:8px;padding:14px 4px;color:#9a9a9a;font-size:13px;line-height:1.45}
@@ -1201,7 +1235,7 @@ body.th-afro .nrow.root .ncell{background:#1c0a03!important}body.th-afro .nrow.r
 </div>
 <div id="welcome"><div class="wl"><svg xmlns="http://www.w3.org/2000/svg" viewBox="58.5 -6 132 132" width="170" height="170"><g transform="translate(64.5 0)"><defs><radialGradient id="capwy" cx="40%" cy="32%" r="75%"><stop offset="0" stop-color="#3a3a3a"/><stop offset="1" stop-color="#0b0b0b"/></radialGradient><filter id="glwy" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4.5"/></filter></defs><line x1="93.23" y1="26.77" x2="97.48" y2="22.52" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="83.50" y1="19.30" x2="85.00" y2="16.70" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="72.16" y1="14.60" x2="72.94" y2="11.70" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="60.00" y1="13.00" x2="60.00" y2="7.00" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="47.84" y1="14.60" x2="47.06" y2="11.70" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="36.50" y1="19.30" x2="35.00" y2="16.70" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="26.77" y1="26.77" x2="22.52" y2="22.52" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="19.30" y1="36.50" x2="16.70" y2="35.00" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="14.60" y1="47.84" x2="11.70" y2="47.06" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="13.00" y1="60.00" x2="7.00" y2="60.00" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="14.60" y1="72.16" x2="11.70" y2="72.94" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="19.30" y1="83.50" x2="16.70" y2="85.00" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="26.77" y1="93.23" x2="22.52" y2="97.48" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="36.50" y1="100.70" x2="35.00" y2="103.30" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="47.84" y1="105.40" x2="47.06" y2="108.30" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="60.00" y1="107.00" x2="60.00" y2="113.00" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="72.16" y1="105.40" x2="72.94" y2="108.30" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="83.50" y1="100.70" x2="85.00" y2="103.30" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="93.23" y1="93.23" x2="97.48" y2="97.48" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="100.70" y1="83.50" x2="103.30" y2="85.00" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="105.40" y1="72.16" x2="108.30" y2="72.94" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="107.00" y1="60.00" x2="113.00" y2="60.00" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><g filter="url(#glwy)" opacity=".55"><path d="M86.16 33.84A37 37 0 1 0 97.00 60.00" fill="none" stroke="#FFE600" stroke-width="13"/><rect x="74" y="53.5" width="29.50" height="13" fill="#FFE600"/></g><path d="M86.16 33.84A37 37 0 1 0 97.00 60.00" fill="none" stroke="#FFE600" stroke-width="13"/><line x1="79.50" y1="60.00" x2="82.50" y2="60.00" stroke="#4a4a4a" stroke-width="1.3"/><line x1="79.26" y1="63.05" x2="82.22" y2="63.52" stroke="#4a4a4a" stroke-width="1.3"/><line x1="78.55" y1="66.03" x2="81.40" y2="66.95" stroke="#4a4a4a" stroke-width="1.3"/><line x1="77.37" y1="68.85" x2="80.05" y2="70.21" stroke="#4a4a4a" stroke-width="1.3"/><line x1="75.78" y1="71.46" x2="78.20" y2="73.23" stroke="#4a4a4a" stroke-width="1.3"/><line x1="73.79" y1="73.79" x2="75.91" y2="75.91" stroke="#4a4a4a" stroke-width="1.3"/><line x1="71.46" y1="75.78" x2="73.23" y2="78.20" stroke="#4a4a4a" stroke-width="1.3"/><line x1="68.85" y1="77.37" x2="70.21" y2="80.05" stroke="#4a4a4a" stroke-width="1.3"/><line x1="66.03" y1="78.55" x2="66.95" y2="81.40" stroke="#4a4a4a" stroke-width="1.3"/><line x1="63.05" y1="79.26" x2="63.52" y2="82.22" stroke="#4a4a4a" stroke-width="1.3"/><line x1="60.00" y1="79.50" x2="60.00" y2="82.50" stroke="#4a4a4a" stroke-width="1.3"/><line x1="56.95" y1="79.26" x2="56.48" y2="82.22" stroke="#4a4a4a" stroke-width="1.3"/><line x1="53.97" y1="78.55" x2="53.05" y2="81.40" stroke="#4a4a4a" stroke-width="1.3"/><line x1="51.15" y1="77.37" x2="49.79" y2="80.05" stroke="#4a4a4a" stroke-width="1.3"/><line x1="48.54" y1="75.78" x2="46.77" y2="78.20" stroke="#4a4a4a" stroke-width="1.3"/><line x1="46.21" y1="73.79" x2="44.09" y2="75.91" stroke="#4a4a4a" stroke-width="1.3"/><line x1="44.22" y1="71.46" x2="41.80" y2="73.23" stroke="#4a4a4a" stroke-width="1.3"/><line x1="42.63" y1="68.85" x2="39.95" y2="70.21" stroke="#4a4a4a" stroke-width="1.3"/><line x1="41.45" y1="66.03" x2="38.60" y2="66.95" stroke="#4a4a4a" stroke-width="1.3"/><line x1="40.74" y1="63.05" x2="37.78" y2="63.52" stroke="#4a4a4a" stroke-width="1.3"/><line x1="40.50" y1="60.00" x2="37.50" y2="60.00" stroke="#4a4a4a" stroke-width="1.3"/><line x1="40.74" y1="56.95" x2="37.78" y2="56.48" stroke="#4a4a4a" stroke-width="1.3"/><line x1="41.45" y1="53.97" x2="38.60" y2="53.05" stroke="#4a4a4a" stroke-width="1.3"/><line x1="42.63" y1="51.15" x2="39.95" y2="49.79" stroke="#4a4a4a" stroke-width="1.3"/><line x1="44.22" y1="48.54" x2="41.80" y2="46.77" stroke="#4a4a4a" stroke-width="1.3"/><line x1="46.21" y1="46.21" x2="44.09" y2="44.09" stroke="#4a4a4a" stroke-width="1.3"/><line x1="48.54" y1="44.22" x2="46.77" y2="41.80" stroke="#4a4a4a" stroke-width="1.3"/><line x1="51.15" y1="42.63" x2="49.79" y2="39.95" stroke="#4a4a4a" stroke-width="1.3"/><line x1="53.97" y1="41.45" x2="53.05" y2="38.60" stroke="#4a4a4a" stroke-width="1.3"/><line x1="56.95" y1="40.74" x2="56.48" y2="37.78" stroke="#4a4a4a" stroke-width="1.3"/><line x1="60.00" y1="40.50" x2="60.00" y2="37.50" stroke="#4a4a4a" stroke-width="1.3"/><line x1="63.05" y1="40.74" x2="63.52" y2="37.78" stroke="#4a4a4a" stroke-width="1.3"/><line x1="66.03" y1="41.45" x2="66.95" y2="38.60" stroke="#4a4a4a" stroke-width="1.3"/><line x1="68.85" y1="42.63" x2="70.21" y2="39.95" stroke="#4a4a4a" stroke-width="1.3"/><line x1="71.46" y1="44.22" x2="73.23" y2="41.80" stroke="#4a4a4a" stroke-width="1.3"/><line x1="73.79" y1="46.21" x2="75.91" y2="44.09" stroke="#4a4a4a" stroke-width="1.3"/><line x1="75.78" y1="48.54" x2="78.20" y2="46.77" stroke="#4a4a4a" stroke-width="1.3"/><line x1="77.37" y1="51.15" x2="80.05" y2="49.79" stroke="#4a4a4a" stroke-width="1.3"/><line x1="78.55" y1="53.97" x2="81.40" y2="53.05" stroke="#4a4a4a" stroke-width="1.3"/><line x1="79.26" y1="56.95" x2="82.22" y2="56.48" stroke="#4a4a4a" stroke-width="1.3"/><rect x="74" y="53.5" width="29.50" height="13" fill="#FFE600"/><circle cx="60" cy="60" r="19.5" fill="url(#capwy)" stroke="#2a2a2a" stroke-width="1.2"/><circle cx="60" cy="60" r="13" fill="none" stroke="#ffffff" stroke-width=".8" opacity=".09"/><ellipse cx="55" cy="52" rx="10" ry="5.5" fill="#fff" opacity=".07"/><line x1="62" y1="60" x2="77" y2="60" stroke="#FFE600" stroke-width="4.4" stroke-linecap="round"/><circle cx="95.11" cy="45.46" r="6.5" fill="#FFE600" opacity=".22"/><circle cx="95.11" cy="45.46" r="3.5" fill="#FFE600"/></g></svg></div></div>
 <div id="home" class="flyer">
-  <header class="fh"><div class="flive"><i></i>Sinal ao vivo</div><div class="fbrand"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -6 132 132" width="40" height="40"><defs><radialGradient id="caphy" cx="40%" cy="32%" r="75%"><stop offset="0" stop-color="#3a3a3a"/><stop offset="1" stop-color="#0b0b0b"/></radialGradient><filter id="glhy" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4.5"/></filter></defs><line x1="93.23" y1="26.77" x2="97.48" y2="22.52" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="83.50" y1="19.30" x2="85.00" y2="16.70" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="72.16" y1="14.60" x2="72.94" y2="11.70" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="60.00" y1="13.00" x2="60.00" y2="7.00" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="47.84" y1="14.60" x2="47.06" y2="11.70" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="36.50" y1="19.30" x2="35.00" y2="16.70" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="26.77" y1="26.77" x2="22.52" y2="22.52" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="19.30" y1="36.50" x2="16.70" y2="35.00" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="14.60" y1="47.84" x2="11.70" y2="47.06" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="13.00" y1="60.00" x2="7.00" y2="60.00" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="14.60" y1="72.16" x2="11.70" y2="72.94" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="19.30" y1="83.50" x2="16.70" y2="85.00" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="26.77" y1="93.23" x2="22.52" y2="97.48" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="36.50" y1="100.70" x2="35.00" y2="103.30" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="47.84" y1="105.40" x2="47.06" y2="108.30" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="60.00" y1="107.00" x2="60.00" y2="113.00" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="72.16" y1="105.40" x2="72.94" y2="108.30" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="83.50" y1="100.70" x2="85.00" y2="103.30" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="93.23" y1="93.23" x2="97.48" y2="97.48" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="100.70" y1="83.50" x2="103.30" y2="85.00" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="105.40" y1="72.16" x2="108.30" y2="72.94" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="107.00" y1="60.00" x2="113.00" y2="60.00" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><g filter="url(#glhy)" opacity=".55"><path d="M86.16 33.84A37 37 0 1 0 97.00 60.00" fill="none" stroke="#FFE600" stroke-width="13"/><rect x="74" y="53.5" width="29.50" height="13" fill="#FFE600"/></g><path d="M86.16 33.84A37 37 0 1 0 97.00 60.00" fill="none" stroke="#FFE600" stroke-width="13"/><line x1="79.50" y1="60.00" x2="82.50" y2="60.00" stroke="#4a4a4a" stroke-width="1.3"/><line x1="79.26" y1="63.05" x2="82.22" y2="63.52" stroke="#4a4a4a" stroke-width="1.3"/><line x1="78.55" y1="66.03" x2="81.40" y2="66.95" stroke="#4a4a4a" stroke-width="1.3"/><line x1="77.37" y1="68.85" x2="80.05" y2="70.21" stroke="#4a4a4a" stroke-width="1.3"/><line x1="75.78" y1="71.46" x2="78.20" y2="73.23" stroke="#4a4a4a" stroke-width="1.3"/><line x1="73.79" y1="73.79" x2="75.91" y2="75.91" stroke="#4a4a4a" stroke-width="1.3"/><line x1="71.46" y1="75.78" x2="73.23" y2="78.20" stroke="#4a4a4a" stroke-width="1.3"/><line x1="68.85" y1="77.37" x2="70.21" y2="80.05" stroke="#4a4a4a" stroke-width="1.3"/><line x1="66.03" y1="78.55" x2="66.95" y2="81.40" stroke="#4a4a4a" stroke-width="1.3"/><line x1="63.05" y1="79.26" x2="63.52" y2="82.22" stroke="#4a4a4a" stroke-width="1.3"/><line x1="60.00" y1="79.50" x2="60.00" y2="82.50" stroke="#4a4a4a" stroke-width="1.3"/><line x1="56.95" y1="79.26" x2="56.48" y2="82.22" stroke="#4a4a4a" stroke-width="1.3"/><line x1="53.97" y1="78.55" x2="53.05" y2="81.40" stroke="#4a4a4a" stroke-width="1.3"/><line x1="51.15" y1="77.37" x2="49.79" y2="80.05" stroke="#4a4a4a" stroke-width="1.3"/><line x1="48.54" y1="75.78" x2="46.77" y2="78.20" stroke="#4a4a4a" stroke-width="1.3"/><line x1="46.21" y1="73.79" x2="44.09" y2="75.91" stroke="#4a4a4a" stroke-width="1.3"/><line x1="44.22" y1="71.46" x2="41.80" y2="73.23" stroke="#4a4a4a" stroke-width="1.3"/><line x1="42.63" y1="68.85" x2="39.95" y2="70.21" stroke="#4a4a4a" stroke-width="1.3"/><line x1="41.45" y1="66.03" x2="38.60" y2="66.95" stroke="#4a4a4a" stroke-width="1.3"/><line x1="40.74" y1="63.05" x2="37.78" y2="63.52" stroke="#4a4a4a" stroke-width="1.3"/><line x1="40.50" y1="60.00" x2="37.50" y2="60.00" stroke="#4a4a4a" stroke-width="1.3"/><line x1="40.74" y1="56.95" x2="37.78" y2="56.48" stroke="#4a4a4a" stroke-width="1.3"/><line x1="41.45" y1="53.97" x2="38.60" y2="53.05" stroke="#4a4a4a" stroke-width="1.3"/><line x1="42.63" y1="51.15" x2="39.95" y2="49.79" stroke="#4a4a4a" stroke-width="1.3"/><line x1="44.22" y1="48.54" x2="41.80" y2="46.77" stroke="#4a4a4a" stroke-width="1.3"/><line x1="46.21" y1="46.21" x2="44.09" y2="44.09" stroke="#4a4a4a" stroke-width="1.3"/><line x1="48.54" y1="44.22" x2="46.77" y2="41.80" stroke="#4a4a4a" stroke-width="1.3"/><line x1="51.15" y1="42.63" x2="49.79" y2="39.95" stroke="#4a4a4a" stroke-width="1.3"/><line x1="53.97" y1="41.45" x2="53.05" y2="38.60" stroke="#4a4a4a" stroke-width="1.3"/><line x1="56.95" y1="40.74" x2="56.48" y2="37.78" stroke="#4a4a4a" stroke-width="1.3"/><line x1="60.00" y1="40.50" x2="60.00" y2="37.50" stroke="#4a4a4a" stroke-width="1.3"/><line x1="63.05" y1="40.74" x2="63.52" y2="37.78" stroke="#4a4a4a" stroke-width="1.3"/><line x1="66.03" y1="41.45" x2="66.95" y2="38.60" stroke="#4a4a4a" stroke-width="1.3"/><line x1="68.85" y1="42.63" x2="70.21" y2="39.95" stroke="#4a4a4a" stroke-width="1.3"/><line x1="71.46" y1="44.22" x2="73.23" y2="41.80" stroke="#4a4a4a" stroke-width="1.3"/><line x1="73.79" y1="46.21" x2="75.91" y2="44.09" stroke="#4a4a4a" stroke-width="1.3"/><line x1="75.78" y1="48.54" x2="78.20" y2="46.77" stroke="#4a4a4a" stroke-width="1.3"/><line x1="77.37" y1="51.15" x2="80.05" y2="49.79" stroke="#4a4a4a" stroke-width="1.3"/><line x1="78.55" y1="53.97" x2="81.40" y2="53.05" stroke="#4a4a4a" stroke-width="1.3"/><line x1="79.26" y1="56.95" x2="82.22" y2="56.48" stroke="#4a4a4a" stroke-width="1.3"/><rect x="74" y="53.5" width="29.50" height="13" fill="#FFE600"/><circle cx="60" cy="60" r="19.5" fill="url(#caphy)" stroke="#2a2a2a" stroke-width="1.2"/><circle cx="60" cy="60" r="13" fill="none" stroke="#ffffff" stroke-width=".8" opacity=".09"/><ellipse cx="55" cy="52" rx="10" ry="5.5" fill="#fff" opacity=".07"/><line x1="62" y1="60" x2="77" y2="60" stroke="#FFE600" stroke-width="4.4" stroke-linecap="round"/><circle cx="95.11" cy="45.46" r="6.5" fill="#FFE600" opacity=".22"/><circle cx="95.11" cy="45.46" r="3.5" fill="#FFE600"/></svg></div><div class="fright"><button class="fexp" id="expOpen" aria-label="Explorar sons" title="Explorar sons"><svg viewBox="0 0 24 24"><path d="M2.5 6.5h7l2 2h10v11h-19z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="miter"/><path d="M6.5 14h1.5M9.5 11.5v5M12 12.5v3M14.5 10.5v7M17 13v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/></svg><span>Explorar</span></button><button class="fproj" id="projOpen">Projetos <span id="projN"></span></button></div></header>
+  <header class="fh"><div class="flive"><i></i>Sinal ao vivo</div><div class="fbrand"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -6 132 132" width="40" height="40"><defs><radialGradient id="caphy" cx="40%" cy="32%" r="75%"><stop offset="0" stop-color="#3a3a3a"/><stop offset="1" stop-color="#0b0b0b"/></radialGradient><filter id="glhy" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4.5"/></filter></defs><line x1="93.23" y1="26.77" x2="97.48" y2="22.52" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="83.50" y1="19.30" x2="85.00" y2="16.70" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="72.16" y1="14.60" x2="72.94" y2="11.70" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="60.00" y1="13.00" x2="60.00" y2="7.00" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="47.84" y1="14.60" x2="47.06" y2="11.70" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="36.50" y1="19.30" x2="35.00" y2="16.70" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="26.77" y1="26.77" x2="22.52" y2="22.52" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="19.30" y1="36.50" x2="16.70" y2="35.00" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="14.60" y1="47.84" x2="11.70" y2="47.06" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="13.00" y1="60.00" x2="7.00" y2="60.00" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="14.60" y1="72.16" x2="11.70" y2="72.94" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="19.30" y1="83.50" x2="16.70" y2="85.00" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="26.77" y1="93.23" x2="22.52" y2="97.48" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="36.50" y1="100.70" x2="35.00" y2="103.30" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="47.84" y1="105.40" x2="47.06" y2="108.30" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="60.00" y1="107.00" x2="60.00" y2="113.00" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="72.16" y1="105.40" x2="72.94" y2="108.30" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="83.50" y1="100.70" x2="85.00" y2="103.30" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="93.23" y1="93.23" x2="97.48" y2="97.48" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="100.70" y1="83.50" x2="103.30" y2="85.00" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="105.40" y1="72.16" x2="108.30" y2="72.94" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="107.00" y1="60.00" x2="113.00" y2="60.00" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><g filter="url(#glhy)" opacity=".55"><path d="M86.16 33.84A37 37 0 1 0 97.00 60.00" fill="none" stroke="#FFE600" stroke-width="13"/><rect x="74" y="53.5" width="29.50" height="13" fill="#FFE600"/></g><path d="M86.16 33.84A37 37 0 1 0 97.00 60.00" fill="none" stroke="#FFE600" stroke-width="13"/><line x1="79.50" y1="60.00" x2="82.50" y2="60.00" stroke="#4a4a4a" stroke-width="1.3"/><line x1="79.26" y1="63.05" x2="82.22" y2="63.52" stroke="#4a4a4a" stroke-width="1.3"/><line x1="78.55" y1="66.03" x2="81.40" y2="66.95" stroke="#4a4a4a" stroke-width="1.3"/><line x1="77.37" y1="68.85" x2="80.05" y2="70.21" stroke="#4a4a4a" stroke-width="1.3"/><line x1="75.78" y1="71.46" x2="78.20" y2="73.23" stroke="#4a4a4a" stroke-width="1.3"/><line x1="73.79" y1="73.79" x2="75.91" y2="75.91" stroke="#4a4a4a" stroke-width="1.3"/><line x1="71.46" y1="75.78" x2="73.23" y2="78.20" stroke="#4a4a4a" stroke-width="1.3"/><line x1="68.85" y1="77.37" x2="70.21" y2="80.05" stroke="#4a4a4a" stroke-width="1.3"/><line x1="66.03" y1="78.55" x2="66.95" y2="81.40" stroke="#4a4a4a" stroke-width="1.3"/><line x1="63.05" y1="79.26" x2="63.52" y2="82.22" stroke="#4a4a4a" stroke-width="1.3"/><line x1="60.00" y1="79.50" x2="60.00" y2="82.50" stroke="#4a4a4a" stroke-width="1.3"/><line x1="56.95" y1="79.26" x2="56.48" y2="82.22" stroke="#4a4a4a" stroke-width="1.3"/><line x1="53.97" y1="78.55" x2="53.05" y2="81.40" stroke="#4a4a4a" stroke-width="1.3"/><line x1="51.15" y1="77.37" x2="49.79" y2="80.05" stroke="#4a4a4a" stroke-width="1.3"/><line x1="48.54" y1="75.78" x2="46.77" y2="78.20" stroke="#4a4a4a" stroke-width="1.3"/><line x1="46.21" y1="73.79" x2="44.09" y2="75.91" stroke="#4a4a4a" stroke-width="1.3"/><line x1="44.22" y1="71.46" x2="41.80" y2="73.23" stroke="#4a4a4a" stroke-width="1.3"/><line x1="42.63" y1="68.85" x2="39.95" y2="70.21" stroke="#4a4a4a" stroke-width="1.3"/><line x1="41.45" y1="66.03" x2="38.60" y2="66.95" stroke="#4a4a4a" stroke-width="1.3"/><line x1="40.74" y1="63.05" x2="37.78" y2="63.52" stroke="#4a4a4a" stroke-width="1.3"/><line x1="40.50" y1="60.00" x2="37.50" y2="60.00" stroke="#4a4a4a" stroke-width="1.3"/><line x1="40.74" y1="56.95" x2="37.78" y2="56.48" stroke="#4a4a4a" stroke-width="1.3"/><line x1="41.45" y1="53.97" x2="38.60" y2="53.05" stroke="#4a4a4a" stroke-width="1.3"/><line x1="42.63" y1="51.15" x2="39.95" y2="49.79" stroke="#4a4a4a" stroke-width="1.3"/><line x1="44.22" y1="48.54" x2="41.80" y2="46.77" stroke="#4a4a4a" stroke-width="1.3"/><line x1="46.21" y1="46.21" x2="44.09" y2="44.09" stroke="#4a4a4a" stroke-width="1.3"/><line x1="48.54" y1="44.22" x2="46.77" y2="41.80" stroke="#4a4a4a" stroke-width="1.3"/><line x1="51.15" y1="42.63" x2="49.79" y2="39.95" stroke="#4a4a4a" stroke-width="1.3"/><line x1="53.97" y1="41.45" x2="53.05" y2="38.60" stroke="#4a4a4a" stroke-width="1.3"/><line x1="56.95" y1="40.74" x2="56.48" y2="37.78" stroke="#4a4a4a" stroke-width="1.3"/><line x1="60.00" y1="40.50" x2="60.00" y2="37.50" stroke="#4a4a4a" stroke-width="1.3"/><line x1="63.05" y1="40.74" x2="63.52" y2="37.78" stroke="#4a4a4a" stroke-width="1.3"/><line x1="66.03" y1="41.45" x2="66.95" y2="38.60" stroke="#4a4a4a" stroke-width="1.3"/><line x1="68.85" y1="42.63" x2="70.21" y2="39.95" stroke="#4a4a4a" stroke-width="1.3"/><line x1="71.46" y1="44.22" x2="73.23" y2="41.80" stroke="#4a4a4a" stroke-width="1.3"/><line x1="73.79" y1="46.21" x2="75.91" y2="44.09" stroke="#4a4a4a" stroke-width="1.3"/><line x1="75.78" y1="48.54" x2="78.20" y2="46.77" stroke="#4a4a4a" stroke-width="1.3"/><line x1="77.37" y1="51.15" x2="80.05" y2="49.79" stroke="#4a4a4a" stroke-width="1.3"/><line x1="78.55" y1="53.97" x2="81.40" y2="53.05" stroke="#4a4a4a" stroke-width="1.3"/><line x1="79.26" y1="56.95" x2="82.22" y2="56.48" stroke="#4a4a4a" stroke-width="1.3"/><rect x="74" y="53.5" width="29.50" height="13" fill="#FFE600"/><circle cx="60" cy="60" r="19.5" fill="url(#caphy)" stroke="#2a2a2a" stroke-width="1.2"/><circle cx="60" cy="60" r="13" fill="none" stroke="#ffffff" stroke-width=".8" opacity=".09"/><ellipse cx="55" cy="52" rx="10" ry="5.5" fill="#fff" opacity=".07"/><line x1="62" y1="60" x2="77" y2="60" stroke="#FFE600" stroke-width="4.4" stroke-linecap="round"/><circle cx="95.11" cy="45.46" r="6.5" fill="#FFE600" opacity=".22"/><circle cx="95.11" cy="45.46" r="3.5" fill="#FFE600"/></svg></div><div class="fright"><button class="fexp" id="expOpen" aria-label="Explorar sons" title="Explorar sons"><svg viewBox="0 0 24 24"><path d="M2.5 6.5h7l2 2h10v11h-19z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="miter"/><path d="M6.5 14h1.5M9.5 11.5v5M12 12.5v3M14.5 10.5v7M17 13v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/></svg><span>Explorar</span></button><button class="fproj" id="projOpen">Projetos <span id="projN"></span></button><button class="fcfg" id="cfgOpen" aria-label="Configurações" title="Configurações"><svg viewBox="0 0 24 24"><path d="M10.3 2.8h3.4l.5 2.6 1.6.9 2.5-.9 1.7 2.9-2 1.8v1.8l2 1.8-1.7 2.9-2.5-.9-1.6.9-.5 2.6h-3.4l-.5-2.6-1.6-.9-2.5.9-1.7-2.9 2-1.8v-1.8l-2-1.8 1.7-2.9 2.5.9 1.6-.9z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></button></div></header>
   <div class="tape" aria-hidden="true"><div class="tk"><span>Você está ouvindo G-STUDIO</span><b></b><span>Transmitindo de algum lugar</span><b></b><span>Não mexa na antena</span><b></b><span>No photos on the dancefloor</span><b></b><span>Sinal fraco, grave forte</span><b></b><span>Frequência pirata</span><b></b><span>Open till late</span><b></b><span>One more tune</span><b></b><span>Você está ouvindo G-STUDIO</span><b></b><span>Transmitindo de algum lugar</span><b></b><span>Não mexa na antena</span><b></b><span>No photos on the dancefloor</span><b></b><span>Sinal fraco, grave forte</span><b></b><span>Frequência pirata</span><b></b><span>Open till late</span><b></b><span>One more tune</span><b></b></div></div>
   <div class="fhead"><h1>Qual é a <mark>vibe</mark> hoje?</h1><p>Escolhe o canal e solta o play.</p></div>
   <div class="bands" id="cards"></div>
@@ -1338,6 +1372,11 @@ body.th-afro .nrow.root .ncell{background:#1c0a03!important}body.th-afro .nrow.r
   <input type="file" id="bkFile" accept=".json,application/json" hidden>
   <div class="mfoot"><span class="spacer"></span><button class="hw pri" id="plClose">Fechar</button></div>
 </div></div>
+<div class="modal" id="cfgModal"><div class="sheet cfgsheet">
+  <div class="sh-head"><div class="sh-title"><i></i><span>Configurações</span></div><span class="lbl">G-STUDIO v<span id="cfgVer"></span></span></div>
+  <div class="cfgbody" id="cfgBody"></div>
+  <div class="mfoot"><span class="spacer"></span><button class="hw pri" id="cfgClose">Fechar</button></div>
+</div></div>
 <div class="modal" id="bkModal"><div class="sheet small">
   <div class="sh-head"><div class="sh-title"><i></i><span id="bkTitle">Backup</span></div><span class="lbl" id="bkInfo"></span></div>
   <div id="bkBody"></div>
@@ -1382,7 +1421,11 @@ const ICON={
   link:'<svg viewBox="0 0 16 16"><path d="M6.6 9.4l2.8-2.8M7.4 4.4l1.2-1.2a2.6 2.6 0 0 1 3.7 3.7l-1.2 1.2M8.6 11.6l-1.2 1.2a2.6 2.6 0 0 1-3.7-3.7l1.2-1.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>',
   edit:'<svg viewBox="0 0 16 16"><path d="M11.2 1.8l3 3-8.7 8.7-3.8.8.8-3.8z"/></svg>'
 };
-let ctx,out,mix,filt,dly,fb,wet,noiseBuf,fin,anL,anR,anS;
+let ctx,out,mix,filt,dly,fb,wet,noiseBuf,fin,anL,anR,anS,CMP=null;
+const APPV='56';
+const CFG_DEF={launch:'bar',swing:true,wake:true,pvol:1,sting:true,autoKey:true,rec:'m4a',limit:true,anim:true,size:'n',eco:false};
+const CFG=Object.assign({},CFG_DEF,(()=>{try{const j=JSON.parse(localStorage.getItem('gstudio_cfg'));return j&&typeof j==='object'?j:{}}catch(e){return{}}})());
+function saveCfg(){try{localStorage.setItem('gstudio_cfg',JSON.stringify(CFG))}catch(e){}}
 let barOff=0,tT0=0;const MET={on:false};
 let duck=null;
 let bpm=124,playing=false,step=0,bar=0,nextTime=0,timer=null,cur=-1,curBar=0,lastKey='';
@@ -1933,8 +1976,8 @@ function saveScenes(){try{localStorage.setItem('gstudio_scenes',JSON.stringify(S
 function initAudio(){
   if(ctx){ctx.resume&&ctx.resume();return}
   ctx=new (window.AudioContext||window.webkitAudioContext)();
-  const comp=ctx.createDynamicsCompressor();comp.threshold.value=-10;comp.knee.value=6;comp.ratio.value=20;comp.attack.value=.002;comp.release.value=.15;fin=ctx.createGain();fin.gain.value=.9;comp.connect(fin);fin.connect(ctx.destination);setupMeters();
-  out=ctx.createGain();out.gain.value=K.mv;out.connect(comp);
+  const comp=CMP=ctx.createDynamicsCompressor();comp.threshold.value=-10;comp.knee.value=6;comp.ratio.value=20;comp.attack.value=.002;comp.release.value=.15;fin=ctx.createGain();fin.gain.value=.9;comp.connect(fin);fin.connect(ctx.destination);setupMeters();
+  out=ctx.createGain();out.gain.value=K.mv;out.connect(CFG.limit?comp:fin);
   filt=ctx.createBiquadFilter();filt.type='lowpass';filt.Q.value=3;setFilter();
   mix=ctx.createGain();MA.sum=ctx.createGain();MA.sum.connect(filt);filt.connect(out);
   duck=ctx.createGain();duck.connect(mix);
@@ -2416,23 +2459,26 @@ function hitsOf(pat,half){
 
 
 // ---------- Relógio ----------
-function applyQueues(){
+function applyQueues(free){
   cols.forEach(c=>{
     if(c.queued===null)return;
     const cp=c.active>=0?getPat(c,c.active):null,np=c.queued>=0?getPat(c,c.queued):null;
     const long=(cp&&cp.len===32)||(np&&np.len===32);
-    if(long&&pm2(bar-barOff)===1)return;
+    if(!free&&long&&pm2(bar-barOff)===1)return;
     c.active=c.queued;c.queued=null;
   });
 }
+function qHit(st,mb){const L=CFG.launch;return L==='beat'?true:L==='2bar'?(st===0&&pm2(mb)===0):st===0}
+function qSteps(){const L=CFG.launch,s=step;if(L==='beat')return (4-s%4)%4;let n=(16-s)%16;if(L==='2bar'){const mb=bar-barOff+(s>0?1:0);if(pm2(mb)===1)n+=16}return n}
 function tick(){
   while(nextTime<ctx.currentTime+.12){
     const sd=60/bpm/4,mb=bar-barOff;
     if((MET.on||mb<0)&&step%4===0)metClick(nextTime,step===0);
     if(mb>=0){
-      if(step===0){applyQueues();if(screen==='novo')NOVO.forEach(c=>{if(c.lsrc&&c.active<0)stopLaneSrc(c,nextTime)})}
+      if(step%4===0&&qHit(step,mb))applyQueues(CFG.launch==='beat');
+      if(step===0){if(screen==='novo')NOVO.forEach(c=>{if(c.lsrc&&c.active<0)stopLaneSrc(c,nextTime)})}
       if(step%4===0&&cols.some(c=>c.active>=0))PQ.push({t:nextTime,v:.4});
-      const sw=(step%2===1)?(STYLES[style].swing||0)*sd:0;
+      const sw=(step%2===1&&CFG.swing)?(STYLES[style].swing||0)*sd:0;
       cols.forEach(c=>playCol(c,step,nextTime+sw));
     }
     uiQ.push({t:nextTime,s:step,b:mb});
@@ -2442,12 +2488,12 @@ function tick(){
 function setPlayUI(){$('#playIco').innerHTML=playing?ICON.stop:ICON.play;$('#play').classList.toggle('on',playing)}
 function startTransport(countIn,at){
   step=0;bar=0;barOff=countIn?1:0;nextTime=at&&at>ctx.currentTime+.03?at:ctx.currentTime+.06;tT0=nextTime;playing=true;ALL().forEach(c=>{c.lastM=null});
-  clearInterval(timer);timer=setInterval(tick,25);tick();setPlayUI();
+  clearInterval(timer);timer=setInterval(tick,25);tick();setPlayUI();wakeOn();
 }
 function stopTransport(){
   clearInterval(timer);playing=false;if(typeof NOVO!=='undefined'&&NOVO)NOVO.forEach(c=>stopLaneSrc(c));uiQ.length=0;PQ.length=0;cur=-1;curBar=0;sceneOn=-1;
   ALL().forEach(c=>{c.active=-1;c.queued=null;c.preview=null});
-  setPlayUI();
+  setPlayUI();wakeOff();
   if(ED.ci>=0){ED.prev=false;$('#cePrev').classList.remove('on')}
 }
 function tap(ci,pi){
@@ -2475,7 +2521,7 @@ function launchScene(i){
   const slot=c=>{const v=sc[c.key];return Number.isInteger(v)&&getPat(c,v)?v:-1};
   if(!playing){cols.forEach(c=>{c.active=slot(c);c.queued=null});startTransport();sceneFx(i);return}
   cols.forEach(c=>{const v=slot(c);c.queued=(v===c.active)?null:v});
-  const sd=60/bpm/4,tb=nextTime+((16-step)%16)*sd,dl=Math.max(0,(tb-ctx.currentTime+(ctx.outputLatency||0))*1000);
+  const sd=60/bpm/4,tb=nextTime+qSteps()*sd,dl=Math.max(0,(tb-ctx.currentTime+(ctx.outputLatency||0))*1000);
   clearTimeout(launchScene._t);launchScene._t=setTimeout(()=>{if(sceneOn===i&&playing)sceneFx(i)},dl);
 }
 // animação ao soltar uma cena: flash, onda de choque, número gigante com glitch e as linhas acendendo em cascata
@@ -2820,7 +2866,7 @@ function applyCols(){
 }
 function layoutRows(){
   const g=$('#grid');if(!g||!g._spec)return;
-  const auto=screen!=='main'?'minmax(44px,92px)':'minmax(30px,1fr)';
+  const mn=CFG.size==='l'?46:CFG.size==='s'?24:30,auto=screen!=='main'?'minmax('+(mn+14)+'px,'+(mn*3)+'px)':'minmax('+mn+'px,1fr)';
   g.style.gridTemplateRows=g._spec.map(x=>typeof x==='string'?x:(x.h?x.h+'px':auto)).join(' ');
 }
 function rowResizer(el,c,row){
@@ -3611,6 +3657,106 @@ $('#bkFile').onchange=e=>bkRead(e.target.files&&e.target.files[0]);
 $('#bkModal').addEventListener('click',e=>{if(e.target.id==='bkModal')bkClose()});
 updBkInfo();
 
+
+// ---------- Configurações ----------
+const WAKE={s:null};
+async function wakeOn(){if(!CFG.wake||!playing||WAKE.s||!navigator.wakeLock)return;try{const s=await navigator.wakeLock.request('screen');if(!playing||!CFG.wake){s.release().catch(()=>{});return}WAKE.s=s;s.addEventListener('release',()=>{if(WAKE.s===s)WAKE.s=null})}catch(e){}}
+function wakeOff(){if(WAKE.s){const s=WAKE.s;WAKE.s=null;s.release().catch(()=>{})}}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')wakeOn()});
+function setLimit(){if(!ctx||!CMP)return;try{out.disconnect()}catch(e){}out.connect(CFG.limit?CMP:fin)}
+function applyCfg(){
+  const b=document.body;b.classList.toggle('eco',!!CFG.eco);b.classList.toggle('sz-s',CFG.size==='s');b.classList.toggle('sz-l',CFG.size==='l');
+  setLimit();if(typeof layoutRows==='function')layoutRows();
+  if(CFG.wake)wakeOn();else wakeOff();
+}
+const CFG_SPEC=[
+ {sec:'Tocar',rows:[
+  {k:'launch',t:'Quando a cena entra',d:'Vale para cenas e loops trocados com a música tocando.',seg:[['beat','No tempo'],['bar','No compasso'],['2bar','2 compassos']]},
+  {k:'swing',t:'Swing',d:'O balanço de cada gênero. Desligado, tudo fica reto.',tg:1},
+  {k:'wake',t:'Tela sempre acesa',d:'A tela não apaga enquanto a música toca.',tg:1}]},
+ {sec:'Som',rows:[
+  {k:'pvol',t:'Volume da prévia',d:'Prévias da tela inicial e do Explorar.',rng:1},
+  {k:'sting',t:'Som ao entrar no gênero',d:'O efeito que toca quando você abre um gênero.',tg:1},
+  {k:'autoKey',t:'Tom automático no Criar novo',d:'Coloca os sons no mesmo tom. Vale para rascunhos novos.',tg:1},
+  {k:'rec',t:'Formato da gravação',d:'M4A é leve para mandar. WAV tem qualidade máxima.',seg:[['m4a','M4A'],['wav','WAV']]},
+  {k:'limit',t:'Proteção contra clip',d:'Segura os picos na saída. Desligada, o som fica mais aberto, mas pode distorcer.',tg:1}]},
+ {sec:'Visual',rows:[
+  {k:'anim',t:'Animações',d:'Troca de página e explosão ao soltar uma cena.',tg:1},
+  {k:'size',t:'Tamanho dos botões',d:'Grande é melhor para tocar com o dedo. Compacto mostra mais de uma vez.',seg:[['s','Compacto'],['n','Normal'],['l','Grande']]},
+  {k:'eco',t:'Modo economia',d:'Desliga luzes, laser, espectro e animações de fundo. Poupa bateria.',tg:1}]}
+];
+function cfgRow(t,d){const r=document.createElement('div');r.className='cfgrow';r.innerHTML='<div class="ct"><b></b><small></small></div><div class="cc"></div>';r.querySelector('b').textContent=t;const s=r.querySelector('small');if(d)s.textContent=d;else s.remove();return r}
+function cfgSet(k,v){CFG[k]=v;saveCfg();applyCfg()}
+function armBtn(b,label,fn){let t=null;b.onclick=()=>{if(!t){b.classList.add('armed');b.textContent=label;t=setTimeout(()=>{t=null;b.classList.remove('armed');b.textContent=b.dataset.l},3000);return}clearTimeout(t);t=null;fn()};b.dataset.l=b.textContent}
+function renderCfg(){
+  const box=$('#cfgBody');box.innerHTML='';
+  CFG_SPEC.forEach(S=>{
+    const sec=document.createElement('section');sec.className='cfgsec';sec.innerHTML='<h3></h3>';sec.querySelector('h3').textContent=S.sec;
+    S.rows.forEach(R=>{
+      const r=cfgRow(R.t,R.d),cc=r.querySelector('.cc');
+      if(R.tg){const b=document.createElement('button');b.className='tg';b.setAttribute('role','switch');b.setAttribute('aria-label',R.t);
+        const up=()=>b.setAttribute('aria-checked',CFG[R.k]?'true':'false');up();b.onclick=()=>{cfgSet(R.k,!CFG[R.k]);up()};cc.appendChild(b)}
+      else if(R.seg){r.classList.add('wide');const g=document.createElement('div');g.className='seg';
+        R.seg.forEach(([v,l])=>{const b=document.createElement('button');b.textContent=l;b.classList.toggle('on',CFG[R.k]===v);b.onclick=()=>{cfgSet(R.k,v);g.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))};g.appendChild(b)});cc.appendChild(g)}
+      else if(R.rng){r.classList.add('wide');const i=document.createElement('input');i.type='range';i.min=0;i.max=100;i.step=5;i.value=Math.round(CFG.pvol*100);i.setAttribute('aria-label',R.t);
+        const o=document.createElement('span');o.className='rv';const up=()=>{o.textContent=i.value+'%'};up();i.oninput=()=>{CFG.pvol=i.value/100;up();if(PV.out&&PV.timer)PV.out.gain.value=Math.max(.0001,(PV.base||.6)*CFG.pvol)};i.onchange=()=>saveCfg();cc.appendChild(i);cc.appendChild(o)}
+      sec.appendChild(r);
+    });
+    box.appendChild(sec);
+  });
+  // Dados
+  const sd=document.createElement('section');sd.className='cfgsec';sd.innerHTML='<h3>Dados</h3>';
+  const rb=cfgRow('Backup','');rb.querySelector('.ct').insertAdjacentHTML('beforeend','<small id="cfgBk"></small>');
+  rb.querySelector('.cc').innerHTML='<button class="hw" id="cfgBkE">Exportar</button><button class="hw" id="cfgBkR">Restaurar</button>';sd.appendChild(rb);
+  const rs=cfgRow('Espaço usado','Calculando…');rs.querySelector('small').id='cfgSpace';sd.appendChild(rs);
+  const rr=cfgRow('Voltar a tela Principal ao original','Apaga seus loops M1 a M4, as cenas editadas, os efeitos e os tamanhos das linhas. Projetos, gêneros criados e sons ficam.');
+  rr.querySelector('.cc').innerHTML='<button class="hw" id="cfgReset">Voltar</button>';sd.appendChild(rr);
+  const ra=cfgRow('Apagar tudo','Deixa o app como novo: apaga projetos, gêneros criados, sons e configurações. Faça um backup antes.');
+  ra.querySelector('.cc').innerHTML='<button class="hw danger" id="cfgWipe">Apagar</button>';sd.appendChild(ra);
+  box.appendChild(sd);
+  // Ajuda e Sobre
+  const sa=document.createElement('section');sa.className='cfgsec';sa.innerHTML='<h3>Ajuda e Sobre</h3>';
+  const rt=cfgRow('Rever o tour','Mostra de novo a explicação rápida da tela inicial e da sessão.');rt.querySelector('.cc').innerHTML='<button class="hw" id="cfgTour">Ver</button>';sa.appendChild(rt);
+  sa.insertAdjacentHTML('beforeend',`<details class="cfgrow det"><summary><div class="ct"><b>Privacidade</b><small>Tudo fica no seu aparelho.</small></div><span class="chev"></span></summary><div class="dtx">
+<p>O G-STUDIO não tem conta, não coleta dados e não manda nada para servidor. Projetos, gêneros criados, sons importados e gravações ficam guardados só neste aparelho, no armazenamento do navegador ou do app.</p>
+<p>O microfone só é usado quando você toca em gravar no Explorar, e o áudio fica no aparelho. Os arquivos de backup e as gravações só saem daqui quando você mesmo exporta ou compartilha.</p>
+<p>Se você apagar os dados do site ou o app, tudo isso some. Por isso, faça backup de vez em quando.</p></div></details>`);
+  sa.insertAdjacentHTML('beforeend',`<details class="cfgrow det"><summary><div class="ct"><b>Versão e créditos</b><small>G-STUDIO v${APPV}</small></div><span class="chev"></span></summary><div class="dtx">
+<p>Os sons dos gêneros são sintetizados em tempo real pelo próprio app. As amostras gravadas são de domínio público (CC0 1.0), do pacote Stargate DAW sample pack:</p>
+<ul><li>Congas, bongôs e log drum: VCSL e VCSO-2-CE, por sgossner</li><li>Clap 909: Fugue State Audio</li><li>Palma: Freesound 493707, bastianpusch</li><li>Hi-hats, ride e crash: Karoryfer Samples</li><li>Voz "let's go": microlag</li></ul>
+<p>Fontes: Archivo, Big Shoulders Display e Syne, todas com licença SIL Open Font.</p></div></details>`);
+  box.appendChild(sa);
+  $('#cfgBkE').onclick=bkExport;$('#cfgBkR').onclick=bkPick;
+  armBtn($('#cfgReset'),'Certeza?',cfgResetMain);armBtn($('#cfgWipe'),'Apaga tudo mesmo?',cfgWipe);
+  $('#cfgTour').onclick=()=>{try{localStorage.removeItem('gstudio_tour_home');localStorage.removeItem('gstudio_tour_sess')}catch(e){}closeModal('cfgModal');if(document.body.classList.contains('in-session'))startTour('sess');else setTimeout(()=>startTour('home'),250)};
+  updCfgBk();cfgSpace();
+}
+function updCfgBk(){const e=$('#cfgBk');if(!e)return;const t=+localStorage.getItem('gstudio_bkdate')||0;e.textContent=t?'Último backup: '+fmtDate(t):'Nenhum backup feito ainda'}
+async function cfgSpace(){
+  const e=$('#cfgSpace');if(!e)return;let snd=0,n=0,ls=0;
+  try{(await idbEntries()).forEach(([k,v])=>{const s=v&&(v.byteLength||0);snd+=s;n++})}catch(_){}
+  for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&(k.startsWith('gstudio_')||k.startsWith('looppads_')))ls+=(localStorage.getItem(k)||'').length*2}
+  let tail='';try{if(navigator.storage&&navigator.storage.estimate){const q=await navigator.storage.estimate();if(q&&q.quota)tail=' · livre: '+fmtMB(Math.max(0,q.quota-(q.usage||0)))}}catch(_){}
+  e.textContent='Sons seus: '+(n?fmtMB(snd)+' em '+plural(n,'arquivo','arquivos'):'nenhum')+' · Projetos e ajustes: '+fmtMB(ls)+tail;
+}
+function cfgResetMain(){
+  if(playing)stopTransport();
+  try{const u=JSON.parse(localStorage.getItem('looppads_user'))||{};MAIN.forEach(l=>{delete u[l.key]});localStorage.setItem('looppads_user',JSON.stringify(u))}catch(e){}
+  try{const j=JSON.parse(localStorage.getItem('gstudio_scenes'))||{};delete j.main;localStorage.setItem('gstudio_scenes',JSON.stringify(j))}catch(e){}
+  ['gstudio_fx','gstudio_layout','looppads_scenes'].forEach(k=>localStorage.removeItem(k));
+  location.reload();
+}
+async function cfgWipe(){
+  if(playing)stopTransport();
+  try{await idbDo('readwrite',st=>st.clear())}catch(e){}
+  const ks=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&(k.startsWith('gstudio_')||k.startsWith('looppads_')))ks.push(k)}
+  ks.forEach(k=>localStorage.removeItem(k));location.reload();
+}
+function openCfg(){$('#cfgVer').textContent=APPV;renderCfg();$('#cfgModal').classList.add('open')}
+$('#cfgOpen').onclick=openCfg;$('#cfgClose').onclick=()=>closeModal('cfgModal');
+$('#cfgModal').addEventListener('click',e=>{if(e.target.id==='cfgModal')closeModal('cfgModal')});
+applyCfg();
+
 // ---------- Gravação: grava o que sai na master e exporta ----------
 const REC={on:false,t0:0,L:[],R:[],len:0,sr:48000,sp:null,z:null,mr:null,mrc:[],mime:'',dst:null,wav:null,m4a:null,uiT:null};
 const f2i=a=>{const o=new Int16Array(a.length);for(let i=0;i<a.length;i++){const v=a[i]<-1?-1:a[i]>1?1:a[i];o[i]=v<0?v*32768:v*32767}return o};
@@ -3667,6 +3813,7 @@ function recCountIn(){
 function recCancel(){REC.tms.forEach(clearTimeout);REC.tms=[];REC.cnt=0;REC.on=false;clearInterval(REC.uiT);
   try{fin.disconnect(REC.sp)}catch(e){}try{REC.sp.disconnect()}catch(e){}try{if(REC.mr&&REC.mr.state!=='inactive')REC.mr.stop()}catch(e){}try{fin.disconnect(REC.dst)}catch(e){}
   updRecUI();flash('Gravação cancelada')}
+const recPref=()=>CFG.rec==='wav'?(REC.wav||REC.m4a):(REC.m4a||REC.wav);
 const recExt=()=>REC.mime.includes('webm')?'webm':'m4a';
 const recFile=(blob,ext)=>new File([blob],(($('#rdName').value||'G-STUDIO').trim().replace(/[\\/:*?"<>|]+/g,'-')||'G-STUDIO')+'.'+ext,{type:blob.type});
 function dl(blob,ext){const f=recFile(blob,ext),u=URL.createObjectURL(f),a=document.createElement('a');a.href=u;a.download=f.name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),60000)}
@@ -3677,14 +3824,14 @@ function openRecDone(){
   $('#rdInfo').textContent=fmtT(secs)+(REC.wav?' · WAV '+mb(REC.wav):'')+(REC.m4a?' · '+recExt().toUpperCase()+' '+mb(REC.m4a):'');
   $('#rdM4a').style.display=REC.m4a?'':'none';$('#rdM4a').textContent='Baixar '+recExt().toUpperCase();
   $('#rdWav').style.display=REC.wav?'':'none';
-  const sh=REC.m4a||REC.wav,canSh=!!(navigator.canShare&&sh&&navigator.canShare({files:[recFile(sh,REC.m4a?recExt():'wav')]}));
+  const sh=recPref(),canSh=!!(navigator.canShare&&sh&&navigator.canShare({files:[recFile(sh,sh===REC.m4a?recExt():'wav')]}));
   $('#rdShare').style.display=canSh?'':'none';
   $('#recDone').classList.add('open');
 }
 $('#recBtn').onclick=()=>REC.cnt?recCancel():REC.on?recStop():recCountIn();
 $('#rdWav').onclick=()=>{if(REC.wav)dl(REC.wav,'wav')};
 $('#rdM4a').onclick=()=>{if(REC.m4a)dl(REC.m4a,recExt())};
-$('#rdShare').onclick=async()=>{const b=REC.m4a||REC.wav,f=recFile(b,REC.m4a?recExt():'wav');try{await navigator.share({files:[f],title:f.name})}catch(e){}};
+$('#rdShare').onclick=async()=>{const b=recPref(),f=recFile(b,b===REC.m4a?recExt():'wav');try{await navigator.share({files:[f],title:f.name})}catch(e){}};
 $('#rdClose').onclick=()=>closeModal('recDone');
 $('#rdDiscard').onclick=()=>{REC.wav=null;REC.m4a=null;closeModal('recDone');flash('Gravação descartada')};
 
@@ -3711,13 +3858,14 @@ function drawViz(){
     VZ.lvL=Math.max(dbv(pl),VZ.lvL-.025);VZ.lvR=Math.max(dbv(pr),VZ.lvR-.025);
     setLvl(elL,VZ.lvL);setLvl(elR,VZ.lvR);
     clipLed.classList.toggle('hot',now<VZ.clipUntil);
-    cols.forEach(c=>{
+    if(!CFG.eco)cols.forEach(c=>{
       if(!c.an||!c.lmEl)return;
       const v=Math.max(dbv(peakOf(c.an,VZ.lb)),(c.lv||0)-.03);c.lv=v;
       if(Math.abs(v-(c.lvS==null?-1:c.lvS))>.008){c.lvS=v;setLvl(c.lmEl,v)}
     });
     anS.getByteFrequencyData(VZ.fq);
   }
+  if(CFG.eco){PQ.length=0;return}
   VZ.pulse*=.88;
   if(ctx)while(PQ.length&&PQ[0].t<=ctx.currentTime){const q=PQ.shift();if(q.v>VZ.pulse)VZ.pulse=q.v}
   if(VZ.pulse<.01)VZ.pulse=0;
@@ -3821,7 +3969,7 @@ function buildHome(){
     b.onclick=fn;box.appendChild(b);
   });
 }
-const reduceMotion=()=>window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+const reduceMotion=()=>!CFG.anim||(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
 let flickT=0;
 function flickLoop(){clearTimeout(flickT);flickT=setTimeout(()=>{
   if(!document.body.classList.contains('in-session')&&!reduceMotion()){
@@ -3846,7 +3994,7 @@ function pvTick(){
   const S=STYLES[PV.k];
   if(PV.endAt){if(ctx.currentTime>PV.endAt)pvStop(true);return}
   while(PV.next<ctx.currentTime+.12&&PV.timer){
-    const sd=60/bpm/4,t=PV.next,sw=(PV.step%2===1)?(S.swing||0)*sd:0;
+    const sd=60/bpm/4,t=PV.next,sw=(PV.step%2===1&&CFG.swing)?(S.swing||0)*sd:0;
     if(PV.bar>=PV.bars){ // golpe final, cauda e fim
       const L=PV.lanes,g=PV.out.gain;
       if(PV.endHit){kick(t,L.kick.gain,1);pvDuck(t,1);fxHit(t,3,2.4,L.fx.gain,1);g.setValueAtTime(PV.vol,t+.5);g.linearRampToValueAtTime(.0001,t+2.6);PV.endAt=t+2.7}
@@ -3860,7 +4008,7 @@ function pvTick(){
 }
 function pvStart(k,onDone,opt){
   pvStop(false);initAudio();opt=opt||{};
-  PV.plan=opt.plan||null;PV.bars=opt.bars||8;PV.endHit=opt.end!==false;PV.vol=opt.vol||.6;
+  PV.plan=opt.plan||null;PV.bars=opt.bars||8;PV.endHit=opt.end!==false;PV.base=opt.vol||.6;PV.vol=Math.max(.0001,PV.base*CFG.pvol);
   PV.k=k;PV.done=onDone;PV.bpm0=bpm;bpm=opt.bpm||STYLES[k].bpm;PV.cl=null;
   PV.out=ctx.createGain();PV.out.gain.value=.0001;PV.out.connect(out);
   const rv=ctx.createConvolver();rv.buffer=makeIR(1.6,.35);const rg=ctx.createGain();rg.gain.value=.16;rv.connect(rg);rg.connect(PV.out);
@@ -3908,7 +4056,7 @@ function pageWipe(o,mid){
 }
 // som ao entrar num canal: subida de fita e um golpe do próprio gênero (kick + acorde)
 function genreSting(k){
-  if(!ctx||!noiseBuf)return;
+  if(!CFG.sting||!ctx||!noiseBuf)return;
   const g=STYLES[k]&&!STYLES[k].novo?k:'house',S=STYLES[g],t=ctx.currentTime+.02,o=ctx.createGain();o.gain.value=.5;o.connect(out);
   const n=noise(t,.34),f=ctx.createBiquadFilter(),ng=ctx.createGain();f.type='bandpass';f.Q.value=2.2;
   f.frequency.setValueAtTime(320,t);f.frequency.exponentialRampToValueAtTime(7500,t+.3);
@@ -4210,7 +4358,7 @@ function render(){
 // ===================== EXPLORAR + CRIAR NOVO =====================
 // Biblioteca: instrumentos dos gêneros (4 loops cada), amostras gravadas do G-STUDIO e sons do usuário (importados ou gravados)
 var LSND=null;
-var NOVO=[],NV={n:0,root:9,mode:'minor',auto:true,bpm:124,ctx:'draft'},UGEN=null;
+var NOVO=[],NV={n:0,root:9,mode:'minor',auto:CFG.autoKey!==false,bpm:124,ctx:'draft'},UGEN=null;
 var LIBM={items:[],folders:[],favs:[]};
 var UBUF={},UPEND={};
 var XS={open:false,pick:false,view:'all',type:'all',genre:'all',q:'',aud:null,menuId:null};
@@ -4241,7 +4389,7 @@ function novoLane(o){
 // carrega um conjunto de faixas na página (o rascunho do Criar novo ou um gênero do usuário)
 function novoFill(data,cx){
   NOVO.forEach(c=>{stopLaneSrc(c);if(c.gain){try{c.gain.disconnect();c.post.disconnect()}catch(e){}}});NOVO.length=0;
-  Object.assign(NV,{n:0,root:9,mode:'minor',auto:true,bpm:124},data.nv||{});NV.ctx=cx;
+  Object.assign(NV,{n:0,root:9,mode:'minor',auto:CFG.autoKey!==false,bpm:124},data.nv||{});NV.ctx=cx;
   (data.lanes||[]).forEach(o=>{if(!o||!TYPES[o.type]||typeof o.key!=='string')return;const l=novoLane(o);
     if(cx!=='draft'){l.upats=(data.pats&&Array.isArray(data.pats[o.key]))?data.pats[o.key]:[null,null,null,null];userPats[o.key]=l.upats}
     else if(!userPats[o.key])userPats[o.key]=[null,null,null,null];
