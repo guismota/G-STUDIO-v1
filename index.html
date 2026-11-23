@@ -1117,6 +1117,7 @@ body.eco .htile .tv::before{display:none}
  .clip:hover{border-color:#3c3c3c!important}
  .cfgrow.det summary:hover b{color:var(--yel)}
 }
+.lane.syn .clip:not(.play):not(.q){background:#111113!important;border-color:#262628!important}
 .clip.kfocus{outline:2px solid var(--yel);outline-offset:-2px;z-index:2}
 #bkModal.kbm .sheet{width:min(620px,100%)}
 .kbl{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px 22px;max-height:calc(100dvh - 190px);overflow-y:auto;padding:4px 2px}
@@ -1570,7 +1571,7 @@ let ctx,out,mix,filt,dly,fb,wet,noiseBuf,fin,anL,anR,anS,CMP=null;
 const CFG_DEF={launch:'bar',swing:true,wake:true,pvol:1,sting:true,autoKey:true,rec:'m4a',limit:true,anim:true,size:'n',eco:false,noflash:false,noshake:false,mono:false,keys:true};
 const CFG=Object.assign({},CFG_DEF,(()=>{try{const j=JSON.parse(localStorage.getItem('gstudio_cfg'));return j&&typeof j==='object'?j:{}}catch(e){return{}}})());
 function saveCfg(){try{localStorage.setItem('gstudio_cfg',JSON.stringify(CFG))}catch(e){}}
-const APPV='1.7.2.8';
+const APPV='1.7.2.9';
 const DEV=(()=>{const ua=navigator.userAgent||'',pf=navigator.platform||'',tp=navigator.maxTouchPoints||0;
   const ipad=/iPad/.test(ua)||((pf==='MacIntel'||/Macintosh/.test(ua))&&tp>1),iphone=/iPhone|iPod/.test(ua),android=/Android/.test(ua);
   const os=ipad?'ipados':iphone?'ios':android?'android':(/Mac/.test(pf)||/Macintosh/.test(ua))?'mac':(/Win/.test(pf)||/Windows/.test(ua))?'windows':/CrOS/.test(ua)?'chromeos':/Linux/.test(ua)?'linux':'other';
@@ -3214,7 +3215,7 @@ function colResizer(el,which){
   });
 }
 function buildLane(c,ci){
-  const row=document.createElement('div');row.className='lane'+(c.muted?' muted':'');row.style.setProperty('--c',c.color);row.style.setProperty('--i',ci);
+  const row=document.createElement('div');row.className='lane'+(c.kind!=='drum'?' syn':'')+(c.muted?' muted':'');row.style.setProperty('--c',c.color);row.style.setProperty('--i',ci);
   const lh=document.createElement('div');lh.className='lh';
   lh.innerHTML='<span class="tab"></span><span class="ix">'+String(ci+1).padStart(2,'0')+'</span><div class="nmw"><b></b><span class="fxt"></span></div>'+(screen!=='main'?'<button class="rm" aria-label="Remover">'+ICON.x+'</button>':'')+'<button class="mute'+(c.muted?' on':'')+'">M</button><div class="kv"></div>';
   lh.querySelector('b').textContent=LN(c);c.fxEl=lh.querySelector('.fxt');
@@ -4001,7 +4002,6 @@ const CFG_SPEC=[
   {k:'wake',t:'Tela sempre acesa',d:'A tela não apaga enquanto a música toca.',tg:1}]},
  {sec:'Som',rows:[
   {k:'pvol',t:'Volume da prévia',d:'Prévias da tela inicial e do Explorar.',rng:1},
-  {k:'sting',t:'Som ao entrar no gênero',d:'O efeito que toca quando você abre um gênero.',tg:1},
   {k:'autoKey',t:'Tom automático no Criar novo',d:'Coloca os sons no mesmo tom. Vale para rascunhos novos.',tg:1},
   {k:'rec',t:'Formato da gravação',d:'M4A é leve para mandar. WAV tem qualidade máxima.',seg:[['m4a','M4A'],['wav','WAV']]},
   {k:'limit',t:'Proteção contra clip',d:'Segura os picos na saída. Desligada, o som fica mais aberto, mas pode distorcer.',tg:1}]},
@@ -4676,6 +4676,7 @@ function pageWipe(o,mid){
 }
 // som ao entrar num canal: subida de fita e um golpe do próprio gênero (kick + acorde)
 function genreSting(k){
+  return; // sem som nas animações de entrada
   if(!CFG.sting||!ctx||!noiseBuf)return;
   const g=STYLES[k]&&!STYLES[k].novo?k:'house',S=STYLES[g],t=ctx.currentTime+.02,o=ctx.createGain();o.gain.value=.5;o.connect(out);
   const n=noise(t,.34),f=ctx.createBiquadFilter(),ng=ctx.createGain();f.type='bandpass';f.Q.value=2.2;
