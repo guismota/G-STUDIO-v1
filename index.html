@@ -854,6 +854,13 @@ body.eco .ticker .tk,body.eco .band .osc,body.eco .band .static,body.eco .band .
 body.eco .modal{-webkit-backdrop-filter:none;backdrop-filter:none}
 body.sz-l #scenes .sc{height:60px}body.sz-l .clip{font-size:14px}body.sz-l .lh b{font-size:12.5px}body.sz-l .mute{width:32px;height:28px}
 body.sz-s #scenes .sc{height:38px}body.sz-s .clip{font-size:10.5px}
+
+body.noflash #sceneFx .sfx-flash,body.noflash #session.sfx .lane::after,body.noflash .sc.boom::after{display:none!important}
+body.noflash #home.tvon .band .screen,body.noflash #welcome .wl{animation:nfFade .45s ease-out both!important}
+@keyframes nfFade{from{opacity:0}to{opacity:1}}
+body.noflash .band.tune .screen,body.noflash .band.flick .screen,body.noflash .band .ch,body.noflash .band.tune .bname,body.noflash .band.flick .bname{animation:none!important}
+body.noshake .dev.shake{animation:none!important}
+body.noshake .band.tune .screen,body.noshake .band.flick .screen,body.noshake .band.tune .bname,body.noshake .band.flick .bname{animation:none!important}
 .hw.dz{background:#ff3b3b!important;border-color:#ff3b3b!important;color:#000!important}
 .cfgrow.dzr{background:#140505;border-color:#4a1515}.cfgrow.dzr+.cfgrow,.cfgrow+.cfgrow.dzr{border-top:1px solid #4a1515}
 .cfgrow.dzr .ct b{color:#ff5a5a}.cfgrow.dzr .ct small{color:#a06a6a}
@@ -1427,7 +1434,7 @@ const ICON={
   edit:'<svg viewBox="0 0 16 16"><path d="M11.2 1.8l3 3-8.7 8.7-3.8.8.8-3.8z"/></svg>'
 };
 let ctx,out,mix,filt,dly,fb,wet,noiseBuf,fin,anL,anR,anS,CMP=null;
-const CFG_DEF={launch:'bar',swing:true,wake:true,pvol:1,sting:true,autoKey:true,rec:'m4a',limit:true,anim:true,size:'n',eco:false};
+const CFG_DEF={launch:'bar',swing:true,wake:true,pvol:1,sting:true,autoKey:true,rec:'m4a',limit:true,anim:true,size:'n',eco:false,noflash:false,noshake:false,mono:false};
 const CFG=Object.assign({},CFG_DEF,(()=>{try{const j=JSON.parse(localStorage.getItem('gstudio_cfg'));return j&&typeof j==='object'?j:{}}catch(e){return{}}})());
 function saveCfg(){try{localStorage.setItem('gstudio_cfg',JSON.stringify(CFG))}catch(e){}}
 let barOff=0,tT0=0;const MET={on:false};
@@ -1981,7 +1988,7 @@ function initAudio(){
   if(ctx){ctx.resume&&ctx.resume();return}
   ctx=new (window.AudioContext||window.webkitAudioContext)();
   const comp=CMP=ctx.createDynamicsCompressor();comp.threshold.value=-10;comp.knee.value=6;comp.ratio.value=20;comp.attack.value=.002;comp.release.value=.15;fin=ctx.createGain();fin.gain.value=.9;comp.connect(fin);fin.connect(ctx.destination);setupMeters();
-  out=ctx.createGain();out.gain.value=K.mv;out.connect(CFG.limit?comp:fin);
+  out=ctx.createGain();out.gain.value=K.mv;out.connect(CFG.limit?comp:fin);setMono();
   filt=ctx.createBiquadFilter();filt.type='lowpass';filt.Q.value=3;setFilter();
   mix=ctx.createGain();MA.sum=ctx.createGain();MA.sum.connect(filt);filt.connect(out);
   duck=ctx.createGain();duck.connect(mix);
@@ -2535,7 +2542,7 @@ function sceneFx(i){
   fx.style.setProperty('--x',(r.left+r.width/2)+'px');fx.style.setProperty('--y',(r.top+r.height/2)+'px');
   const s=$('#session'),d=document.querySelector('.dev');
   [fx,s,d].forEach(e=>e.classList.remove('go','sfx','shake'));void fx.offsetWidth;
-  fx.classList.add('go');s.classList.add('sfx');d.classList.add('shake');
+  fx.classList.add('go');s.classList.add('sfx');if(!CFG.noshake)d.classList.add('shake');
   if(sl){sl.classList.remove('boom');void sl.offsetWidth;sl.classList.add('boom')}
   d.addEventListener('animationend',function f(e){if(e.target===d&&e.animationName==='shk'){d.classList.remove('shake');d.removeEventListener('animationend',f)}});
   clearTimeout(fx._t);fx._t=setTimeout(()=>{fx.classList.remove('go');s.classList.remove('sfx');d.classList.remove('shake');if(sl)sl.classList.remove('boom')},1000);
@@ -3667,10 +3674,11 @@ const WAKE={s:null};
 async function wakeOn(){if(!CFG.wake||!playing||WAKE.s||!navigator.wakeLock)return;try{const s=await navigator.wakeLock.request('screen');if(!playing||!CFG.wake){s.release().catch(()=>{});return}WAKE.s=s;s.addEventListener('release',()=>{if(WAKE.s===s)WAKE.s=null})}catch(e){}}
 function wakeOff(){if(WAKE.s){const s=WAKE.s;WAKE.s=null;s.release().catch(()=>{})}}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')wakeOn()});
+function setMono(){if(!fin||!out)return;out.channelCount=CFG.mono?1:2;out.channelCountMode=CFG.mono?'explicit':'max';out.channelInterpretation='speakers';fin.channelCount=2;fin.channelCountMode=CFG.mono?'explicit':'max';fin.channelInterpretation='speakers'}
 function setLimit(){if(!ctx||!CMP)return;try{out.disconnect()}catch(e){}out.connect(CFG.limit?CMP:fin)}
 function applyCfg(){
-  const b=document.body;b.classList.toggle('eco',!!CFG.eco);b.classList.toggle('sz-s',CFG.size==='s');b.classList.toggle('sz-l',CFG.size==='l');
-  setLimit();if(typeof layoutRows==='function')layoutRows();
+  const b=document.body;b.classList.toggle('eco',!!CFG.eco);b.classList.toggle('sz-s',CFG.size==='s');b.classList.toggle('sz-l',CFG.size==='l');b.classList.toggle('noflash',!!CFG.noflash);b.classList.toggle('noshake',!!CFG.noshake);
+  setLimit();setMono();if(typeof layoutRows==='function')layoutRows();
   if(CFG.wake)wakeOn();else wakeOff();
 }
 const CFG_SPEC=[
@@ -3687,7 +3695,11 @@ const CFG_SPEC=[
  {sec:'Visual',rows:[
   {k:'anim',t:'Animações',d:'Troca de página e explosão ao soltar uma cena.',tg:1},
   {k:'size',t:'Tamanho dos botões',d:'Grande é melhor para tocar com o dedo. Compacto mostra mais de uma vez.',seg:[['s','Compacto'],['n','Normal'],['l','Grande']]},
-  {k:'eco',t:'Modo economia',d:'Desliga luzes, laser, espectro e animações de fundo. Poupa bateria.',tg:1}]}
+  {k:'eco',t:'Modo economia',d:'Desliga luzes, laser, espectro e animações de fundo. Poupa bateria.',tg:1}]},
+ {sec:'Acessibilidade',rows:[
+  {k:'noflash',t:'Sem flashes',d:'Tira as piscadas e clarões fortes da tela. Recomendado para quem tem sensibilidade à luz ou epilepsia fotossensível.',tg:1},
+  {k:'noshake',t:'Sem tremer a tela',d:'A tela não balança ao soltar uma cena nem ao trocar de canal.',tg:1},
+  {k:'mono',t:'Áudio mono',d:'Junta esquerda e direita num canal só. Bom para quem usa um fone só ou ouve melhor de um lado.',tg:1}]}
 ];
 function cfgRow(t,d){const r=document.createElement('div');r.className='cfgrow';r.innerHTML='<div class="ct"><b></b><small></small></div><div class="cc"></div>';r.querySelector('b').textContent=t;const s=r.querySelector('small');if(d)s.textContent=d;else s.remove();return r}
 function cfgSet(k,v){CFG[k]=v;saveCfg();applyCfg()}
@@ -3877,6 +3889,7 @@ function drawViz(){
   VZ.pulse*=.88;
   if(ctx)while(PQ.length&&PQ[0].t<=ctx.currentTime){const q=PQ.shift();if(q.v>VZ.pulse)VZ.pulse=q.v}
   if(VZ.pulse<.01)VZ.pulse=0;
+  if(CFG.noflash)VZ.pulse=0;
   if(Math.abs(VZ.pulse-VZ.lastP)>.01){
     VZ.lastP=VZ.pulse;const p=VZ.pulse;
     lightsEl.style.opacity=(.35+p*.65).toFixed(3);laserEl.style.opacity=(.15+p*.85).toFixed(3);
