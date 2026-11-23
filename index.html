@@ -1009,9 +1009,9 @@ body.th-art .clip.q{animation:qp .38s steps(2) infinite!important}
 #home.flyer>*{flex-shrink:0}
 .hx{display:flex;flex-direction:column;gap:28px;padding:6px 0 24px}
 .hxtop{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:4px}
-.hxtop h1{margin:0;font-family:var(--poster);font-weight:900;font-stretch:62%;font-size:clamp(30px,4.6vh,48px);line-height:.92;letter-spacing:.005em;text-transform:uppercase;color:#fff}
-.hxtop h1 mark{background:var(--yel);color:#000;padding:0 .12em;display:inline-block}
-.hxnew{flex:none;display:inline-flex;align-items:center;gap:10px;padding:8px 16px 8px 8px;border-radius:999px;background:#EDEDED;color:#000;border:0;cursor:pointer;font-family:var(--artist);font-weight:400;font-size:20px;letter-spacing:0;box-shadow:0 0 0 1px #EDEDED,0 8px 24px rgba(237,237,237,.12)}
+.hxtop h1{margin:0;font-family:var(--artist);font-weight:400;font-size:clamp(26px,3.4vh,34px);line-height:1;letter-spacing:-.01em;color:#bdbdbd}
+.hxtop h1 mark{background:none;color:var(--yel);font-style:italic;padding:0 .06em 0 .02em}
+.hxnew{flex:none;display:inline-flex;align-items:center;gap:10px;padding:7px 14px 7px 7px;border-radius:999px;background:#EDEDED;color:#000;border:0;cursor:pointer;font-family:var(--artist);font-weight:400;font-size:20px;letter-spacing:0;box-shadow:0 0 0 1px #EDEDED,0 8px 24px rgba(237,237,237,.12)}
 .hxnew i{font-style:normal;width:30px;height:30px;border-radius:50%;background:#000;color:#EDEDED;display:grid;place-items:center;font:300 24px/1 "Archivo",sans-serif}
 .hxnew em{font:800 8.5px "Archivo",sans-serif;letter-spacing:.2em;text-transform:uppercase;font-style:normal;border:1px solid #000;border-radius:999px;padding:3px 6px 2px;opacity:.55}
 .hxnew:active{transform:scale(.96)}
@@ -1065,7 +1065,8 @@ body.th-art .clip.q{animation:qp .38s steps(2) infinite!important}
 @media (prefers-reduced-motion:no-preference){
  #home.tvon .hxtop,#home.tvon .hero,#home.tvon .htile{animation:hxIn .55s cubic-bezier(.2,.8,.2,1) both;animation-delay:var(--d,0ms)}
  #home.tvon .hero{--d:40ms}
- .hxtop h1 mark{animation:vibe 9s steps(1) infinite}
+ .hxtop h1 mark{animation:vibeC 12s steps(1) infinite}
+ @keyframes vibeC{0%{color:#FFA63D}16.6%{color:#FF6A3D}33.3%{color:#C8FF3D}50%{color:#6C8BFF}66.6%{color:#5CFF8A}83.3%{color:#FF3DAE}}
  .htile .tv::after{animation:tvRoll 8s linear infinite;animation-delay:calc(var(--d) * -4)}
  .htile .tv::before{animation:tvGrain 1.4s steps(4) infinite}
  @keyframes hxIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
@@ -1077,10 +1078,7 @@ body.eco .htile .tv::before{display:none}
 @media (max-width:700px){
  #home.flyer{--hp:16px;padding-left:16px;padding-right:16px}
  .hx{gap:24px}
- .hxtop{flex-direction:column;align-items:stretch;gap:12px}
- .hxtop h1{text-align:left;font-size:34px}
- .hxnew{justify-content:flex-start}
- .hxnew em{margin-left:auto}
+ .hxtop h1{font-size:26px}
  .hin{padding:18px 16px 16px}
  .hname{font-size:clamp(46px,14vw,70px)}
  .hero.art .hname{font-size:clamp(44px,13vw,64px)}
@@ -4187,7 +4185,7 @@ function buildHome(){
   const ug=ugenList();let last=null;try{last=localStorage.getItem(LASTK)}catch(e){}
   // topo: título + Criar novo sempre à vista
   const top=document.createElement('div');top.className='hxtop';
-  top.innerHTML='<h1>Qual é a <mark>vibe</mark> hoje?</h1><button class="hxnew" id="hxNew" aria-label="Criar novo"><i>+</i><span>Criar novo</span><em>Em testes</em></button>';
+  top.innerHTML='<h1>qual é a <mark>vibe</mark> hoje?</h1><button class="hxnew" id="hxNew" aria-label="Criar novo" title="Criar novo"><i>+</i><em>Em testes</em></button>';
   box.appendChild(top);
   top.querySelector('#hxNew').onclick=e=>tuneInX(e.currentTarget,enterNovo);
   // destaque: o último canal usado (ou House na primeira vez)
