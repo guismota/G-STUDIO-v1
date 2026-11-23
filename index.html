@@ -1411,6 +1411,7 @@ body.th-afro .nrow.root .ncell{background:#1c0a03!important}body.th-afro .nrow.r
   var ua=navigator.userAgent||'',why=[],lim=[],lvl='ok';
   var tv=/SMART-TV|SmartTV|Tizen|Web0S|webOS|NetCast|HbbTV|AppleTV|CrKey|BRAVIA|AFT[A-Z]|PlayStation|Xbox|Nintendo/i.test(ua)&&!/Mobile/.test(ua);
   if(tv)why.push('Smart TV e videogame não são suportados: o app precisa de toque, ou de mouse e teclado.');
+  if(/iPhone|iPod/.test(ua))why.push('O iPhone não é suportado: a tela é pequena demais para os controles do estúdio.');
   if(!(window.AudioContext||window.webkitAudioContext))why.push('Este navegador não consegue gerar áudio.');
   try{new Function('var o={a:1};return o?.a??2')}catch(e){why.push('O navegador está desatualizado e não roda o app.')}
   var ios=/(?:iPhone|iPad|iPod)[^)]*OS (\d+)_/.exec(ua);
@@ -1426,7 +1427,7 @@ body.th-afro .nrow.root .ncell{background:#1c0a03!important}body.th-afro .nrow.r
     var li='';for(var i=0;i<GSC.why.length;i++)li+='<li>'+GSC.why[i]+'</li>';
     o.classList.toggle('bloq',lvl==='bloq');o.classList.toggle('lim',lvl==='lim');c.hidden=false;
     if(lvl==='bloq'){
-      c.innerHTML='<b>Este aparelho não é compatível</b><ul>'+li+'</ul><p>Abra o G-STUDIO em um <strong>iPad</strong>, <strong>iPhone</strong> ou <strong>computador</strong>, no Safari, Chrome ou Edge atualizado.</p>';
+      c.innerHTML='<b>Este aparelho não é compatível</b><ul>'+li+'</ul><p>Abra o G-STUDIO em um <strong>iPad</strong> ou <strong>computador</strong>, no Safari, Chrome ou Edge atualizado.</p>';
       var t=o.querySelector('.obtag');if(t)t.textContent='Aparelho não compatível';
       var g=document.getElementById('obGo');if(g)g.textContent='Tentar mesmo assim';
       var n=document.getElementById('obNote');if(n&&tv)n.textContent='Este aparelho: Smart TV ou videogame.';
@@ -1630,7 +1631,7 @@ let ctx,out,mix,filt,dly,fb,wet,noiseBuf,fin,anL,anR,anS,CMP=null;
 const CFG_DEF={launch:'bar',swing:true,wake:true,pvol:1,sting:true,autoKey:true,rec:'m4a',limit:true,anim:true,size:'n',eco:false,noflash:false,noshake:false,mono:false,keys:true};
 const CFG=Object.assign({},CFG_DEF,(()=>{try{const j=JSON.parse(localStorage.getItem('gstudio_cfg'));return j&&typeof j==='object'?j:{}}catch(e){return{}}})());
 function saveCfg(){try{localStorage.setItem('gstudio_cfg',JSON.stringify(CFG))}catch(e){}}
-const APPV='1.7.3.7';
+const APPV='1.7.3.8';
 const DEV=(()=>{const ua=navigator.userAgent||'',pf=navigator.platform||'',tp=navigator.maxTouchPoints||0;
   const ipad=/iPad/.test(ua)||((pf==='MacIntel'||/Macintosh/.test(ua))&&tp>1),iphone=/iPhone|iPod/.test(ua),android=/Android/.test(ua);
   const os=ipad?'ipados':iphone?'ios':android?'android':(/Mac/.test(pf)||/Macintosh/.test(ua))?'mac':(/Win/.test(pf)||/Windows/.test(ua))?'windows':/CrOS/.test(ua)?'chromeos':/Linux/.test(ua)?'linux':'other';
