@@ -1569,7 +1569,7 @@ let ctx,out,mix,filt,dly,fb,wet,noiseBuf,fin,anL,anR,anS,CMP=null;
 const CFG_DEF={launch:'bar',swing:true,wake:true,pvol:1,sting:true,autoKey:true,rec:'m4a',limit:true,anim:true,size:'n',eco:false,noflash:false,noshake:false,mono:false,keys:true};
 const CFG=Object.assign({},CFG_DEF,(()=>{try{const j=JSON.parse(localStorage.getItem('gstudio_cfg'));return j&&typeof j==='object'?j:{}}catch(e){return{}}})());
 function saveCfg(){try{localStorage.setItem('gstudio_cfg',JSON.stringify(CFG))}catch(e){}}
-const APPV='1.7.2.5';
+const APPV='1.7.2.6';
 const DEV=(()=>{const ua=navigator.userAgent||'',pf=navigator.platform||'',tp=navigator.maxTouchPoints||0;
   const ipad=/iPad/.test(ua)||((pf==='MacIntel'||/Macintosh/.test(ua))&&tp>1),iphone=/iPhone|iPod/.test(ua),android=/Android/.test(ua);
   const os=ipad?'ipados':iphone?'ios':android?'android':(/Mac/.test(pf)||/Macintosh/.test(ua))?'mac':(/Win/.test(pf)||/Windows/.test(ua))?'windows':/CrOS/.test(ua)?'chromeos':/Linux/.test(ua)?'linux':'other';
@@ -1982,8 +1982,8 @@ const STYLES={
     B('Hoover',32,[[0,'E4',6],[6,'G4',2],[8,'F#4',8],[16,'E4',6],[22,'D4',2],[24,'B3',8]],{syn:'saw'})],
    fx:FX4
   }},
- // gênero especial Vice Nights: tech house de beira-mar (Chris Stussy, Prospa, Michael Bibi), 130, piano de rave e baixo borrachudo
- vice:{name:'Vice Nights',bpm:130,swing:.12,key:{root:7,mode:'minor'},artist:true,theme:'vice',names:{snare:'Snap',ohat:'Aberto',tom:'Bongô',perc:'Shaker',bass:'Rolling',chord:'Rave piano',pad:'Neon',arp:'Stab',lead:'Vox'},
+ // gênero especial Leonida Radio (GTA 6): tech house de beira-mar (Chris Stussy, Prospa, Michael Bibi), 130, piano de rave e baixo borrachudo
+ vice:{name:'Leonida Radio',bpm:130,swing:.12,key:{root:7,mode:'minor'},artist:true,theme:'vice',names:{snare:'Snap',ohat:'Aberto',tom:'Bongô',perc:'Shaker',bass:'Rolling',chord:'Rave piano',pad:'Neon',arp:'Stab',lead:'Vox'},
   scenes:[{kick:0,hat:0,perc:0,sub:0},{kick:0,clap:0,hat:1,ohat:0,perc:0,tom:0,bass:0,sub:0},{pad:0,chord:3,arp:1,lead:0,fx:0},
           {kick:2,clap:1,snare:0,hat:1,ohat:0,tom:1,perc:2,bass:1,sub:0,chord:0,pad:0,arp:0,lead:1,fx:1}],
   snd:{sub:{type:'sine',cut:160},pad:{type:'air'},arp:{type:'square'},sc:.5,
@@ -4293,7 +4293,7 @@ const GENRES=[
  {k:'dnb',gc:'#22E1FF',desc:'Quebrada rápida, grave sujo e um pé no garage'},
  {k:'solomun',artist:true,desc:'Baixo rolando, riff metálico e Ibiza às 6h'},
  {k:'afro',artist:true,theme:'afro',html:'<span>Afro</span><em>house</em>',desc:'Tambores, coro e pôr do sol'},
- {k:'vice',artist:true,theme:'vice',html:'<span>Vice</span><em>Nights</em>',desc:'A rádio da CircoLoco no GTA 6: tech house pra rodar Vice City de madrugada'}];
+ {k:'vice',artist:true,theme:'vice',html:'<span>Leonida</span> <em>Radio</em>',desc:'A rádio da CircoLoco no GTA 6: tech house pra rodar Vice City de madrugada'}];
 const CHN=i=>'CH'+String(i+1).padStart(2,'0');
 const GSYM={'house':'<path d="M8 22L24 8L40 22V40H8Z"/><circle cx="24" cy="30" r="6"/><rect x="22.5" y="28.5" width="3" height="3" fill="currentColor" stroke="none"/>','deep':'<path d="M8 22L24 8L40 22V40H8Z"/><path d="M14 26H34M17 31H31M20 36H28"/>','acid':'<path d="M8 22L24 8L40 22V40H8Z"/><path d="M11 31Q14.25 24 17.5 31T24 31T30.5 31T37 31"/>','techno':'<path d="M8 8H40V40H8Z"/><g fill="currentColor" stroke="none"><rect x="14" y="14" width="8" height="8"/><rect x="26" y="26" width="8" height="8"/></g><path d="M26 18H34M14 30H22"/>','acidtechno':'<path d="M8 8H40V40H8Z"/><path d="M11 31Q14.25 24 17.5 31T24 31T30.5 31T37 31"/>','funk':'<path d="M12 5H36V43H12Z"/><circle cx="24" cy="16" r="6"/><circle cx="24" cy="32.5" r="7.5"/><rect x="22.5" y="31" width="3" height="3" fill="currentColor" stroke="none"/><rect x="22.5" y="14.5" width="3" height="3" fill="currentColor" stroke="none"/>'};
 const gsym=k=>'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter">'+GSYM[k]+'</svg>';
