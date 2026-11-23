@@ -17,7 +17,7 @@
 <title>G-STUDIO</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Big+Shoulders+Display:wght@700;800;900&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Big+Shoulders+Display:wght@700;800;900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
 :root{--body:#0c0d0e;--ch1:#232427;--ch2:#1b1c1e;--well:#111213;--tx:#cfd0d4;--dim:#7a7c82;--faint:#4b4d52;--amb:#e8a04a;--grn:#62c481;--red:#d9665c}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
@@ -894,9 +894,9 @@ body.noshake .band.tune .screen,body.noshake .band.flick .screen,body.noshake .b
 .fproj{line-height:1;white-space:nowrap}
 
 /* ===== faixa de artista (Inspired by) ===== */
-:root{--pur:#B026FF;--artist:"Syne","Archivo",sans-serif}
+:root{--pur:#B026FF;--artist:"Instrument Serif",Georgia,"Times New Roman",serif}
 .band.artist .ch{background:var(--pur);color:#fff}
-.band.artist .bname{font-family:var(--artist);font-weight:800;font-stretch:125%;text-transform:none;letter-spacing:-.02em;font-size:clamp(28px,min(5vh,6.6vw),52px);line-height:.9;color:#fff;display:flex;flex-direction:column;gap:2px}
+.band.artist .bname{font-family:var(--artist);font-weight:400;font-stretch:100%;text-transform:none;letter-spacing:-.02em;font-size:clamp(28px,min(5vh,6.6vw),52px);line-height:.9;color:#fff;display:flex;flex-direction:column;gap:2px}
 .band.artist .bname small{font-family:"Archivo",sans-serif;font-stretch:80%;font-weight:800;font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--pur)}
 .band.artist .bname span{background:linear-gradient(90deg,#fff 30%,#e2b8ff);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 14px rgba(176,38,255,.35))}
 .band.artist .screen svg.osc{stroke:var(--pur)}
@@ -1009,9 +1009,9 @@ body.th-art .clip.q{animation:qp .38s steps(2) infinite!important}
 #home.flyer>*{flex-shrink:0}
 .hx{display:flex;flex-direction:column;gap:28px;padding:6px 0 24px}
 .hxtop{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:4px}
-.hxtop h1{margin:0;font-family:"Archivo",sans-serif;font-weight:900;font-stretch:100%;font-size:clamp(26px,3.8vh,40px);line-height:1;letter-spacing:-.025em;text-transform:uppercase;color:#fff}
-.hxtop h1 mark{background:var(--yel);color:#000;padding:0 .14em;display:inline-block;border-radius:6px}
-.hxnew{flex:none;display:inline-flex;align-items:center;gap:10px;padding:8px 16px 8px 8px;border-radius:999px;background:#EDEDED;color:#000;border:0;cursor:pointer;font-family:var(--artist);font-weight:800;font-size:15px;letter-spacing:-.01em;box-shadow:0 0 0 1px #EDEDED,0 8px 24px rgba(237,237,237,.12)}
+.hxtop h1{margin:0;font-family:var(--poster);font-weight:900;font-stretch:62%;font-size:clamp(30px,4.6vh,48px);line-height:.92;letter-spacing:.005em;text-transform:uppercase;color:#fff}
+.hxtop h1 mark{background:var(--yel);color:#000;padding:0 .12em;display:inline-block}
+.hxnew{flex:none;display:inline-flex;align-items:center;gap:10px;padding:8px 16px 8px 8px;border-radius:999px;background:#EDEDED;color:#000;border:0;cursor:pointer;font-family:var(--artist);font-weight:400;font-size:20px;letter-spacing:0;box-shadow:0 0 0 1px #EDEDED,0 8px 24px rgba(237,237,237,.12)}
 .hxnew i{font-style:normal;width:30px;height:30px;border-radius:50%;background:#000;color:#EDEDED;display:grid;place-items:center;font:300 24px/1 "Archivo",sans-serif}
 .hxnew em{font:800 8.5px "Archivo",sans-serif;letter-spacing:.2em;text-transform:uppercase;font-style:normal;border:1px solid #000;border-radius:999px;padding:3px 6px 2px;opacity:.55}
 .hxnew:active{transform:scale(.96)}
@@ -1024,10 +1024,10 @@ body.th-art .clip.q{animation:qp .38s steps(2) infinite!important}
 .hchip{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;padding:5px 11px 4px 9px;border-radius:999px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.18);font:800 10px "Archivo",sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#ddd}
 .hchip i{width:8px;height:8px;border-radius:50%;background:var(--gc);box-shadow:0 0 10px var(--gc)}
 .hnrow{display:flex;align-items:flex-end;justify-content:space-between;gap:18px}
-.hname{min-width:0;font-family:"Archivo",sans-serif;font-weight:900;font-stretch:100%;font-size:clamp(42px,6.6vw,84px);line-height:.92;letter-spacing:-.04em;text-transform:uppercase;color:#fff}
-.hero.art .hname{font-family:var(--artist);font-weight:800;font-stretch:125%;text-transform:none;letter-spacing:-.03em;font-size:clamp(40px,6.8vw,84px);line-height:.95}
-.hero.art .hname em,.htile .tn.art em{font-style:normal;color:var(--gc)}
-.hbpm{flex:none;text-align:right;font:900 34px/1 "Archivo",sans-serif;letter-spacing:-.03em;color:#fff;padding-bottom:4px}
+.hname{min-width:0;font-family:var(--poster);font-weight:900;font-stretch:62%;font-size:clamp(48px,9vw,104px);line-height:.84;letter-spacing:.005em;text-transform:uppercase;color:#fff}
+.hero.art .hname{font-family:var(--artist);font-weight:400;font-stretch:100%;text-transform:none;letter-spacing:-.02em;font-size:clamp(52px,8.4vw,108px);line-height:.92}
+.hero.art .hname em,.htile .tn.art em{font-style:italic;color:var(--gc);padding-right:.04em}
+.hbpm{flex:none;text-align:right;font-family:var(--poster);font-weight:900;font-stretch:62%;font-size:40px;line-height:1;color:#fff;padding-bottom:4px}
 .hbpm small{display:block;font:800 9.5px "Archivo",sans-serif;letter-spacing:.2em;color:var(--gc);margin-top:3px}
 .hact{display:flex;align-items:center;gap:10px}
 .hdesc{flex:1;min-width:0;color:#c9c9c9;font-size:14px;line-height:1.35}
@@ -1054,8 +1054,8 @@ body.th-art .clip.q{animation:qp .38s steps(2) infinite!important}
 .thd{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
 .tch{font:800 9px "Archivo",sans-serif;letter-spacing:.22em;color:var(--gc);text-transform:uppercase}
 .tb{font:800 10px "Archivo",sans-serif;color:#9a9a9a;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
-.tn{font-family:"Archivo",sans-serif;font-weight:900;font-stretch:100%;font-size:clamp(17px,1.9vw,22px);line-height:1.02;letter-spacing:-.025em;text-transform:uppercase;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-.tn.art{font-family:var(--artist);font-weight:800;font-stretch:125%;text-transform:none;letter-spacing:-.03em;font-size:clamp(18px,2vw,23px);line-height:1.05}
+.tn{font-family:var(--poster);font-weight:900;font-stretch:62%;font-size:clamp(23px,2.6vw,30px);line-height:.92;letter-spacing:.005em;text-transform:uppercase;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.tn.art{font-family:var(--artist);font-weight:400;font-stretch:100%;text-transform:none;letter-spacing:-.01em;font-size:clamp(26px,2.8vw,32px);line-height:1}
 .tn.art span{color:#fff}.tn .cherry{width:.6em;height:.68em}
 .tprev{position:absolute;top:9px;right:9px;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.28);color:#fff;display:grid;place-items:center;z-index:2}
 .tprev svg{width:16px;height:16px}
@@ -1078,13 +1078,13 @@ body.eco .htile .tv::before{display:none}
  #home.flyer{--hp:16px;padding-left:16px;padding-right:16px}
  .hx{gap:24px}
  .hxtop{flex-direction:column;align-items:stretch;gap:12px}
- .hxtop h1{text-align:left;font-size:30px}
+ .hxtop h1{text-align:left;font-size:34px}
  .hxnew{justify-content:flex-start}
  .hxnew em{margin-left:auto}
  .hin{padding:18px 16px 16px}
- .hname{font-size:clamp(34px,10.5vw,52px)}
- .hero.art .hname{font-size:clamp(34px,10.5vw,52px)}
- .hbpm{font-size:28px}
+ .hname{font-size:clamp(46px,14vw,70px)}
+ .hero.art .hname{font-size:clamp(44px,13vw,64px)}
+ .hbpm{font-size:34px}
  .hact{flex-wrap:wrap}
  .hdesc{flex-basis:100%;font-size:13px}
  .hact .hprev{margin-left:auto}
@@ -1211,7 +1211,7 @@ body.novo .nvkey{display:inline-flex!important;align-items:center;gap:8px;height
 .band.xnovo:active .btest{color:#000;border-color:#000}
 
 /* Criar novo com a fonte do Afterparty */
-.band.xnovo .bname{font-family:var(--artist);font-weight:800;font-stretch:125%;text-transform:none;letter-spacing:-.02em;font-size:clamp(26px,min(4.6vh,5.6vw),48px);line-height:.9;color:#fff;display:flex;flex-direction:row;align-items:baseline;gap:.22em}
+.band.xnovo .bname{font-family:var(--artist);font-weight:400;font-stretch:100%;text-transform:none;letter-spacing:-.02em;font-size:clamp(26px,min(4.6vh,5.6vw),48px);line-height:.9;color:#fff;display:flex;flex-direction:row;align-items:baseline;gap:.22em}
 .band.xnovo .bname em{font-style:normal;color:var(--nov);text-shadow:0 0 18px rgba(237,237,237,.7)}
 .band.xnovo:not(:has(.bprev:active)):active .bname em,.band.xnovo:not(:has(.bprev:active)):active .bname span{color:#000;text-shadow:none}
 /* troca de página */
@@ -1225,8 +1225,8 @@ body.novo .nvkey{display:inline-flex!important;align-items:center;gap:8px;height
 @keyframes wpOut{from{transform:translateX(0) skewX(-12deg)}to{transform:translateX(-120%) skewX(-12deg)}}
 #wipe .wch{transform:skewX(12deg);font:900 13px "Archivo",sans-serif;letter-spacing:.5em;text-transform:uppercase;border:2px solid currentColor;padding:6px 10px 5px 14px}
 #wipe .wnm{transform:skewX(12deg);font:900 clamp(54px,11vw,150px) "Archivo",sans-serif;text-transform:uppercase;letter-spacing:-.03em;line-height:.88;text-align:center}
-#wipe.art .wnm{font-family:var(--artist);font-weight:800;font-stretch:125%;text-transform:none}
-#wipe.art .wnm em{font-style:normal;color:#000;opacity:.85}
+#wipe.art .wnm{font-family:var(--artist);font-weight:400;font-stretch:100%;text-transform:none}
+#wipe.art .wnm em{font-style:italic;color:#000;opacity:.85}
 #wipe .wnm .cherry{width:.55em;height:.62em;vertical-align:.05em}
 #wipe.in .wnm{animation:wpTxt .3s ease-out both}@keyframes wpTxt{from{letter-spacing:.2em;opacity:0}to{letter-spacing:-.03em;opacity:1}}
 #explore.open{animation:xin .3s cubic-bezier(.2,.8,.2,1)}@keyframes xin{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
@@ -3825,7 +3825,7 @@ function renderCfg(){
   sa.insertAdjacentHTML('beforeend',`<details class="cfgrow det"><summary><div class="ct"><b>Créditos</b><small>Sons e fontes usados no app.</small></div><span class="chev"></span></summary><div class="dtx">
 <p>Os sons dos gêneros são sintetizados em tempo real pelo próprio app. As amostras gravadas são de domínio público (CC0 1.0), do pacote Stargate DAW sample pack:</p>
 <ul><li>Congas, bongôs e log drum: VCSL e VCSO-2-CE, por sgossner</li><li>Clap 909: Fugue State Audio</li><li>Palma: Freesound 493707, bastianpusch</li><li>Hi-hats, ride e crash: Karoryfer Samples</li><li>Voz "let's go": microlag</li></ul>
-<p>Fontes: Archivo, Big Shoulders Display e Syne, todas com licença SIL Open Font.</p></div></details>`);
+<p>Fontes: Archivo, Big Shoulders Display e Instrument Serif, todas com licença SIL Open Font.</p></div></details>`);
   box.appendChild(sa);
   $('#cfgBkE').onclick=bkExport;$('#cfgBkR').onclick=bkPick;
   $('#cfgReset').onclick=()=>bkSheet('Voltar a Principal ao original','',
@@ -4046,9 +4046,9 @@ function artSpec(k,g){
 }
 function hexA(c,a){if(c[0]==='#'){const n=parseInt(c.slice(1),16);return 'rgba('+(n>>16)+','+(n>>8&255)+','+(n&255)+','+a+')'}return c.replace('hsl(','hsla(').replace(')',','+a+')')}
 // desenha um quadro do visual do canal. modo: 'hero' (lento e sem repetir), 'amb' (cards: quase parado), 'live' (prévia tocando, no tempo)
-function drawArt(cv,sp,t0,mode){
-  const dpr=Math.min(2,window.devicePixelRatio||1),w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return;
-  if(cv.width!==Math.round(w*dpr)||cv.height!==Math.round(h*dpr)){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr)}
+function drawArt(cv,sp,t0,mode,W,H){
+  const dpr=W?1:Math.min(2,window.devicePixelRatio||1),w=W||cv.clientWidth,h=H||cv.clientHeight;if(!w||!h)return;
+  if(!W&&(cv.width!==Math.round(w*dpr)||cv.height!==Math.round(h*dpr))){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr)}
   const x=cv.getContext('2d');x.setTransform(dpr,0,0,dpr,0,0);
   t0=Math.max(0,t0)+(sp.seed%997)/7;
   const slow=mode!=='live',spd=mode==='hero'?.3:mode==='amb'?.16:1,t=t0*spd,b=60/sp.bpm*(slow?2:1);
@@ -4104,23 +4104,68 @@ function drawArt(cv,sp,t0,mode){
     line(i=>h*.86+Math.sin(i/w*Math.PI*(4+s%5)+t*1.5)*h*.05*(.6+.3*D1+env),c2,1.6,.8);
   }
 }
+// destaque: um disco de vinil girando devagar, com o selo no visual do gênero e o braço da agulha
+function vinylLabel(sp){const c=document.createElement('canvas');c.width=c.height=320;drawArt(c,sp,20,'amb',320,320);return c}
+function drawVinyl(cv,sp,t,mode,lab){
+  const dpr=Math.min(2,window.devicePixelRatio||1),w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return;
+  if(cv.width!==Math.round(w*dpr)||cv.height!==Math.round(h*dpr)){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr)}
+  const x=cv.getContext('2d');x.setTransform(dpr,0,0,dpr,0,0);t=Math.max(0,t);
+  const [c1,c2]=sp.c,live=mode==='live',b=60/sp.bpm;
+  const nar=w<560,R=nar?Math.min(h*.5,w*.48):Math.min(h*.43,w*.3),cx=nar?w-R*.62:w*.7,cy=h*(nar?.42:.47);
+  const rot=t*Math.PI*2*(live?.55:.16)+(sp.seed%628)/100;
+  x.fillStyle='#050505';x.fillRect(0,0,w,h);
+  const br=.12+.05*Math.sin(t*.4)+(live?.1*Math.exp(-((t/b)%1)*4):0);
+  const gl=x.createRadialGradient(cx,cy,R*.6,cx,cy,R*1.9);gl.addColorStop(0,hexA(c1,br));gl.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=gl;x.fillRect(0,0,w,h);
+  // sombra e disco
+  x.beginPath();x.arc(cx+R*.03,cy+R*.05,R*1.01,0,Math.PI*2);x.fillStyle='rgba(0,0,0,.6)';x.fill();
+  x.beginPath();x.arc(cx,cy,R,0,Math.PI*2);x.fillStyle='#0b0b0b';x.fill();
+  // sulcos
+  for(let r=R*.36;r<R*.975;r+=2.2){const k=(r/R*97)|0,gap=(k%23===0);x.beginPath();x.arc(cx,cy,r,0,Math.PI*2);x.strokeStyle=gap?'rgba(0,0,0,.9)':(k%2?'rgba(255,255,255,.035)':'rgba(255,255,255,.06)');x.lineWidth=gap?2:1;x.stroke()}
+  x.beginPath();x.arc(cx,cy,R*.985,0,Math.PI*2);x.strokeStyle='rgba(255,255,255,.12)';x.lineWidth=1.5;x.stroke();
+  // reflexos (ficam parados enquanto o disco gira)
+  [[-1.05,-.55,.09],[2.1,2.6,.06]].forEach(([a0,a1,al])=>{x.save();x.beginPath();x.moveTo(cx,cy);x.arc(cx,cy,R*.97,a0,a1);x.closePath();x.clip();
+    const sg=x.createRadialGradient(cx,cy,R*.35,cx,cy,R);sg.addColorStop(0,'rgba(255,255,255,0)');sg.addColorStop(.6,'rgba(255,255,255,'+al+')');sg.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=sg;x.fillRect(cx-R,cy-R,R*2,R*2);x.restore()});
+  // marca que gira, para ver o movimento
+  x.save();x.translate(cx,cy);x.rotate(rot);
+  x.beginPath();x.arc(0,0,R*.6,-.25,.25);x.strokeStyle=hexA(c1,.18);x.lineWidth=R*.18;x.stroke();
+  // selo com o visual do gênero
+  const lr=R*.34;x.save();x.beginPath();x.arc(0,0,lr,0,Math.PI*2);x.clip();
+  if(lab)x.drawImage(lab,-lr,-lr,lr*2,lr*2);else{x.fillStyle=c1;x.fillRect(-lr,-lr,lr*2,lr*2)}
+  x.fillStyle='rgba(0,0,0,.18)';x.fillRect(-lr,-lr,lr*2,lr*2);x.restore();
+  x.beginPath();x.arc(0,0,lr,0,Math.PI*2);x.strokeStyle=hexA(c1,.9);x.lineWidth=2;x.stroke();
+  x.beginPath();x.arc(0,0,lr*.42,0,Math.PI*2);x.fillStyle='#0b0b0b';x.fill();x.strokeStyle=hexA(c2,.8);x.lineWidth=1.5;x.stroke();
+  x.fillStyle=c1;x.font='800 '+Math.max(8,Math.round(lr*.13))+'px Archivo,sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText('G-STUDIO',0,-lr*.22);
+  x.fillStyle='rgba(255,255,255,.7)';x.font='700 '+Math.max(7,Math.round(lr*.1))+'px Archivo,sans-serif';x.fillText(Math.round(sp.bpm)+' BPM',0,lr*.22);
+  x.restore();
+  x.beginPath();x.arc(cx,cy,Math.max(2.5,R*.022),0,Math.PI*2);x.fillStyle='#cfcfcf';x.fill();
+  // braço da agulha
+  const px=cx+R*.98,py=cy-R*.82,na=-.5+(live?.02*Math.sin(t*9):0),nx=cx+R*.8*Math.cos(na),ny=cy+R*.8*Math.sin(na);
+  if(px<w+R*.2){
+    x.beginPath();x.arc(px,py,R*.1,0,Math.PI*2);x.fillStyle='#161616';x.fill();x.strokeStyle='rgba(255,255,255,.18)';x.lineWidth=1.5;x.stroke();
+    x.beginPath();x.arc(px,py,R*.04,0,Math.PI*2);x.fillStyle='#8a8a8a';x.fill();
+    const ex=nx+(px-nx)*.22,ey=ny+(py-ny)*.22;
+    x.beginPath();x.moveTo(px,py);x.lineTo(ex,ey);x.lineTo(nx,ny);x.strokeStyle='#a8a8a8';x.lineWidth=Math.max(2.5,R*.022);x.lineCap='round';x.lineJoin='round';x.stroke();
+    x.save();x.translate(nx,ny);x.rotate(Math.atan2(ey-ny,ex-nx));x.fillStyle='#d8d8d8';x.fillRect(-R*.02,-R*.035,R*.09,R*.07);x.fillStyle=c1;x.fillRect(-R*.02,-R*.035,R*.02,R*.07);x.restore();
+  }
+}
 const HART={list:[],raf:0,t0:performance.now(),lh:0,lt:0,io:null};
 function hartIO(){if(HART.io||!window.IntersectionObserver)return;HART.io=new IntersectionObserver(es=>es.forEach(e=>{const o=HART.list.find(z=>z.cv===e.target);if(o)o.vis=e.isIntersecting}),{root:$('#home'),rootMargin:'40px'})}
-function hartReg(cv,sp,hero){const o={cv,sp,hero,vis:true};HART.list.push(o);drawArt(cv,sp,hero?0:20,hero?'hero':'amb');if(!hero){hartIO();if(HART.io)HART.io.observe(cv)}}
+function hartDraw(o,t,mode){if(o.hero)drawVinyl(o.cv,o.sp,t,mode,o.lab);else drawArt(o.cv,o.sp,t,mode)}
+function hartReg(cv,sp,hero){const o={cv,sp,hero,vis:true};if(hero)o.lab=vinylLabel(sp);HART.list.push(o);hartDraw(o,hero?0:20,hero?'hero':'amb');if(!hero){hartIO();if(HART.io)HART.io.observe(cv)}}
 function hartLoop(now){
   HART.raf=0;if(document.body.classList.contains('in-session')||document.hidden)return;
   const t=(now-HART.t0)/1000,still=CFG.eco||reduceMotion(),dh=now-HART.lh>=33,dt=now-HART.lt>=100;
   if(dh)HART.lh=now;if(dt)HART.lt=now;
   HART.list.forEach(o=>{if(!o.cv.isConnected)return;const host=o.cv.parentElement,pl=host&&host.classList.contains('playing');
-    if(pl){if(dh)drawArt(o.cv,o.sp,t,'live')}
+    if(pl){if(dh)hartDraw(o,t,'live')}
     else if(still)return;
-    else if(o.hero){if(dh)drawArt(o.cv,o.sp,t,'hero')}
-    else if(o.vis&&dt)drawArt(o.cv,o.sp,t+20,'amb')});
+    else if(o.hero){if(dh)hartDraw(o,t,'hero')}
+    else if(o.vis&&dt)hartDraw(o,t+20,'amb')});
   HART.raf=requestAnimationFrame(hartLoop);
 }
 function hartStart(){if(!HART.raf)HART.raf=requestAnimationFrame(hartLoop)}
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)hartStart()});
-window.addEventListener('resize',()=>{const t=(performance.now()-HART.t0)/1000;HART.list.forEach(o=>{if(o.cv.isConnected)drawArt(o.cv,o.sp,o.hero?t:t+20,o.hero?'hero':'amb')})});
+window.addEventListener('resize',()=>{const t=(performance.now()-HART.t0)/1000;HART.list.forEach(o=>{if(o.cv.isConnected)hartDraw(o,o.hero?t:t+20,o.hero?'hero':'amb')})});
 const ICO_SPK='<svg viewBox="0 0 16 16"><path d="M2 6h3l4-3v10l-4-3H2z" fill="currentColor"/><path class="sw" d="M11 5.5a3.5 3.5 0 0 1 0 5M13 3.5a6.5 6.5 0 0 1 0 9" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>';
 const hEsc=v=>String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 function hNameHTML(G,S){return G&&G.artist?(G.html||'<span>After</span><em>party</em>'):hEsc(S.name)}
