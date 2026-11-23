@@ -1008,7 +1008,7 @@ body.th-art .clip.q{animation:qp .38s steps(2) infinite!important}
 #home.flyer{--hp:26px}
 #home.flyer>*{flex-shrink:0}
 .hx{display:flex;flex-direction:column;gap:28px;padding:6px 0 24px}
-.hxtop{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:4px}
+.hxtop{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:20px 0 -6px}
 .hxtop h1{margin:0;padding-left:12px;font-family:var(--artist);font-weight:400;font-size:clamp(21px,2.7vh,25px);line-height:1;letter-spacing:0;color:#b5b5b5;display:flex;flex-direction:column;align-items:flex-start}
 .hxtop h1 .w1{display:block;padding-left:.05em}
 .hxtop h1 .w2{display:block;margin:-.42em 0 0 1.45em;font-size:1.32em;white-space:nowrap;transform:rotate(-3deg);transform-origin:left center}
@@ -1544,7 +1544,7 @@ let ctx,out,mix,filt,dly,fb,wet,noiseBuf,fin,anL,anR,anS,CMP=null;
 const CFG_DEF={launch:'bar',swing:true,wake:true,pvol:1,sting:true,autoKey:true,rec:'m4a',limit:true,anim:true,size:'n',eco:false,noflash:false,noshake:false,mono:false,keys:true};
 const CFG=Object.assign({},CFG_DEF,(()=>{try{const j=JSON.parse(localStorage.getItem('gstudio_cfg'));return j&&typeof j==='object'?j:{}}catch(e){return{}}})());
 function saveCfg(){try{localStorage.setItem('gstudio_cfg',JSON.stringify(CFG))}catch(e){}}
-const APPV='1.6.6';
+const APPV='1.6.7';
 const DEV=(()=>{const ua=navigator.userAgent||'',pf=navigator.platform||'',tp=navigator.maxTouchPoints||0;
   const ipad=/iPad/.test(ua)||((pf==='MacIntel'||/Macintosh/.test(ua))&&tp>1),iphone=/iPhone|iPod/.test(ua),android=/Android/.test(ua);
   const os=ipad?'ipados':iphone?'ios':android?'android':(/Mac/.test(pf)||/Macintosh/.test(ua))?'mac':(/Win/.test(pf)||/Windows/.test(ua))?'windows':/CrOS/.test(ua)?'chromeos':/Linux/.test(ua)?'linux':'other';
