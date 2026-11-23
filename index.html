@@ -1034,7 +1034,7 @@ body.th-art .clip.q{animation:qp .38s steps(2) infinite!important}
 .hchip i{width:8px;height:8px;border-radius:50%;background:var(--gc);box-shadow:0 0 10px var(--gc)}
 .hnrow{display:flex;align-items:flex-end;justify-content:space-between;gap:18px}
 .hname{min-width:0;font-family:var(--poster);font-weight:900;font-stretch:62%;font-size:clamp(48px,9vw,104px);line-height:.84;letter-spacing:.005em;text-transform:uppercase;color:#fff}
-.hero.art .hname{}
+.hero.art .hname{font-family:var(--serif);font-weight:400;font-stretch:100%;text-transform:none;letter-spacing:.01em;word-spacing:.04em;font-size:clamp(54px,8.6vw,112px);line-height:.95}
 .hero.art .hname em,.htile .tn.art em{font-style:normal;color:var(--gc)}
 .hbpm{flex:none;text-align:right;font-family:var(--poster);font-weight:900;font-stretch:62%;font-size:40px;line-height:1;color:#fff;padding-bottom:4px}
 .hbpm small{display:block;font:800 9.5px "Archivo",sans-serif;letter-spacing:.2em;color:var(--gc);margin-top:3px}
@@ -1070,7 +1070,7 @@ body.th-art .clip.q{animation:qp .38s steps(2) infinite!important}
 .tch{font:800 9px "Archivo",sans-serif;letter-spacing:.22em;color:var(--gc);text-transform:uppercase}
 .tb{font:800 10px "Archivo",sans-serif;color:#9a9a9a;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
 .tn{font-family:var(--poster);font-weight:900;font-stretch:62%;font-size:clamp(23px,2.6vw,30px);line-height:.92;letter-spacing:.005em;text-transform:uppercase;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-.tn.art{}
+.tn.art{font-family:var(--serif);font-weight:400;font-stretch:100%;text-transform:none;letter-spacing:.015em;font-size:clamp(28px,3vw,34px);line-height:1}
 .tn.art span{color:#fff}.tn .cherry{width:.6em;height:.68em}
 .tprev{position:absolute;top:9px;right:9px;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.28);color:#fff;display:grid;place-items:center;z-index:2}
 .tprev svg{width:16px;height:16px}
@@ -1096,6 +1096,7 @@ body.eco .htile .tv::before{display:none}
  .hxtop h1{font-size:21px}
  .hin{padding:18px 16px 16px}
  .hname{font-size:clamp(46px,14vw,70px)}
+ .hero.art .hname{font-size:clamp(46px,13.5vw,66px)}
  .hbpm{font-size:34px}
  .hact{flex-wrap:wrap}
  .hdesc{flex-basis:100%;font-size:13px}
@@ -1117,7 +1118,7 @@ body.eco .htile .tv::before{display:none}
  .clip:hover{border-color:#3c3c3c!important}
  .cfgrow.det summary:hover b{color:var(--yel)}
 }
-.lane.syn .clip:not(.play):not(.q){background:#111113!important;border-color:#262628!important}
+.lane.syn .clip:not(.play):not(.q){background:#18181b!important;border-color:#2c2c30!important}
 .clip.kfocus{outline:2px solid var(--yel);outline-offset:-2px;z-index:2}
 #bkModal.kbm .sheet{width:min(620px,100%)}
 .kbl{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px 22px;max-height:calc(100dvh - 190px);overflow-y:auto;padding:4px 2px}
@@ -1260,7 +1261,7 @@ body.novo .nvkey{display:inline-flex!important;align-items:center;gap:8px;height
 @keyframes wpOut{from{transform:translateX(0) skewX(-12deg)}to{transform:translateX(-120%) skewX(-12deg)}}
 #wipe .wch{transform:skewX(12deg);font:900 13px "Archivo",sans-serif;letter-spacing:.5em;text-transform:uppercase;border:2px solid currentColor;padding:6px 10px 5px 14px}
 #wipe .wnm{transform:skewX(12deg);font:900 clamp(54px,11vw,150px) "Archivo",sans-serif;text-transform:uppercase;letter-spacing:-.03em;line-height:.88;text-align:center}
-#wipe.art .wnm{}
+#wipe.art .wnm{font-family:var(--serif);font-weight:400;font-stretch:100%;text-transform:none;letter-spacing:.01em}
 #wipe.art .wnm em{font-style:normal;color:#000;opacity:.85}
 #wipe .wnm .cherry{width:.55em;height:.62em;vertical-align:.05em}
 #wipe.in .wnm{animation:wpTxt .3s ease-out both}@keyframes wpTxt{from{letter-spacing:.2em;opacity:0}to{letter-spacing:-.03em;opacity:1}}
@@ -1571,7 +1572,7 @@ let ctx,out,mix,filt,dly,fb,wet,noiseBuf,fin,anL,anR,anS,CMP=null;
 const CFG_DEF={launch:'bar',swing:true,wake:true,pvol:1,sting:true,autoKey:true,rec:'m4a',limit:true,anim:true,size:'n',eco:false,noflash:false,noshake:false,mono:false,keys:true};
 const CFG=Object.assign({},CFG_DEF,(()=>{try{const j=JSON.parse(localStorage.getItem('gstudio_cfg'));return j&&typeof j==='object'?j:{}}catch(e){return{}}})());
 function saveCfg(){try{localStorage.setItem('gstudio_cfg',JSON.stringify(CFG))}catch(e){}}
-const APPV='1.7.2.9';
+const APPV='1.7.3';
 const DEV=(()=>{const ua=navigator.userAgent||'',pf=navigator.platform||'',tp=navigator.maxTouchPoints||0;
   const ipad=/iPad/.test(ua)||((pf==='MacIntel'||/Macintosh/.test(ua))&&tp>1),iphone=/iPhone|iPod/.test(ua),android=/Android/.test(ua);
   const os=ipad?'ipados':iphone?'ios':android?'android':(/Mac/.test(pf)||/Macintosh/.test(ua))?'mac':(/Win/.test(pf)||/Windows/.test(ua))?'windows':/CrOS/.test(ua)?'chromeos':/Linux/.test(ua)?'linux':'other';
@@ -1985,13 +1986,13 @@ const STYLES={
    fx:FX4
   }},
  // gênero especial Vice City: groove de minimal/tech house (Chris Stussy, Mochakk) com piano de rave (Prospa) e vocal picado de voz real
- vice:{name:'Vice City',bpm:129,swing:.17,key:{root:7,mode:'minor'},artist:true,theme:'vice',names:{snare:'Rim',ohat:'Aberto',tom:'Congas',perc:'Shaker',bass:'Baixo',chord:'Keys',pad:'Pad',arp:'Piano',lead:'Vocal'},
-  scenes:[{kick:0,hat:0,perc:0,bass:0},{kick:0,clap:0,snare:0,hat:0,ohat:0,perc:0,tom:0,bass:0,lead:0},{pad:0,arp:2,lead:1,sub:1,fx:0},
-          {kick:0,clap:0,snare:1,hat:1,ohat:0,tom:1,perc:1,bass:1,chord:0,arp:0,lead:0,fx:1}],
+ vice:{name:'Vice City',bpm:128,swing:.12,key:{root:7,mode:'minor'},artist:true,theme:'vice',names:{snare:'Rim',ohat:'Aberto',tom:'Congas',perc:'Shaker',bass:'Baixo',chord:'Keys',pad:'Pad',arp:'Piano',lead:'Vocal'},
+  scenes:[{kick:0,hat:0,perc:0,bass:0},{kick:0,clap:0,hat:0,ohat:0,perc:0,bass:0,lead:1},{pad:0,chord:1,lead:0,sub:1,fx:0},
+          {kick:0,clap:0,snare:0,hat:0,ohat:0,tom:0,perc:1,bass:1,chord:0,lead:1,fx:1}],
   snd:{sub:{type:'sine',cut:150,lvl:.8},pad:{type:'warm'},arp:{type:'piano'},sc:.42,
-       kick:{f0:150,f1:49,dec:.28,click:.25,sweep:.04,knock:1.2,drive:1.25,tail:.1},clap:{f:1500,dec:.18,spread:2,smp:'palma',sv:.7},snare:{tone:220,hp:2600,dec:.08,alt:'snap'},
+       kick:{f0:125,f1:49,dec:.36,click:.3,sweep:.045,knock:1.3,drive:1.3,tail:.18},clap:{f:1500,dec:.18,spread:2,smp:'palma',sv:.7},snare:{tone:220,hp:2600,dec:.08,alt:'snap'},
        hat:{dec:.026,odec:.15,hp:9200},tom:{mult:1,dec:.3,smp:1,sv:.75,map:{200:196,150:146.83,110:116.54}},perc:{type:'shaker'},
-       bass:{type:'stussy',cut:900,drive:1.4},chord:{type:'m1'},lead:{type:'vchop'}},
+       bass:{type:'stussy',cut:1150,drive:1.5},chord:{type:'m1'},lead:{type:'vchop'}},
   p:{
    kick:[D('4x4','X...X...X...X...'),D('Skip','X...X...X...X..o'),D('Push','X...X...X..oX...'),D('Break','X.......X.......')],
    clap:[D('2 & 4','....x.......x...'),D('Late','....x.......x..o'),D('Shuffle','....x..o....x...'),D('Fill','....x.......x... ....x...o.x.xoxx')],
@@ -1999,11 +2000,11 @@ const STYLES={
    hat:[D('Groove','.oxo.oxo.oxo.oxo'),D('16ths','xoxoxoxoxoxoxoxo'),D('Off','..x...x...x...x.'),D('Tick','..x..x....x..x.x')],
    ohat:[D('Offbeat','..x...x...x...x.'),D('Late','...x...x...x...x'),D('Push','..x...x...x..xx.'),D('Wash','x...............')],
    tom:[T('Latin','h.hm..h.h.hm..h.'),T('Tumba','..m.m.l...m.h.l.'),T('Fala','m..l..m...l..m..'),T('Fill','................ ......h.hmm.mll.')],
-   perc:[D('Shaker','xoxoxoxoxoxoxoxo'),D('Bongô','..x..x.x..x...x.',{syn:'smp:bongo_hi'}),D('Agogô','x..x..x...x.x...',{syn:'cowbell'}),D('Ride','x.x.x.x.x.x.x.x.',{syn:'ride909'})],
+   perc:[D('Shaker','xoxoxoxoxoxoxoxo'),D('Bongô','..x..x.x..x...x.',{syn:'smp:bongo_hi'}),D('Rim','...x..x....x..x.',{syn:'rim909'}),D('Ride','x.x.x.x.x.x.x.x.',{syn:'ride909'})],
    bass:[
-    B('Stussy',16,[[0,'G1',.4],[3,'G1',.3],[6,'G2',.25],[7,'G1',.3],[10,'G1',.4],[13,'Bb1',.3],[14,'G1',.25]]),
+    B('Groove',16,[[0,'G1',.4],[3,'G1',.3],[6,'G2',.25],[7,'G1',.3],[10,'G1',.4],[13,'Bb1',.3],[14,'G1',.25]]),
     B('Bounce',16,[[2,'G1',.5],[5,'G1',.25],[6,'F1',.25],[9,'G1',.5],[11,'D2',.25],[14,'G1',.5]]),
-    B('Mochakk',32,[[0,'G1',.5],[3,'G1',.25],[4,'Bb1',.5],[7,'G1',.25],[10,'C2',.5],[12,'G1',.25],[14,'F1',.5],[16,'G1',.5],[19,'G1',.25],[20,'D2',.5],[23,'C2',.25],[26,'Bb1',.5],[28,'G1',.25],[30,'F1',.5]]),
+    B('Latino',32,[[0,'G1',.5],[3,'G1',.25],[4,'Bb1',.5],[7,'G1',.25],[10,'C2',.5],[12,'G1',.25],[14,'F1',.5],[16,'G1',.5],[19,'G1',.25],[20,'D2',.5],[23,'C2',.25],[26,'Bb1',.5],[28,'G1',.25],[30,'F1',.5]]),
     B('Roll',16,[[1,'G1',.25],[3,'G1',.25],[5,'G1',.25],[7,'G2',.25],[9,'G1',.25],[11,'G1',.25],[13,'Bb1',.25],[15,'F1',.25]])],
    sub:[
     B('Offbeat',16,[[2,'G1',1.5],[6,'G1',1.5],[10,'G1',1.5],[14,'G1',1.5]]),
@@ -2359,7 +2360,7 @@ function vchop(t,m,dur,o,v,mode){
 function bassStussy(t,m,dur,o,v,B){
   const d=Math.min(Math.max(dur,.06),.45),fq=m2f(m),x=ctx.createOscillator(),h=ctx.createOscillator(),hg=ctx.createGain(),lp=ctx.createBiquadFilter(),ws=ctx.createWaveShaper(),g=ctx.createGain();
   x.type='sine';h.type='triangle';[x,h].forEach((o2,k)=>{const f=fq*(k?2:1);o2.frequency.setValueAtTime(f*1.03,t);o2.frequency.exponentialRampToValueAtTime(f,t+.025)});
-  hg.gain.setValueAtTime(.32,t);hg.gain.exponentialRampToValueAtTime(.08,t+.12);
+  hg.gain.setValueAtTime(.45,t);hg.gain.exponentialRampToValueAtTime(.14,t+.12);
   lp.type='lowpass';lp.frequency.setValueAtTime(B.cut||900,t);lp.frequency.exponentialRampToValueAtTime(320,t+.1);lp.Q.value=1.2;ws.curve=softCurve(B.drive||1.4);
   x.connect(lp);h.connect(hg);hg.connect(lp);lp.connect(ws);ws.connect(g);
   const lv=.62*v;g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(lv,t+.004);g.gain.setTargetAtTime(lv*.55,t+.02,.07);g.gain.setTargetAtTime(.0001,t+d,.022);g.connect(o);
