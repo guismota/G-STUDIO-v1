@@ -854,6 +854,11 @@ body.eco .ticker .tk,body.eco .band .osc,body.eco .band .static,body.eco .band .
 body.eco .modal{-webkit-backdrop-filter:none;backdrop-filter:none}
 body.sz-l #scenes .sc{height:60px}body.sz-l .clip{font-size:14px}body.sz-l .lh b{font-size:12.5px}body.sz-l .mute{width:32px;height:28px}
 body.sz-s #scenes .sc{height:38px}body.sz-s .clip{font-size:10.5px}
+.hw.dz{background:#ff3b3b!important;border-color:#ff3b3b!important;color:#000!important}
+.cfgrow.dzr{background:#140505;border-color:#4a1515}.cfgrow.dzr+.cfgrow,.cfgrow+.cfgrow.dzr{border-top:1px solid #4a1515}
+.cfgrow.dzr .ct b{color:#ff5a5a}.cfgrow.dzr .ct small{color:#a06a6a}
+.cfgrow.dzr .hw.danger{border-color:#ff3b3b;color:#ff5a5a}
+.bkmsg.warn b{color:#ff5a5a}
 .bkrow{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px dashed #333;background:transparent}
 .bkrow .pinfo b{font-size:20px}
 .bkmsg{display:flex;flex-direction:column;gap:8px;padding:14px 4px;color:#9a9a9a;font-size:13px;line-height:1.45}
@@ -1373,7 +1378,7 @@ body.th-afro .nrow.root .ncell{background:#1c0a03!important}body.th-afro .nrow.r
   <div class="mfoot"><span class="spacer"></span><button class="hw pri" id="plClose">Fechar</button></div>
 </div></div>
 <div class="modal" id="cfgModal"><div class="sheet cfgsheet">
-  <div class="sh-head"><div class="sh-title"><i></i><span>Configurações</span></div><span class="lbl">G-STUDIO v<span id="cfgVer"></span></span></div>
+  <div class="sh-head"><div class="sh-title"><i></i><span>Configurações</span></div><span class="lbl">G-STUDIO</span></div>
   <div class="cfgbody" id="cfgBody"></div>
   <div class="mfoot"><span class="spacer"></span><button class="hw pri" id="cfgClose">Fechar</button></div>
 </div></div>
@@ -1422,7 +1427,6 @@ const ICON={
   edit:'<svg viewBox="0 0 16 16"><path d="M11.2 1.8l3 3-8.7 8.7-3.8.8.8-3.8z"/></svg>'
 };
 let ctx,out,mix,filt,dly,fb,wet,noiseBuf,fin,anL,anR,anS,CMP=null;
-const APPV='56';
 const CFG_DEF={launch:'bar',swing:true,wake:true,pvol:1,sting:true,autoKey:true,rec:'m4a',limit:true,anim:true,size:'n',eco:false};
 const CFG=Object.assign({},CFG_DEF,(()=>{try{const j=JSON.parse(localStorage.getItem('gstudio_cfg'));return j&&typeof j==='object'?j:{}}catch(e){return{}}})());
 function saveCfg(){try{localStorage.setItem('gstudio_cfg',JSON.stringify(CFG))}catch(e){}}
@@ -3585,7 +3589,7 @@ function bkSheet(title,info,body,btns){
   $('#bkTitle').textContent=title;$('#bkInfo').textContent=info||'';$('#bkBody').innerHTML='';
   if(typeof body==='string')$('#bkBody').innerHTML=body;else if(body)$('#bkBody').appendChild(body);
   const f=$('#bkFoot');f.innerHTML='<span class="spacer"></span>';
-  btns.forEach(b=>{const e=document.createElement('button');e.className='hw'+(b.pri?' pri':'')+(b.danger?' danger':'');e.textContent=b.l;e.onclick=b.f;if(b.id)e.id=b.id;f.appendChild(e)});
+  btns.forEach(b=>{const e=document.createElement('button');e.className='hw'+(b.pri?' pri':'')+(b.danger?' danger':'')+(b.dz?' dz':'');e.textContent=b.l;e.onclick=b.f;if(b.id)e.id=b.id;f.appendChild(e)});
   $('#bkModal').classList.add('open');
 }
 const bkClose=()=>{if(!BK.busy){closeModal('bkModal');BK.file=null;BK.data=null}};
@@ -3711,8 +3715,8 @@ function renderCfg(){
   const rs=cfgRow('Espaço usado','Calculando…');rs.querySelector('small').id='cfgSpace';sd.appendChild(rs);
   const rr=cfgRow('Voltar a tela Principal ao original','Apaga seus loops M1 a M4, as cenas editadas, os efeitos e os tamanhos das linhas. Projetos, gêneros criados e sons ficam.');
   rr.querySelector('.cc').innerHTML='<button class="hw" id="cfgReset">Voltar</button>';sd.appendChild(rr);
-  const ra=cfgRow('Apagar tudo','Deixa o app como novo: apaga projetos, gêneros criados, sons e configurações. Faça um backup antes.');
-  ra.querySelector('.cc').innerHTML='<button class="hw danger" id="cfgWipe">Apagar</button>';sd.appendChild(ra);
+  const ra=cfgRow('Apagar tudo','Deixa o app como novo. Apaga todos os dados deste aparelho.');ra.classList.add('dzr');
+  ra.querySelector('.cc').innerHTML='<button class="hw danger" id="cfgWipe">Apagar tudo</button>';sd.appendChild(ra);
   box.appendChild(sd);
   // Ajuda e Sobre
   const sa=document.createElement('section');sa.className='cfgsec';sa.innerHTML='<h3>Ajuda e Sobre</h3>';
@@ -3721,13 +3725,18 @@ function renderCfg(){
 <p>O G-STUDIO não tem conta, não coleta dados e não manda nada para servidor. Projetos, gêneros criados, sons importados e gravações ficam guardados só neste aparelho, no armazenamento do navegador ou do app.</p>
 <p>O microfone só é usado quando você toca em gravar no Explorar, e o áudio fica no aparelho. Os arquivos de backup e as gravações só saem daqui quando você mesmo exporta ou compartilha.</p>
 <p>Se você apagar os dados do site ou o app, tudo isso some. Por isso, faça backup de vez em quando.</p></div></details>`);
-  sa.insertAdjacentHTML('beforeend',`<details class="cfgrow det"><summary><div class="ct"><b>Versão e créditos</b><small>G-STUDIO v${APPV}</small></div><span class="chev"></span></summary><div class="dtx">
+  sa.insertAdjacentHTML('beforeend',`<details class="cfgrow det"><summary><div class="ct"><b>Créditos</b><small>Sons e fontes usados no app.</small></div><span class="chev"></span></summary><div class="dtx">
 <p>Os sons dos gêneros são sintetizados em tempo real pelo próprio app. As amostras gravadas são de domínio público (CC0 1.0), do pacote Stargate DAW sample pack:</p>
 <ul><li>Congas, bongôs e log drum: VCSL e VCSO-2-CE, por sgossner</li><li>Clap 909: Fugue State Audio</li><li>Palma: Freesound 493707, bastianpusch</li><li>Hi-hats, ride e crash: Karoryfer Samples</li><li>Voz "let's go": microlag</li></ul>
 <p>Fontes: Archivo, Big Shoulders Display e Syne, todas com licença SIL Open Font.</p></div></details>`);
   box.appendChild(sa);
   $('#cfgBkE').onclick=bkExport;$('#cfgBkR').onclick=bkPick;
-  armBtn($('#cfgReset'),'Certeza?',cfgResetMain);armBtn($('#cfgWipe'),'Apaga tudo mesmo?',cfgWipe);
+  $('#cfgReset').onclick=()=>bkSheet('Voltar a Principal ao original','',
+    '<div class="bkmsg warn"><b>Atenção</b><span>Isso vai apagar seus loops M1 a M4, as cenas que você editou, os ajustes de efeitos e os tamanhos das linhas da tela Principal. Projetos salvos, gêneros criados e sons importados não são afetados.</span><span>Não dá para desfazer. Deseja continuar?</span></div>',
+    [{l:'Cancelar',f:bkClose},{l:'Voltar ao original',dz:true,f:cfgResetMain}]);
+  $('#cfgWipe').onclick=()=>bkSheet('Apagar tudo','',
+    '<div class="bkmsg warn"><b>Isso apagará todos os dados do G-STUDIO neste aparelho</b><span>Projetos salvos, gêneros criados, sons importados, gravações do microfone, pastas, favoritos e configurações. O app volta a ficar como recém-instalado.</span><span>Essa ação não pode ser desfeita. Se quiser guardar alguma coisa, exporte um backup antes.</span><span>Deseja continuar?</span></div>',
+    [{l:'Cancelar',f:bkClose},{l:'Fazer backup',f:bkExport},{l:'Apagar tudo',dz:true,f:cfgWipe}]);
   $('#cfgTour').onclick=()=>{try{localStorage.removeItem('gstudio_tour_home');localStorage.removeItem('gstudio_tour_sess')}catch(e){}closeModal('cfgModal');if(document.body.classList.contains('in-session'))startTour('sess');else setTimeout(()=>startTour('home'),250)};
   updCfgBk();cfgSpace();
 }
@@ -3736,8 +3745,7 @@ async function cfgSpace(){
   const e=$('#cfgSpace');if(!e)return;let snd=0,n=0,ls=0;
   try{(await idbEntries()).forEach(([k,v])=>{const s=v&&(v.byteLength||0);snd+=s;n++})}catch(_){}
   for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&(k.startsWith('gstudio_')||k.startsWith('looppads_')))ls+=(localStorage.getItem(k)||'').length*2}
-  let tail='';try{if(navigator.storage&&navigator.storage.estimate){const q=await navigator.storage.estimate();if(q&&q.quota)tail=' · livre: '+fmtMB(Math.max(0,q.quota-(q.usage||0)))}}catch(_){}
-  e.textContent='Sons seus: '+(n?fmtMB(snd)+' em '+plural(n,'arquivo','arquivos'):'nenhum')+' · Projetos e ajustes: '+fmtMB(ls)+tail;
+    e.textContent='Sons seus: '+(n?fmtMB(snd)+' em '+plural(n,'arquivo','arquivos'):'nenhum')+' · Projetos e ajustes: '+fmtMB(ls);
 }
 function cfgResetMain(){
   if(playing)stopTransport();
@@ -3752,7 +3760,7 @@ async function cfgWipe(){
   const ks=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&(k.startsWith('gstudio_')||k.startsWith('looppads_')))ks.push(k)}
   ks.forEach(k=>localStorage.removeItem(k));location.reload();
 }
-function openCfg(){$('#cfgVer').textContent=APPV;renderCfg();$('#cfgModal').classList.add('open')}
+function openCfg(){renderCfg();$('#cfgModal').classList.add('open')}
 $('#cfgOpen').onclick=openCfg;$('#cfgClose').onclick=()=>closeModal('cfgModal');
 $('#cfgModal').addEventListener('click',e=>{if(e.target.id==='cfgModal')closeModal('cfgModal')});
 applyCfg();
