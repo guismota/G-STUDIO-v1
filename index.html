@@ -1009,8 +1009,11 @@ body.th-art .clip.q{animation:qp .38s steps(2) infinite!important}
 #home.flyer>*{flex-shrink:0}
 .hx{display:flex;flex-direction:column;gap:28px;padding:6px 0 24px}
 .hxtop{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:4px}
-.hxtop h1{margin:0;font-family:var(--artist);font-weight:400;font-size:clamp(21px,2.7vh,26px);line-height:1;letter-spacing:0;color:#b5b5b5;display:flex;align-items:center;height:42px}
-.hxtop h1 mark{background:none;color:var(--yel);font-style:italic;padding:0 .03em 0 .22em}
+.hxtop h1{margin:0;padding-left:12px;font-family:var(--artist);font-weight:400;font-size:clamp(21px,2.7vh,25px);line-height:1;letter-spacing:0;color:#b5b5b5;display:flex;flex-direction:column;align-items:flex-start}
+.hxtop h1 .w1{display:block;padding-left:.05em}
+.hxtop h1 .w2{display:block;margin:-.42em 0 0 1.45em;font-size:1.32em;white-space:nowrap;transform:rotate(-3deg);transform-origin:left center}
+.hxtop h1 .q{color:#b5b5b5;font-style:normal;margin-left:.16em}
+.hxtop h1 mark{background:none;color:var(--yel);font-style:italic;padding:0 .04em 0 0}
 .hxnew{flex:none;display:inline-flex;align-items:center;gap:9px;height:42px;padding:0 13px 0 6px;border-radius:999px;background:#EDEDED;color:#000;border:0;cursor:pointer;font-family:var(--artist);font-weight:400;font-size:20px;letter-spacing:0;box-shadow:0 0 0 1px #EDEDED,0 8px 24px rgba(237,237,237,.12)}
 .hxnew i{font-style:normal;width:30px;height:30px;line-height:30px;border-radius:50%;background:#000;color:#EDEDED;display:grid;place-items:center;font:300 24px/1 "Archivo",sans-serif}
 .hxnew em{font:800 8.5px "Archivo",sans-serif;letter-spacing:.2em;text-transform:uppercase;font-style:normal;border:1px solid #000;border-radius:999px;padding:3px 6px 2px;opacity:.55}
@@ -1088,6 +1091,28 @@ body.eco .htile .tv::before{display:none}
  .hact .hprev{margin-left:auto}
 }
 
+/* ===== Computador e teclado ===== */
+@media (min-width:1300px){#home.flyer .fh,#home.flyer .hx{width:100%;max-width:1480px;margin-left:auto;margin-right:auto}}
+.hrh .spacer{flex:1}
+.hra{display:none;width:32px;height:32px;border-radius:50%;background:#111;border:1px solid #2c2c2c;color:#ddd;font:400 20px/1 "Archivo",sans-serif;cursor:pointer;padding:0 0 2px;align-self:center}
+.hra:disabled{opacity:.3;cursor:default}
+.hrow.noscroll .hra{visibility:hidden}
+@media (hover:hover) and (pointer:fine){
+ .hra{display:grid;place-items:center}.hra:not(:disabled):hover{background:#1c1c1c;border-color:#444;color:#fff}
+ .htile:hover{transform:translateY(-3px);border-color:#333}.htile.cur:hover{border-color:var(--gc)}
+ .htile:hover .tprev{border-color:rgba(255,255,255,.5)}.tprev:hover,.hprev:hover{background:rgba(255,255,255,.12)}
+ .hgo:hover{filter:brightness(1.1)}.hxnew:hover{box-shadow:0 0 0 1px #fff,0 8px 28px rgba(237,237,237,.22)}
+ .hero:hover{border-color:#2a2a2a}
+ .clip:hover{border-color:#3c3c3c!important}
+ .cfgrow.det summary:hover b{color:var(--yel)}
+}
+.clip.kfocus{outline:2px solid var(--yel);outline-offset:-2px;z-index:2}
+#bkModal.kbm .sheet{width:min(620px,100%)}
+.kbl{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px 22px;max-height:calc(100dvh - 190px);overflow-y:auto;padding:4px 2px}
+.kbl h3{margin:0 0 6px;font:900 10.5px "Archivo",sans-serif;letter-spacing:.24em;text-transform:uppercase;color:var(--yel)}
+.kbr{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid #1a1a1a;color:#cfcfcf;font-size:12.5px}
+.kbr kbd{flex:none;font:800 11px "Archivo",sans-serif;letter-spacing:.06em;color:#fff;background:#151515;border:1px solid #333;border-bottom-width:2px;border-radius:6px;padding:4px 8px}
+.cver{margin-top:14px!important;font-size:10.5px;color:#555;letter-spacing:.08em}
 /* ===== Explorar ===== */
 #explore{position:fixed;inset:0;z-index:6000;display:none;flex-direction:column;background:#000;color:#f2f2f2;padding:16px 22px 18px;gap:14px}
 #explore.open{display:flex}
@@ -1516,9 +1541,18 @@ const ICON={
   edit:'<svg viewBox="0 0 16 16"><path d="M11.2 1.8l3 3-8.7 8.7-3.8.8.8-3.8z"/></svg>'
 };
 let ctx,out,mix,filt,dly,fb,wet,noiseBuf,fin,anL,anR,anS,CMP=null;
-const CFG_DEF={launch:'bar',swing:true,wake:true,pvol:1,sting:true,autoKey:true,rec:'m4a',limit:true,anim:true,size:'n',eco:false,noflash:false,noshake:false,mono:false};
+const CFG_DEF={launch:'bar',swing:true,wake:true,pvol:1,sting:true,autoKey:true,rec:'m4a',limit:true,anim:true,size:'n',eco:false,noflash:false,noshake:false,mono:false,keys:true};
 const CFG=Object.assign({},CFG_DEF,(()=>{try{const j=JSON.parse(localStorage.getItem('gstudio_cfg'));return j&&typeof j==='object'?j:{}}catch(e){return{}}})());
 function saveCfg(){try{localStorage.setItem('gstudio_cfg',JSON.stringify(CFG))}catch(e){}}
+const APPV='1.6.6';
+const DEV=(()=>{const ua=navigator.userAgent||'',pf=navigator.platform||'',tp=navigator.maxTouchPoints||0;
+  const ipad=/iPad/.test(ua)||((pf==='MacIntel'||/Macintosh/.test(ua))&&tp>1),iphone=/iPhone|iPod/.test(ua),android=/Android/.test(ua);
+  const os=ipad?'ipados':iphone?'ios':android?'android':(/Mac/.test(pf)||/Macintosh/.test(ua))?'mac':(/Win/.test(pf)||/Windows/.test(ua))?'windows':/CrOS/.test(ua)?'chromeos':/Linux/.test(ua)?'linux':'other';
+  const kind=iphone||(android&&/Mobile/.test(ua))?'phone':(ipad||android)?'tablet':'desktop';
+  const br=/Edg\//.test(ua)?'Edge':/OPR\//.test(ua)?'Opera':/SamsungBrowser/.test(ua)?'Samsung Internet':/CriOS/.test(ua)?'Chrome':/FxiOS|Firefox\//.test(ua)?'Firefox':/Chrome\//.test(ua)?'Chrome':/Safari\//.test(ua)?'Safari':'navegador';
+  const label={ipados:'iPad',ios:'iPhone',android:kind==='phone'?'Celular Android':'Tablet Android',mac:'Mac',windows:'PC com Windows',chromeos:'Chromebook',linux:'PC com Linux',other:'Computador'}[os];
+  return {os,kind,br,label,apple:os==='mac'||os==='ipados'||os==='ios'}})();
+document.body.classList.add('dev-'+DEV.kind,'os-'+DEV.os);
 let barOff=0,tT0=0;const MET={on:false};
 let duck=null;
 let bpm=124,playing=false,step=0,bar=0,nextTime=0,timer=null,cur=-1,curBar=0,lastKey='';
@@ -3802,6 +3836,13 @@ function renderCfg(){
     });
     box.appendChild(sec);
   });
+  if(DEV.kind!=='phone'){
+    const sk=document.createElement('section');sk.className='cfgsec';sk.innerHTML='<h3>Teclado</h3>';
+    const rk=cfgRow('Atalhos de teclado',DEV.kind==='tablet'?'Para usar com teclado conectado ao '+DEV.label+'.':'Espaço toca, 1 a 8 soltam as cenas, setas escolhem os loops.');
+    const tg=document.createElement('button');tg.className='tg';tg.setAttribute('role','switch');tg.setAttribute('aria-label','Atalhos de teclado');const up=()=>tg.setAttribute('aria-checked',CFG.keys?'true':'false');up();tg.onclick=()=>{cfgSet('keys',!CFG.keys);up();kbTitles()};rk.querySelector('.cc').appendChild(tg);sk.appendChild(rk);
+    const rl=cfgRow('Ver todos os atalhos','Ou aperte ? a qualquer momento.');rl.querySelector('.cc').innerHTML='<button class="hw" id="cfgKb">Ver</button>';sk.appendChild(rl);rl.querySelector('#cfgKb').onclick=openKb;
+    box.appendChild(sk);
+  }
   // Dados
   const sd=document.createElement('section');sd.className='cfgsec';sd.innerHTML='<h3>Dados</h3>';
   const rb=cfgRow('Backup','');rb.querySelector('.ct').insertAdjacentHTML('beforeend','<small id="cfgBk"></small>');
@@ -3815,7 +3856,10 @@ function renderCfg(){
   // Ajuda e Sobre
   const sa=document.createElement('section');sa.className='cfgsec';sa.innerHTML='<h3>Ajuda e Sobre</h3>';
   const rt=cfgRow('Rever o tour','Mostra de novo a explicação rápida da tela inicial e da sessão.');rt.querySelector('.cc').innerHTML='<button class="hw" id="cfgTour">Ver</button>';sa.appendChild(rt);
-  if(!isStandalone()){const ri=cfgRow('Como instalar','Coloque o G-STUDIO na tela de início para abrir como app, em tela cheia.');ri.querySelector('.cc').innerHTML='<button class="hw" id="cfgInst">Ver</button>';sa.appendChild(ri);ri.querySelector('#cfgInst').onclick=()=>{closeModal('cfgModal');showOnb(true)}}
+  if(!isStandalone()){const dk=DEV.kind==='desktop',ri=cfgRow(dk?'Instalar no computador':'Instalar no '+DEV.label,dk?'Abre o G-STUDIO numa janela própria, sem a barra do navegador.':'Coloque o G-STUDIO na tela de início para abrir como app, em tela cheia.');
+    ri.querySelector('.cc').innerHTML='<button class="hw" id="cfgInst">'+(BIP?'Instalar':'Ver como')+'</button>';sa.appendChild(ri);
+    ri.querySelector('#cfgInst').onclick=async()=>{if(BIP){await installNow();renderCfg();return}closeModal('cfgModal');showOnb(true)}}
+  const rd=cfgRow('Este aparelho',DEV.label+' · '+DEV.br+'. As opções acima foram ajustadas para ele.');sa.appendChild(rd);
   sa.insertAdjacentHTML('beforeend',`<details class="cfgrow det"><summary><div class="ct"><b>Privacidade</b><small>Tudo fica no seu aparelho.</small></div><span class="chev"></span></summary><div class="dtx">
 <p>O G-STUDIO não tem conta, não coleta dados e não manda nada para servidor. Projetos, gêneros criados, sons importados e gravações ficam guardados só neste aparelho, no armazenamento do navegador ou do app.</p>
 <p>O microfone só é usado quando você toca em gravar no Explorar, e o áudio fica no aparelho. Os arquivos de backup e as gravações só saem daqui quando você mesmo exporta ou compartilha.</p>
@@ -3823,7 +3867,7 @@ function renderCfg(){
   sa.insertAdjacentHTML('beforeend',`<details class="cfgrow det"><summary><div class="ct"><b>Créditos</b><small>Sons e fontes usados no app.</small></div><span class="chev"></span></summary><div class="dtx">
 <p>Os sons dos gêneros são sintetizados em tempo real pelo próprio app. As amostras gravadas são de domínio público (CC0 1.0), do pacote Stargate DAW sample pack:</p>
 <ul><li>Congas, bongôs e log drum: VCSL e VCSO-2-CE, por sgossner</li><li>Clap 909: Fugue State Audio</li><li>Palma: Freesound 493707, bastianpusch</li><li>Hi-hats, ride e crash: Karoryfer Samples</li><li>Voz "let's go": microlag</li></ul>
-<p>Fontes: Archivo, Big Shoulders Display e Instrument Serif, todas com licença SIL Open Font.</p></div></details>`);
+<p>Fontes: Archivo, Big Shoulders Display e Instrument Serif, todas com licença SIL Open Font.</p><p class="cver">G-STUDIO v${APPV}</p></div></details>`);
   box.appendChild(sa);
   $('#cfgBkE').onclick=bkExport;$('#cfgBkR').onclick=bkPick;
   $('#cfgReset').onclick=()=>bkSheet('Voltar a Principal ao original','',
@@ -3859,6 +3903,108 @@ function openCfg(){renderCfg();$('#cfgModal').classList.add('open')}
 $('#cfgOpen').onclick=openCfg;$('#cfgClose').onclick=()=>closeModal('cfgModal');
 $('#cfgModal').addEventListener('click',e=>{if(e.target.id==='cfgModal')closeModal('cfgModal')});
 applyCfg();
+
+
+// ---------- Aparelho, instalação e atalhos de teclado ----------
+const MODK=DEV.apple?'⌘':'Ctrl',SHK=DEV.apple?'⇧':'Shift';
+let BIP=null; // pedido de instalação do Chrome/Edge/Android
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();BIP=e;onbAdapt()});
+window.addEventListener('appinstalled',()=>{BIP=null});
+async function installNow(){if(!BIP)return false;const e=BIP;BIP=null;try{e.prompt();await e.userChoice}catch(_){}return true}
+const ICO_SH='<svg viewBox="0 0 20 20" class="obi"><path d="M10 2v11M6 6l4-4 4 4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 9H3v9h14V9h-2" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>';
+function installSteps(){
+  const o=DEV.os,b=DEV.br;
+  if(o==='ipados'||o==='ios')return {t:'Instale em 3 passos'+(b==='Safari'?' pelo Safari':''),s:['Toque em '+ICO_SH+' <em>Compartilhar</em>'+(o==='ipados'?' no topo da tela':' na barra de baixo'),'Role a lista e toque em <em>Adicionar à Tela de Início</em>','Toque em <em>Adicionar</em> e abra o G-STUDIO pelo ícone']};
+  if(o==='android')return {t:'Instale em 2 passos',s:['Toque no menu <em>⋮</em> do navegador','Toque em <em>Instalar app</em> ou <em>Adicionar à tela inicial</em>']};
+  if(b==='Firefox')return {t:'Use direto no navegador',s:['O Firefox não instala sites como app','Para instalar, abra o link no <em>Chrome</em>, no <em>Edge</em>'+(o==='mac'?' ou no <em>Safari</em>':'')]};
+  if(o==='mac'&&b==='Safari')return {t:'Instale em 2 passos pelo Safari',s:['No menu, clique em <em>Arquivo</em> e depois em <em>Adicionar ao Dock</em>','Clique em <em>Adicionar</em> e abra o G-STUDIO pelo Dock']};
+  return {t:'Instale em 2 passos pelo '+b,s:['Na barra de endereço, clique no ícone de <em>Instalar</em> (ou no menu <em>'+(b==='Edge'?'…':'⋮')+'</em>, em <em>Instalar G-STUDIO</em>)','Clique em <em>Instalar</em> e abra o G-STUDIO como um app']};
+}
+function onbAdapt(){
+  const st=installSteps(),ol=document.querySelector('#onb .obos');if(!ol)return;
+  $('#obTitle').textContent=st.t;ol.innerHTML=st.s.map((x,i)=>'<li><b>'+(i+1)+'</b><span>'+x+'</span></li>').join('');
+  if(BIP)ol.insertAdjacentHTML('beforeend','<li class="obinst"><button class="oblite obinstb">Instalar agora</button></li>'),ol.querySelector('.obinstb').onclick=async()=>{await installNow();onbAdapt()};
+  const sub=document.querySelector('#onb .obsub');if(sub)sub.innerHTML='<b>Feito para iPad, iPhone e computador.</b> Um estúdio de loops para montar cenas, aplicar efeitos e tocar ao vivo.';
+  $('#obNote').textContent='Este aparelho: '+DEV.label+' · '+DEV.br+'.';
+}
+onbAdapt();
+// dicas de atalho nos botões
+function kbTitles(){
+  if(DEV.kind==='phone'||!CFG.keys)return;
+  const T={'#play':'Tocar / parar (Espaço)','#recBtn':'Gravar (R)','#editTog':'Editar (E)','#osBtn':'One shots (O)','#homeBtn':'Início (H)','#saveBtn':'Salvar ('+MODK+' S)','#cfgOpen':'Configurações ('+MODK+' ,)','#projOpen':'Projetos ('+MODK+' O)','#expOpen':'Explorar (E)','#hxNew':'Criar novo (N)','#bp':'Mais BPM (+)','#bm':'Menos BPM (−)'};
+  Object.entries(T).forEach(([s,t])=>{const e=$(s);if(e)e.title=t});
+}
+kbTitles();
+const KB={li:0,pi:0,show:false};
+function kbMark(){
+  document.querySelectorAll('.clip.kfocus').forEach(e=>e.classList.remove('kfocus'));
+  if(!KB.show||!cols.length)return;KB.li=Math.max(0,Math.min(cols.length-1,KB.li));KB.pi=Math.max(0,Math.min(7,KB.pi));
+  const el=cols[KB.li].padEls&&cols[KB.li].padEls[KB.pi];if(el){el.classList.add('kfocus');el.scrollIntoView({block:'nearest',inline:'nearest'})}
+}
+document.addEventListener('pointerdown',()=>{if(KB.show){KB.show=false;kbMark()}},true);
+const KB_LIST=()=>[
+ ['Geral',[['?','Ver os atalhos'],[MODK+' ,','Configurações'],[MODK+' O','Projetos'],['Esc','Fechar janela ou painel']]],
+ ['Tela inicial',[['Enter','Entrar no destaque'],['Espaço','Ouvir a prévia do destaque'],['1 – 9','Abrir o canal 1 a 9'],['N','Criar novo'],['E','Explorar']]],
+ ['Sessão',[['Espaço','Tocar / parar'],['1 – 8','Soltar a cena'],['0','Parar tudo no fim do compasso'],['↑ ↓ ← →','Escolher um loop'],['Enter','Soltar ou tirar o loop escolhido'],['M','Mutar a linha escolhida'],['+  −','Subir ou baixar o BPM'],['R','Gravar'],['E','Editar'],['O','One shots'],[MODK+' S','Salvar projeto'],['H','Voltar ao início']]]];
+function openKb(){
+  const box=document.createElement('div');box.className='kbl';
+  KB_LIST().forEach(([g,L])=>{const s=document.createElement('section');s.innerHTML='<h3></h3>';s.querySelector('h3').textContent=g;
+    L.forEach(([k,d])=>{const r=document.createElement('div');r.className='kbr';r.innerHTML='<span></span><kbd></kbd>';r.querySelector('span').textContent=d;r.querySelector('kbd').textContent=k;s.appendChild(r)});box.appendChild(s)});
+  bkSheet('Atalhos de teclado',DEV.label,box,[{l:'Fechar',pri:true,f:bkClose}]);$('#bkModal').classList.add('kbm');
+}
+const typing=e=>{const t=e.target;return !!t&&(t.isContentEditable||/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))&&t.offsetParent!==null&&t.type!=='range'&&t.type!=='checkbox'};
+function kbEsc(){
+  if(typeof TOUR!=='undefined'&&TOUR.on){const s=$('#tour .tskip');if(s)s.click();return true}
+  const dlg=[...document.querySelectorAll('.xdlg.open')].pop();if(dlg){const n=dlg.querySelector('.no,#ugNo,#nvKeyOk');if(n)n.click();else dlg.classList.remove('open');return true}
+  if($('#xMenu').classList.contains('open')){closeXMenu();return true}
+  const mods=[...document.querySelectorAll('.modal.open')];
+  if(mods.length){const m=mods[mods.length-1];if(m.id==='bkModal'){bkClose();return true}
+    const map={clipEd:'#ceCancel',sceneEd:'#mcancel',picker:'#pkDone',projSave:'#psCancel',projList:'#plClose',recDone:'#rdClose',cfgModal:'#cfgClose'};const b=map[m.id]&&$(map[m.id]);if(b)b.click();else m.classList.remove('open');return true}
+  if(RL.open){$('#rlClose').click();return true}
+  if(XS.open){closeExplore();return true}
+  const fx=FXKEYS.filter(k=>FX[k].win.open);if(fx.length){fx.forEach(closeFx);return true}
+  if(OS.win.open){closeOs();return true}
+  if($('#onb').classList.contains('show')){closeOnb();return true}
+  return false;
+}
+document.addEventListener('keydown',e=>{
+  if(!CFG.keys)return;
+  if(typing(e)){if(e.key==='Escape'&&kbEsc()){e.preventDefault();e.target.blur()}return}
+  const mod=DEV.apple?e.metaKey:e.ctrlKey,k=e.key,inS=document.body.classList.contains('in-session');
+  const blocked=!!document.querySelector('.modal.open,.xdlg.open')||RL.open||XS.open||(typeof TOUR!=='undefined'&&TOUR.on)||$('#onb').classList.contains('show');
+  if(k==='Escape'){if(kbEsc()){e.preventDefault();const ae=document.activeElement;if(ae&&ae!==document.body&&ae.blur)ae.blur()}return}
+  if(mod&&!e.altKey){
+    if(k===','){e.preventDefault();if(!blocked)openCfg();return}
+    if(k==='o'||k==='O'){e.preventDefault();if(!blocked)openProjList();return}
+    if((k==='s'||k==='S')&&inS){e.preventDefault();if(!blocked)openProjSave();return}
+    return;
+  }
+  if(e.ctrlKey||e.metaKey||e.altKey||blocked)return;
+  if(k==='?'){e.preventDefault();openKb();return}
+  if(!inS){ // tela inicial
+    if(k==='Enter'&&(e.target===document.body||e.target.id==='hero')){e.preventDefault();const g=$('#hero .hgo');if(g)g.click();return}
+    if(k===' '&&(e.target===document.body||e.target.id==='hero')){e.preventDefault();const p=$('#hero .hprev');if(p)p.click();return}
+    if(/^[1-9]$/.test(k)){const t=document.querySelector('.htile[data-ch="CH0'+k+'"]');if(t){e.preventDefault();t.click()}return}
+    if(k==='n'||k==='N'){e.preventDefault();$('#hxNew').click();return}
+    if(k==='e'||k==='E'){e.preventDefault();$('#expOpen').click();return}
+    return;
+  }
+  // sessão
+  if(k===' '){e.preventDefault();if(!e.repeat)$('#play').click();return}
+  if(/^[1-8]$/.test(k)){e.preventDefault();if(!e.repeat)launchScene(+k-1);return}
+  if(k==='0'){e.preventDefault();const s=$('#stopall');if(s)s.click();else stopAll();return}
+  if(k==='ArrowUp'||k==='ArrowDown'||k==='ArrowLeft'||k==='ArrowRight'){e.preventDefault();
+    if(KB.show){if(k==='ArrowUp')KB.li--;if(k==='ArrowDown')KB.li++;if(k==='ArrowLeft')KB.pi--;if(k==='ArrowRight')KB.pi++}
+    KB.show=true;kbMark();return}
+  if(k==='Enter'){if(KB.show&&cols[KB.li]){e.preventDefault();padTap(KB.li,KB.pi)}return}
+  if(k==='m'||k==='M'){const c=cols[KB.li];if(c&&c.padEls&&c.padEls[0]){e.preventDefault();const mb=c.padEls[0].parentElement.querySelector('.mute');if(mb)mb.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true}))}return}
+  if(k==='+'||k==='='){e.preventDefault();setBpm(bpm+1);return}
+  if(k==='-'||k==='_'||k==='−'){e.preventDefault();setBpm(bpm-1);return}
+  if(k==='r'||k==='R'){e.preventDefault();if(!e.repeat)$('#recBtn').click();return}
+  if(k==='e'||k==='E'){e.preventDefault();$('#editTog').click();return}
+  if(k==='o'||k==='O'){e.preventDefault();$('#osBtn').click();return}
+  if(k==='h'||k==='H'){e.preventDefault();$('#homeBtn').click();return}
+});
 
 // ---------- Gravação: grava o que sai na master e exporta ----------
 const REC={on:false,t0:0,L:[],R:[],len:0,sr:48000,sp:null,z:null,mr:null,mrc:[],mime:'',dst:null,wav:null,m4a:null,uiT:null};
@@ -4163,7 +4309,7 @@ function hartLoop(now){
 }
 function hartStart(){if(!HART.raf)HART.raf=requestAnimationFrame(hartLoop)}
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)hartStart()});
-window.addEventListener('resize',()=>{const t=(performance.now()-HART.t0)/1000;HART.list.forEach(o=>{if(o.cv.isConnected)hartDraw(o,o.hero?t:t+20,o.hero?'hero':'amb')})});
+window.addEventListener('resize',()=>{document.querySelectorAll('#cards .hrow').forEach(r=>r._upd&&r._upd());const t=(performance.now()-HART.t0)/1000;HART.list.forEach(o=>{if(o.cv.isConnected)hartDraw(o,o.hero?t:t+20,o.hero?'hero':'amb')})});
 const ICO_SPK='<svg viewBox="0 0 16 16"><path d="M2 6h3l4-3v10l-4-3H2z" fill="currentColor"/><path class="sw" d="M11 5.5a3.5 3.5 0 0 1 0 5M13 3.5a6.5 6.5 0 0 1 0 9" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>';
 const hEsc=v=>String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 function hNameHTML(G,S){return G&&G.artist?(G.html||'<span>After</span><em>party</em>'):hEsc(S.name)}
@@ -4171,7 +4317,7 @@ function hEnterUg(el,g,i){tuneInX(el,()=>enterUgen(g.id),{c:'#2F5BEA',ink:'#fff'
 function hUgPreview(g){PREVIEW[g.id]=bb=>{let can=false;ugenPreview(g.id,()=>{if(prevOn&&prevOn.b===bb){bb.classList.remove('playing');prevOn=null}},()=>can);return()=>{can=true;pvStop(false)}}}
 function hTile(o){
   const b=document.createElement('div');b.className='htile'+(o.cls?' '+o.cls:'');b.setAttribute('role','button');b.tabIndex=0;
-  b.style.setProperty('--gc',o.gc);b.style.setProperty('--d',o.d+'ms');
+  b.style.setProperty('--gc',o.gc);b.style.setProperty('--d',o.d+'ms');b.dataset.ch=o.ch;
   b.innerHTML='<canvas aria-hidden="true"></canvas><span class="tv" aria-hidden="true"></span><span class="tprev" role="button" aria-label="Ouvir prévia">'+ICO_SPK+'</span><span class="tin"><span class="thd"><span class="tch"></span><span class="tb"></span></span><span class="tn"></span></span>';
   b.querySelector('.tch').textContent=o.ch;b.querySelector('.tn').innerHTML=o.name;if(o.art)b.querySelector('.tn').classList.add('art');b.querySelector('.tb').textContent=o.sub;
   b.setAttribute('aria-label',o.label);
@@ -4179,13 +4325,15 @@ function hTile(o){
   b.querySelector('.tprev').onclick=e=>{e.stopPropagation();togglePreview(b,o.pk)};
   return b;
 }
-function hRow(title,n){const s=document.createElement('section');s.className='hrow';s.innerHTML='<div class="hrh"><h2></h2><span></span></div><div class="hscroll"></div>';s.querySelector('h2').textContent=title;s.querySelector('.hrh span').textContent=n?String(n):'';return s}
+function hRow(title,n){const s=document.createElement('section');s.className='hrow';s.innerHTML='<div class="hrh"><h2></h2><span></span><i class="spacer"></i><button class="hra" data-d="-1" aria-label="Voltar">‹</button><button class="hra" data-d="1" aria-label="Avançar">›</button></div><div class="hscroll"></div>';
+  const sc=s.querySelector('.hscroll'),upd=()=>{const a=s.querySelectorAll('.hra');a[0].disabled=sc.scrollLeft<4;a[1].disabled=sc.scrollLeft+sc.clientWidth>=sc.scrollWidth-4;s.classList.toggle('noscroll',sc.scrollWidth<=sc.clientWidth+4)};
+  s.querySelectorAll('.hra').forEach(b=>b.onclick=()=>sc.scrollBy({left:+b.dataset.d*sc.clientWidth*.8,behavior:'smooth'}));sc.addEventListener('scroll',upd,{passive:true});s._upd=upd;s.querySelector('h2').textContent=title;s.querySelector('.hrh span').textContent=n?String(n):'';return s}
 function buildHome(){
   const box=$('#cards');box.innerHTML='';HART.list=[];if(HART.io){HART.io.disconnect();HART.io=null}
   const ug=ugenList();let last=null;try{last=localStorage.getItem(LASTK)}catch(e){}
   // topo: título + Criar novo sempre à vista
   const top=document.createElement('div');top.className='hxtop';
-  top.innerHTML='<h1>what’s <mark>poppin’</mark>?</h1><button class="hxnew" id="hxNew" aria-label="Criar novo" title="Criar novo"><i>+</i><em>Em testes</em></button>';
+  top.innerHTML='<h1 aria-label="what’s poppin’?"><span class="w1">what’s</span><span class="w2"><mark>poppin’</mark><span class="q">?</span></span></h1><button class="hxnew" id="hxNew" aria-label="Criar novo" title="Criar novo"><i>+</i><em>Em testes</em></button>';
   box.appendChild(top);
   top.querySelector('#hxNew').onclick=e=>tuneInX(e.currentTarget,enterNovo);
   // destaque: o último canal usado (ou House na primeira vez)
@@ -4216,6 +4364,7 @@ function buildHome(){
   const r=mk('Seus gêneros',ut.concat([{cls:'add',gc:'#EDEDED',ch:'Novo',name:'Criar novo',sub:'',label:'Criar novo',pk:'',enter:el=>tuneInX(el,enterNovo),after:t=>{t.querySelector('canvas').remove();t.querySelector('.tv').remove();t.querySelector('.tprev').remove();t.insertAdjacentHTML('afterbegin','<span class="tplus" aria-hidden="true">+</span>')}}]));
   if(r&&!ug.length)r.querySelector('.hrh span').textContent='';
   hartStart();
+  requestAnimationFrame(()=>box.querySelectorAll('.hrow').forEach(r=>r._upd&&r._upd()));
 }
 const reduceMotion=()=>!CFG.anim||(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
 let flickT=0;
