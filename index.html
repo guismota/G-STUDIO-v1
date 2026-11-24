@@ -1039,18 +1039,32 @@ body.th-art .clip.q{animation:qp .38s steps(2) infinite!important}
 .fxtab.lit .fl{background:var(--yel);box-shadow:0 0 6px var(--yel)}
 .top .fxtab.sel{color:#fff!important;border-color:#555!important;box-shadow:inset 0 -2px 0 var(--yel)!important}
 .top .fxtab.open{border-color:#f2f2f2!important}
-.fxlow{display:flex;gap:6px;height:42px;align-items:center}
-.fxlcd{position:relative;flex:1;min-width:0;height:42px;border-radius:5px;background:#050505;border:1px solid #232323;overflow:hidden;padding:0;cursor:pointer;text-align:left;box-shadow:inset 0 1px 4px rgba(0,0,0,.8)}
-.fxlcd canvas{position:absolute;inset:0;width:100%;height:100%}
-.fxlt{position:absolute;left:7px;top:4px;display:flex;align-items:baseline;gap:5px;pointer-events:none}
-.fxlt b{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff}
-.fxlt small{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6a6a6a}
-.fxlcd em{position:absolute;right:6px;top:4px;font-style:normal;font-size:9px;font-weight:700;letter-spacing:.06em;color:#8a8a8a;font-variant-numeric:tabular-nums;pointer-events:none}
-.fxlcd.off .fxlt b{color:#777}
-.fxlcd.open{border-color:#f2f2f2}
-#fxKnob{flex:none}
-.top .fxpw{width:30px;height:42px;min-height:0;padding:0;display:flex;align-items:center;justify-content:center;flex:none}
+.fxlow{display:flex;gap:5px;height:42px;align-items:stretch}
+.fxks{flex:1;display:flex;justify-content:space-around;align-items:center;min-width:0;height:100%;background:#050505;border:1px solid #1e1e1e;padding:0 2px}
+.fxks .knob{gap:1px}.fxks .knob svg{width:28px;height:28px}
+.fxks .knob .lbl{font-size:8px;letter-spacing:.1em;white-space:nowrap;max-width:52px;overflow:hidden;text-overflow:ellipsis}
+.top .fxst{height:100%;min-height:0;width:62px;padding:0 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex:none}
+.fxst small{font-size:8px;letter-spacing:.14em;color:#6a6a6a;font-weight:700}
+.fxst b{font-size:10px;letter-spacing:.06em;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:56px}
+.top .fxpw{width:30px;height:auto;min-height:0;padding:0;display:flex;align-items:center;justify-content:center;flex:none}
 .fxpw svg{width:15px;height:15px}
+/* barra de cima um pouco maior; One Shots fora por enquanto */
+.osgrp{display:none!important}
+.top{gap:10px 10px;padding-bottom:12px}
+.top .hw:not(.mini):not(.fxtab):not(.fxpw):not(.fxst){height:46px}
+.top .lcd{padding:8px 15px 7px;min-width:220px}
+.top .lcd .bpm{font-size:40px}
+.top .lcd .pos{font-size:24px}
+.top .lcd .msg{font-size:10.5px;margin-top:6px}
+.top .vbtn .mini{width:34px;height:22px}
+.top .knobs .knob svg{width:46px;height:46px}
+.top .mmb{height:44px}
+.fxc{width:286px}
+.fxseg{height:28px}
+.top .fxtab{height:28px;font-size:10.5px}
+.top .fxlow{height:52px}
+.fxks .knob svg{width:32px;height:32px}
+@media (max-width:1170px){.top .lcd{min-width:180px;padding:8px 12px 7px}.top .lcd .bpm{font-size:36px}.top .lcd .pos{font-size:21px}.fxc{width:262px}.top .knobs .knob svg{width:42px;height:42px}.knobs{gap:8px}}
 .urgrp{display:flex;gap:4px;margin-left:auto;flex:none}
 .tabs .hw.ur{width:34px;min-height:32px;padding:0;display:flex;align-items:center;justify-content:center}
 .tabs .hw.ur svg{width:16px;height:16px}
@@ -1579,8 +1593,8 @@ body.th-afro .nrow.root .ncell{background:#1c0a03!important}body.th-afro .nrow.r
     <button class="hw" id="recBtn" aria-label="Gravar"><span class="rdot"></span><span class="rtime">Rec</span></button>
     
     <button class="hw" id="editTog"><span class="led"></span><span id="editIco"></span>Editar</button>
-    <div class="fxc" role="group" aria-label="Efeitos"><div class="fxseg"><button class="hw fxtab" data-fx="rev"><i class="fl"></i>Rev</button><button class="hw fxtab" data-fx="dly"><i class="fl"></i>Dly</button><button class="hw fxtab" data-fx="ech"><i class="fl"></i>Ech</button><button class="hw fxtab" data-fx="dst"><i class="fl"></i>Dist</button><button class="hw fxtab" data-fx="flt"><i class="fl"></i>Flt</button></div><div class="fxlow"><button class="fxlcd" id="fxLcd" aria-label="Abrir o efeito"><canvas id="fxCv"></canvas><span class="fxlt"><b id="fxLn">Reverb</b><small id="fxLs"></small></span><em id="fxLv"></em></button><div id="fxKnob"></div><button class="hw fxpw" id="fxPw" aria-label="Ligar ou desligar o efeito"><svg viewBox="0 0 16 16"><path d="M8 1.8v5.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" fill="none"/><path d="M4.6 4.2a5.2 5.2 0 107.0 0" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" fill="none"/></svg></button></div></div>
-    <div class="grpl"><span class="lbl">Sampler</span><button class="hw" id="osBtn"><span class="led"></span>One Shots</button></div>
+    <div class="fxc" role="group" aria-label="Efeitos"><div class="fxseg"><button class="hw fxtab" data-fx="rev"><i class="fl"></i>Rev</button><button class="hw fxtab" data-fx="dly"><i class="fl"></i>Dly</button><button class="hw fxtab" data-fx="ech"><i class="fl"></i>Ech</button><button class="hw fxtab" data-fx="dst"><i class="fl"></i>Dist</button><button class="hw fxtab" data-fx="flt"><i class="fl"></i>Flt</button></div><div class="fxlow"><div class="fxks"><div id="fxK0"></div><div id="fxK1"></div><div id="fxK2"></div></div><button class="hw fxst" id="fxSt" aria-label="Trocar o estilo do efeito"><small>Estilo</small><b id="fxStN">Room</b></button><button class="hw fxpw" id="fxPw" aria-label="Ligar ou desligar o efeito"><svg viewBox="0 0 16 16"><path d="M8 1.8v5.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" fill="none"/><path d="M4.6 4.2a5.2 5.2 0 107.0 0" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" fill="none"/></svg></button></div></div>
+    <div class="grpl osgrp"><span class="lbl">Sampler</span><button class="hw" id="osBtn"><span class="led"></span>One Shots</button></div>
     <div class="spacer"></div>
     <div class="knobs"><div id="kPump"></div><div id="kFilt"></div><div id="kMst"></div><div class="mm"><button id="clipLed" class="clipled" aria-label="Clip (toque para zerar)"></button><div class="mmb"><i><span id="mL"></span></i><i><span id="mR"></span></i></div><span class="lbl">Out</span></div></div>
   </div>
@@ -1710,7 +1724,7 @@ let ctx,out,mix,filt,dly,fb,wet,noiseBuf,fin,anL,anR,anS,CMP=null;
 const CFG_DEF={launch:'bar',swing:true,wake:true,pvol:1,sting:true,autoKey:true,rec:'m4a',limit:true,anim:true,size:'n',eco:false,noflash:false,noshake:false,mono:false,keys:true};
 const CFG=Object.assign({},CFG_DEF,(()=>{try{const j=JSON.parse(localStorage.getItem('gstudio_cfg'));return j&&typeof j==='object'?j:{}}catch(e){return{}}})());
 function saveCfg(){try{localStorage.setItem('gstudio_cfg',JSON.stringify(CFG))}catch(e){}}
-const APPV='1.7.4.3';
+const APPV='1.7.4.4';
 const DEV=(()=>{const ua=navigator.userAgent||'',pf=navigator.platform||'',tp=navigator.maxTouchPoints||0;
   const ipad=/iPad/.test(ua)||((pf==='MacIntel'||/Macintosh/.test(ua))&&tp>1),iphone=/iPhone|iPod/.test(ua),android=/Android/.test(ua);
   const os=ipad?'ipados':iphone?'ios':android?'android':(/Mac/.test(pf)||/Macintosh/.test(ua))?'mac':(/Win/.test(pf)||/Windows/.test(ua))?'windows':/CrOS/.test(ua)?'chromeos':/Linux/.test(ua)?'linux':'other';
@@ -1725,7 +1739,7 @@ let bpm=124,playing=false,step=0,bar=0,nextTime=0,timer=null,cur=-1,curBar=0,las
 const uiQ=[];
 const K={mv:.8,fv:1,dv:0,sc:.5};
 let msgTxt='',msgT=null;
-function flash(m){msgTxt=m;clearTimeout(msgT);msgT=setTimeout(()=>{msgTxt=''},2600)}
+function flash(m){/* o visor mostra só o gênero; aviso crítico vira balão */if(/^Sem espaço/.test(m||'')&&typeof xToast==='function')xToast(m)}
 
 // ---------- Dados musicais ----------
 const all16=[...Array(16).keys()];
@@ -3881,60 +3895,32 @@ function openFx(k){
 }
 function closeFx(k){const F=FX[k];F.win.open=false;F.lnk=false;if(F.el)F.el.style.display='none';updFxUI(k)}
 document.querySelectorAll('.fxbtn').forEach(b=>b.onclick=()=>{const k=b.dataset.fx;FX[k].win.open?closeFx(k):openFx(k)});
-// ---------- Efeitos na barra: seletor com telinha ----------
-const FXS={k:'rev',kn:null,lastV:-1,col:'#FFE600',colT:0,last:0};
-function fxsSel(k){FXS.k=k;FXS.lastV=-1;fxsLabels()}
-function fxsLabels(){const k=FXS.k,D=FXDEF[k],F=FX[k];$('#fxLn').textContent=k==='dst'?'Dist':D.name;$('#fxLs').textContent=D.styles[F.style]||'';
+// ---------- Efeitos na barra: abas, 3 knobs, estilo e liga/desliga ----------
+const FXS={k:'rev',kn:[],lv:[-1,-1,-1],last:0};
+const fxsPar=k=>{const D=FXDEF[k];return [D.big,D.small[0],D.small[1]]};
+function fxsSel(k){FXS.k=k;FXS.lv=[-1,-1,-1];fxsLabels();fxsSync(true)}
+function fxsLabels(){const k=FXS.k,F=FX[k],D=FXDEF[k];
+  fxsPar(k).forEach((q,i)=>{const l=$('#fxK'+i+' .lbl');if(l)l.textContent=q.l});
+  $('#fxStN').textContent=D.styles[F.style]||'';
   document.querySelectorAll('.fxtab').forEach(b=>b.classList.toggle('sel',b.dataset.fx===k))}
+function fxSetStyle(k,i){const F=FX[k];if(i===F.style)return;F.style=i;
+  if(ctx){if(k==='rev'){updRevIR();updRev()}else if(k==='dly'){buildDelayInner();updDly()}
+    else if(k==='dst'){ALL().forEach(c=>{if(c.gain)makeShaper(c)});if(MA.sh)MA.sh.curve=dstCurve();routeAll()}
+    else if(k==='ech')updEch();else routeAll()}
+  updFxUI(k);saveFx();if(F.el)F.el.querySelectorAll('.pst button').forEach(b=>b.classList.toggle('sel',+b.dataset.i===i))}
 document.querySelectorAll('.fxtab').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.fx;if(FXS.k===k){FX[k].win.open?closeFx(k):openFx(k)}else fxsSel(k)}));
-$('#fxLcd').onclick=()=>{const k=FXS.k;FX[k].win.open?closeFx(k):openFx(k)};
 $('#fxPw').onclick=()=>pfToggleFx(FXS.k);
-FXS.kn=makeKnob($('#fxKnob'),{v:FX.rev.p[FXDEF.rev.big.k],onChange:v=>{const k=FXS.k;setFxParam(k,FXDEF[k].big.k,v);FXS.lastV=v}});
-{const a=FXKEYS.find(k=>FX[k].on);if(a)FXS.k=a}fxsLabels();
-function fxsDraw(now){
-  requestAnimationFrame(fxsDraw);
-  if(!document.body.classList.contains('in-session')||document.hidden)return;
-  const still=CFG.eco||reduceMotion();if(now-FXS.last<(still?250:33))return;FXS.last=now;
-  const k=FXS.k,F=FX[k],D=FXDEF[k],on=pfFxOn(k),cv=$('#fxCv'),dpr=Math.min(2,window.devicePixelRatio||1),W=cv.clientWidth,H=cv.clientHeight;if(!W)return;
-  if(cv.width!==Math.round(W*dpr)){cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr)}
-  if(now-FXS.colT>1000){FXS.colT=now;FXS.col=(getComputedStyle(document.body).getPropertyValue('--yel')||'#FFE600').trim()||'#FFE600';fxsLabels()}
-  // estado dos botões
+$('#fxSt').onclick=()=>{const k=FXS.k;fxSetStyle(k,(FX[k].style+1)%FXDEF[k].styles.length);fxsLabels()};
+[0,1,2].forEach(i=>{FXS.kn[i]=makeKnob($('#fxK'+i),{v:.5,label:'·',small:true,onChange:v=>{const k=FXS.k;setFxParam(k,fxsPar(k)[i].k,v);FXS.lv[i]=v}})});
+{const a=FXKEYS.find(k=>fxActive(k)&&(FX[k].master||fxLinkedHere(k)>0));if(a)FXS.k=a}fxsLabels();
+function fxsSync(force){
+  const k=FXS.k,F=FX[k];
   document.querySelectorAll('.fxtab').forEach(b=>{const kk=b.dataset.fx;b.classList.toggle('lit',pfFxOn(kk));b.classList.toggle('open',FX[kk].win.open)});
-  $('#fxPw').classList.toggle('on',on);$('#fxLcd').classList.toggle('off',!on);$('#fxLcd').classList.toggle('open',F.win.open);
-  const bv=F.p[D.big.k];if(Math.abs(bv-FXS.lastV)>.001){FXS.kn.set(bv);FXS.lastV=bv}
-  $('#fxLv').textContent=D.big.l+' '+Math.round(bv*100)+'%';
-  // desenho
-  const g=cv.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);
-  const col=on?FXS.col:'#3a3a3a',top=13,bot=H-3,hh=bot-top,x0=8;
-  const beat=60/bpm,ph=(on&&playing&&ctx&&!still)?(((ctx.currentTime-tT0)/beat)%4+4)%4:-1; // posição em batidas no compasso
-  g.lineWidth=1.5;g.strokeStyle=col;g.fillStyle=col;
-  const P=F.p;
-  if(k==='rev'){
-    const L=(W-x0)*(.28+.68*(P.decay||0)),amp=.35+.65*(P.mix||0),hx=ph<0?-1:x0+(ph%1)*L*1.25;
-    for(let x=x0;x<W;x+=2){const e=Math.exp(-(x-x0)/L*3.2)*amp,n=.55+.45*Math.abs(Math.sin(x*12.9898+F.style*3)*43758.5453%1),y=e*n*hh;
-      g.globalAlpha=hx>=0?(x<=hx?1:.35):(on?.85:1);g.fillRect(x,bot-y,1.2,y)}
-    g.globalAlpha=1;
-  }else if(k==='dly'||k==='ech'){
-    const ech=k==='ech',sp=ech?(W-x0)*(.1+.16*(P.beat||0)):(W-x0)*(F.style===2?.17:.14),fb=.25+.7*(P.fb||0),amp=.4+.6*(P.mix||0),cur=ph<0?-1:Math.floor((ph%2)*(W-x0)/sp/2*2);
-    for(let i=0;i<9;i++){const x=x0+i*sp;if(x>W-2)break;let a=amp*Math.pow(fb,i);if(!ech&&F.style===1)a*=i%2?.8:1;const y=a*hh;
-      g.globalAlpha=cur<0?(on?.85:1):(i===cur?1:i<cur?.55:.3);
-      if(ech){g.beginPath();const wd=4+i*2.2;g.moveTo(x-wd,bot);g.quadraticCurveTo(x,bot-y*2,x+wd,bot);g.fill()}
-      else if(F.style===1){const up=i%2===0;g.fillRect(x,up?bot-y:bot-hh/2-y/2,3,up?y:y/2)}
-      else g.fillRect(x,bot-y,3,y)}
-    g.globalAlpha=1;
-  }else if(k==='dst'){
-    const dr=1+(P.drive||0)*14,mx=P.mix==null?1:P.mix,sh=v=>Math.tanh(v*dr)/Math.tanh(dr),off=ph<0?0:ph*Math.PI,mid=top+hh/2;
-    g.globalAlpha=.3;g.beginPath();for(let x=x0;x<W;x++){const v=Math.sin((x-x0)/(W-x0)*Math.PI*4+off);g.lineTo(x,mid-v*hh*.42)}g.stroke();
-    g.globalAlpha=1;g.beginPath();for(let x=x0;x<W;x++){const v=Math.sin((x-x0)/(W-x0)*Math.PI*4+off),o=(1-mx)*v+mx*sh(v);g.lineTo(x,mid-o*hh*.46)}g.stroke();
-  }else{
-    let c=P.cut==null?.6:P.cut;if(ph>=0&&P.lfo>0)c=Math.max(0,Math.min(1,c+Math.sin(ph/4*Math.PI*2)*P.lfo*.3));
-    const q=.2+(P.res||0)*2.2,st=F.style;g.beginPath();
-    for(let x=x0;x<W;x++){const f=(x-x0)/(W-x0),d=(f-c)*7;let m;
-      if(st===0)m=d<0?1:Math.exp(-d*d*.6);else if(st===1)m=d>0?1:Math.exp(-d*d*.6);else m=Math.exp(-d*d*.9);
-      m+=q*.35*Math.exp(-d*d*6);g.lineTo(x,bot-Math.min(1.25,m)*hh*.72)}
-    g.stroke();g.lineTo(W,bot);g.lineTo(x0,bot);g.globalAlpha=.15;g.fill();g.globalAlpha=1;
-  }
+  $('#fxPw').classList.toggle('on',pfFxOn(k));
+  fxsPar(k).forEach((q,i)=>{const v=F.p[q.k];if(force||Math.abs(v-FXS.lv[i])>.001){FXS.kn[i].set(v);FXS.lv[i]=v}});
+  const sn=FXDEF[k].styles[F.style]||'';if($('#fxStN').textContent!==sn)$('#fxStN').textContent=sn;
 }
+function fxsDraw(now){requestAnimationFrame(fxsDraw);if(!document.body.classList.contains('in-session')||document.hidden||now-FXS.last<120)return;FXS.last=now;fxsSync(false)}
 requestAnimationFrame(fxsDraw);
 window.addEventListener('resize',()=>FXKEYS.forEach(k=>{if(FX[k].win.open)placePlug(k)}));
 
@@ -4356,7 +4342,7 @@ document.addEventListener('pointerdown',()=>{if(KB.show){KB.show=false;kbMark()}
 const KB_LIST=()=>[
  ['Geral',[['?','Ver os atalhos'],[MODK+' ,','Configurações'],[MODK+' O','Projetos'],['Esc','Fechar janela ou painel']]],
  ['Tela inicial',[['Enter','Entrar no destaque'],['Espaço','Ouvir a prévia do destaque'],['1 – 9','Abrir o canal 1 a 9'],['N','Criar novo'],['E','Explorar']]],
- ['Sessão',[['Espaço','Tocar / parar'],['1 – 8','Soltar a cena'],['0','Parar tudo no fim do compasso'],['↑ ↓ ← →','Escolher um loop'],['Enter','Soltar ou tirar o loop escolhido'],['M','Mutar a linha escolhida'],['S','Solo: só a linha escolhida toca'],['+  −','Subir ou baixar o BPM'],['R','Gravar'],['E','Editar'],['O','One shots'],[MODK+' S','Salvar projeto'],[MODK+' Z','Desfazer'],[SHK+' '+MODK+' Z','Refazer'],['P','Modo palco'],['H','Voltar ao início']]]];
+ ['Sessão',[['Espaço','Tocar / parar'],['1 – 8','Soltar a cena'],['0','Parar tudo no fim do compasso'],['↑ ↓ ← →','Escolher um loop'],['Enter','Soltar ou tirar o loop escolhido'],['M','Mutar a linha escolhida'],['S','Solo: só a linha escolhida toca'],['+  −','Subir ou baixar o BPM'],['R','Gravar'],['E','Editar'],[MODK+' S','Salvar projeto'],[MODK+' Z','Desfazer'],[SHK+' '+MODK+' Z','Refazer'],['P','Modo palco'],['H','Voltar ao início']]]];
 function openKb(){
   const box=document.createElement('div');box.className='kbl';
   KB_LIST().forEach(([g,L])=>{const s=document.createElement('section');s.innerHTML='<h3></h3>';s.querySelector('h3').textContent=g;
@@ -4417,7 +4403,6 @@ document.addEventListener('keydown',e=>{
   if(k==='-'||k==='_'||k==='−'){e.preventDefault();setBpm(bpm-1);return}
   if(k==='r'||k==='R'){e.preventDefault();if(!e.repeat)$('#recBtn').click();return}
   if(k==='e'||k==='E'){e.preventDefault();$('#editTog').click();return}
-  if(k==='o'||k==='O'){e.preventDefault();$('#osBtn').click();return}
   if(k==='p'||k==='P'){e.preventDefault();PF.open?closePerf():openPerf();return}
   if(k==='h'||k==='H'){e.preventDefault();$('#homeBtn').click();return}
 });
@@ -4483,7 +4468,7 @@ function pfSync(){
   const v=K.fv*100;document.querySelector('#pfFlt .pftrk i').style.width=v+'%';document.querySelector('#pfFlt .pftrk b').style.left=v+'%';
   PF.raf=requestAnimationFrame(pfSync);
 }
-function openPerf(){if(PF.open||!document.body.classList.contains('in-session'))return;if(!PF.sc.length)pfBuild();PF.open=true;$('#pfName').textContent=($('#lcdMsg').textContent||'').split(' · ')[0];const el=$('#perf');el.classList.add('open');el.setAttribute('aria-hidden','false');pfSync()}
+function openPerf(){if(PF.open||!document.body.classList.contains('in-session'))return;if(!PF.sc.length)pfBuild();PF.open=true;$('#pfName').textContent=$('#lcdMsg').textContent||'';const el=$('#perf');el.classList.add('open');el.setAttribute('aria-hidden','false');pfSync()}
 function closePerf(){if(!PF.open)return;PF.open=false;cancelAnimationFrame(PF.raf);const el=$('#perf');el.classList.remove('open');el.setAttribute('aria-hidden','true')}
 $('#stageBtn').onclick=openPerf;$('#pfExit').onclick=closePerf;
 $('#pfPlay').onclick=()=>$('#play').click();
@@ -5242,7 +5227,7 @@ function render(){
   if(stepChanged)lastKey=key;
   const pos=(playing&&cur>=0)?(curBar<0?'– '+(4-Math.floor(cur/4)):(curBar+1)+'.'+(Math.floor(cur/4)+1)+'.'+(cur%4+1)):'1.1.1';
   if(pos!==lastPos){lastPos=pos;$('#lcdPos').textContent=pos}
-  const msg=msgTxt||(editMode?(screen==='free'?'Edição: loops, cenas ou tirar linhas':'Edição: mexe à vontade'):(curProj()?curProj().name:STYLES[style].name)+' · '+(screen==='free'?'Livre · ':'')+(sceneOn>=0?'Cena '+(sceneOn+1):(playing?'No improviso':'Pronto pra tocar')));
+  const msg=STYLES[style]?STYLES[style].name:'';
   if(msg!==lastMsg){lastMsg=msg;$('#lcdMsg').textContent=msg}
   slotEls.forEach((b,i)=>b.classList.toggle('on',playing&&sceneOn===i));
   cols.forEach(c=>{
@@ -5747,7 +5732,7 @@ const TOURS={
  sess:[
   {sel:'#session .lane .clip',t:'Toque um loop',d:'Cada pad é um loop. Toque para soltar: ele entra no tempo certo, no começo do próximo compasso.'},
   {sel:'#scenes .sc',t:'Cenas',d:'Uma cena solta várias linhas de uma vez. Comece pela 1 e depois experimente a 3.'},
-  {sel:'.fxc',t:'Efeitos',d:'Escolha o efeito em cima, gire o knob e ligue no botão. A telinha mostra o efeito agindo; toque nela para abrir todos os ajustes.'},
+  {sel:'.fxc',t:'Efeitos',d:'Escolha o efeito em cima, ajuste nos knobs, troque o estilo e ligue no botão. Toque de novo na aba para abrir todos os ajustes.'},
   {sel:'#recBtn',t:'Gravar',d:'Grava tudo o que sai do app. No fim, você salva ou compartilha o áudio.'},
   {sel:'#editTog',t:'Editar',d:'Com Editar ligado, você cria seus próprios loops e monta suas cenas.'}]
 };
