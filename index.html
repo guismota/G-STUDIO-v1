@@ -1031,7 +1031,7 @@ body.th-art .clip.q{animation:qp .38s steps(2) infinite!important}
 /* topo fixo: cabeçalho, fita e o + ficam sempre à vista; a tela só rola na vertical, sem quicar */
 #home.flyer{overflow-x:hidden;overflow-y:auto;overscroll-behavior:none;padding-top:0}
 /* desfazer / refazer / palco na faixa das abas */
-/* efeitos: seletor com telinha */
+/* efeitos: seletor com pad tipo Kaoss */
 .fxc{display:flex;flex-direction:column;gap:4px;width:252px;flex:none}
 .fxseg{display:flex;gap:2px;height:24px}
 .top .fxtab{flex:1;min-width:0;height:24px;min-height:0;padding:0 2px;font-size:10px;letter-spacing:.08em;display:flex;align-items:center;justify-content:center;gap:5px;color:#8a8a8a}
@@ -1040,17 +1040,44 @@ body.th-art .clip.q{animation:qp .38s steps(2) infinite!important}
 .top .fxtab.sel{color:#fff!important;border-color:#555!important;box-shadow:inset 0 -2px 0 var(--yel)!important}
 .top .fxtab.open{border-color:#f2f2f2!important}
 .fxlow{display:flex;gap:6px;height:42px;align-items:center}
-.fxlcd{position:relative;flex:1;min-width:0;height:42px;border-radius:5px;background:#050505;border:1px solid #232323;overflow:hidden;padding:0;cursor:pointer;text-align:left;box-shadow:inset 0 1px 4px rgba(0,0,0,.8)}
+.fxlcd{position:relative;flex:1;min-width:0;height:100%;background:#050505;border:1px solid #232323;overflow:hidden;padding:0;cursor:crosshair;text-align:left;box-shadow:inset 0 1px 4px rgba(0,0,0,.8);touch-action:none;user-select:none;-webkit-user-select:none;transition:border-color .15s ease}
+.fxlcd.touch{border-color:var(--yel)}
+.fxax{position:absolute;right:6px;bottom:3px;font-size:8.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#555;pointer-events:none}
+.fxhint{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);font-size:9px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:#333;pointer-events:none;transition:opacity .2s}
+.fxax{opacity:0;transition:opacity .15s}.fxlcd.touch .fxax{opacity:1}.fxlcd.touch.beat .fxax{opacity:0}
+.fxlcd:not(.off) .fxhint,.fxlcd.touch .fxhint{opacity:0}
 .fxlcd canvas{position:absolute;inset:0;width:100%;height:100%}
 .fxlt{position:absolute;left:7px;top:4px;display:flex;align-items:baseline;gap:5px;pointer-events:none}
 .fxlt b{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff}
 .fxlt small{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6a6a6a}
 .fxlcd em{position:absolute;right:6px;top:4px;font-style:normal;font-size:9px;font-weight:700;letter-spacing:.06em;color:#8a8a8a;font-variant-numeric:tabular-nums;pointer-events:none}
 .fxlcd.off .fxlt b{color:#777}
-.fxlcd.open{border-color:#f2f2f2}
 #fxKnob{flex:none}
 .top .fxpw{width:30px;height:42px;min-height:0;padding:0;display:flex;align-items:center;justify-content:center;flex:none}
 .fxpw svg{width:15px;height:15px}
+/* barra de cima um pouco maior */
+.top{gap:10px 8px;padding-bottom:12px}
+.top .hw:not(.mini):not(.fxtab):not(.fxpw){height:46px}
+.top .lcd{padding:8px 14px 7px;min-width:196px}
+.top .lcd .bpm{font-size:40px}
+.top .lcd .pos{font-size:24px}
+.top .lcd .msg{font-size:10.5px;margin-top:6px}
+.top .vbtn .mini{width:34px;height:22px}
+.top .knob svg{width:44px;height:44px}
+.top .mmb{height:44px}
+.fxc{width:256px}
+.fxseg{height:28px}
+.top .fxtab{height:28px;font-size:10.5px}
+.fxlow{height:56px}
+.top .fxpw{height:56px;width:36px}
+#fxKnob .knob svg{width:44px;height:44px}
+@media (max-width:1170px){.top .lcd{min-width:172px;padding:8px 12px 7px}.top .lcd .bpm{font-size:35px}.top .lcd .pos{font-size:21px}.fxc{width:232px}.top #editTog{padding:0 10px}.top #recBtn{padding:0 10px}.top .knob svg{width:40px;height:40px}.knobs{gap:7px}}
+/* cantos levemente arredondados na sessão */
+body.in-session *:not(.rdot){border-radius:var(--rr,6px)!important}
+body.in-session .strip,body.in-session .mmb,body.in-session .lm,body.in-session .ncell{--rr:2px}
+body.in-session .tape,body.in-session .tabs .tab,body.in-session .lh .tab,body.in-session #spec{--rr:0}
+body.in-session .kw,body.in-session .kbk{--rr:0 0 5px 5px}
+body.in-session .led,body.in-session .fl{--rr:50%}
 .urgrp{display:flex;gap:4px;margin-left:auto;flex:none}
 .tabs .hw.ur{width:34px;min-height:32px;padding:0;display:flex;align-items:center;justify-content:center}
 .tabs .hw.ur svg{width:16px;height:16px}
@@ -1579,7 +1606,7 @@ body.th-afro .nrow.root .ncell{background:#1c0a03!important}body.th-afro .nrow.r
     <button class="hw" id="recBtn" aria-label="Gravar"><span class="rdot"></span><span class="rtime">Rec</span></button>
     
     <button class="hw" id="editTog"><span class="led"></span><span id="editIco"></span>Editar</button>
-    <div class="fxc" role="group" aria-label="Efeitos"><div class="fxseg"><button class="hw fxtab" data-fx="rev"><i class="fl"></i>Rev</button><button class="hw fxtab" data-fx="dly"><i class="fl"></i>Dly</button><button class="hw fxtab" data-fx="ech"><i class="fl"></i>Ech</button><button class="hw fxtab" data-fx="dst"><i class="fl"></i>Dist</button><button class="hw fxtab" data-fx="flt"><i class="fl"></i>Flt</button></div><div class="fxlow"><button class="fxlcd" id="fxLcd" aria-label="Abrir o efeito"><canvas id="fxCv"></canvas><span class="fxlt"><b id="fxLn">Reverb</b><small id="fxLs"></small></span><em id="fxLv"></em></button><div id="fxKnob"></div><button class="hw fxpw" id="fxPw" aria-label="Ligar ou desligar o efeito"><svg viewBox="0 0 16 16"><path d="M8 1.8v5.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" fill="none"/><path d="M4.6 4.2a5.2 5.2 0 107.0 0" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" fill="none"/></svg></button></div></div>
+    <div class="fxc" role="group" aria-label="Efeitos"><div class="fxseg"><button class="hw fxtab" data-fx="rev"><i class="fl"></i>Rev</button><button class="hw fxtab" data-fx="dly"><i class="fl"></i>Dly</button><button class="hw fxtab" data-fx="ech"><i class="fl"></i>Ech</button><button class="hw fxtab" data-fx="dst"><i class="fl"></i>Dist</button><button class="hw fxtab" data-fx="flt"><i class="fl"></i>Flt</button></div><div class="fxlow"><div class="fxlcd" id="fxLcd" role="slider" aria-label="Pad do efeito: segure e arraste"><canvas id="fxCv"></canvas><span class="fxlt"><b id="fxLn">Reverb</b><small id="fxLs"></small></span><em id="fxLv"></em><span class="fxax" id="fxAx"></span><span class="fxhint">Segure</span></div><div id="fxKnob"></div><button class="hw fxpw" id="fxPw" aria-label="Ligar ou desligar o efeito"><svg viewBox="0 0 16 16"><path d="M8 1.8v5.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" fill="none"/><path d="M4.6 4.2a5.2 5.2 0 107.0 0" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" fill="none"/></svg></button></div></div>
     <div class="grpl"><span class="lbl">Sampler</span><button class="hw" id="osBtn"><span class="led"></span>One Shots</button></div>
     <div class="spacer"></div>
     <div class="knobs"><div id="kPump"></div><div id="kFilt"></div><div id="kMst"></div><div class="mm"><button id="clipLed" class="clipled" aria-label="Clip (toque para zerar)"></button><div class="mmb"><i><span id="mL"></span></i><i><span id="mR"></span></i></div><span class="lbl">Out</span></div></div>
@@ -1710,7 +1737,7 @@ let ctx,out,mix,filt,dly,fb,wet,noiseBuf,fin,anL,anR,anS,CMP=null;
 const CFG_DEF={launch:'bar',swing:true,wake:true,pvol:1,sting:true,autoKey:true,rec:'m4a',limit:true,anim:true,size:'n',eco:false,noflash:false,noshake:false,mono:false,keys:true};
 const CFG=Object.assign({},CFG_DEF,(()=>{try{const j=JSON.parse(localStorage.getItem('gstudio_cfg'));return j&&typeof j==='object'?j:{}}catch(e){return{}}})());
 function saveCfg(){try{localStorage.setItem('gstudio_cfg',JSON.stringify(CFG))}catch(e){}}
-const APPV='1.7.4.1';
+const APPV='1.7.4.2';
 const DEV=(()=>{const ua=navigator.userAgent||'',pf=navigator.platform||'',tp=navigator.maxTouchPoints||0;
   const ipad=/iPad/.test(ua)||((pf==='MacIntel'||/Macintosh/.test(ua))&&tp>1),iphone=/iPhone|iPod/.test(ua),android=/Android/.test(ua);
   const os=ipad?'ipados':iphone?'ios':android?'android':(/Mac/.test(pf)||/Macintosh/.test(ua))?'mac':(/Win/.test(pf)||/Windows/.test(ua))?'windows':/CrOS/.test(ua)?'chromeos':/Linux/.test(ua)?'linux':'other';
@@ -1725,7 +1752,7 @@ let bpm=124,playing=false,step=0,bar=0,nextTime=0,timer=null,cur=-1,curBar=0,las
 const uiQ=[];
 const K={mv:.8,fv:1,dv:0,sc:.5};
 let msgTxt='',msgT=null;
-function flash(m){msgTxt=m;clearTimeout(msgT);msgT=setTimeout(()=>{msgTxt=''},2600)}
+function flash(m){/* o visor mostra só o gênero; avisos críticos viram toast */if(/^Sem espaço/.test(m||'')&&typeof xToast==='function')xToast(m)}
 
 // ---------- Dados musicais ----------
 const all16=[...Array(16).keys()];
@@ -3887,53 +3914,58 @@ function fxsSel(k){FXS.k=k;FXS.lastV=-1;fxsLabels()}
 function fxsLabels(){const k=FXS.k,D=FXDEF[k],F=FX[k];$('#fxLn').textContent=k==='dst'?'Dist':D.name;$('#fxLs').textContent=D.styles[F.style]||'';
   document.querySelectorAll('.fxtab').forEach(b=>b.classList.toggle('sel',b.dataset.fx===k))}
 document.querySelectorAll('.fxtab').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.fx;if(FXS.k===k){FX[k].win.open?closeFx(k):openFx(k)}else fxsSel(k)}));
-$('#fxLcd').onclick=()=>{const k=FXS.k;FX[k].win.open?closeFx(k):openFx(k)};
+
 $('#fxPw').onclick=()=>pfToggleFx(FXS.k);
 FXS.kn=makeKnob($('#fxKnob'),{v:FX.rev.p[FXDEF.rev.big.k],onChange:v=>{const k=FXS.k;setFxParam(k,FXDEF[k].big.k,v);FXS.lastV=v}});
 {const a=FXKEYS.find(k=>FX[k].on);if(a)FXS.k=a}fxsLabels();
+// pad tipo Kaoss: encostou, o efeito entra; X e Y mexem dois ajustes; soltou, ele sai
+const FXAX={rev:['mix','decay','Mix','Decay'],dly:['xb','fb','Tempo','Feedback'],ech:['beat','fb','Tempo','Feedback'],dst:['drive','tone','Drive','Tone'],flt:['cut','res','Corte','Resson.']};
+FXS.tr=[];FXS.t=null;FXS.lx={dly:.5};
+function fxsPadX(k){const F=FX[k],a=FXAX[k][0];if(a==='xb'){if(F.xb){const i=ECHB.indexOf(F.xb);return (i+.5)/ECHB.length}return FXS.lx.dly}return F.p[a]==null?.5:F.p[a]}
+function fxsPadSet(k,x,y){
+  const F=FX[k],A=FXAX[k],n=ECHB.length;x=Math.max(0,Math.min(1,x));y=Math.max(0,Math.min(1,y));
+  if(A[0]==='xb'){const i=Math.min(n-1,Math.floor(x*n));FXS.lx.dly=(i+.5)/n;if(F.xb!==ECHB[i]){F.xb=ECHB[i];updDly()}}
+  else if(A[0]==='beat'){const i=Math.min(n-1,Math.floor(x*n)),v=i/(n-1);if(v!==F.p.beat)setFxParam(k,'beat',v)}
+  else setFxParam(k,A[0],x);
+  setFxParam(k,A[1],y);
+  FXS.tr.push([performance.now(),fxsPadX(k),y]);if(FXS.tr.length>18)FXS.tr.shift();
+}
+{const el=$('#fxLcd'),at=e=>{const r=el.getBoundingClientRect();return [(e.clientX-r.left)/r.width,1-(e.clientY-r.top)/r.height]};
+  el.addEventListener('pointerdown',e=>{e.preventDefault();if(FXS.t)return;initAudio();const k=FXS.k,F=FX[k];FXS.t={id:e.pointerId,k};try{el.setPointerCapture(e.pointerId)}catch(_){}
+    F.xt=true;el.classList.add('touch');FXS.tr=[];const [x,y]=at(e);fxsPadSet(k,x,y);applyFx(k);routeAll();updFxUI(k);refreshFxTags()});
+  el.addEventListener('pointermove',e=>{if(!FXS.t||FXS.t.id!==e.pointerId)return;const [x,y]=at(e);fxsPadSet(FXS.t.k,x,y)});
+  const end=e=>{if(!FXS.t||FXS.t.id!==e.pointerId)return;const k=FXS.t.k,F=FX[k];FXS.t=null;el.classList.remove('touch');
+    F.xt=false;if(k==='dly'&&F.xb){F.xb=null;updDly()}applyFx(k);routeAll();updFxUI(k);refreshFxTags();saveFx()};
+  el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);el.addEventListener('lostpointercapture',end)}
 function fxsDraw(now){
   requestAnimationFrame(fxsDraw);
   if(!document.body.classList.contains('in-session')||document.hidden)return;
-  const still=CFG.eco||reduceMotion();if(now-FXS.last<(still?250:33))return;FXS.last=now;
-  const k=FXS.k,F=FX[k],D=FXDEF[k],on=pfFxOn(k),cv=$('#fxCv'),dpr=Math.min(2,window.devicePixelRatio||1),W=cv.clientWidth,H=cv.clientHeight;if(!W)return;
+  const still=CFG.eco||reduceMotion(),touch=!!FXS.t;if(!touch&&now-FXS.last<(still?250:33))return;FXS.last=now;
+  const k=FXS.k,F=FX[k],D=FXDEF[k],A=FXAX[k],on=pfFxOn(k)||F.xt,cv=$('#fxCv'),dpr=Math.min(2,window.devicePixelRatio||1),W=cv.clientWidth,H=cv.clientHeight;if(!W)return;
   if(cv.width!==Math.round(W*dpr)){cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr)}
   if(now-FXS.colT>1000){FXS.colT=now;FXS.col=(getComputedStyle(document.body).getPropertyValue('--yel')||'#FFE600').trim()||'#FFE600';fxsLabels()}
-  // estado dos botões
-  document.querySelectorAll('.fxtab').forEach(b=>{const kk=b.dataset.fx;b.classList.toggle('lit',pfFxOn(kk));b.classList.toggle('open',FX[kk].win.open)});
-  $('#fxPw').classList.toggle('on',on);$('#fxLcd').classList.toggle('off',!on);$('#fxLcd').classList.toggle('open',F.win.open);
+  document.querySelectorAll('.fxtab').forEach(b=>{const kk=b.dataset.fx;b.classList.toggle('lit',pfFxOn(kk)||FX[kk].xt);b.classList.toggle('open',FX[kk].win.open)});
+  $('#fxPw').classList.toggle('on',pfFxOn(k));const pad=$('#fxLcd');pad.classList.toggle('off',!on);
   const bv=F.p[D.big.k];if(Math.abs(bv-FXS.lastV)>.001){FXS.kn.set(bv);FXS.lastV=bv}
-  $('#fxLv').textContent=D.big.l+' '+Math.round(bv*100)+'%';
-  // desenho
+  const ax=A[2]+' ↔  '+A[3]+' ↕';if(FXS.axT!==ax){FXS.axT=ax;$('#fxAx').textContent=ax}
+  pad.classList.toggle('beat',A[0]==='xb'||A[0]==='beat');
+  const xv=fxsPadX(k),yv=F.p[A[1]]==null?.5:F.p[A[1]];
+  $('#fxLv').textContent=touch?(A[0]==='xb'||A[0]==='beat'?ECHL[Math.min(ECHB.length-1,Math.floor(xv*ECHB.length))]:Math.round(xv*100)+'%')+' · '+Math.round(yv*100)+'%':'';
   const g=cv.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);
-  const col=on?FXS.col:'#3a3a3a',top=13,bot=H-3,hh=bot-top,x0=8;
-  const beat=60/bpm,ph=(on&&playing&&ctx&&!still)?(((ctx.currentTime-tT0)/beat)%4+4)%4:-1; // posição em batidas no compasso
-  g.lineWidth=1.5;g.strokeStyle=col;g.fillStyle=col;
-  const P=F.p;
-  if(k==='rev'){
-    const L=(W-x0)*(.28+.68*(P.decay||0)),amp=.35+.65*(P.mix||0),hx=ph<0?-1:x0+(ph%1)*L*1.25;
-    for(let x=x0;x<W;x+=2){const e=Math.exp(-(x-x0)/L*3.2)*amp,n=.55+.45*Math.abs(Math.sin(x*12.9898+F.style*3)*43758.5453%1),y=e*n*hh;
-      g.globalAlpha=hx>=0?(x<=hx?1:.35):(on?.85:1);g.fillRect(x,bot-y,1.2,y)}
-    g.globalAlpha=1;
-  }else if(k==='dly'||k==='ech'){
-    const ech=k==='ech',sp=ech?(W-x0)*(.1+.16*(P.beat||0)):(W-x0)*(F.style===2?.17:.14),fb=.25+.7*(P.fb||0),amp=.4+.6*(P.mix||0),cur=ph<0?-1:Math.floor((ph%2)*(W-x0)/sp/2*2);
-    for(let i=0;i<9;i++){const x=x0+i*sp;if(x>W-2)break;let a=amp*Math.pow(fb,i);if(!ech&&F.style===1)a*=i%2?.8:1;const y=a*hh;
-      g.globalAlpha=cur<0?(on?.85:1):(i===cur?1:i<cur?.55:.3);
-      if(ech){g.beginPath();const wd=4+i*2.2;g.moveTo(x-wd,bot);g.quadraticCurveTo(x,bot-y*2,x+wd,bot);g.fill()}
-      else if(F.style===1){const up=i%2===0;g.fillRect(x,up?bot-y:bot-hh/2-y/2,3,up?y:y/2)}
-      else g.fillRect(x,bot-y,3,y)}
-    g.globalAlpha=1;
-  }else if(k==='dst'){
-    const dr=1+(P.drive||0)*14,mx=P.mix==null?1:P.mix,sh=v=>Math.tanh(v*dr)/Math.tanh(dr),off=ph<0?0:ph*Math.PI,mid=top+hh/2;
-    g.globalAlpha=.3;g.beginPath();for(let x=x0;x<W;x++){const v=Math.sin((x-x0)/(W-x0)*Math.PI*4+off);g.lineTo(x,mid-v*hh*.42)}g.stroke();
-    g.globalAlpha=1;g.beginPath();for(let x=x0;x<W;x++){const v=Math.sin((x-x0)/(W-x0)*Math.PI*4+off),o=(1-mx)*v+mx*sh(v);g.lineTo(x,mid-o*hh*.46)}g.stroke();
-  }else{
-    let c=P.cut==null?.6:P.cut;if(ph>=0&&P.lfo>0)c=Math.max(0,Math.min(1,c+Math.sin(ph/4*Math.PI*2)*P.lfo*.3));
-    const q=.2+(P.res||0)*2.2,st=F.style;g.beginPath();
-    for(let x=x0;x<W;x++){const f=(x-x0)/(W-x0),d=(f-c)*7;let m;
-      if(st===0)m=d<0?1:Math.exp(-d*d*.6);else if(st===1)m=d>0?1:Math.exp(-d*d*.6);else m=Math.exp(-d*d*.9);
-      m+=q*.35*Math.exp(-d*d*6);g.lineTo(x,bot-Math.min(1.25,m)*hh*.72)}
-    g.stroke();g.lineTo(W,bot);g.lineTo(x0,bot);g.globalAlpha=.15;g.fill();g.globalAlpha=1;
-  }
+  const col=on?FXS.col:'#4a4a4a';
+  // grade (no Delay/Echo marca as divisões de tempo)
+  g.strokeStyle='#1b1b1b';g.lineWidth=1;g.beginPath();
+  const cols=(A[0]==='xb'||A[0]==='beat')?ECHB.length:4;for(let i=1;i<cols;i++){const x=Math.round(W*i/cols)+.5;g.moveTo(x,0);g.lineTo(x,H)}
+  for(let i=1;i<3;i++){const y=Math.round(H*i/3)+.5;g.moveTo(0,y);g.lineTo(W,y)}g.stroke();
+  if(cols===ECHB.length&&touch){g.fillStyle='#777';g.font='700 8px Archivo,sans-serif';g.textAlign='center';ECHL.forEach((l,i)=>g.fillText(l,W*(i+.5)/cols,H-4))}
+  const px=xv*W,py=(1-yv)*H;
+  // rastro do dedo
+  if(touch&&!still){const t0=now;for(let i=1;i<FXS.tr.length;i++){const a=FXS.tr[i-1],b=FXS.tr[i],age=(t0-b[0])/600;if(age>1)continue;g.globalAlpha=(1-age)*.6;g.strokeStyle=col;g.lineWidth=3*(1-age)+1;g.beginPath();g.moveTo(a[1]*W,(1-a[2])*H);g.lineTo(b[1]*W,(1-b[2])*H);g.stroke()}g.globalAlpha=1}
+  // pulso no tempo da música quando o efeito está agindo
+  if(on&&playing&&ctx&&!still){const ph=(((ctx.currentTime-tT0)/(60/bpm))%1+1)%1;g.strokeStyle=col;g.globalAlpha=(1-ph)*.55;g.lineWidth=1.5;g.beginPath();g.arc(px,py,6+ph*22,0,Math.PI*2);g.stroke();g.globalAlpha=1}
+  if(touch){g.strokeStyle=col;g.globalAlpha=.35;g.lineWidth=1;g.beginPath();g.moveTo(px+.5,0);g.lineTo(px+.5,H);g.moveTo(0,py+.5);g.lineTo(W,py+.5);g.stroke();g.globalAlpha=1;
+    g.fillStyle=col;g.shadowColor=col;g.shadowBlur=14;g.beginPath();g.arc(px,py,7,0,Math.PI*2);g.fill();g.shadowBlur=0}
+  else{g.strokeStyle=col;g.lineWidth=2;g.beginPath();g.arc(px,py,5,0,Math.PI*2);g.stroke();if(on){g.fillStyle=col;g.beginPath();g.arc(px,py,2,0,Math.PI*2);g.fill()}}
 }
 requestAnimationFrame(fxsDraw);
 window.addEventListener('resize',()=>FXKEYS.forEach(k=>{if(FX[k].win.open)placePlug(k)}));
@@ -4483,7 +4515,7 @@ function pfSync(){
   const v=K.fv*100;document.querySelector('#pfFlt .pftrk i').style.width=v+'%';document.querySelector('#pfFlt .pftrk b').style.left=v+'%';
   PF.raf=requestAnimationFrame(pfSync);
 }
-function openPerf(){if(PF.open||!document.body.classList.contains('in-session'))return;if(!PF.sc.length)pfBuild();PF.open=true;$('#pfName').textContent=($('#lcdMsg').textContent||'').split(' · ')[0];const el=$('#perf');el.classList.add('open');el.setAttribute('aria-hidden','false');pfSync()}
+function openPerf(){if(PF.open||!document.body.classList.contains('in-session'))return;if(!PF.sc.length)pfBuild();PF.open=true;$('#pfName').textContent=$('#lcdMsg').textContent||'';const el=$('#perf');el.classList.add('open');el.setAttribute('aria-hidden','false');pfSync()}
 function closePerf(){if(!PF.open)return;PF.open=false;cancelAnimationFrame(PF.raf);const el=$('#perf');el.classList.remove('open');el.setAttribute('aria-hidden','true')}
 $('#stageBtn').onclick=openPerf;$('#pfExit').onclick=closePerf;
 $('#pfPlay').onclick=()=>$('#play').click();
@@ -5242,7 +5274,7 @@ function render(){
   if(stepChanged)lastKey=key;
   const pos=(playing&&cur>=0)?(curBar<0?'– '+(4-Math.floor(cur/4)):(curBar+1)+'.'+(Math.floor(cur/4)+1)+'.'+(cur%4+1)):'1.1.1';
   if(pos!==lastPos){lastPos=pos;$('#lcdPos').textContent=pos}
-  const msg=msgTxt||(editMode?(screen==='free'?'Edição: loops, cenas ou tirar linhas':'Edição: mexe à vontade'):(curProj()?curProj().name:STYLES[style].name)+' · '+(screen==='free'?'Livre · ':'')+(sceneOn>=0?'Cena '+(sceneOn+1):(playing?'No improviso':'Pronto pra tocar')));
+  const msg=STYLES[style]?STYLES[style].name:'';
   if(msg!==lastMsg){lastMsg=msg;$('#lcdMsg').textContent=msg}
   slotEls.forEach((b,i)=>b.classList.toggle('on',playing&&sceneOn===i));
   cols.forEach(c=>{
@@ -5747,7 +5779,7 @@ const TOURS={
  sess:[
   {sel:'#session .lane .clip',t:'Toque um loop',d:'Cada pad é um loop. Toque para soltar: ele entra no tempo certo, no começo do próximo compasso.'},
   {sel:'#scenes .sc',t:'Cenas',d:'Uma cena solta várias linhas de uma vez. Comece pela 1 e depois experimente a 3.'},
-  {sel:'.fxc',t:'Efeitos',d:'Escolha o efeito em cima, gire o knob e ligue no botão. A telinha mostra o efeito agindo; toque nela para abrir todos os ajustes.'},
+  {sel:'.fxc',t:'Efeitos',d:'Escolha o efeito em cima. Segure o pad: o efeito entra, e arrastar mexe dois ajustes. Soltou, ele sai. O botão ao lado deixa ligado de vez; toque de novo na aba para abrir todos os ajustes.'},
   {sel:'#recBtn',t:'Gravar',d:'Grava tudo o que sai do app. No fim, você salva ou compartilha o áudio.'},
   {sel:'#editTog',t:'Editar',d:'Com Editar ligado, você cria seus próprios loops e monta suas cenas.'}]
 };
