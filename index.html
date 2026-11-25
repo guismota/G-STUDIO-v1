@@ -1132,7 +1132,7 @@ body.noanim #home .fbrand .bk1,body.noanim #home .fbrand .bk2,body.eco #home .fb
 #home .hxtop{display:none!important}
 
 /* destaque em faixa de ponta a ponta; cards mais espaçados */
-#home .hero{margin:0 calc(var(--hp) * -1);border-radius:0!important;border-left:0;border-right:0;border-color:#1a1a1a}
+#home .hero{background:#182518;margin:0 calc(var(--hp) * -1);border-radius:0!important;border-left:0;border-right:0;border-color:#1a1a1a}
 #home .hero:active{transform:none}
 #home .hero .hin{padding-left:calc(var(--hp) + 20px);padding-right:calc(var(--hp) + 20px)}
 #home .hscroll{gap:22px}
@@ -1169,7 +1169,7 @@ body.noanim #home .fbrand .bk1,body.noanim #home .fbrand .bk2,body.eco #home .fb
 .hero:active{transform:scale(.99)}
 .hero:focus-visible,.htile:focus-visible{box-shadow:0 0 0 2px var(--gc)}
 .hero canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,10,10,.85),rgba(10,10,10,0) 45%);pointer-events:none}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(24,37,24,.85),rgba(24,37,24,0) 45%);pointer-events:none}
 .hin{position:relative;z-index:2;width:100%;padding:22px 22px 20px;display:flex;flex-direction:column;gap:10px}
 .hchip{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;padding:5px 11px 4px 9px;border-radius:999px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.18);font:800 10px "Archivo",sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#ddd}
 .hchip i{width:8px;height:8px;border-radius:50%;background:var(--gc);box-shadow:0 0 10px var(--gc)}
@@ -1763,7 +1763,7 @@ let ctx,out,mix,filt,dly,fb,wet,noiseBuf,fin,anL,anR,anS,CMP=null;
 const CFG_DEF={launch:'bar',swing:true,wake:true,pvol:1,sting:true,autoKey:true,rec:'m4a',limit:true,anim:true,size:'n',eco:false,noflash:false,noshake:false,mono:false,keys:true};
 const CFG=Object.assign({},CFG_DEF,(()=>{try{const j=JSON.parse(localStorage.getItem('gstudio_cfg'));return j&&typeof j==='object'?j:{}}catch(e){return{}}})());
 function saveCfg(){try{localStorage.setItem('gstudio_cfg',JSON.stringify(CFG))}catch(e){}}
-const APPV='1.7.5.4';
+const APPV='1.7.5.5';
 const DEV=(()=>{const ua=navigator.userAgent||'',pf=navigator.platform||'',tp=navigator.maxTouchPoints||0;
   const ipad=/iPad/.test(ua)||((pf==='MacIntel'||/Macintosh/.test(ua))&&tp>1),iphone=/iPhone|iPod/.test(ua),android=/Android/.test(ua);
   const os=ipad?'ipados':iphone?'ios':android?'android':(/Mac/.test(pf)||/Macintosh/.test(ua))?'mac':(/Win/.test(pf)||/Windows/.test(ua))?'windows':/CrOS/.test(ua)?'chromeos':/Linux/.test(ua)?'linux':'other';
@@ -4861,12 +4861,13 @@ function drawArt(cv,sp,t0,mode,W,H){
   }
 }
 // destaque: um disco de vinil girando devagar, com o selo no visual do gênero e o braço da agulha
+const HERO_BG='#182518'; // cinza #191919 com 5% de verde
 function drawVinyl(cv,sp,t,mode){
   const dpr=Math.min(2,window.devicePixelRatio||1),w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return;
   if(cv.width!==Math.round(w*dpr)||cv.height!==Math.round(h*dpr)){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr)}
   const x=cv.getContext('2d');x.setTransform(dpr,0,0,dpr,0,0);t=Math.max(0,t);
   const C=coverOf(sp),live=mode==='live',nar=w<560;
-  x.fillStyle='#0a0a0a';x.fillRect(0,0,w,h);
+  x.fillStyle=HERO_BG;x.fillRect(0,0,w,h);
   // capa: quadrada, à direita; o disco sai pela esquerda dela
   const S=Math.round(nar?Math.min(h*.5,w*.4):Math.min(h*.66,w*.25)),cxR=nar?w-S*.62:w*.68,X0=Math.round(cxR-S/2),Y0=Math.round(nar?h*.08:(h-S)/2-h*.05);
   const br=Math.sin(t*Math.PI*2/9),R=S*.47,out=live?.56:.4+.1*br,dcx=X0+S*.5-S*out-S*.02,dcy=Y0+S/2+Math.sin(t*1.3)*S*.006,rot=t*Math.PI*2*(live?.55:.22)+(sp.seed%628)/100;
@@ -4882,7 +4883,7 @@ function drawVinyl(cv,sp,t,mode){
   x.fillText('G-STUDIO',0,-lr*.42);x.fillText('LADO A',0,lr*.58);
   x.fillRect(-lr*.62,-1,lr*.4,2);x.fillRect(lr*.22,-1,lr*.4,2);
   x.restore();
-  x.beginPath();x.arc(dcx,dcy,Math.max(2,R*.025),0,Math.PI*2);x.fillStyle='#0a0a0a';x.fill();
+  x.beginPath();x.arc(dcx,dcy,Math.max(2,R*.025),0,Math.PI*2);x.fillStyle=HERO_BG;x.fill();
   // sombra chapada da capa sobre o disco e a capa
   x.fillStyle='rgba(0,0,0,.55)';x.fillRect(X0-6,Y0+4,6,S-4);
   x.save();x.beginPath();x.rect(X0,Y0,S,S);x.clip();x.translate(X0,Y0);drawCoverCtx(x,S,S,sp,t,live?'live':'amb');x.restore();
