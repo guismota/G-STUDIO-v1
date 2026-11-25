@@ -1138,10 +1138,8 @@ body.noanim #home .fbrand .bk1,body.noanim #home .fbrand .bk2,body.eco #home .fb
 #home .hscroll{gap:22px}
 /* tela inicial um pouco mais quadrada; destaque com BPM sob o nome e seta de entrar */
 #home .htile{border-radius:6px}
-#home .tprev,#home .hprev,#home .hra{border-radius:6px}
 #home .hchip,#home .ttag{border-radius:4px}
-#home .hxnew{border-radius:9px}#home .hxnew i{border-radius:6px}#home .hxnew em{border-radius:3px}
-#home .hgo{width:48px;padding:0;justify-content:center;border-radius:6px}
+#home .hgo{width:48px;padding:0;justify-content:center;border-radius:50%}
 #home .hgo svg{width:20px;height:20px}
 #home .hbpm{align-self:flex-start;text-align:left;font-size:26px;padding:0;margin-top:-2px;display:flex;align-items:baseline;gap:6px}
 #home .hbpm small{display:inline;margin:0;font-size:10px}
@@ -1763,7 +1761,7 @@ let ctx,out,mix,filt,dly,fb,wet,noiseBuf,fin,anL,anR,anS,CMP=null;
 const CFG_DEF={launch:'bar',swing:true,wake:true,pvol:1,sting:true,autoKey:true,rec:'m4a',limit:true,anim:true,size:'n',eco:false,noflash:false,noshake:false,mono:false,keys:true};
 const CFG=Object.assign({},CFG_DEF,(()=>{try{const j=JSON.parse(localStorage.getItem('gstudio_cfg'));return j&&typeof j==='object'?j:{}}catch(e){return{}}})());
 function saveCfg(){try{localStorage.setItem('gstudio_cfg',JSON.stringify(CFG))}catch(e){}}
-const APPV='1.7.5.5';
+const APPV='1.7.5.6';
 const DEV=(()=>{const ua=navigator.userAgent||'',pf=navigator.platform||'',tp=navigator.maxTouchPoints||0;
   const ipad=/iPad/.test(ua)||((pf==='MacIntel'||/Macintosh/.test(ua))&&tp>1),iphone=/iPhone|iPod/.test(ua),android=/Android/.test(ua);
   const os=ipad?'ipados':iphone?'ios':android?'android':(/Mac/.test(pf)||/Macintosh/.test(ua))?'mac':(/Win/.test(pf)||/Windows/.test(ua))?'windows':/CrOS/.test(ua)?'chromeos':/Linux/.test(ua)?'linux':'other';
