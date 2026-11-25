@@ -1136,6 +1136,19 @@ body.noanim #home .fbrand .bk1,body.noanim #home .fbrand .bk2,body.eco #home .fb
 #home .hero:active{transform:none}
 #home .hero .hin{padding-left:calc(var(--hp) + 20px);padding-right:calc(var(--hp) + 20px)}
 #home .hscroll{gap:22px}
+/* tela inicial um pouco mais quadrada; destaque com BPM sob o nome e seta de entrar */
+#home .htile{border-radius:6px}
+#home .tprev,#home .hprev,#home .hra{border-radius:6px}
+#home .hchip,#home .ttag{border-radius:4px}
+#home .hxnew{border-radius:9px}#home .hxnew i{border-radius:6px}#home .hxnew em{border-radius:3px}
+#home .hgo{width:48px;padding:0;justify-content:center;border-radius:6px}
+#home .hgo svg{width:20px;height:20px}
+#home .hbpm{align-self:flex-start;text-align:left;font-size:26px;padding:0;margin-top:-2px;display:flex;align-items:baseline;gap:6px}
+#home .hbpm small{display:inline;margin:0;font-size:10px}
+.hsep{position:relative;display:flex;align-items:center;gap:0;margin:2px 0 -6px;height:10px}
+.hsep b{flex:1;height:2px;background:#f2f2ee}
+.hsep i{width:9px;height:9px;background:#f2f2ee;transform:rotate(45deg);flex:none}
+.hsep i:first-child{margin-right:10px}.hsep i:last-child{margin-left:10px}
 .hstick{position:sticky;top:0;z-index:30;margin:0 calc(var(--hp) * -1);padding:max(18px,env(safe-area-inset-top)) var(--hp) 16px;background:#000}
 .hstick::after{content:"";position:absolute;left:0;right:0;top:100%;height:30px;background:linear-gradient(#000 20%,rgba(0,0,0,0));pointer-events:none}
 .hstick .hxnew{position:absolute;right:var(--hp);top:calc(100% + 14px);z-index:2}
@@ -1750,7 +1763,7 @@ let ctx,out,mix,filt,dly,fb,wet,noiseBuf,fin,anL,anR,anS,CMP=null;
 const CFG_DEF={launch:'bar',swing:true,wake:true,pvol:1,sting:true,autoKey:true,rec:'m4a',limit:true,anim:true,size:'n',eco:false,noflash:false,noshake:false,mono:false,keys:true};
 const CFG=Object.assign({},CFG_DEF,(()=>{try{const j=JSON.parse(localStorage.getItem('gstudio_cfg'));return j&&typeof j==='object'?j:{}}catch(e){return{}}})());
 function saveCfg(){try{localStorage.setItem('gstudio_cfg',JSON.stringify(CFG))}catch(e){}}
-const APPV='1.7.5.3';
+const APPV='1.7.5.4';
 const DEV=(()=>{const ua=navigator.userAgent||'',pf=navigator.platform||'',tp=navigator.maxTouchPoints||0;
   const ipad=/iPad/.test(ua)||((pf==='MacIntel'||/Macintosh/.test(ua))&&tp>1),iphone=/iPhone|iPod/.test(ua),android=/Android/.test(ua);
   const os=ipad?'ipados':iphone?'ios':android?'android':(/Mac/.test(pf)||/Macintosh/.test(ua))?'mac':(/Win/.test(pf)||/Windows/.test(ua))?'windows':/CrOS/.test(ua)?'chromeos':/Linux/.test(ua)?'linux':'other';
@@ -4932,14 +4945,14 @@ function buildHome(){
   if(hu){hi=GENRES.length+ug.indexOf(hu);pk=hu.id;hname=hEsc(hu.name);hdesc=hu.desc||('Criado por você · '+(hu.lanes||[]).length+((hu.lanes||[]).length===1?' som':' sons'));hbpm=(hu.nv&&hu.nv.bpm)||124;gc='#2F5BEA';enterHero=el=>hEnterUg(el,hu,hi);hero.classList.add('ug')}
   else{const S=STYLES[hg.k];hi=GENRES.indexOf(hg);pk=hg.k;hname=hNameHTML(hg,S);hdesc=hg.desc;hbpm=S.bpm;gc=hg.artist?(HPAL[hg.k]||['#FFE600'])[0]:'#FFE600';enterHero=el=>tuneIn(el,hg.k);if(hg.artist)hero.classList.add('art');if(hg.theme)hero.classList.add('t-'+hg.theme)}
   hero.style.setProperty('--gc',gc);
-  hero.innerHTML='<canvas aria-hidden="true"></canvas><div class="hin"><span class="hchip"><i></i></span><div class="hnrow"><span class="hname"></span><span class="hbpm"></span></div>'+
-    '<div class="hact"><span class="hdesc"></span><button class="hprev" aria-label="Ouvir prévia">'+ICO_SPK+'</button><button class="hgo">Entrar<svg viewBox="0 0 16 16"><path d="M2.5 8h10M8.5 3.5L13 8l-4.5 4.5" fill="none" stroke="currentColor" stroke-width="2"/></svg></button></div></div>';
-  hero.querySelector('.hchip').append(chip+' · '+CHN(hi));if(hg&&hg.trend)hero.querySelector('.hchip').insertAdjacentHTML('afterend','<span class="ttag hero-tag">Trending</span>');hero.querySelector('.hname').innerHTML=hname;hero.querySelector('.hdesc').textContent=hdesc;hero.querySelector('.hbpm').innerHTML=hbpm+'<small>BPM</small>';
+  hero.innerHTML='<canvas aria-hidden="true"></canvas><div class="hin"><span class="hchip"><i></i></span><div class="hnrow"><span class="hname"></span></div><span class="hbpm"></span>'+
+    '<div class="hact"><span class="hdesc"></span><button class="hprev" aria-label="Ouvir prévia">'+ICO_SPK+'</button><button class="hgo" aria-label="Entrar"><svg viewBox="0 0 16 16"><path d="M2.5 8h10M8.5 3.5L13 8l-4.5 4.5" fill="none" stroke="currentColor" stroke-width="2"/></svg></button></div></div>';
+  hero.querySelector('.hchip').append(chip+' · '+CHN(hi));if(hg&&hg.trend)hero.querySelector('.hchip').insertAdjacentHTML('afterend','<span class="ttag hero-tag">Trending</span>');hero.querySelector('.hname').innerHTML=hname;hero.querySelector('.hdesc').textContent=hdesc;hero.querySelector('.hbpm').innerHTML=hbpm+' <small>BPM</small>';
   hero.setAttribute('aria-label',(hu?hu.name:STYLES[hg.k].name)+', '+chip);
   hero.onclick=()=>enterHero(hero);hero.onkeydown=e=>{if(e.target===hero&&(e.key==='Enter'||e.key===' ')){e.preventDefault();enterHero(hero)}};
   hero.querySelector('.hgo').onclick=e=>{e.stopPropagation();enterHero(hero)};
   if(hu)hero.querySelector('.hprev').remove();else hero.querySelector('.hprev').onclick=e=>{e.stopPropagation();togglePreview(hero,pk)};
-  box.appendChild(hero);hartReg(hero.querySelector('canvas'),hu?artSpec(null,hu):artSpec(hg.k),true);
+  box.appendChild(hero);{const sep=document.createElement('div');sep.className='hsep';sep.setAttribute('aria-hidden','true');sep.innerHTML='<i></i><b></b><i></i>';box.appendChild(sep)}hartReg(hero.querySelector('canvas'),hu?artSpec(null,hu):artSpec(hg.k),true);
   // fileiras
   let d=120;
   const mk=(title,list)=>{if(!list.length)return null;const r=hRow(title,list.length);const sc=r.querySelector('.hscroll');box.appendChild(r);list.forEach(o=>{const t=hTile(Object.assign({d:d+=55},o));sc.appendChild(t);o.after&&o.after(t)});return r};
