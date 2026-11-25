@@ -1125,28 +1125,9 @@ body.noanim #perf.open{animation:none}
 body.noanim #home .fbrand,body.eco #home .fbrand{display:flex;gap:10px}
 body.noanim #home .fbrand .bk1,body.noanim #home .fbrand .bk2,body.eco #home .fbrand .bk1,body.eco #home .fbrand .bk2{animation:none}
 @media (prefers-reduced-motion:reduce){#home .fbrand{display:flex;gap:10px}#home .fbrand .bk1,#home .fbrand .bk2{animation:none}}
-/* luzes de balada: fileira de refletores alinhada sob o cabeçalho, movimento espelhado e flash discreto */
-#home .tape{display:none}
-.hstick{padding-bottom:30px}
-.tbeams{position:absolute;left:0;right:0;bottom:12px;height:0;pointer-events:none;z-index:1}
-.tbeams .rig{position:absolute;left:var(--hp);right:var(--hp);top:-1px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.09) 12%,rgba(255,255,255,.09) 88%,transparent)}
-.tbeams i{--n:7;--p:calc((var(--i) + .5) / var(--n));position:absolute;top:0;left:calc(var(--hp) + (100% - 2 * var(--hp)) * var(--p));width:0;height:0}
-.tbeams i::before{content:"";position:absolute;left:-7px;top:-4px;width:14px;height:6px;border-radius:2px;background:#161616;border:1px solid #2a2a2a}
-.tbeams u{position:absolute;left:-130px;top:2px;width:260px;height:62vh;transform-origin:50% 0;background:linear-gradient(180deg,rgba(255,248,222,.22),rgba(255,248,222,.07) 38%,rgba(255,248,222,0) 80%);-webkit-clip-path:polygon(48.6% 0,51.4% 0,100% 100%,0 100%);clip-path:polygon(48.6% 0,51.4% 0,100% 100%,0 100%);mix-blend-mode:screen;opacity:.27;animation:beamSweep 16s ease-in-out infinite alternate,beamStrobe 12s linear infinite}
-.tbeams i:nth-child(odd) u{background:linear-gradient(180deg,color-mix(in srgb,var(--yel) 34%,transparent),color-mix(in srgb,var(--yel) 9%,transparent) 38%,transparent 80%)}
-.tbeams i:nth-child(2) u{--a0:-26deg;--a1:-4deg}.tbeams i:nth-child(8) u{--a0:26deg;--a1:4deg}
-.tbeams i:nth-child(3) u{--a0:-16deg;--a1:8deg}.tbeams i:nth-child(7) u{--a0:16deg;--a1:-8deg}
-.tbeams i:nth-child(4) u{--a0:-6deg;--a1:16deg}.tbeams i:nth-child(6) u{--a0:6deg;--a1:-16deg}
-.tbeams i:nth-child(5) u{--a0:-8deg;--a1:8deg;animation-duration:8s,12s}
-.tbeams i:nth-child(2) u,.tbeams i:nth-child(8) u{animation-delay:0s,-6s}
-.tbeams i:nth-child(3) u,.tbeams i:nth-child(7) u{animation-delay:0s,-3s}
-.tbeams i:nth-child(4) u,.tbeams i:nth-child(6) u{animation-delay:0s,-9s}
-@keyframes beamSweep{from{transform:rotate(var(--a0,0deg))}to{transform:rotate(var(--a1,0deg))}}
-@keyframes beamStrobe{0%,93%{opacity:.27}93.8%{opacity:.85}94.8%{opacity:.27}95.8%{opacity:.7}96.8%,100%{opacity:.27}}
-body.noflash .tbeams u{animation:beamSweep 16s ease-in-out infinite alternate}
-body.noanim .tbeams u,body.eco .tbeams u{animation:none;transform:rotate(calc((var(--a0,0deg) + var(--a1,0deg)) / 2))}
-@media (prefers-reduced-motion:reduce){.tbeams u{animation:none}}
-@media (max-width:700px){.tbeams i:nth-child(3),.tbeams i:nth-child(7){display:none}}
+/* faixa da tela inicial no amarelo do app */
+#home .tape{background:var(--yel)}
+#home .tape b{background:#000!important;outline:none!important}
 /* what's poppin' fora: a fileira some e o + fica no cabeçalho */
 #home .hxtop{display:none!important}
 
@@ -1170,7 +1151,7 @@ body.noanim .tbeams u,body.eco .tbeams u{animation:none;transform:rotate(calc((v
 .hero:active{transform:scale(.99)}
 .hero:focus-visible,.htile:focus-visible{box-shadow:0 0 0 2px var(--gc)}
 .hero canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.92) 0%,rgba(0,0,0,.55) 38%,rgba(0,0,0,0) 70%),linear-gradient(90deg,rgba(0,0,0,.55),rgba(0,0,0,0) 60%);pointer-events:none}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,10,10,.85),rgba(10,10,10,0) 45%);pointer-events:none}
 .hin{position:relative;z-index:2;width:100%;padding:22px 22px 20px;display:flex;flex-direction:column;gap:10px}
 .hchip{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;padding:5px 11px 4px 9px;border-radius:999px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.18);font:800 10px "Archivo",sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#ddd}
 .hchip i{width:8px;height:8px;border-radius:50%;background:var(--gc);box-shadow:0 0 10px var(--gc)}
@@ -1566,7 +1547,6 @@ body.th-afro .nrow.root .ncell{background:#1c0a03!important}body.th-afro .nrow.r
   <div class="hstick">
   <header class="fh"><div class="flive"><i></i>Sinal ao vivo</div><div class="fbrand"><span class="bk1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -6 132 132" width="40" height="40"><defs><radialGradient id="caphy" cx="40%" cy="32%" r="75%"><stop offset="0" stop-color="#3a3a3a"/><stop offset="1" stop-color="#0b0b0b"/></radialGradient><filter id="glhy" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4.5"/></filter></defs><line x1="93.23" y1="26.77" x2="97.48" y2="22.52" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="83.50" y1="19.30" x2="85.00" y2="16.70" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="72.16" y1="14.60" x2="72.94" y2="11.70" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="60.00" y1="13.00" x2="60.00" y2="7.00" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="47.84" y1="14.60" x2="47.06" y2="11.70" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="36.50" y1="19.30" x2="35.00" y2="16.70" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="26.77" y1="26.77" x2="22.52" y2="22.52" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="19.30" y1="36.50" x2="16.70" y2="35.00" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="14.60" y1="47.84" x2="11.70" y2="47.06" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="13.00" y1="60.00" x2="7.00" y2="60.00" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="14.60" y1="72.16" x2="11.70" y2="72.94" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="19.30" y1="83.50" x2="16.70" y2="85.00" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="26.77" y1="93.23" x2="22.52" y2="97.48" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="36.50" y1="100.70" x2="35.00" y2="103.30" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="47.84" y1="105.40" x2="47.06" y2="108.30" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="60.00" y1="107.00" x2="60.00" y2="113.00" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="72.16" y1="105.40" x2="72.94" y2="108.30" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="83.50" y1="100.70" x2="85.00" y2="103.30" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="93.23" y1="93.23" x2="97.48" y2="97.48" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="100.70" y1="83.50" x2="103.30" y2="85.00" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="105.40" y1="72.16" x2="108.30" y2="72.94" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="107.00" y1="60.00" x2="113.00" y2="60.00" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><g filter="url(#glhy)" opacity=".55"><path d="M86.16 33.84A37 37 0 1 0 97.00 60.00" fill="none" stroke="#FFE600" stroke-width="13"/><rect x="74" y="53.5" width="29.50" height="13" fill="#FFE600"/></g><path d="M86.16 33.84A37 37 0 1 0 97.00 60.00" fill="none" stroke="#FFE600" stroke-width="13"/><line x1="79.50" y1="60.00" x2="82.50" y2="60.00" stroke="#4a4a4a" stroke-width="1.3"/><line x1="79.26" y1="63.05" x2="82.22" y2="63.52" stroke="#4a4a4a" stroke-width="1.3"/><line x1="78.55" y1="66.03" x2="81.40" y2="66.95" stroke="#4a4a4a" stroke-width="1.3"/><line x1="77.37" y1="68.85" x2="80.05" y2="70.21" stroke="#4a4a4a" stroke-width="1.3"/><line x1="75.78" y1="71.46" x2="78.20" y2="73.23" stroke="#4a4a4a" stroke-width="1.3"/><line x1="73.79" y1="73.79" x2="75.91" y2="75.91" stroke="#4a4a4a" stroke-width="1.3"/><line x1="71.46" y1="75.78" x2="73.23" y2="78.20" stroke="#4a4a4a" stroke-width="1.3"/><line x1="68.85" y1="77.37" x2="70.21" y2="80.05" stroke="#4a4a4a" stroke-width="1.3"/><line x1="66.03" y1="78.55" x2="66.95" y2="81.40" stroke="#4a4a4a" stroke-width="1.3"/><line x1="63.05" y1="79.26" x2="63.52" y2="82.22" stroke="#4a4a4a" stroke-width="1.3"/><line x1="60.00" y1="79.50" x2="60.00" y2="82.50" stroke="#4a4a4a" stroke-width="1.3"/><line x1="56.95" y1="79.26" x2="56.48" y2="82.22" stroke="#4a4a4a" stroke-width="1.3"/><line x1="53.97" y1="78.55" x2="53.05" y2="81.40" stroke="#4a4a4a" stroke-width="1.3"/><line x1="51.15" y1="77.37" x2="49.79" y2="80.05" stroke="#4a4a4a" stroke-width="1.3"/><line x1="48.54" y1="75.78" x2="46.77" y2="78.20" stroke="#4a4a4a" stroke-width="1.3"/><line x1="46.21" y1="73.79" x2="44.09" y2="75.91" stroke="#4a4a4a" stroke-width="1.3"/><line x1="44.22" y1="71.46" x2="41.80" y2="73.23" stroke="#4a4a4a" stroke-width="1.3"/><line x1="42.63" y1="68.85" x2="39.95" y2="70.21" stroke="#4a4a4a" stroke-width="1.3"/><line x1="41.45" y1="66.03" x2="38.60" y2="66.95" stroke="#4a4a4a" stroke-width="1.3"/><line x1="40.74" y1="63.05" x2="37.78" y2="63.52" stroke="#4a4a4a" stroke-width="1.3"/><line x1="40.50" y1="60.00" x2="37.50" y2="60.00" stroke="#4a4a4a" stroke-width="1.3"/><line x1="40.74" y1="56.95" x2="37.78" y2="56.48" stroke="#4a4a4a" stroke-width="1.3"/><line x1="41.45" y1="53.97" x2="38.60" y2="53.05" stroke="#4a4a4a" stroke-width="1.3"/><line x1="42.63" y1="51.15" x2="39.95" y2="49.79" stroke="#4a4a4a" stroke-width="1.3"/><line x1="44.22" y1="48.54" x2="41.80" y2="46.77" stroke="#4a4a4a" stroke-width="1.3"/><line x1="46.21" y1="46.21" x2="44.09" y2="44.09" stroke="#4a4a4a" stroke-width="1.3"/><line x1="48.54" y1="44.22" x2="46.77" y2="41.80" stroke="#4a4a4a" stroke-width="1.3"/><line x1="51.15" y1="42.63" x2="49.79" y2="39.95" stroke="#4a4a4a" stroke-width="1.3"/><line x1="53.97" y1="41.45" x2="53.05" y2="38.60" stroke="#4a4a4a" stroke-width="1.3"/><line x1="56.95" y1="40.74" x2="56.48" y2="37.78" stroke="#4a4a4a" stroke-width="1.3"/><line x1="60.00" y1="40.50" x2="60.00" y2="37.50" stroke="#4a4a4a" stroke-width="1.3"/><line x1="63.05" y1="40.74" x2="63.52" y2="37.78" stroke="#4a4a4a" stroke-width="1.3"/><line x1="66.03" y1="41.45" x2="66.95" y2="38.60" stroke="#4a4a4a" stroke-width="1.3"/><line x1="68.85" y1="42.63" x2="70.21" y2="39.95" stroke="#4a4a4a" stroke-width="1.3"/><line x1="71.46" y1="44.22" x2="73.23" y2="41.80" stroke="#4a4a4a" stroke-width="1.3"/><line x1="73.79" y1="46.21" x2="75.91" y2="44.09" stroke="#4a4a4a" stroke-width="1.3"/><line x1="75.78" y1="48.54" x2="78.20" y2="46.77" stroke="#4a4a4a" stroke-width="1.3"/><line x1="77.37" y1="51.15" x2="80.05" y2="49.79" stroke="#4a4a4a" stroke-width="1.3"/><line x1="78.55" y1="53.97" x2="81.40" y2="53.05" stroke="#4a4a4a" stroke-width="1.3"/><line x1="79.26" y1="56.95" x2="82.22" y2="56.48" stroke="#4a4a4a" stroke-width="1.3"/><rect x="74" y="53.5" width="29.50" height="13" fill="#FFE600"/><circle cx="60" cy="60" r="19.5" fill="url(#caphy)" stroke="#2a2a2a" stroke-width="1.2"/><circle cx="60" cy="60" r="13" fill="none" stroke="#ffffff" stroke-width=".8" opacity=".09"/><ellipse cx="55" cy="52" rx="10" ry="5.5" fill="#fff" opacity=".07"/><line x1="62" y1="60" x2="77" y2="60" stroke="#FFE600" stroke-width="4.4" stroke-linecap="round"/><circle cx="95.11" cy="45.46" r="6.5" fill="#FFE600" opacity=".22"/><circle cx="95.11" cy="45.46" r="3.5" fill="#FFE600"/></svg></span><span class="bk2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 740.0 102" class="fword" aria-hidden="true"><g transform="scale(1.00000)"><g transform="translate(0 0)"><path d="M77.58 22.42A39.0 39.0 0 1 0 89.00 50.00" fill="none" stroke-width="22" stroke="#fff"/><rect x="52" y="39.0" width="48.00" height="22" fill="#fff"/></g><g transform="translate(116 0)"><rect x="4" y="39.0" width="36" height="22" fill="#FFE600"/></g><g transform="translate(176 0)"><path d="M78 11H33A19.5 19.5 0 0 0 33 50H47A19.5 19.5 0 0 1 47 89H2" fill="none" stroke-width="22" stroke="#fff"/></g><g transform="translate(272 0)"><path d="M0 11H84M42 11V100" fill="none" stroke-width="22" stroke="#fff"/></g><g transform="translate(372 0)"><path d="M11 0V61A39 39 0 0 0 89 61V0" fill="none" stroke-width="22" stroke="#fff"/></g><g transform="translate(488 0)"><path d="M11 0V100M0 11H46A39 39 0 0 1 46 89H0" fill="none" stroke-width="22" stroke="#fff"/></g><g transform="translate(600 0)"><path d="M11 0V100" fill="none" stroke-width="22" stroke="#fff"/></g><g transform="translate(638 0)"><circle cx="50" cy="50" r="39.0" fill="none" stroke-width="22" stroke="#fff"/></g></g></svg></span></div><div class="fright"><button class="fexp" id="expOpen" aria-label="Explorar sons" title="Explorar sons"><svg viewBox="0 0 24 24"><path d="M2.5 6.5h7l2 2h10v11h-19z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="miter"/><path d="M6.5 14h1.5M9.5 11.5v5M12 12.5v3M14.5 10.5v7M17 13v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/></svg><span>Explorar</span></button><button class="fproj" id="projOpen">Projetos <span id="projN"></span></button><button class="fcfg" id="cfgOpen" aria-label="Configurações" title="Configurações"><svg viewBox="0 0 24 24"><path d="M10.3 2.8h3.4l.5 2.6 1.6.9 2.5-.9 1.7 2.9-2 1.8v1.8l2 1.8-1.7 2.9-2.5-.9-1.6.9-.5 2.6h-3.4l-.5-2.6-1.6-.9-2.5.9-1.7-2.9 2-1.8v-1.8l-2-1.8 1.7-2.9 2.5.9 1.6-.9z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></button></div></header>
   <div class="tape" aria-hidden="true"><div class="tk"><span>Você está ouvindo G-STUDIO</span><b></b><span>Transmitindo de algum lugar</span><b></b><span>Não mexa na antena</span><b></b><span>No photos on the dancefloor</span><b></b><span>Sinal fraco, grave forte</span><b></b><span>Frequência pirata</span><b></b><span>Open till late</span><b></b><span>One more tune</span><b></b><span>Você está ouvindo G-STUDIO</span><b></b><span>Transmitindo de algum lugar</span><b></b><span>Não mexa na antena</span><b></b><span>No photos on the dancefloor</span><b></b><span>Sinal fraco, grave forte</span><b></b><span>Frequência pirata</span><b></b><span>Open till late</span><b></b><span>One more tune</span><b></b></div></div>
-  <div class="tbeams" aria-hidden="true"><b class="rig"></b><i style="--i:0"><u></u></i><i style="--i:1"><u></u></i><i style="--i:2"><u></u></i><i style="--i:3"><u></u></i><i style="--i:4"><u></u></i><i style="--i:5"><u></u></i><i style="--i:6"><u></u></i></div>
   <button class="hxnew" id="hxNew" aria-label="Criar novo" title="Criar novo"><i>+</i><em>Em testes</em></button>
   </div>
   <div class="hx" id="cards"></div>
@@ -1765,7 +1745,7 @@ let ctx,out,mix,filt,dly,fb,wet,noiseBuf,fin,anL,anR,anS,CMP=null;
 const CFG_DEF={launch:'bar',swing:true,wake:true,pvol:1,sting:true,autoKey:true,rec:'m4a',limit:true,anim:true,size:'n',eco:false,noflash:false,noshake:false,mono:false,keys:true};
 const CFG=Object.assign({},CFG_DEF,(()=>{try{const j=JSON.parse(localStorage.getItem('gstudio_cfg'));return j&&typeof j==='object'?j:{}}catch(e){return{}}})());
 function saveCfg(){try{localStorage.setItem('gstudio_cfg',JSON.stringify(CFG))}catch(e){}}
-const APPV='1.7.4.9';
+const APPV='1.7.5';
 const DEV=(()=>{const ua=navigator.userAgent||'',pf=navigator.platform||'',tp=navigator.maxTouchPoints||0;
   const ipad=/iPad/.test(ua)||((pf==='MacIntel'||/Macintosh/.test(ua))&&tp>1),iphone=/iPhone|iPod/.test(ua),android=/Android/.test(ua);
   const os=ipad?'ipados':iphone?'ios':android?'android':(/Mac/.test(pf)||/Macintosh/.test(ua))?'mac':(/Win/.test(pf)||/Windows/.test(ua))?'windows':/CrOS/.test(ua)?'chromeos':/Linux/.test(ua)?'linux':'other';
@@ -4734,7 +4714,10 @@ function coverFit(x,word,maxW,maxH){let f=maxH;x.font='900 '+f+'px '+COVF;const 
 function drawCover(cv,sp,t,mode){
   const dpr=Math.min(2,window.devicePixelRatio||1),w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return;
   if(cv.width!==Math.round(w*dpr)||cv.height!==Math.round(h*dpr)){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr)}
-  const x=cv.getContext('2d'),C=coverOf(sp),cat=coverCat(sp);x.setTransform(dpr,0,0,dpr,0,0);
+  const x=cv.getContext('2d');x.setTransform(dpr,0,0,dpr,0,0);drawCoverCtx(x,w,h,sp,t,mode);
+}
+function drawCoverCtx(x,w,h,sp,t,mode){
+  const C=coverOf(sp),cat=coverCat(sp);
   x.fillStyle=C.bg;x.fillRect(0,0,w,h);x.textBaseline='alphabetic';
   const lab=(txt,X,Y,col,al)=>{x.font='800 '+Math.round(h*.085)+'px "Archivo",sans-serif';x.fillStyle=col;x.textAlign=al||'left';x.fillText(txt,X,Y)};
   const pad=Math.round(w*.06),lh=Math.round(h*.085);
@@ -4855,51 +4838,36 @@ function drawArt(cv,sp,t0,mode,W,H){
   }
 }
 // destaque: um disco de vinil girando devagar, com o selo no visual do gênero e o braço da agulha
-function vinylLabel(sp){const c=document.createElement('canvas');c.width=c.height=320;drawArt(c,sp,20,'amb',320,320);return c}
-function drawVinyl(cv,sp,t,mode,lab){
+function drawVinyl(cv,sp,t,mode){
   const dpr=Math.min(2,window.devicePixelRatio||1),w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return;
   if(cv.width!==Math.round(w*dpr)||cv.height!==Math.round(h*dpr)){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr)}
   const x=cv.getContext('2d');x.setTransform(dpr,0,0,dpr,0,0);t=Math.max(0,t);
-  const [c1,c2]=sp.c,live=mode==='live',b=60/sp.bpm;
-  const nar=w<560,R=nar?Math.min(h*.5,w*.48):Math.min(h*.43,w*.3),cx=nar?w-R*.62:w*.7,cy=h*(nar?.42:.47);
-  const rot=t*Math.PI*2*(live?.55:.16)+(sp.seed%628)/100;
-  x.fillStyle='#050505';x.fillRect(0,0,w,h);
-  const br=.12+.05*Math.sin(t*.4)+(live?.1*Math.exp(-((t/b)%1)*4):0);
-  const gl=x.createRadialGradient(cx,cy,R*.6,cx,cy,R*1.9);gl.addColorStop(0,hexA(c1,br));gl.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=gl;x.fillRect(0,0,w,h);
-  // sombra e disco
-  x.beginPath();x.arc(cx+R*.03,cy+R*.05,R*1.01,0,Math.PI*2);x.fillStyle='rgba(0,0,0,.6)';x.fill();
-  x.beginPath();x.arc(cx,cy,R,0,Math.PI*2);x.fillStyle='#0b0b0b';x.fill();
-  // sulcos
-  for(let r=R*.36;r<R*.975;r+=2.2){const k=(r/R*97)|0,gap=(k%23===0);x.beginPath();x.arc(cx,cy,r,0,Math.PI*2);x.strokeStyle=gap?'rgba(0,0,0,.9)':(k%2?'rgba(255,255,255,.035)':'rgba(255,255,255,.06)');x.lineWidth=gap?2:1;x.stroke()}
-  x.beginPath();x.arc(cx,cy,R*.985,0,Math.PI*2);x.strokeStyle='rgba(255,255,255,.12)';x.lineWidth=1.5;x.stroke();
-  // reflexos (ficam parados enquanto o disco gira)
-  [[-1.05,-.55,.09],[2.1,2.6,.06]].forEach(([a0,a1,al])=>{x.save();x.beginPath();x.moveTo(cx,cy);x.arc(cx,cy,R*.97,a0,a1);x.closePath();x.clip();
-    const sg=x.createRadialGradient(cx,cy,R*.35,cx,cy,R);sg.addColorStop(0,'rgba(255,255,255,0)');sg.addColorStop(.6,'rgba(255,255,255,'+al+')');sg.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=sg;x.fillRect(cx-R,cy-R,R*2,R*2);x.restore()});
-  // marca que gira, para ver o movimento
-  x.save();x.translate(cx,cy);x.rotate(rot);
-  x.beginPath();x.arc(0,0,R*.6,-.25,.25);x.strokeStyle=hexA(c1,.18);x.lineWidth=R*.18;x.stroke();
-  // selo com o visual do gênero
-  const lr=R*.34;x.save();x.beginPath();x.arc(0,0,lr,0,Math.PI*2);x.clip();
-  if(lab)x.drawImage(lab,-lr,-lr,lr*2,lr*2);else{x.fillStyle=c1;x.fillRect(-lr,-lr,lr*2,lr*2)}
-  x.fillStyle='rgba(0,0,0,.18)';x.fillRect(-lr,-lr,lr*2,lr*2);x.restore();
-  x.beginPath();x.arc(0,0,lr,0,Math.PI*2);x.strokeStyle=hexA(c1,.9);x.lineWidth=2;x.stroke();
-  x.beginPath();x.arc(0,0,lr*.42,0,Math.PI*2);x.fillStyle='#0b0b0b';x.fill();x.strokeStyle=hexA(c2,.8);x.lineWidth=1.5;x.stroke();
+  const C=coverOf(sp),live=mode==='live',nar=w<560;
+  x.fillStyle='#0a0a0a';x.fillRect(0,0,w,h);
+  // capa: quadrada, à direita; o disco sai pela esquerda dela
+  const S=Math.round(nar?Math.min(h*.5,w*.4):Math.min(h*.66,w*.25)),cxR=nar?w-S*.62:w*.63,X0=Math.round(cxR-S/2),Y0=Math.round(nar?h*.08:(h-S)/2-h*.05);
+  const R=S*.47,out=live?.5:.36,dcx=X0+S*.5-S*out-S*.02,dcy=Y0+S/2,rot=t*Math.PI*2*(live?.55:.08)+(sp.seed%628)/100;
+  // disco
+  x.beginPath();x.arc(dcx,dcy,R,0,Math.PI*2);x.fillStyle='#0d0d0d';x.fill();
+  for(let r=R*.4;r<R*.97;r+=2.4){x.beginPath();x.arc(dcx,dcy,r,0,Math.PI*2);x.strokeStyle=((r/2.4)|0)%2?'rgba(255,255,255,.035)':'rgba(255,255,255,.055)';x.lineWidth=1;x.stroke()}
+  x.beginPath();x.arc(dcx,dcy,R*.985,0,Math.PI*2);x.strokeStyle='rgba(255,255,255,.1)';x.lineWidth=1.2;x.stroke();
+  x.save();x.translate(dcx,dcy);x.rotate(rot);
+  const lr=R*.33;x.beginPath();x.arc(0,0,lr,0,Math.PI*2);x.fillStyle=C.blk===C.bg?C.ink:C.blk;x.fill();
+  x.fillStyle=C.blk===C.bg||C.lay==='side'?C.bg:(C.lay==='block'||C.lay==='outline'?'#0c0c0c':C.bg);x.font='800 '+Math.max(7,Math.round(lr*.2))+'px "Archivo",sans-serif';x.textAlign='center';
+  x.fillText('G-STUDIO',0,-lr*.42);x.fillText('LADO A',0,lr*.58);
+  x.fillRect(-lr*.62,-1,lr*.4,2);x.fillRect(lr*.22,-1,lr*.4,2);
   x.restore();
-  x.beginPath();x.arc(cx,cy,Math.max(2.5,R*.022),0,Math.PI*2);x.fillStyle='#cfcfcf';x.fill();
-  // braço da agulha
-  const px=cx+R*.98,py=cy-R*.82,na=-.5+(live?.02*Math.sin(t*9):0),nx=cx+R*.8*Math.cos(na),ny=cy+R*.8*Math.sin(na);
-  if(px<w+R*.2){
-    x.beginPath();x.arc(px,py,R*.1,0,Math.PI*2);x.fillStyle='#161616';x.fill();x.strokeStyle='rgba(255,255,255,.18)';x.lineWidth=1.5;x.stroke();
-    x.beginPath();x.arc(px,py,R*.04,0,Math.PI*2);x.fillStyle='#8a8a8a';x.fill();
-    const ex=nx+(px-nx)*.22,ey=ny+(py-ny)*.22;
-    x.beginPath();x.moveTo(px,py);x.lineTo(ex,ey);x.lineTo(nx,ny);x.strokeStyle='#a8a8a8';x.lineWidth=Math.max(2.5,R*.022);x.lineCap='round';x.lineJoin='round';x.stroke();
-    x.save();x.translate(nx,ny);x.rotate(Math.atan2(ey-ny,ex-nx));x.fillStyle='#d8d8d8';x.fillRect(-R*.02,-R*.035,R*.09,R*.07);x.fillStyle=c1;x.fillRect(-R*.02,-R*.035,R*.02,R*.07);x.restore();
-  }
+  x.beginPath();x.arc(dcx,dcy,Math.max(2,R*.025),0,Math.PI*2);x.fillStyle='#0a0a0a';x.fill();
+  // sombra chapada da capa sobre o disco e a capa
+  x.fillStyle='rgba(0,0,0,.55)';x.fillRect(X0-6,Y0+4,6,S-4);
+  x.save();x.beginPath();x.rect(X0,Y0,S,S);x.clip();x.translate(X0,Y0);drawCoverCtx(x,S,S,sp,t,live?'live':'amb');x.restore();
+  x.strokeStyle='rgba(255,255,255,.08)';x.lineWidth=1;x.strokeRect(X0+.5,Y0+.5,S-1,S-1);
 }
+function vinylLabel(){return null}
 const HART={list:[],raf:0,t0:performance.now(),lh:0,lt:0,io:null};
 function hartIO(){if(HART.io||!window.IntersectionObserver)return;HART.io=new IntersectionObserver(es=>es.forEach(e=>{const o=HART.list.find(z=>z.cv===e.target);if(o)o.vis=e.isIntersecting}),{root:$('#home'),rootMargin:'40px'})}
-function hartDraw(o,t,mode){if(o.hero)drawVinyl(o.cv,o.sp,t,mode,o.lab);else drawCover(o.cv,o.sp,t,mode)}
-function hartReg(cv,sp,hero){const o={cv,sp,hero,vis:true};if(hero)o.lab=vinylLabel(sp);HART.list.push(o);hartDraw(o,hero?0:20,hero?'hero':'amb');if(!hero){hartIO();if(HART.io)HART.io.observe(cv)}}
+function hartDraw(o,t,mode){if(o.hero)drawVinyl(o.cv,o.sp,t,mode);else drawCover(o.cv,o.sp,t,mode)}
+function hartReg(cv,sp,hero){const o={cv,sp,hero,vis:true};HART.list.push(o);hartDraw(o,hero?0:20,hero?'hero':'amb');if(!hero){hartIO();if(HART.io)HART.io.observe(cv)}}
 function hartLoop(now){
   HART.raf=0;if(document.body.classList.contains('in-session')||document.hidden)return;
   const t=(now-HART.t0)/1000,still=CFG.eco||reduceMotion(),dh=now-HART.lh>=33,dt=now-HART.lt>=100;
@@ -4912,7 +4880,7 @@ function hartLoop(now){
   HART.raf=requestAnimationFrame(hartLoop);
 }
 function hartStart(){if(!HART.raf)HART.raf=requestAnimationFrame(hartLoop)}
-if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>HART.list.forEach(o=>{if(!o.hero&&o.cv.isConnected)hartDraw(o,0,'amb')}));
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>HART.list.forEach(o=>{if(o.cv.isConnected)hartDraw(o,0,o.hero?'hero':'amb')}));
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)hartStart()});
 window.addEventListener('resize',()=>{document.querySelectorAll('#cards .hrow').forEach(r=>r._upd&&r._upd());const t=(performance.now()-HART.t0)/1000;HART.list.forEach(o=>{if(o.cv.isConnected)hartDraw(o,o.hero?t:t+20,o.hero?'hero':'amb')})});
 const PRO_LOCK=false;
