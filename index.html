@@ -1210,7 +1210,7 @@ body.noanim #home .fbrand .bk1,body.noanim #home .fbrand .bk2,body.eco #home .fb
 .tch{font:800 9px "Archivo",sans-serif;letter-spacing:.22em;color:var(--gc);text-transform:uppercase}
 .tb{font:800 10px "Archivo",sans-serif;color:#9a9a9a;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
 .tn{font-family:var(--poster);font-weight:900;font-stretch:62%;font-size:clamp(23px,2.6vw,30px);line-height:.92;letter-spacing:.005em;text-transform:uppercase;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-.iI{font-family:"Rubik","Archivo Black",sans-serif;font-weight:900;font-style:normal;text-transform:uppercase;letter-spacing:0;margin:0 .02em 0 -.02em}
+.iI{font-family:"Rubik","Archivo Black",sans-serif;font-weight:900;font-style:normal;text-transform:uppercase;letter-spacing:0;margin:0 0 0 -.09em}
 .tn.art{font-family:var(--artist);font-weight:400;font-stretch:100%;text-transform:none;letter-spacing:-.075em;word-spacing:.1em;font-size:clamp(14px,1.55vw,18px);line-height:1.15}
 .tn.art span{color:#fff}.tn .cherry{width:.6em;height:.68em}
 .tprev{position:absolute;top:9px;right:9px;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.28);color:#fff;display:grid;place-items:center;z-index:2}
@@ -1761,7 +1761,7 @@ let ctx,out,mix,filt,dly,fb,wet,noiseBuf,fin,anL,anR,anS,CMP=null;
 const CFG_DEF={launch:'bar',swing:true,wake:true,pvol:1,sting:true,autoKey:true,rec:'m4a',limit:true,anim:true,size:'n',eco:false,noflash:false,noshake:false,mono:false,keys:true};
 const CFG=Object.assign({},CFG_DEF,(()=>{try{const j=JSON.parse(localStorage.getItem('gstudio_cfg'));return j&&typeof j==='object'?j:{}}catch(e){return{}}})());
 function saveCfg(){try{localStorage.setItem('gstudio_cfg',JSON.stringify(CFG))}catch(e){}}
-const APPV='1.7.5.9';
+const APPV='1.7.6';
 const DEV=(()=>{const ua=navigator.userAgent||'',pf=navigator.platform||'',tp=navigator.maxTouchPoints||0;
   const ipad=/iPad/.test(ua)||((pf==='MacIntel'||/Macintosh/.test(ua))&&tp>1),iphone=/iPhone|iPod/.test(ua),android=/Android/.test(ua);
   const os=ipad?'ipados':iphone?'ios':android?'android':(/Mac/.test(pf)||/Macintosh/.test(ua))?'mac':(/Win/.test(pf)||/Windows/.test(ua))?'windows':/CrOS/.test(ua)?'chromeos':/Linux/.test(ua)?'linux':'other';
@@ -4714,7 +4714,7 @@ const COVER={
  acidtechno:{lay:'stack',bg:'#FF3B3B',blk:'#5CFF8A',ink:'#0c0c0c',lab:'#0c0c0c',w:'ACID',w2:'TECHNO'},
  funk:{lay:'band',bg:'#FF3DAE',blk:'#0c0c0c',ink:'#FFE600',lab:'#FFE600',w:'MPEB',low:true},
  dnb:{lay:'block',bg:'#0c0c0c',blk:'#22E1FF',ink:'#f2f2ee',lab:'#f2f2ee',w:'D&B',left:true},
- solomun:{lay:'outline',bg:'#14061f',blk:'#B026FF',ink:'#C98BFF',lab:'#E2B8FF',w:'AFTER',pro:true},
+ solomun:{lay:'sun',bg:'#16062a',blk:'#B026FF',ink:'#E9C8FF',lab:'#E2B8FF',w:'6AM',pro:true},
  afro:{lay:'band',bg:'#FF6B2C',blk:'#1a0c04',ink:'#FFF1DC',lab:'#FFC23D',w:'AFRO',low:true,pro:true},
  vice:{lay:'vi',bg:'#2a0a3a',blk:'#FF8A3D',ink:'#FF45C8',lab:'#FFB3E6',w:'VI',pro:true}
 };
@@ -4758,8 +4758,13 @@ function drawCoverCtx(x,w,h,sp,t,mode){
     const f=coverFit(x,C.w,w*1.2,h*.8);x.font='900 '+f+'px '+COVF;x.strokeStyle=C.ink;x.lineWidth=Math.max(1.4,f*.025);x.lineJoin='round';x.textAlign='left';
     shOn();x.strokeText(C.w,-f*.04,h*.8);shOff();
     lab(cat,pad,pad+lh,C.lab);
+  }else if(C.lay==='sun'){
+    x.fillStyle=C.blk;x.beginPath();x.arc(w*.68,h*.98,h*.62,Math.PI,0);x.fill();
+    x.fillStyle=C.bg;for(let i=0;i<4;i++)x.fillRect(0,h*.62+i*h*.085,w,Math.max(1.5,h*.022*(i+1)*.6));
+    const f=coverFit(x,C.w,w*1.12,h*.74);x.font='900 '+f+'px '+COVF;x.fillStyle=C.ink;x.textAlign='left';shOn();x.fillText(C.w,-f*.04,h*.93);shOff();
+    lab(cat,pad,pad+lh*.9,C.lab);
   }else if(C.lay==='vi'){
-    x.save();x.translate(w*.5,h*.5);x.rotate(-.28);const f=coverFit(x,C.w,w*.8,h*.98);x.font='900 '+f+'px '+COVF;x.fillStyle=C.ink;x.textAlign='center';shOn();x.fillText(C.w,0,f*.36);shOff();x.restore();
+    x.save();x.translate(w*.54,h*.6);x.rotate(-.28);const f=h*1.36;x.font='900 '+f+'px '+COVF;x.fillStyle=C.ink;x.textAlign='center';shOn();x.fillText(C.w,0,f*.36);shOff();x.restore();
     x.fillStyle=C.blk;x.fillRect(0,h-Math.round(h*.09),w*.55,Math.round(h*.09));
     lab(cat,pad,pad+lh*.9,C.lab);
   }else{ // stack
@@ -4771,7 +4776,7 @@ function drawCoverCtx(x,w,h,sp,t,mode){
   if(C.pro){ // acabamento PRO: filete interno e selo redondo
     x.strokeStyle=C.lab;x.globalAlpha=.55;x.lineWidth=1;x.strokeRect(5.5,5.5,w-11,h-11);x.globalAlpha=1;
   }
-  {const f=Math.round(w*.3),cx=pad+f*.2,cy=h-pad-f*.2;x.save();x.translate(cx,cy);x.rotate(Math.PI/6);x.font='700 '+f+'px "Helvetica Neue",Helvetica,Arial,sans-serif';x.textAlign='center';x.textBaseline='alphabetic';x.fillStyle='#FFE600';shOn();x.fillText('*',0,f*.6);shOff();x.restore()} // asterisco amarelo no canto
+  if(C.pro){const f=Math.round(w*.3),cx=pad+f*.2,cy=h-pad-f*.2;x.save();x.translate(cx,cy);x.rotate(Math.PI/6);x.font='700 '+f+'px "Helvetica Neue",Helvetica,Arial,sans-serif';x.textAlign='center';x.textBaseline='alphabetic';x.fillStyle='#FFE600';shOn();x.fillText('*',0,f*.6);shOff();x.restore()} // asterisco amarelo no canto
   x.save();x.globalAlpha=.075;x.fillStyle=x.createPattern(coverGrain(),'repeat');x.fillRect(0,0,w,h);x.restore(); // grão de impressão
   if(mode==='live'){ // prévia tocando: régua de 16 passos andando no tempo
     const st=Math.floor(t*sp.bpm/60*4)%16,n=16,gw=(w-pad*2)/n,yy=h-Math.max(5,Math.round(h*.05));
@@ -4868,10 +4873,14 @@ function drawVinyl(cv,sp,t,mode){
   const C=coverOf(sp),live=mode==='live',nar=w<560;
   x.fillStyle=HERO_BG;x.fillRect(0,0,w,h);
   // capa: quadrada, à direita; o disco sai pela esquerda dela
-  const S=Math.round(nar?Math.min(h*.66,w*.5):Math.min(h*.94,w*.31)),cxR=nar?w-S*.55:w*.71,X0=Math.round(cxR-S/2),Y0=Math.round(nar?h*.06:(h-S)/2);
-  const br=Math.sin(t*Math.PI*2/9),R=S*.47,out=live?.6:.46+.09*br,dcx=X0+S*.5-S*out-S*.02,dcy=Y0+S/2+Math.sin(t*1.3)*S*.006,rot=t*Math.PI*2*(live?.55:.22)+(sp.seed%628)/100;
-  // disco
-  x.beginPath();x.arc(dcx,dcy,R,0,Math.PI*2);x.fillStyle='#141414';x.fill();
+  const S=Math.round(nar?Math.min(h*.78,w*.52):Math.min(h*1.06,w*.34)),cxR=nar?w-S*.5:w*.72,X0=Math.round(cxR-S/2),Y0=Math.round(nar?h*.04:h*.06);
+  const tilt=-.075+Math.sin(t*.35)*.008; // tortinho, balançando quase nada
+  const br=Math.sin(t*Math.PI*2/9),R=S*.47,out=live?.6:.46+.09*br,rot=t*Math.PI*2*(live?.55:.22)+(sp.seed%628)/100;
+  x.save();x.translate(X0+S/2,Y0+S/2);x.rotate(tilt);x.translate(-S/2,-S/2); // daqui pra baixo: coordenadas da capa
+  const dcx=S*.5-S*out-S*.02,dcy=S/2+Math.sin(t*1.3)*S*.006;
+  // sombra do disco
+  x.save();x.shadowColor='rgba(0,0,0,.55)';x.shadowBlur=S*.09;x.shadowOffsetX=-S*.02;x.shadowOffsetY=S*.04;
+  x.beginPath();x.arc(dcx,dcy,R,0,Math.PI*2);x.fillStyle='#141414';x.fill();x.restore();
   for(let r=R*.4;r<R*.97;r+=2.4){x.beginPath();x.arc(dcx,dcy,r,0,Math.PI*2);x.strokeStyle=((r/2.4)|0)%2?'rgba(255,255,255,.04)':'rgba(255,255,255,.07)';x.lineWidth=1;x.stroke()}
   x.beginPath();x.arc(dcx,dcy,R*.985,0,Math.PI*2);x.strokeStyle='rgba(255,255,255,.16)';x.lineWidth=1.3;x.stroke();
   [[-1.0,-.45,.08],[2.15,2.6,.05]].forEach(([a0,a1,al])=>{x.save();x.beginPath();x.moveTo(dcx,dcy);x.arc(dcx,dcy,R*.97,a0,a1);x.closePath();x.clip();const sg=x.createRadialGradient(dcx,dcy,R*.36,dcx,dcy,R);sg.addColorStop(0,'rgba(255,255,255,0)');sg.addColorStop(.6,'rgba(255,255,255,'+al+')');sg.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=sg;x.fillRect(dcx-R,dcy-R,R*2,R*2);x.restore()});
@@ -4883,10 +4892,11 @@ function drawVinyl(cv,sp,t,mode){
   x.fillRect(-lr*.62,-1,lr*.4,2);x.fillRect(lr*.22,-1,lr*.4,2);
   x.restore();
   x.beginPath();x.arc(dcx,dcy,Math.max(2,R*.025),0,Math.PI*2);x.fillStyle=HERO_BG;x.fill();
-  // sombra chapada da capa sobre o disco e a capa
-  x.fillStyle='rgba(0,0,0,.55)';x.fillRect(X0-6,Y0+4,6,S-4);
-  x.save();x.beginPath();x.rect(X0,Y0,S,S);x.clip();x.translate(X0,Y0);drawCoverCtx(x,S,S,sp,t,live?'live':'amb');x.restore();
-  x.strokeStyle='rgba(255,255,255,.08)';x.lineWidth=1;x.strokeRect(X0+.5,Y0+.5,S-1,S-1);
+  // sombra da capa
+  x.save();x.shadowColor='rgba(0,0,0,.6)';x.shadowBlur=S*.1;x.shadowOffsetX=-S*.015;x.shadowOffsetY=S*.05;x.fillStyle='#000';x.fillRect(0,0,S,S);x.restore();
+  x.save();x.beginPath();x.rect(0,0,S,S);x.clip();drawCoverCtx(x,S,S,sp,t,live?'live':'amb');x.restore();
+  x.strokeStyle='rgba(255,255,255,.08)';x.lineWidth=1;x.strokeRect(.5,.5,S-1,S-1);
+  x.restore();
 }
 function vinylLabel(){return null}
 const HART={list:[],raf:0,t0:performance.now(),lh:0,lt:0,io:null};
