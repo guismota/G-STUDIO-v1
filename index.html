@@ -1125,6 +1125,30 @@ body.noanim #perf.open{animation:none}
 body.noanim #home .fbrand,body.eco #home .fbrand{display:flex;gap:10px}
 body.noanim #home .fbrand .bk1,body.noanim #home .fbrand .bk2,body.eco #home .fbrand .bk1,body.eco #home .fbrand .bk2{animation:none}
 @media (prefers-reduced-motion:reduce){#home .fbrand{display:flex;gap:10px}#home .fbrand .bk1,#home .fbrand .bk2{animation:none}}
+/* termos de uso e privacidade */
+#terms{position:fixed;inset:0;z-index:4900;background:#000;display:none;overflow-y:auto;-webkit-overflow-scrolling:touch}
+#terms.show{display:block;animation:obup .5s cubic-bezier(.2,.8,.2,1) both}
+.tgin{max-width:640px;margin:0 auto;min-height:100%;padding:max(30px,env(safe-area-inset-top)) 24px max(30px,env(safe-area-inset-bottom));display:flex;flex-direction:column;justify-content:center;gap:18px}
+.tgh{margin:4px 0 0;font-family:var(--poster);font-weight:900;font-stretch:62%;text-transform:uppercase;font-size:clamp(48px,9vw,96px);line-height:.88;color:#fff}
+.tgl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.tgl li{padding:12px 14px;background:#0a0a0a;border:1px solid #222;color:#bdbdbd;font-size:14.5px;line-height:1.45}
+.tgl li b{color:#fff;font-weight:800}
+.tgdocs{display:flex;flex-wrap:wrap;gap:8px}
+.tgdocs .hw{height:40px;padding:0 14px;background:#0b0b0b;border:1px solid #333;color:#eee;font:800 11px "Archivo",sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.tgchk{display:flex;gap:12px;align-items:flex-start;padding:14px;border:1px solid #333;background:#0a0a0a;cursor:pointer;color:#ddd;font-size:14px;line-height:1.45}
+.tgchk input{flex:none;width:22px;height:22px;margin:0;accent-color:var(--yel);cursor:pointer}
+#tgGo{flex:none;height:58px;min-height:58px}
+#tgGo:disabled{opacity:.35;cursor:not-allowed}
+#docv{position:fixed;inset:0;z-index:5000;background:#050505;display:none;flex-direction:column}
+#docv.show{display:flex}
+.dvh{flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:max(14px,env(safe-area-inset-top)) 20px 14px;border-bottom:1px solid #222}
+.dvh b{font:900 22px/1 var(--poster);font-stretch:62%;text-transform:uppercase;color:#fff;letter-spacing:.01em}
+.dvh .hw{height:38px;padding:0 14px;background:#111;border:1px solid #333;color:#eee;font:800 11px "Archivo",sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.dvb{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:22px 20px max(40px,env(safe-area-inset-bottom));max-width:760px;width:100%;margin:0 auto;box-sizing:border-box;color:#c9c9c9;font-size:15px;line-height:1.6;-webkit-user-select:text;user-select:text}
+.dvb .dvm{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#777;font-weight:800;margin:0 0 18px}
+.dvb h4{margin:24px 0 6px;color:#fff;font-size:15px;font-weight:800}
+.dvb p{margin:0 0 10px}.dvb ul{margin:0 0 10px;padding-left:20px}.dvb li{margin:4px 0}
+.dvb .dvbox{border-left:3px solid var(--yel);background:#0d0d0d;padding:12px 14px;margin:0 0 16px;color:#ddd}
 /* faixa da tela inicial no amarelo do app */
 #home .tape{background:var(--yel)}
 #home .tape b{background:#000!important;outline:none!important}
@@ -1558,6 +1582,23 @@ body.th-afro .nrow.root .ncell{background:#1c0a03!important}body.th-afro .nrow.r
   }
 })();
 </script>
+<!-- aceite dos termos (primeiro acesso) -->
+<div id="terms" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="tgH">
+  <div class="tgin">
+    <span class="obtag">Versão de testes · confidencial</span>
+    <h2 class="tgh" id="tgH">Antes de começar</h2>
+    <ul class="tgl">
+      <li><b>É um teste fechado.</b> O acesso é só seu. Não divulgue, não passe o link adiante, não publique prints ou vídeos do app e não comercialize nada dele.</li>
+      <li><b>Pode ter falhas.</b> Coisas mudam, quebram ou somem de uma versão para outra. Faça backup dos seus projetos.</li>
+      <li><b>Suas músicas são suas.</b> O que você criar e exportar, você usa como quiser.</li>
+      <li><b>Sem coleta de dados.</b> Não tem conta nem servidor do G-STUDIO: tudo fica no seu aparelho.</li>
+    </ul>
+    <div class="tgdocs"><button class="hw" data-doc="terms">Ler os Termos de Uso</button><button class="hw" data-doc="privacy">Ler a Política de Privacidade</button></div>
+    <label class="tgchk"><input type="checkbox" id="tgOk"><span>Li e aceito os Termos de Uso e a Política de Privacidade, e concordo em manter esta versão de testes em sigilo.</span></label>
+    <button class="obgo" id="tgGo" disabled>Aceitar e continuar</button>
+  </div>
+</div>
+<div id="docv" aria-hidden="true" role="dialog" aria-modal="true"><div class="dvh"><b id="dvT"></b><button class="hw" id="dvX">Fechar</button></div><article class="dvb" id="dvB"></article></div>
 <div id="welcome"><div class="wl"><svg xmlns="http://www.w3.org/2000/svg" viewBox="58.5 -6 132 132" width="170" height="170"><g transform="translate(64.5 0)"><defs><radialGradient id="capwy" cx="40%" cy="32%" r="75%"><stop offset="0" stop-color="#3a3a3a"/><stop offset="1" stop-color="#0b0b0b"/></radialGradient><filter id="glwy" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4.5"/></filter></defs><line x1="93.23" y1="26.77" x2="97.48" y2="22.52" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="83.50" y1="19.30" x2="85.00" y2="16.70" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="72.16" y1="14.60" x2="72.94" y2="11.70" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="60.00" y1="13.00" x2="60.00" y2="7.00" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="47.84" y1="14.60" x2="47.06" y2="11.70" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="36.50" y1="19.30" x2="35.00" y2="16.70" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="26.77" y1="26.77" x2="22.52" y2="22.52" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="19.30" y1="36.50" x2="16.70" y2="35.00" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="14.60" y1="47.84" x2="11.70" y2="47.06" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="13.00" y1="60.00" x2="7.00" y2="60.00" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="14.60" y1="72.16" x2="11.70" y2="72.94" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="19.30" y1="83.50" x2="16.70" y2="85.00" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="26.77" y1="93.23" x2="22.52" y2="97.48" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="36.50" y1="100.70" x2="35.00" y2="103.30" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="47.84" y1="105.40" x2="47.06" y2="108.30" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="60.00" y1="107.00" x2="60.00" y2="113.00" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="72.16" y1="105.40" x2="72.94" y2="108.30" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="83.50" y1="100.70" x2="85.00" y2="103.30" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="93.23" y1="93.23" x2="97.48" y2="97.48" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><line x1="100.70" y1="83.50" x2="103.30" y2="85.00" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="105.40" y1="72.16" x2="108.30" y2="72.94" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/><line x1="107.00" y1="60.00" x2="113.00" y2="60.00" stroke="#fff" stroke-width="2.3" stroke-linecap="round" opacity="0.95"/><g filter="url(#glwy)" opacity=".55"><path d="M86.16 33.84A37 37 0 1 0 97.00 60.00" fill="none" stroke="#FFE600" stroke-width="13"/><rect x="74" y="53.5" width="29.50" height="13" fill="#FFE600"/></g><path d="M86.16 33.84A37 37 0 1 0 97.00 60.00" fill="none" stroke="#FFE600" stroke-width="13"/><line x1="79.50" y1="60.00" x2="82.50" y2="60.00" stroke="#4a4a4a" stroke-width="1.3"/><line x1="79.26" y1="63.05" x2="82.22" y2="63.52" stroke="#4a4a4a" stroke-width="1.3"/><line x1="78.55" y1="66.03" x2="81.40" y2="66.95" stroke="#4a4a4a" stroke-width="1.3"/><line x1="77.37" y1="68.85" x2="80.05" y2="70.21" stroke="#4a4a4a" stroke-width="1.3"/><line x1="75.78" y1="71.46" x2="78.20" y2="73.23" stroke="#4a4a4a" stroke-width="1.3"/><line x1="73.79" y1="73.79" x2="75.91" y2="75.91" stroke="#4a4a4a" stroke-width="1.3"/><line x1="71.46" y1="75.78" x2="73.23" y2="78.20" stroke="#4a4a4a" stroke-width="1.3"/><line x1="68.85" y1="77.37" x2="70.21" y2="80.05" stroke="#4a4a4a" stroke-width="1.3"/><line x1="66.03" y1="78.55" x2="66.95" y2="81.40" stroke="#4a4a4a" stroke-width="1.3"/><line x1="63.05" y1="79.26" x2="63.52" y2="82.22" stroke="#4a4a4a" stroke-width="1.3"/><line x1="60.00" y1="79.50" x2="60.00" y2="82.50" stroke="#4a4a4a" stroke-width="1.3"/><line x1="56.95" y1="79.26" x2="56.48" y2="82.22" stroke="#4a4a4a" stroke-width="1.3"/><line x1="53.97" y1="78.55" x2="53.05" y2="81.40" stroke="#4a4a4a" stroke-width="1.3"/><line x1="51.15" y1="77.37" x2="49.79" y2="80.05" stroke="#4a4a4a" stroke-width="1.3"/><line x1="48.54" y1="75.78" x2="46.77" y2="78.20" stroke="#4a4a4a" stroke-width="1.3"/><line x1="46.21" y1="73.79" x2="44.09" y2="75.91" stroke="#4a4a4a" stroke-width="1.3"/><line x1="44.22" y1="71.46" x2="41.80" y2="73.23" stroke="#4a4a4a" stroke-width="1.3"/><line x1="42.63" y1="68.85" x2="39.95" y2="70.21" stroke="#4a4a4a" stroke-width="1.3"/><line x1="41.45" y1="66.03" x2="38.60" y2="66.95" stroke="#4a4a4a" stroke-width="1.3"/><line x1="40.74" y1="63.05" x2="37.78" y2="63.52" stroke="#4a4a4a" stroke-width="1.3"/><line x1="40.50" y1="60.00" x2="37.50" y2="60.00" stroke="#4a4a4a" stroke-width="1.3"/><line x1="40.74" y1="56.95" x2="37.78" y2="56.48" stroke="#4a4a4a" stroke-width="1.3"/><line x1="41.45" y1="53.97" x2="38.60" y2="53.05" stroke="#4a4a4a" stroke-width="1.3"/><line x1="42.63" y1="51.15" x2="39.95" y2="49.79" stroke="#4a4a4a" stroke-width="1.3"/><line x1="44.22" y1="48.54" x2="41.80" y2="46.77" stroke="#4a4a4a" stroke-width="1.3"/><line x1="46.21" y1="46.21" x2="44.09" y2="44.09" stroke="#4a4a4a" stroke-width="1.3"/><line x1="48.54" y1="44.22" x2="46.77" y2="41.80" stroke="#4a4a4a" stroke-width="1.3"/><line x1="51.15" y1="42.63" x2="49.79" y2="39.95" stroke="#4a4a4a" stroke-width="1.3"/><line x1="53.97" y1="41.45" x2="53.05" y2="38.60" stroke="#4a4a4a" stroke-width="1.3"/><line x1="56.95" y1="40.74" x2="56.48" y2="37.78" stroke="#4a4a4a" stroke-width="1.3"/><line x1="60.00" y1="40.50" x2="60.00" y2="37.50" stroke="#4a4a4a" stroke-width="1.3"/><line x1="63.05" y1="40.74" x2="63.52" y2="37.78" stroke="#4a4a4a" stroke-width="1.3"/><line x1="66.03" y1="41.45" x2="66.95" y2="38.60" stroke="#4a4a4a" stroke-width="1.3"/><line x1="68.85" y1="42.63" x2="70.21" y2="39.95" stroke="#4a4a4a" stroke-width="1.3"/><line x1="71.46" y1="44.22" x2="73.23" y2="41.80" stroke="#4a4a4a" stroke-width="1.3"/><line x1="73.79" y1="46.21" x2="75.91" y2="44.09" stroke="#4a4a4a" stroke-width="1.3"/><line x1="75.78" y1="48.54" x2="78.20" y2="46.77" stroke="#4a4a4a" stroke-width="1.3"/><line x1="77.37" y1="51.15" x2="80.05" y2="49.79" stroke="#4a4a4a" stroke-width="1.3"/><line x1="78.55" y1="53.97" x2="81.40" y2="53.05" stroke="#4a4a4a" stroke-width="1.3"/><line x1="79.26" y1="56.95" x2="82.22" y2="56.48" stroke="#4a4a4a" stroke-width="1.3"/><rect x="74" y="53.5" width="29.50" height="13" fill="#FFE600"/><circle cx="60" cy="60" r="19.5" fill="url(#capwy)" stroke="#2a2a2a" stroke-width="1.2"/><circle cx="60" cy="60" r="13" fill="none" stroke="#ffffff" stroke-width=".8" opacity=".09"/><ellipse cx="55" cy="52" rx="10" ry="5.5" fill="#fff" opacity=".07"/><line x1="62" y1="60" x2="77" y2="60" stroke="#FFE600" stroke-width="4.4" stroke-linecap="round"/><circle cx="95.11" cy="45.46" r="6.5" fill="#FFE600" opacity=".22"/><circle cx="95.11" cy="45.46" r="3.5" fill="#FFE600"/></g></svg></div></div>
 <div id="home" class="flyer">
   <div class="hstick">
@@ -1761,7 +1802,7 @@ let ctx,out,mix,filt,dly,fb,wet,noiseBuf,fin,anL,anR,anS,CMP=null;
 const CFG_DEF={launch:'bar',swing:true,wake:true,pvol:1,sting:true,autoKey:true,rec:'m4a',limit:true,anim:true,size:'n',eco:false,noflash:false,noshake:false,mono:false,keys:true};
 const CFG=Object.assign({},CFG_DEF,(()=>{try{const j=JSON.parse(localStorage.getItem('gstudio_cfg'));return j&&typeof j==='object'?j:{}}catch(e){return{}}})());
 function saveCfg(){try{localStorage.setItem('gstudio_cfg',JSON.stringify(CFG))}catch(e){}}
-const APPV='1.7.6.1';
+const APPV='1.7.6.2';
 const DEV=(()=>{const ua=navigator.userAgent||'',pf=navigator.platform||'',tp=navigator.maxTouchPoints||0;
   const ipad=/iPad/.test(ua)||((pf==='MacIntel'||/Macintosh/.test(ua))&&tp>1),iphone=/iPhone|iPod/.test(ua),android=/Android/.test(ua);
   const os=ipad?'ipados':iphone?'ios':android?'android':(/Mac/.test(pf)||/Macintosh/.test(ua))?'mac':(/Win/.test(pf)||/Windows/.test(ua))?'windows':/CrOS/.test(ua)?'chromeos':/Linux/.test(ua)?'linux':'other';
@@ -4129,7 +4170,7 @@ updProjN();
 
 // ---------- Backup: tudo num arquivo (projetos, gêneros criados, biblioteca, sons do usuário) ----------
 const BK={file:null,data:null,busy:false};
-const BK_SKIP=k=>k.startsWith('gstudio_tour_')||k==='gstudio_onboarded';
+const BK_SKIP=k=>k.startsWith('gstudio_tour_')||k==='gstudio_onboarded'||k==='gstudio_terms';
 const bkKeys=()=>{const a=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&(k.startsWith('gstudio_')||k.startsWith('looppads_'))&&!BK_SKIP(k))a.push(k)}return a};
 function idbEntries(){return idb().then(db=>new Promise((res,rej)=>{const out=[],tx=db.transaction('files','readonly'),cur=tx.objectStore('files').openCursor();
   cur.onsuccess=()=>{const c=cur.result;if(c){out.push([c.key,c.value]);c.continue()}};tx.oncomplete=()=>res(out);tx.onerror=()=>rej(tx.error)}))}
@@ -4294,6 +4335,8 @@ function renderCfg(){
     ri.querySelector('.cc').innerHTML='<button class="hw" id="cfgInst">'+(BIP?'Instalar':'Ver como')+'</button>';sa.appendChild(ri);
     ri.querySelector('#cfgInst').onclick=async()=>{if(BIP){await installNow();renderCfg();return}closeModal('cfgModal');showOnb(true)}}
   const rd=cfgRow('Este aparelho',DEV.label+' · '+DEV.br+'. As opções acima foram ajustadas para ele.');sa.appendChild(rd);
+  {const at=termsAt(),r1=cfgRow('Termos de Uso','Versão de testes, confidencial.'+(at?' Você aceitou em '+two(at.getDate())+'/'+two(at.getMonth()+1)+'/'+at.getFullYear()+'.':''));r1.querySelector('.cc').innerHTML='<button class="hw">Ler</button>';r1.querySelector('.cc button').onclick=()=>openDoc('terms');sa.appendChild(r1);
+   const r2=cfgRow('Política de Privacidade','O texto completo sobre os seus dados.');r2.querySelector('.cc').innerHTML='<button class="hw">Ler</button>';r2.querySelector('.cc button').onclick=()=>openDoc('privacy');sa.appendChild(r2)}
   sa.insertAdjacentHTML('beforeend',`<details class="cfgrow det"><summary><div class="ct"><b>Privacidade</b><small>Tudo fica no seu aparelho.</small></div><span class="chev"></span></summary><div class="dtx">
 <p>O G-STUDIO não tem conta, não coleta dados e não manda nada para servidor. Projetos, gêneros criados, sons importados e gravações ficam guardados só neste aparelho, no armazenamento do navegador ou do app.</p>
 <p>O microfone só é usado quando você toca em gravar no Explorar, e o áudio fica no aparelho. Os arquivos de backup e as gravações só saem daqui quando você mesmo exporta ou compartilha.</p>
@@ -4399,6 +4442,8 @@ function kbEsc(){
   if(XS.open){closeExplore();return true}
   const fx=FXKEYS.filter(k=>FX[k].win.open);if(fx.length){fx.forEach(closeFx);return true}
   if(OS.win.open){closeOs();return true}
+  if($('#docv').classList.contains('show')){closeDoc();return true}
+  if($('#terms').classList.contains('show'))return true;
   if($('#onb').classList.contains('show')){closeOnb();return true}
   return false;
 }
@@ -4406,7 +4451,7 @@ document.addEventListener('keydown',e=>{
   if(!CFG.keys)return;
   if(typing(e)){if(e.key==='Escape'&&kbEsc()){e.preventDefault();e.target.blur()}return}
   const mod=DEV.apple?e.metaKey:e.ctrlKey,k=e.key,inS=document.body.classList.contains('in-session');
-  const blocked=!!document.querySelector('.modal.open,.xdlg.open')||RL.open||XS.open||(typeof TOUR!=='undefined'&&TOUR.on)||$('#onb').classList.contains('show');
+  const blocked=!!document.querySelector('.modal.open,.xdlg.open')||RL.open||XS.open||(typeof TOUR!=='undefined'&&TOUR.on)||$('#onb').classList.contains('show')||$('#terms').classList.contains('show')||$('#docv').classList.contains('show');
   if(k==='Escape'){if(kbEsc()){e.preventDefault();const ae=document.activeElement;if(ae&&ae!==document.body&&ae.blur)ae.blur()}return}
   if(mod&&!e.altKey){
     if(k===','){e.preventDefault();if(!blocked)openCfg();return}
@@ -5108,6 +5153,55 @@ function goHome(){
 $('#homeBtn').addEventListener('click',goHome);
 buildHome();
 
+// ---------- Termos de Uso e Política de Privacidade ----------
+const TERMS={v:'1.0',date:'25/11/2026',key:'gstudio_terms'};
+const DOC_TERMS=`<p class="dvm">Versão ${TERMS.v} · ${TERMS.date} · versão de testes</p>
+<div class="dvbox"><b>Resumo:</b> esta é uma versão de testes fechada e confidencial do G-STUDIO. O acesso é pessoal e por convite. Você não pode divulgar, compartilhar, copiar nem comercializar o app. Ele pode ter falhas e perder dados. O que você cria com ele é seu.</div>
+<h4>1. Aceitação</h4><p>Estes Termos de Uso valem para o uso do G-STUDIO (o “app”). Ao tocar em “Aceitar e continuar”, você declara que leu e concorda com estes Termos e com a Política de Privacidade. Se não concordar, não use o app.</p>
+<h4>2. Versão de testes fechada e confidencial</h4><p>Esta é uma versão de testes (beta fechado), liberada só para pessoas convidadas. Enquanto ela for de testes:</p>
+<ul><li>o acesso é pessoal e intransferível: não passe o link, o app instalado ou o acesso para outras pessoas;</li>
+<li>não divulgue o app nem as suas funções: não publique prints, vídeos, gravações de tela, transmissões ou descrições dele em redes sociais, sites, grupos ou qualquer lugar público, a não ser com autorização do G-STUDIO;</li>
+<li>não venda, alugue, sublicencie, distribua nem explore comercialmente o app, no todo ou em parte;</li>
+<li>não copie, modifique, faça engenharia reversa nem extraia o código, os sons, as artes, as capas ou o design do app;</li>
+<li>o acesso pode ser suspenso ou encerrado a qualquer momento, sem aviso.</li></ul>
+<h4>3. O que é o app</h4><p>O G-STUDIO é um estúdio de loops para montar cenas, aplicar efeitos e tocar ao vivo. Por ser uma versão de testes, funções podem mudar, sair ou voltar sem aviso, e versões novas podem não abrir projetos feitos em versões antigas.</p>
+<h4>4. Sem garantias</h4><p>O app é oferecido “no estado em que se encontra”, sem garantia de funcionamento, de disponibilidade ou de que esteja livre de erros. Ele pode travar, falhar ou perder dados. Seus projetos ficam só no seu aparelho, então faça backup com frequência em Configurações, Dados. Evite depender só do app em situações importantes, como uma apresentação ao vivo, sem ter um plano B.</p>
+<h4>5. Propriedade do app</h4><p>O app, o código, o nome, a marca, o design, as capas e os sons sintetizados pertencem ao G-STUDIO. Estes Termos não transferem nenhum desses direitos para você, só a permissão de usar o app durante o teste. As amostras de áudio de terceiros usadas no app são de domínio público (CC0) e estão listadas em Configurações, Créditos.</p>
+<h4>6. O que você cria é seu</h4><p>Os projetos, as músicas, as cenas e as gravações que você faz com o app são seus. Você pode usar o áudio que exportar como quiser, inclusive comercialmente. Isso não muda a regra da seção 2: divulgar a sua música é livre, mas mostrar o app em si (telas, vídeos de uso, funções) não é, enquanto ele for de testes.</p>
+<p>Se você importar ou gravar sons de terceiros, a responsabilidade pelos direitos sobre eles é sua.</p>
+<h4>7. Uso adequado</h4><p>Não use o app para violar direitos de outras pessoas nem para nada ilegal.</p>
+<h4>8. Sugestões</h4><p>Sugestões, ideias e relatos de problemas que você mandar podem ser usados livremente para melhorar o app, sem obrigação de pagamento ou de crédito.</p>
+<h4>9. Responsabilidade</h4><p>Na medida máxima permitida pela lei, o G-STUDIO não se responsabiliza por perda de dados, de projetos ou de gravações, nem por danos causados pelo uso ou pela impossibilidade de uso do app. Nada nestes Termos exclui direitos que a lei garanta a você e que não possam ser afastados.</p>
+<h4>10. Saída e encerramento</h4><p>Você pode parar de usar o app quando quiser. Para apagar tudo, use Configurações, Apagar tudo, ou apague os dados do site ou o app do aparelho.</p>
+<h4>11. Mudanças nestes Termos</h4><p>Estes Termos podem mudar. Quando isso acontecer, o app vai mostrar a nova versão e pedir que você aceite de novo para continuar.</p>
+<h4>12. Lei aplicável</h4><p>Estes Termos seguem as leis da República Federativa do Brasil.</p>
+<h4>13. Contato</h4><p>Dúvidas, problemas ou pedido para sair do teste: fale direto com quem te convidou para o teste.</p>`;
+const DOC_PRIV=`<p class="dvm">Versão ${TERMS.v} · ${TERMS.date} · versão de testes</p>
+<div class="dvbox"><b>Resumo:</b> o G-STUDIO não tem conta, não coleta dados pessoais e não tem servidor próprio. Tudo o que você faz fica guardado só no seu aparelho.</div>
+<h4>1. O que o G-STUDIO coleta</h4><p>Nada. O app não pede nome, e-mail, telefone nem cadastro, e não envia os seus dados ou o que você cria para nenhum servidor do G-STUDIO.</p>
+<h4>2. O que fica guardado no seu aparelho</h4><p>Para funcionar, o app guarda no armazenamento do navegador ou do app instalado, no próprio aparelho:</p>
+<ul><li>projetos, cenas, loops editados e gêneros criados por você;</li><li>sons importados e gravações feitas pelo microfone;</li><li>configurações, histórico dos gêneros usados e o seu aceite destes documentos.</li></ul>
+<p>O G-STUDIO não tem acesso a esses dados. Eles só saem do aparelho quando você mesmo exporta um backup ou compartilha uma gravação.</p>
+<h4>3. Microfone</h4><p>O microfone só é usado quando você toca em gravar no Explorar, e o sistema pede a sua permissão antes. O áudio gravado fica no aparelho.</p>
+<h4>4. Arquivos</h4><p>O app só abre os arquivos que você escolher para importar. Ao exportar ou compartilhar, o arquivo vai para onde você mandar, pelo menu do próprio sistema.</p>
+<h4>5. Serviços de terceiros</h4><p>O app é hospedado no GitHub Pages (GitHub, Inc.) e carrega fontes do Google Fonts (Google). Quando você abre o app, o seu aparelho se conecta a esses serviços, que podem registrar dados técnicos, como endereço IP, tipo de navegador e horário de acesso, conforme as políticas de privacidade deles. O G-STUDIO não recebe nem guarda esses dados.</p>
+<h4>6. O que o app não faz</h4><p>Não usa cookies de rastreamento, não tem ferramentas de análise ou de métricas, não mostra anúncios e não vende nem compartilha dados.</p>
+<h4>7. Seus direitos</h4><p>A Lei Geral de Proteção de Dados (Lei 13.709/2018) garante a você direitos sobre os seus dados pessoais. Como o G-STUDIO não guarda dados seus, não há nada conosco para consultar, corrigir ou apagar: você controla tudo no próprio aparelho. Para fazer backup ou apagar tudo, use Configurações, Dados.</p>
+<h4>8. Segurança</h4><p>Os dados ficam protegidos pela segurança do seu próprio aparelho. Quem tiver acesso a ele consegue abrir o app e os seus projetos.</p>
+<h4>9. Mudanças nesta Política</h4><p>Se esta Política mudar, o app vai mostrar a nova versão e pedir que você aceite de novo.</p>
+<h4>10. Contato</h4><p>Dúvidas sobre privacidade: fale direto com quem te convidou para o teste.</p>`;
+function termsOk(){try{const j=JSON.parse(localStorage.getItem(TERMS.key)||'null');return !!(j&&j.v===TERMS.v)}catch(e){return false}}
+function termsAt(){try{const j=JSON.parse(localStorage.getItem(TERMS.key)||'null');return j&&j.at?new Date(j.at):null}catch(e){return null}}
+function openDoc(k){const d=$('#docv');$('#dvT').textContent=k==='privacy'?'Política de Privacidade':'Termos de Uso';$('#dvB').innerHTML=k==='privacy'?DOC_PRIV:DOC_TERMS;$('#dvB').scrollTop=0;d.classList.add('show');d.setAttribute('aria-hidden','false');setTimeout(()=>{try{$('#dvX').focus()}catch(e){}},50)}
+function closeDoc(){const d=$('#docv');d.classList.remove('show');d.setAttribute('aria-hidden','true')}
+$('#dvX').onclick=closeDoc;
+document.querySelectorAll('#terms [data-doc]').forEach(b=>b.onclick=()=>openDoc(b.dataset.doc));
+let termsNext=null;
+function gateTerms(next){if(termsOk()){next&&next();return}termsNext=next;const t=$('#terms');$('#tgOk').checked=false;$('#tgGo').disabled=true;t.classList.add('show');t.setAttribute('aria-hidden','false');t.scrollTop=0}
+$('#tgOk').onchange=e=>{$('#tgGo').disabled=!e.target.checked};
+$('#tgGo').onclick=()=>{if(!$('#tgOk').checked)return;try{localStorage.setItem(TERMS.key,JSON.stringify({v:TERMS.v,at:Date.now()}))}catch(e){}
+  const t=$('#terms');t.classList.remove('show');t.setAttribute('aria-hidden','true');const n=termsNext;termsNext=null;n&&n()};
+
 // ---------- primeira vez: boas-vindas e como instalar ----------
 const ONB={key:'gstudio_onboarded'};
 const isStandalone=()=>(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;
@@ -5121,11 +5215,11 @@ function showOnb(force){
 if(isStandalone()){const x=$('#onbAgain');if(x){const sep=x.previousSibling;if(sep&&sep.nodeType===3)sep.textContent=sep.textContent.replace(/ · $/,'');x.remove()}}
 function closeOnb(){
   try{localStorage.setItem(ONB.key,'1')}catch(e){}
-  const el=$('#onb');el.classList.add('out');setTimeout(()=>{el.classList.remove('show','out')},700);powerOnHome();
+  const el=$('#onb');el.classList.add('out');setTimeout(()=>{el.classList.remove('show','out')},700);gateTerms(powerOnHome);
 }
 $('#obGo').onclick=closeOnb;
 {const x=$('#onbAgain');if(x)x.onclick=()=>showOnb(true)}
-(()=>{const w=$('#welcome');setTimeout(()=>{w.classList.add('out');if(!showOnb(false))powerOnHome()},1000);setTimeout(()=>{w.style.display='none'},1500)})();
+(()=>{const w=$('#welcome');setTimeout(()=>{w.classList.add('out');if(window.GSC&&GSC.lvl==='bloq'){showOnb(true);return}gateTerms(()=>{if(!showOnb(false))powerOnHome()})},1000);setTimeout(()=>{w.style.display='none'},1500)})();
 
 // ---------- Piano roll (página cheia, com gravação) ----------
 const RL={open:false,base:36,rec:false,count:true,met:true,keys:{},kbEls:{},last:''};
@@ -5857,7 +5951,7 @@ var TOUR={on:false,k:null,i:0};
 function tourDone(k){try{return localStorage.getItem('gstudio_tour_'+k)==='1'}catch(e){return true}}
 function maybeTour(k){
   if(TOUR.on||tourDone(k))return;
-  if(k==='home'&&(document.body.classList.contains('in-session')||XS.open||$('#onb').classList.contains('show')))return;
+  if(k==='home'&&(document.body.classList.contains('in-session')||XS.open||$('#onb').classList.contains('show')||$('#terms').classList.contains('show')))return;
   if(k==='sess'&&(!document.body.classList.contains('in-session')||screen!=='main'))return;
   startTour(k);
 }
