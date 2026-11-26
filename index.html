@@ -1106,6 +1106,9 @@ body.th-art .clip.q{animation:qp .38s steps(2) infinite!important}
 .rkeys>.hw small{display:block;margin-top:4px;font-size:9px;color:#777;letter-spacing:.1em}
 .rlmt{align-self:center;color:#888;white-space:nowrap}
 body.dev-phone .rlmt{display:none}
+/* pausado: loops e cena escolhidos ficam marcados, mais apagados, até soltar o play ou tocar em Parar tudo */
+.clip.play.held{opacity:.5}
+#scenes .sc.held{box-shadow:inset 0 0 0 1px var(--yel)!important}
 /* ===== Remix FX ===== */
 #rmxBtn{flex:none;margin-left:10px;gap:7px;min-height:32px;padding:0 12px;display:flex;align-items:center}#rmxBtn svg{width:14px;height:14px}
 #rmxBtn.on{background:var(--yel)!important;border-color:var(--yel)!important;color:#000!important}
@@ -1908,7 +1911,7 @@ let ctx,out,mix,filt,dly,fb,wet,noiseBuf,fin,anL,anR,anS,CMP=null;
 const CFG_DEF={launch:'bar',swing:true,wake:true,pvol:1,sting:true,autoKey:true,rec:'m4a',limit:true,anim:true,size:'n',eco:false,noflash:false,noshake:false,mono:false,keys:true};
 const CFG=Object.assign({},CFG_DEF,(()=>{try{const j=JSON.parse(localStorage.getItem('gstudio_cfg'));return j&&typeof j==='object'?j:{}}catch(e){return{}}})());
 function saveCfg(){try{localStorage.setItem('gstudio_cfg',JSON.stringify(CFG))}catch(e){}}
-const APPV='1.7.7.3';
+const APPV='1.7.7.4';
 const DEV=(()=>{const ua=navigator.userAgent||'',pf=navigator.platform||'',tp=navigator.maxTouchPoints||0;
   const ipad=/iPad/.test(ua)||((pf==='MacIntel'||/Macintosh/.test(ua))&&tp>1),iphone=/iPhone|iPod/.test(ua),android=/Android/.test(ua);
   const os=ipad?'ipados':iphone?'ios':android?'android':(/Mac/.test(pf)||/Macintosh/.test(ua))?'mac':(/Win/.test(pf)||/Windows/.test(ua))?'windows':/CrOS/.test(ua)?'chromeos':/Linux/.test(ua)?'linux':'other';
@@ -3168,9 +3171,11 @@ function startTransport(countIn,at){
   step=0;bar=0;barOff=countIn?1:0;nextTime=at&&at>ctx.currentTime+.03?at:ctx.currentTime+.06;tT0=nextTime;playing=true;ALL().forEach(c=>{c.lastM=null});
   clearInterval(timer);timer=setInterval(tick,25);tick();setPlayUI();wakeOn();
 }
-function stopTransport(){
-  clearInterval(timer);playing=false;if(typeof NOVO!=='undefined'&&NOVO)NOVO.forEach(c=>stopLaneSrc(c));uiQ.length=0;PQ.length=0;cur=-1;curBar=0;sceneOn=-1;
-  ALL().forEach(c=>{c.active=-1;c.queued=null;c.preview=null});
+// pausa (keep=true): para o relógio mas mantém os loops escolhidos para voltar de onde estava; sem keep, zera tudo
+function stopTransport(keep){
+  clearInterval(timer);playing=false;if(typeof NOVO!=='undefined'&&NOVO)NOVO.forEach(c=>stopLaneSrc(c));uiQ.length=0;PQ.length=0;cur=-1;curBar=0;
+  if(keep)ALL().forEach(c=>{if(c.queued!==null){c.active=c.queued;c.queued=null}c.preview=null});
+  else{sceneOn=-1;ALL().forEach(c=>{c.active=-1;c.queued=null;c.preview=null})}
   setPlayUI();wakeOff();
   if(ED.ci>=0){ED.prev=false;$('#cePrev').classList.remove('on')}
 }
@@ -3188,7 +3193,7 @@ function padTap(ci,pi){
   if(editMode||!pat){openClipEditor(ci,pi);return}
   tap(ci,pi);
 }
-function stopAll(){if(!playing)return;cols.forEach(c=>{c.queued=(c.active===-1)?null:-1})}
+function stopAll(){if(!playing){sceneOn=-1;cols.forEach(c=>{c.active=-1;c.queued=null});return}cols.forEach(c=>{c.queued=(c.active===-1)?null:-1})}
 
 // ---------- Cenas ----------
 function launchScene(i){
@@ -5607,7 +5612,7 @@ function rlStartPlay(countIn){
 }
 $('#rlPlay').onclick=()=>{
   initAudio();
-  if(playing){RL.rec=false;MET.on=false;stopTransport()}
+  if(playing){RL.rec=false;MET.on=false;stopTransport(true)}
   else rlStartPlay(false);
   rlUI();
 };
@@ -5682,8 +5687,9 @@ $('#editTog').onclick=()=>{
 };
 $('#play').addEventListener('click',()=>{
   initAudio();
-  if(playing){stopTransport();return}
+  if(playing){stopTransport(true);return}
   if(!cols.length){flash('Chama um instrumento primeiro');return}
+  if(cols.some(c=>c.active>=0&&getPat(c,c.active))){startTransport();return} // volta com os loops que estavam tocando
   if(scenes[0]){launchScene(0);return}
   cols[0].active=0;startTransport();
 });
@@ -5708,11 +5714,11 @@ function render(){
   if(pos!==lastPos){lastPos=pos;$('#lcdPos').textContent=pos}
   const msg=STYLES[style]?STYLES[style].name:'';
   if(msg!==lastMsg){lastMsg=msg;$('#lcdMsg').textContent=msg}
-  slotEls.forEach((b,i)=>b.classList.toggle('on',playing&&sceneOn===i));
+  slotEls.forEach((b,i)=>{b.classList.toggle('on',playing&&sceneOn===i);b.classList.toggle('held',!playing&&sceneOn===i)});
   cols.forEach(c=>{
     c.padEls.forEach((el,i)=>{
       const a=c.active===i;
-      el.classList.toggle('play',a);
+      el.classList.toggle('play',a);el.classList.toggle('held',a&&!playing);
       el.classList.toggle('q',c.queued===i||(a&&c.queued===-1));
     });
     const pat=c.active>=0?getPat(c,c.active):null;
