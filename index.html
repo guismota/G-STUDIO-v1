@@ -1930,7 +1930,7 @@ let ctx,out,mix,filt,dly,fb,wet,noiseBuf,fin,anL,anR,anS,CMP=null;
 const CFG_DEF={launch:'bar',swing:true,wake:true,pvol:1,sting:true,autoKey:true,rec:'m4a',limit:true,anim:true,size:'n',eco:false,noflash:false,noshake:false,mono:false,keys:true};
 const CFG=Object.assign({},CFG_DEF,(()=>{try{const j=JSON.parse(localStorage.getItem('gstudio_cfg'));return j&&typeof j==='object'?j:{}}catch(e){return{}}})());
 function saveCfg(){try{localStorage.setItem('gstudio_cfg',JSON.stringify(CFG))}catch(e){}}
-const APPV='1.7.7.9';
+const APPV='1.7.8';
 const DEV=(()=>{const ua=navigator.userAgent||'',pf=navigator.platform||'',tp=navigator.maxTouchPoints||0;
   const ipad=/iPad/.test(ua)||((pf==='MacIntel'||/Macintosh/.test(ua))&&tp>1),iphone=/iPhone|iPod/.test(ua),android=/Android/.test(ua);
   const os=ipad?'ipados':iphone?'ios':android?'android':(/Mac/.test(pf)||/Macintosh/.test(ua))?'mac':(/Win/.test(pf)||/Windows/.test(ua))?'windows':/CrOS/.test(ua)?'chromeos':/Linux/.test(ua)?'linux':'other';
@@ -1963,7 +1963,7 @@ function D(name,str,ex){const s=str.replace(/\s/g,''),data=[];for(let i=0;i<s.le
 // toms em texto: h agudo, m médio, l grave (maiúscula = acento)
 function T(name,str,ex){const s=str.replace(/\s/g,''),F={h:200,m:150,l:110},data=[];for(let i=0;i<s.length;i++){const ch=s[i],f=F[ch.toLowerCase()];if(f)data.push(ch===ch.toUpperCase()?[i,f,1.2]:[i,f])}return Object.assign({name,data,len:s.length},ex||{})}
 // notas: [passo, 'nota', duração, força, slide]
-function B(name,len,notes,ex){return Object.assign({name,len,data:notes.map(n=>[n[0],N(n[1]),n[2],n[3]||1,n[4]?1:0])},ex||{})}
+function B(name,len,notes,ex){return Object.assign({name,len,data:notes.map(n=>[n[0],N(n[1]),n[2],n[3]||1,n[4]||0])},ex||{})}
 // acordes: [passo, 'acorde', duração, pad?]
 function C(name,len,list,ex){return Object.assign({name,len,data:list.map(n=>[n[0],CH(n[1]),n[2],!!n[3]])},ex||{})}
 const RISER={name:'Riser',data:'sweep',len:16};
@@ -2401,21 +2401,21 @@ const STYLES={
   }},
  // gênero especial Cumbia: duelo de teclados da cumbia villera (Argentina). Güiro e campana conduzem, timbales e congas,
  // baixo elétrico em tumbao, órgão no contratempo e o teclado solo com vibrato e "bend" de rodinha
- cumbia:{name:'Cumbia',bpm:100,swing:.06,key:{root:9,mode:'minor'},artist:true,theme:'cumbia',names:{snare:'Caixa',hat:'Güiro',ohat:'Sino',tom:'Congas',perc:'Paila',bass:'Baixo',chord:'Keys',arp:'Viola',lead:'Solo'},
-  scenes:[{kick:0,hat:0,ohat:0,bass:0,chord:0},{kick:0,clap:0,snare:0,hat:0,ohat:0,tom:0,perc:1,bass:0,chord:0,lead:0},{hat:3,ohat:2,tom:2,pad:0,arp:2,sub:0},
-          {kick:1,clap:1,snare:1,hat:1,ohat:1,tom:1,perc:0,bass:1,chord:3,arp:0,lead:2,fx:0}],
-  snd:{sub:{type:'sine',cut:180},pad:{type:'strings'},arp:{type:'guitarra'},sc:.15,
-       kick:{f0:150,f1:52,dec:.36,click:.3,sweep:.06,knock:.9,lvl:.85},clap:{f:1400,dec:.22,spread:3,smp:'palma',sv:.55},snare:{tone:190,hp:1900,dec:.17,lvl:.62},
+ cumbia:{name:'Cumbia',bpm:100,swing:.08,human:{t:.009,v:.14},big:['lead'],key:{root:9,mode:'minor'},artist:true,theme:'cumbia',names:{snare:'Caixa',hat:'Güiro',ohat:'Sino',tom:'Congas',perc:'Paila',bass:'Baixo',chord:'Keys',arp:'Viola',lead:'Solo'},
+  scenes:[{kick:0,hat:0,ohat:0,tom:0,bass:0,chord:0},{kick:0,snare:0,hat:0,ohat:0,tom:0,perc:0,bass:0,chord:0,lead:0},{hat:3,ohat:2,tom:2,pad:0,arp:2,lead:1},
+          {kick:1,clap:1,snare:0,hat:1,ohat:1,tom:1,perc:1,bass:1,chord:3,arp:0,lead:2,fx:0}],
+  snd:{sub:{type:'sine',cut:180},pad:{type:'strings'},arp:{type:'guitarra'},sc:.06,
+       kick:{f0:118,f1:58,dec:.3,click:.25,sweep:.05,knock:.6,lvl:.72},clap:{f:1400,dec:.22,spread:3,smp:'palma',sv:.55},snare:{tone:280,hp:3000,dec:.09,lvl:.5},
        hat:{type:'guiro',dec:.15,odec:.3},tom:{mult:1,dec:.3,smp:1,sv:.8,map:{200:220,150:164.81,110:130.81}},perc:{type:'timbal'},
-       bass:{type:'elec',cut:900},chord:{type:'organ'},lead:{type:'cumbia'}},
+       bass:{type:'elec',cut:1300,sub:.7},chord:{type:'organ'},lead:{type:'cumbia'}},
   p:{
-   kick:[D('Base','X.......X.......'),D('Pique','X.....x.X.......'),D('Dobrado','X..x....X..x....'),D('Reto','X...X...X...X...')],
-   clap:[D('2 e 4','....X.......X...'),D('Contra','..x...x...x...x.'),D('Dobrada','....X..x....X...'),D('Virada','....X.......X... ....X...x.X.xxXX')],
-   snare:[D('Back','....X.......X...'),D('Ghost','..o.X..o..o.X...'),D('Marcha','....X..o....X.oo'),D('Rufo','................ ........o.o.xoxX')],
+   kick:[D('Bombo','X.......X.......'),D('Pique','X.....x.X.......'),D('Reto','X...X...X...X...'),D('Dobrado','X..x....X..x....')],
+   clap:[D('Contra','..x...x...x...x.'),D('Dembow','...x..x....x..x.'),D('2 e 4','....X.......X...'),D('Virada','....X.......X... ....X...x.X.xxXX')],
+   snare:[D('Contra','..x...x...x...x.'),D('Dembow','...X..X....X..X.'),D('Back','....X.......X...'),D('Rufo','................ ........o.o.xoxX')],
    hat:[D('Güiro','X.xxX.xxX.xxX.xx'),D('Villero','X.xoX.xoX.xoX.xo'),D('Chiqui','X.x.X.x.X.x.X.x.'),D('Longo','X...X...X...X...')],
    ohat:[D('Tempo','X...x...X...x...'),D('Corrido','X.x.X.x.X.x.X.x.'),D('Contra','..X...X...X...X.'),D('Síncope','X..xX.x.X..xX.x.')],
    tom:[T('Tumbao','m..mh.l.m..mh.l.'),T('Marcha','..h...hh..h...hh'),T('Aberto','h.m.l.m.h.m.l.m.'),T('Repique','................ hhmmhhmmllmmhhLL')],
-   perc:[D('Golpe','....X.......X...'),D('Cáscara','o.oo.o.oo.o.oo.o'),D('Toque','x..x..X...x.X...'),D('Repique','................ ....x.x.xxxXxxXX')],
+   perc:[D('Golpe','..o...o...o.x.X.'),D('Cáscara','o.oo.o.oo.o.oo.o'),D('Toque','x..x..X...x.X...'),D('Repique','................ ....x.x.xxxXxxXX')],
    bass:[CUMB('Tumbao',[[0,0,2.5],[3,0,.8],[4,1,2.5]]),CUMB('Passo',[[0,0,1.6],[2,3,1.6],[4,1,1.6],[6,3,1.6]]),
          CUMB('Oitavas',[[0,0,1.5],[2,2,1],[4,0,1.5],[6,2,1]]),CUMB('Villero',[[0,0,2.6],[3,0,.7],[6,1,1.5]])],
    sub:[CUMB('Raiz',[[0,0,7.5]]),CUMB('Pulso',[[0,0,3],[4,0,3]]),CUMB('Quinta',[[0,0,3.5],[4,1,3.5]]),CUMB('Bumbo',[[0,0,2]])],
@@ -2424,14 +2424,15 @@ const STYLES={
    arp:[CUMA('Dedilho',[0,1,2,1,3,2,1,2],.9),CUMA('Arpejo',[0,null,2,null,1,null,2,null],1.6),
     B('Flauta',32,[[0,'E5',5.5],[6,'D5',.9],[7,'C5',.9],[8,'D5',5.5],[14,'C5',.9],[15,'B4',.9],[16,'C5',5.5],[22,'B4',.9],[23,'A4',.9],[24,'B4',7.5,1,1]],{syn:'flauta'}),
     CUMA('Pique',[null,null,2,1,null,null,2,1],.8)],
-   lead:[
-    B('Punteo',32,[[0,'A5',1.5],[2,'G#5',.8],[3,'A5',.8],[4,'E5',1.5],[6,'C5',1.5],[8,'D5',1.5],[10,'B4',.8],[11,'D5',.8],[12,'G5',1.5],[14,'F5',1.5],
-                    [16,'C5',1.5],[18,'A4',.8],[19,'C5',.8],[20,'F5',1.5],[22,'E5',1.5],[24,'B4',.8],[25,'C5',.8],[26,'B4',.8],[27,'A4',.8],[28,'G#4',3.5,1,1]]),
-    B('Repique',32,[[0,'E5',.7],[1,'E5',.7],[2,'E5',.7],[3,'F5',.7],[4,'E5',1.5],[6,'C5',.7],[7,'A4',.7],[8,'D5',.7],[9,'D5',.7],[10,'D5',.7],[11,'E5',.7],[12,'D5',1.5],[14,'B4',.7],[15,'G4',.7],
-                    [16,'C5',.7],[17,'C5',.7],[18,'C5',.7],[19,'D5',.7],[20,'C5',1.5],[22,'A4',.7],[23,'F4',.7],[24,'B4',.7],[25,'C5',.7],[26,'B4',.7],[27,'A4',.7],[28,'G#4',3.5,1,1]]),
-    B('Escala',32,[[0,'A4',.9],[1,'B4',.9],[2,'C5',.9],[3,'D5',.9],[4,'E5',.9],[5,'F5',.9],[6,'E5',.9],[7,'D5',.9],[8,'B4',.9],[9,'C5',.9],[10,'D5',.9],[11,'E5',.9],[12,'F5',.9],[13,'E5',.9],[14,'D5',.9],[15,'B4',.9],
-                   [16,'A4',.9],[17,'B4',.9],[18,'C5',.9],[19,'D5',.9],[20,'E5',.9],[21,'F5',.9],[22,'E5',.9],[23,'C5',.9],[24,'G#4',.9],[25,'A4',.9],[26,'B4',.9],[27,'C5',.9],[28,'E5',4,1,1]]),
-    B('Sanfona',32,[[0,'E5',2],[2,'D5',1],[3,'C5',1],[4,'B4',2],[6,'C5',2],[8,'D5',3],[11,'B4',1],[12,'G4',4],[16,'A4',2],[18,'C5',1],[19,'F5',1],[20,'E5',2],[22,'D5',2],[24,'C5',2],[26,'B4',2],[28,'G#4',2],[30,'B4',2]],{syn:'acordeon'})],
+   lead:[ // [passo, nota, duração, dinâmica, ornamento: 1 bend, 2 mordente, 3 caída]
+    B('Punteo',32,[[0,'E5',1,1.05,2],[1,'C5',.8,.75],[2,'E5',1,.9],[3,'A5',2.5,1.1,1],[6,'G#5',.8,.7],[7,'A5',.8,.8],[8,'B5',1.5,1],[10,'A5',.8,.75],[11,'G5',2.5,.95,3],
+                    [16,'F5',1,1,2],[17,'E5',.8,.7],[18,'C5',1,.85],[19,'A4',2,.9],[22,'C5',.8,.7],[23,'D5',.8,.8],[24,'E5',1,.95],[25,'F5',.8,.75],[26,'E5',.8,.8],[27,'D5',.8,.7],[28,'B4',3.5,1.05,1]]),
+    B('Lamento',32,[[0,'A4',.8,.8],[1,'C5',.8,.85],[2,'E5',4.5,1.1,1],[7,'D5',1,.8],[8,'D5',3.5,1.05,2],[12,'B4',1,.8],[13,'C5',1,.85],[14,'D5',1.5,.9],
+                    [16,'C5',4.5,1.05,1],[21,'A4',1,.75],[22,'B4',.8,.8],[23,'C5',.8,.85],[24,'B4',2,1,2],[26,'A4',1,.8],[27,'G#4',4.5,1.1,3]]),
+    B('Fiesta',32,[[0,'A5',.7,1.1],[2,'A5',.7,.7],[3,'G5',.7,.8],[4,'A5',.7,1],[6,'E5',.7,.75],[7,'C5',1,.9],[8,'D5',.7,1.05],[10,'D5',.7,.7],[11,'C5',.7,.8],[12,'D5',.7,1],[14,'B4',.7,.75],[15,'G4',1,.85],
+                    [16,'C5',.7,1.05],[18,'C5',.7,.7],[19,'A4',.7,.8],[20,'C5',.7,1],[22,'F5',1.5,1.05,1],[24,'E5',.7,1],[25,'F5',.7,.75],[26,'E5',.7,.85],[27,'D5',.7,.7],[28,'B4',.7,.9],[29,'C5',.7,.75],[30,'B4',1.6,1,3]]),
+    B('Sanfona',32,[[0,'C5',1.5,.9],[2,'B4',.7,.7],[3,'C5',.7,.8],[4,'E5',2.5,1.05],[7,'D5',.8,.75],[8,'D5',1.5,.9],[10,'C5',.7,.7],[11,'B4',.7,.8],[12,'D5',2.5,1],[15,'C5',.8,.7],
+                    [16,'C5',1.5,.9],[18,'A4',.7,.7],[19,'C5',.7,.8],[20,'F5',2.5,1.05],[23,'E5',.8,.7],[24,'E5',1,.95],[25,'D5',.7,.75],[26,'C5',.7,.8],[27,'B4',.7,.75],[28,'G#4',1,.9],[29,'A4',.7,.7],[30,'B4',2,.95]],{syn:'acordeon'})],
    fx:[FXP('Sirene','S...............................'),FXP('Riser','R...............................'),FXP('Impact','I...............................'),FXP('Reverse','V...............')]
   }},
  // gênero especial Afrohouse: a percussão conduz, kick macio, muito swing, coro, kalimba e baixo redondo
@@ -2725,14 +2726,14 @@ function perc(t,o,v,syn){
 // ----- cumbia: güiro, campana, timbales, baixo elétrico, teclado solo, acordeão, flauta e guitarra -----
 // güiro: ruído passando por um "pente" (AM em dente de serra) que acelera durante a raspada. X = raspada longa, x/o = curta
 function guiro(t,o,v){
-  v=v||1;const long=v>=1.1,d=long?.15:.045,n=noise(t,d+.04),bp=ctx.createBiquadFilter(),hp=ctx.createBiquadFilter(),am=ctx.createGain(),lf=ctx.createOscillator(),dp=ctx.createGain(),g=ctx.createGain();
+  v=v||1;const long=v>1.01,d=long?.15:.045,n=noise(t,d+.04),bp=ctx.createBiquadFilter(),hp=ctx.createBiquadFilter(),am=ctx.createGain(),lf=ctx.createOscillator(),dp=ctx.createGain(),g=ctx.createGain();
   bp.type='bandpass';bp.frequency.value=3600;bp.Q.value=1.6;hp.type='highpass';hp.frequency.value=1800;
   lf.type='sawtooth';lf.frequency.setValueAtTime(long?62:120,t);lf.frequency.linearRampToValueAtTime(long?105:140,t+d);am.gain.value=.5;dp.gain.value=.5;lf.connect(dp);dp.connect(am.gain);
   const lv=(long?.62:.46)*Math.min(v,1.2);g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(lv,t+(long?.03:.006));g.gain.setValueAtTime(lv*(long?.9:.8),t+d*.8);g.gain.exponentialRampToValueAtTime(.0005,t+d+.02);
   n.connect(bp);bp.connect(hp);hp.connect(am);am.connect(g);g.connect(o);lf.start(t);lf.stop(t+d+.05)}
 // campana (cencerro de mão): dois quadrados inarmônicos num passa-banda, ataque seco. X = boca do sino, x normal, o abafada
 function campana(t,o,v){
-  v=v||1;const acc=v>=1.1,d=v<.8?.08:acc?.3:.2,f=ctx.createBiquadFilter(),hp=ctx.createBiquadFilter(),g=ctx.createGain();
+  v=v||1;const acc=v>1.01,d=v<.75?.08:acc?.3:.2,f=ctx.createBiquadFilter(),hp=ctx.createBiquadFilter(),g=ctx.createGain();
   f.type='bandpass';f.frequency.value=1650;f.Q.value=1.3;hp.type='highpass';hp.frequency.value=520;
   [612,904].forEach(fr=>{const x=ctx.createOscillator();x.type='square';x.frequency.value=fr;x.connect(f);x.start(t);x.stop(t+d+.03)});
   const lv=.3*Math.min(v,1.2);g.gain.setValueAtTime(lv,t);g.gain.exponentialRampToValueAtTime(lv*.35,t+.03);g.gain.exponentialRampToValueAtTime(.0005,t+d);
@@ -2741,10 +2742,10 @@ function campana(t,o,v){
 // timbales: X = macho com aro (agudo, aberto), x = hembra (mais grave), o = paila (baqueta no casco)
 function timbal(t,o,v){
   v=v||1;
-  if(v<.8){const x=ctx.createOscillator(),xg=ctx.createGain();x.type='triangle';x.frequency.setValueAtTime(2300,t);x.frequency.exponentialRampToValueAtTime(1700,t+.02);
+  if(v<.75){const x=ctx.createOscillator(),xg=ctx.createGain();x.type='triangle';x.frequency.setValueAtTime(2300,t);x.frequency.exponentialRampToValueAtTime(1700,t+.02);
     xg.gain.setValueAtTime(.4,t);xg.gain.exponentialRampToValueAtTime(.001,t+.03);x.connect(xg);xg.connect(o);x.start(t);x.stop(t+.04);
     const n=noise(t,.03),nb=ctx.createBiquadFilter(),ng=ctx.createGain();nb.type='bandpass';nb.frequency.value=3400;nb.Q.value=2;ng.gain.setValueAtTime(.6,t);ng.gain.exponentialRampToValueAtTime(.001,t+.022);n.connect(nb);nb.connect(ng);ng.connect(o);return}
-  const hi=v>=1.1,f0=hi?560:410,d=hi?.42:.34,lv=.44;
+  const hi=v>1.01,f0=hi?560:410,d=hi?.42:.34,lv=.44;
   [[1,1],[1.48,.45],[2.12,.22]].forEach(([r,a])=>{const x=ctx.createOscillator(),g=ctx.createGain();x.type='sine';x.frequency.setValueAtTime(f0*r*1.12,t);x.frequency.exponentialRampToValueAtTime(f0*r,t+.025);
     g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(lv*a,t+.002);g.gain.exponentialRampToValueAtTime(.0005,t+d*(1-.25*(r-1)));x.connect(g);g.connect(o);x.start(t);x.stop(t+d+.05)});
   const n=noise(t,.08),nb=ctx.createBiquadFilter(),ng=ctx.createGain();nb.type='bandpass';nb.frequency.value=hi?4200:3000;nb.Q.value=.9;ng.gain.setValueAtTime(hi?.5:.32,t);ng.gain.exponentialRampToValueAtTime(.001,t+(hi?.06:.04));n.connect(nb);nb.connect(ng);ng.connect(o);
@@ -2752,20 +2753,24 @@ function timbal(t,o,v){
 // baixo elétrico de dedo: serra + seno, filtro que fecha rápido, um pouco de saturação e o toque do dedo
 function bassElec(t,m,dur,o,v,B){
   const d=Math.max(dur,.08),fq=m2f(m),c=B.cut||900,a=ctx.createOscillator(),s=ctx.createOscillator(),sg=ctx.createGain(),f=ctx.createBiquadFilter(),ws=ctx.createWaveShaper(),g=ctx.createGain();
-  a.type='sawtooth';a.frequency.value=fq;s.type='sine';s.frequency.value=fq;sg.gain.value=1.1;
+  a.type='sawtooth';a.frequency.value=fq;s.type='sine';s.frequency.value=fq;sg.gain.value=B.sub==null?1.1:B.sub;
   f.type='lowpass';f.Q.value=1.2;f.frequency.setValueAtTime(c*2.2,t);f.frequency.exponentialRampToValueAtTime(c,t+.05);f.frequency.exponentialRampToValueAtTime(320,t+.05+d);ws.curve=softCurve(1.5);
   const lv=.4*v;g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(lv,t+.005);g.gain.setTargetAtTime(lv*.6,t+.02,.12);g.gain.setTargetAtTime(.0001,t+d,.045);
   a.connect(f);s.connect(sg);sg.connect(f);f.connect(ws);ws.connect(g);g.connect(o);
   const n=noise(t,.012),nb=ctx.createBiquadFilter(),ng=ctx.createGain();nb.type='bandpass';nb.frequency.value=1500;nb.Q.value=1;ng.gain.setValueAtTime(.05*v,t);ng.gain.exponentialRampToValueAtTime(.001,t+.01);n.connect(nb);nb.connect(ng);ng.connect(o);
   [a,s].forEach(x=>{x.start(t);x.stop(t+d+.35)})}
 // teclado solo da cumbia: quadrada + serra brilhantes (e uma oitava acima bem baixa), vibrato que entra devagar
-// e o "bend" da rodinha: nota marcada começa um tom abaixo e sobe
+// e a mão na rodinha: 1 = bend (começa um tom abaixo e sobe), 2 = mordente (vizinha de cima e volta), 3 = caída no fim da nota
 function leadCumbia(t,m,dur,o,v,bend){
+  const AM=[9,11,0,2,4,5,7],nb=AM.includes((m+1)%12)?1:2,ur=Math.pow(2,nb/12);
   const fq=m2f(m),d=Math.max(dur,.07),lp=ctx.createBiquadFilter(),pk=ctx.createBiquadFilter(),ws=ctx.createWaveShaper(),g=ctx.createGain(),l=ctx.createOscillator(),lg=ctx.createGain();
   lp.type='lowpass';lp.frequency.value=5200;lp.Q.value=2;pk.type='peaking';pk.frequency.value=2400;pk.Q.value=1;pk.gain.value=4;ws.curve=softCurve(1.4);
   l.frequency.value=6.3;lg.gain.setValueAtTime(0,t);if(d>.22){lg.gain.linearRampToValueAtTime(0,t+.13);lg.gain.linearRampToValueAtTime(32,t+Math.min(d,.5)+.13)}l.connect(lg);
   const xs=[['square',1,0,1],['sawtooth',1,7,.8],['square',2,-4,.22]].map(([w,k,dt,a])=>{const x=ctx.createOscillator(),xg=ctx.createGain();x.type=w;x.detune.value=dt;
-    if(bend){x.frequency.setValueAtTime(fq*k*.8909,t);x.frequency.setTargetAtTime(fq*k,t+.015,.035)}else{x.frequency.setValueAtTime(fq*k*.985,t);x.frequency.exponentialRampToValueAtTime(fq*k,t+.018)}
+    const f1=fq*k;if(bend===1){x.frequency.setValueAtTime(f1*.8909,t);x.frequency.setTargetAtTime(f1,t+.015,.035)}
+    else if(bend===2){x.frequency.setValueAtTime(f1,t);x.frequency.setValueAtTime(f1*ur,t+.05);x.frequency.setValueAtTime(f1,t+.1)}
+    else{x.frequency.setValueAtTime(f1*.985,t);x.frequency.exponentialRampToValueAtTime(f1,t+.018)}
+    if(bend===3&&d>.2){x.frequency.setValueAtTime(f1,t+d-.12);x.frequency.exponentialRampToValueAtTime(f1*.75,t+d+.06)}
     lg.connect(x.detune);xg.gain.value=a;x.connect(xg);xg.connect(lp);return x});
   const lv=.3*v;g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(lv,t+.003);g.gain.setTargetAtTime(lv*.82,t+.01,.1);g.gain.setTargetAtTime(.0001,t+d,.05);
   lp.connect(pk);pk.connect(ws);ws.connect(g);g.connect(o);xs.concat([l]).forEach(x=>{x.start(t);x.stop(t+d+.4)})}
@@ -2781,7 +2786,7 @@ function chordAco(t,notes,dur,o){const b=acoBus(o),lv=.045/Math.sqrt(notes.lengt
 function leadFlauta(t,m,dur,o,v,bend){
   const fq=m2f(m),d=Math.max(dur,.1),x=ctx.createOscillator(),y=ctx.createOscillator(),yg=ctx.createGain(),l=ctx.createOscillator(),lg=ctx.createGain(),g=ctx.createGain();
   x.type='sine';y.type='triangle';yg.gain.value=.18;
-  [[x,1],[y,2]].forEach(([z,k])=>{if(bend){z.frequency.setValueAtTime(fq*k*.8909,t);z.frequency.setTargetAtTime(fq*k,t+.02,.05)}else z.frequency.value=fq*k});
+  [[x,1],[y,2]].forEach(([z,k])=>{if(bend===1){z.frequency.setValueAtTime(fq*k*.8909,t);z.frequency.setTargetAtTime(fq*k,t+.02,.05)}else z.frequency.value=fq*k});
   l.frequency.value=5.4;lg.gain.setValueAtTime(0,t);lg.gain.linearRampToValueAtTime(0,t+.12);lg.gain.linearRampToValueAtTime(28,t+Math.min(d,.5)+.12);l.connect(lg);lg.connect(x.detune);lg.connect(y.detune);
   g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.17*v,t+.04);g.gain.setTargetAtTime(.0001,t+d,.07);
   x.connect(g);y.connect(yg);yg.connect(g);g.connect(o);
@@ -3265,9 +3270,11 @@ function playCol0(c,s,t,P){
   if(!pat)return;
   const d=pat.data,L=pat.len||16,pos=P?P.pos%L:pmN(bar-barOff,L/16)*16+s,sd=60/bpm/4,o=c.gain,syn=pat.syn;
   if(c.kind==='loop'){if(d==='loop'&&pos===0)loopStep(c,t);return}
+  const HU=((c.src?STYLES[c.src]:STYLES[style])||{}).human;let vm=1;
+  if(HU){const k=c.type==='kick'||c.type==='bass'||c.type==='sub'?.35:c.type==='lead'?.7:1;t+=Math.random()*HU.t*k;vm=1-Math.random()*HU.v*k}
   if(c.kind==='drum'){
-    if(c.type==='tom'){d.forEach(n=>{if(Array.isArray(n)&&n[0]===pos)tom(t,n[1],o,n[2]||1)});return}
-    const v=hitAt(d,pos);if(!v)return;
+    if(c.type==='tom'){d.forEach(n=>{if(Array.isArray(n)&&n[0]===pos)tom(t,n[1],o,(n[2]||1)*vm)});return}
+    const v=hitAt(d,pos)*vm;if(!v)return;
     switch(c.type){
       case 'kick':kick(t,o,v);if(P){pvDuck(t,v)}else if(audible(c)&&c.vol>.05){PQ.push({t,v:Math.min(1,v)});duckAt(t,v)}break;
       case 'clap':clapOnly(t,o,v);break;
@@ -3285,7 +3292,7 @@ function playCol0(c,s,t,P){
     if(n[0]!==pos)return;
     if(c.type==='chord'){chord(t,n[1],n[2]*sd,o,n[3]===true?'pad':syn);return}
     if(c.type==='pad'){padSynth(t,n[1],n[2]*sd,o,syn);return}
-    const v=typeof n[3]==='number'&&n[3]>0?n[3]:1;
+    const v=(typeof n[3]==='number'&&n[3]>0?n[3]:1)*vm;
     if(c.type==='bass'){bass(t,n[1],n[2]*sd,o,v,n[4],c,syn);c.lastM=n[1]}
     else if(c.type==='sub')subBass(t,n[1],n[2]*sd,o,v);
     else if(c.type==='arp')arpSynth(t,n[1],n[2]*sd,o,v,syn,n[4]);
@@ -3730,12 +3737,13 @@ function applyCols(){
   s.classList.toggle('compact',HW<132);
 }
 const MINI={fx:1,lead:1,tom:1};
+function isMini(t){return !!MINI[t]&&!(((STYLES[style]||{}).big)||[]).includes(t)}
 function layoutRows(){
   const g=$('#grid');if(!g||!g._spec)return;
   const mn=CFG.size==='l'?46:CFG.size==='s'?24:30,auto=screen!=='main'?'minmax('+(mn+14)+'px,'+(mn*3)+'px)':'minmax('+mn+'px,1fr)';
   const sm=Math.round(mn*.8),mini=screen!=='main'?'minmax('+(sm+8)+'px,'+(mn*2)+'px)':'minmax('+sm+'px,.55fr)';
-  const rh=LAY.rh,fix=rh?(t=>(MINI[t]?Math.round(rh*.78):rh)+'px'):null;
-  g.style.gridTemplateRows=g._spec.map(x=>typeof x==='string'?x:(x.h?x.h+'px':fix?fix(x.type):MINI[x.type]?mini:auto)).join(' ');
+  const rh=LAY.rh,fix=rh?(t=>(isMini(t)?Math.round(rh*.78):rh)+'px'):null;
+  g.style.gridTemplateRows=g._spec.map(x=>typeof x==='string'?x:(x.h?x.h+'px':fix?fix(x.type):isMini(x.type)?mini:auto)).join(' ');
 }
 function rowResizer(el,c,row){
   let sh=0,last=0;
@@ -3758,7 +3766,7 @@ function colResizer(el,which){
   });
 }
 function buildLane(c,ci){
-  const row=document.createElement('div');row.className='lane'+(c.kind!=='drum'?' syn':'')+(c.muted?' muted':'')+(MINI[c.type]?' lmini':'');row.style.setProperty('--c',c.color);row.style.setProperty('--i',ci);
+  const row=document.createElement('div');row.className='lane'+(c.kind!=='drum'?' syn':'')+(c.muted?' muted':'')+(isMini(c.type)?' lmini':'');row.style.setProperty('--c',c.color);row.style.setProperty('--i',ci);
   const lh=document.createElement('div');lh.className='lh';
   lh.innerHTML='<span class="tab"></span><span class="ix">'+String(ci+1).padStart(2,'0')+'</span><div class="nmw"><b></b><span class="fxt"></span></div>'+(screen!=='main'?'<button class="rm" aria-label="Remover">'+ICON.x+'</button>':'')+'<span class="ms"><button class="mute'+(c.muted?' on':'')+'" aria-label="Mutar">M</button><button class="solo'+(c.solo?' on':'')+'" aria-label="Solo">S</button></span><div class="kv"></div>';
   lh.querySelector('b').textContent=LN(c);c.fxEl=lh.querySelector('.fxt');
