@@ -1158,8 +1158,14 @@ body.dev-phone .rlmt{display:none}
 #szPop input[type=range]{width:100%;accent-color:var(--yel)}
 #szPop .hw{height:34px;background:#111;border:1px solid #333;color:#ddd;font:800 10.5px "Archivo",sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
 #sizeBtn.open{border-color:#f2f2f2}
-#session.cwset .lane,#session.cwset .rl{grid-template-columns:var(--hw,150px) repeat(8,minmax(0,var(--cw))) var(--sw,176px)}
-@media (max-width:1100px){#session.cwset .lane,#session.cwset .rl{grid-template-columns:var(--hw,112px) repeat(8,minmax(0,var(--cw)))}}
+#session.cwset .lane,#session.cwset .rl{grid-template-columns:var(--hw,150px) repeat(8,var(--cw)) var(--sw,176px)}
+@media (max-width:1100px){#session.cwset .lane,#session.cwset .rl{grid-template-columns:var(--hw,112px) repeat(8,var(--cw))}}
+/* loops largos: a sessão rola para o lado (régua e linhas juntas) */
+#session.cwset #grid{overflow:auto;grid-template-columns:14px max-content}
+#session.cwset>.ruler{overflow:hidden;grid-template-columns:14px max-content}
+#session.cwset .lane>.lh{position:sticky;left:20px;z-index:4}
+#session.cwset .rl>.c0{position:sticky;left:20px;z-index:4;background:#000}
+#session.cwset .gl{position:sticky;left:0;z-index:5;background:#000}
 .urgrp{display:flex;gap:4px;margin-left:auto;flex:none}
 .tabs .hw.ur{width:34px;min-height:32px;padding:0;display:flex;align-items:center;justify-content:center}
 .tabs .hw.ur svg{width:16px;height:16px}
@@ -1796,8 +1802,8 @@ body.th-afro .nrow.root .ncell{background:#1c0a03!important}body.th-afro .nrow.r
 </div>
 <div id="szPop" aria-hidden="true">
   <b>Tamanho dos loops</b>
-  <label><span>Altura <em id="szHv">Auto</em></span><input type="range" id="szH" min="24" max="110" step="1"></label>
-  <label><span>Largura <em id="szWv">Auto</em></span><input type="range" id="szW" min="48" max="260" step="1"></label>
+  <label><span>Altura <em id="szHv">Auto</em></span><input type="range" id="szH" min="24" max="180" step="1"></label>
+  <label><span>Largura <em id="szWv">Auto</em></span><input type="range" id="szW" min="48" max="420" step="2"></label>
   <button class="hw" id="szAuto">Automático</button>
 </div>
 <!-- piano roll em página cheia -->
@@ -1911,7 +1917,7 @@ let ctx,out,mix,filt,dly,fb,wet,noiseBuf,fin,anL,anR,anS,CMP=null;
 const CFG_DEF={launch:'bar',swing:true,wake:true,pvol:1,sting:true,autoKey:true,rec:'m4a',limit:true,anim:true,size:'n',eco:false,noflash:false,noshake:false,mono:false,keys:true};
 const CFG=Object.assign({},CFG_DEF,(()=>{try{const j=JSON.parse(localStorage.getItem('gstudio_cfg'));return j&&typeof j==='object'?j:{}}catch(e){return{}}})());
 function saveCfg(){try{localStorage.setItem('gstudio_cfg',JSON.stringify(CFG))}catch(e){}}
-const APPV='1.7.7.5';
+const APPV='1.7.7.6';
 const DEV=(()=>{const ua=navigator.userAgent||'',pf=navigator.platform||'',tp=navigator.maxTouchPoints||0;
   const ipad=/iPad/.test(ua)||((pf==='MacIntel'||/Macintosh/.test(ua))&&tp>1),iphone=/iPhone|iPod/.test(ua),android=/Android/.test(ua);
   const os=ipad?'ipados':iphone?'ios':android?'android':(/Mac/.test(pf)||/Macintosh/.test(ua))?'mac':(/Win/.test(pf)||/Windows/.test(ua))?'windows':/CrOS/.test(ua)?'chromeos':/Linux/.test(ua)?'linux':'other';
@@ -3580,6 +3586,7 @@ const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 function applyCols(){
   const s=$('#session');s.style.setProperty('--hw',HW+'px');s.style.setProperty('--sw',SW+'px');
   s.classList.toggle('cwset',!!LAY.cw);if(LAY.cw)s.style.setProperty('--cw',LAY.cw+'px');else s.style.removeProperty('--cw');
+  const g=$('#grid'),ru=s.querySelector('.ruler');if(g&&ru){if(!g._rsync){g._rsync=1;g.addEventListener('scroll',()=>{const r=s.querySelector('.ruler');if(r)r.scrollLeft=g.scrollLeft},{passive:true})}ru.scrollLeft=LAY.cw?g.scrollLeft:0;if(!LAY.cw)g.scrollLeft=0}
   s.classList.toggle('compact',HW<132);
 }
 const MINI={fx:1,lead:1,tom:1};
