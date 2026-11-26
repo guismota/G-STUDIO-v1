@@ -1612,19 +1612,18 @@ body.th-vice .nrow.root .ncell{background:#1f0416!important}body.th-vice .nrow.r
 #wipe.vice .wnm em{-webkit-text-fill-color:transparent}
 #wipe.vice .wp{background-image:repeating-linear-gradient(-45deg,rgba(0,0,0,.07) 0 2px,transparent 2px 10px),linear-gradient(160deg,#FFB347 0%,#FF7A45 25%,#FF5E8A 50%,#B43BFF 78%,#3A2A8F)}
 #wipe.vice .wnm em{background:linear-gradient(90deg,#fff3c4,#ffd0f0);-webkit-background-clip:text;background-clip:text}
-/* ===== Cumbia$$$: celeste e branco com o sol dourado ===== */
-body.th-art.th-cumbia{--yel:#74ACDF;--grad:linear-gradient(#74ACDF,#74ACDF);--acid:#74ACDF;--amb:#F6B40E;--grn:#74ACDF;--warm:#F6B40E}
-body.th-cumbia .bk .val{filter:drop-shadow(0 0 5px rgba(116,172,223,.7))!important}
-body.th-cumbia .pw.on>.led{box-shadow:0 0 8px rgba(116,172,223,.8)!important}
-body.th-cumbia .xline{box-shadow:0 0 12px 2px rgba(116,172,223,.8)}
-body.th-cumbia .xglow{background:radial-gradient(closest-side,rgba(246,180,14,.55),rgba(116,172,223,.15) 55%,transparent)!important}
-body.th-cumbia .xseg span.on{text-shadow:0 0 10px rgba(116,172,223,.8)}
-body.th-cumbia .xpad.touch{border-color:rgba(116,172,223,.7)}
-body.th-cumbia #laser{background:linear-gradient(90deg,#74ACDF,#F6B40E)!important}
-body.th-cumbia .nrow.root .ncell{background:#06121f!important}body.th-cumbia .nrow.root .ncell.beat{background:#0a1c30!important}
-.hero.t-cumbia .hname em,.htile.t-cumbia .tn.art em{color:#F6B40E}
-#wipe.cumbia .wp{background-image:linear-gradient(#74ACDF 0 33.3%,#F4F2EA 33.3% 66.6%,#74ACDF 66.6%)}
-#wipe.cumbia .wnm em{color:#D99A00;opacity:1}
+/* ===== Cumbia: teclado, vermelho-laranja com teclas brancas ===== */
+body.th-art.th-cumbia{--yel:#FF4B1F;--grad:linear-gradient(#FF4B1F,#FF4B1F);--acid:#FF4B1F;--amb:#F4F2EA;--grn:#FF4B1F;--warm:#FF7A4F}
+body.th-cumbia .bk .val{filter:drop-shadow(0 0 5px rgba(255,75,31,.65))!important}
+body.th-cumbia .pw.on>.led{box-shadow:0 0 8px rgba(255,75,31,.8)!important}
+body.th-cumbia .xline{box-shadow:0 0 12px 2px rgba(255,75,31,.8)}
+body.th-cumbia .xglow{background:radial-gradient(closest-side,rgba(255,75,31,.55),rgba(255,75,31,.12) 55%,transparent)!important}
+body.th-cumbia .xseg span.on{text-shadow:0 0 10px rgba(255,75,31,.8)}
+body.th-cumbia .xpad.touch{border-color:rgba(255,75,31,.7)}
+body.th-cumbia #laser{background:linear-gradient(90deg,#FF7A4F,#FF4B1F)!important}
+body.th-cumbia .nrow.root .ncell{background:#1d0904!important}body.th-cumbia .nrow.root .ncell.beat{background:#2a0d06!important}
+#wipe.cumbia .wp{background-image:linear-gradient(#FF4B1F 0 74%,transparent 74%),repeating-linear-gradient(90deg,#F4F2EA 0 44px,#111 44px 48px)}
+#wipe.cumbia .wnm em{color:#111;opacity:1}
 body.th-art.th-afro{--yel:#FF6B2C;--grad:linear-gradient(#FF6B2C,#FF6B2C);--acid:#FF6B2C;--amb:#FF6B2C;--grn:#FF6B2C;--warm:#FF6B2C}
 body.th-afro .bk .val{filter:drop-shadow(0 0 5px rgba(255,107,44,.7))!important}
 body.th-afro .pw.on>.led{box-shadow:0 0 8px rgba(255,107,44,.8)!important}
@@ -1931,7 +1930,7 @@ let ctx,out,mix,filt,dly,fb,wet,noiseBuf,fin,anL,anR,anS,CMP=null;
 const CFG_DEF={launch:'bar',swing:true,wake:true,pvol:1,sting:true,autoKey:true,rec:'m4a',limit:true,anim:true,size:'n',eco:false,noflash:false,noshake:false,mono:false,keys:true};
 const CFG=Object.assign({},CFG_DEF,(()=>{try{const j=JSON.parse(localStorage.getItem('gstudio_cfg'));return j&&typeof j==='object'?j:{}}catch(e){return{}}})());
 function saveCfg(){try{localStorage.setItem('gstudio_cfg',JSON.stringify(CFG))}catch(e){}}
-const APPV='1.7.7.8';
+const APPV='1.7.7.9';
 const DEV=(()=>{const ua=navigator.userAgent||'',pf=navigator.platform||'',tp=navigator.maxTouchPoints||0;
   const ipad=/iPad/.test(ua)||((pf==='MacIntel'||/Macintosh/.test(ua))&&tp>1),iphone=/iPhone|iPod/.test(ua),android=/Android/.test(ua);
   const os=ipad?'ipados':iphone?'ios':android?'android':(/Mac/.test(pf)||/Macintosh/.test(ua))?'mac':(/Win/.test(pf)||/Windows/.test(ua))?'windows':/CrOS/.test(ua)?'chromeos':/Linux/.test(ua)?'linux':'other';
@@ -2400,9 +2399,9 @@ const STYLES={
     B('Hook',32,[[0,'D5',1],[2,'F5',1],[4,'G5',2],[7,'F5',1],[10,'D5',1],[12,'Bb4',2],[16,'D5',1],[18,'F5',1],[20,'G5',2],[24,'A5',1],[26,'G5',1],[28,'F5',2]],{syn:'pluck'})],
    fx:[FXP('Sirene','S...............................'),FXP('Riser','R...............................'),FXP('Impact','I...............................'),FXP('Reverse','V...............')]
   }},
- // gênero especial Cumbia$$$: duelo de teclados da cumbia villera (Argentina). Güiro e campana conduzem, timbales e congas,
+ // gênero especial Cumbia: duelo de teclados da cumbia villera (Argentina). Güiro e campana conduzem, timbales e congas,
  // baixo elétrico em tumbao, órgão no contratempo e o teclado solo com vibrato e "bend" de rodinha
- cumbia:{name:'Cumbia$$$',bpm:100,swing:.06,key:{root:9,mode:'minor'},artist:true,theme:'cumbia',names:{snare:'Caixa',hat:'Güiro',ohat:'Sino',tom:'Congas',perc:'Paila',bass:'Baixo',chord:'Keys',arp:'Viola',lead:'Solo'},
+ cumbia:{name:'Cumbia',bpm:100,swing:.06,key:{root:9,mode:'minor'},artist:true,theme:'cumbia',names:{snare:'Caixa',hat:'Güiro',ohat:'Sino',tom:'Congas',perc:'Paila',bass:'Baixo',chord:'Keys',arp:'Viola',lead:'Solo'},
   scenes:[{kick:0,hat:0,ohat:0,bass:0,chord:0},{kick:0,clap:0,snare:0,hat:0,ohat:0,tom:0,perc:1,bass:0,chord:0,lead:0},{hat:3,ohat:2,tom:2,pad:0,arp:2,sub:0},
           {kick:1,clap:1,snare:1,hat:1,ohat:1,tom:1,perc:0,bass:1,chord:3,arp:0,lead:2,fx:0}],
   snd:{sub:{type:'sine',cut:180},pad:{type:'strings'},arp:{type:'guitarra'},sc:.15,
@@ -5098,7 +5097,7 @@ function drawSpec(){
   const dpr=window.devicePixelRatio||1,w=spec.clientWidth,h=spec.clientHeight;
   if(!w||!h)return;
   const W=Math.round(w*dpr),H=Math.round(h*dpr);
-  if(spec.width!==W||spec.height!==H||!VZ.sg){spec.width=W;spec.height=H;VZ.sg=sctx.createLinearGradient(0,H,0,0);const ac=document.body.classList.contains('th-cumbia')?'#74ACDF':document.body.classList.contains('th-vice')?'#FF45C8':document.body.classList.contains('th-afro')?'#FF6B2C':document.body.classList.contains('th-art')?'#B026FF':'#FFE600';VZ.sg.addColorStop(0,ac);VZ.sg.addColorStop(1,ac)}
+  if(spec.width!==W||spec.height!==H||!VZ.sg){spec.width=W;spec.height=H;VZ.sg=sctx.createLinearGradient(0,H,0,0);const ac=document.body.classList.contains('th-cumbia')?'#FF4B1F':document.body.classList.contains('th-vice')?'#FF45C8':document.body.classList.contains('th-afro')?'#FF6B2C':document.body.classList.contains('th-art')?'#B026FF':'#FFE600';VZ.sg.addColorStop(0,ac);VZ.sg.addColorStop(1,ac)}
   const n=Math.max(16,Math.min(96,Math.floor(w/9)));
   if(!VZ.bars||VZ.bars.length!==n){VZ.bars=new Float32Array(n);VZ.caps=new Float32Array(n)}
   sctx.clearRect(0,0,W,H);
@@ -5129,7 +5128,7 @@ const GENRES=[
  {k:'solomun',artist:true,desc:'Baixo rolando, riff metálico e Ibiza às 6h'},
  {k:'afro',artist:true,theme:'afro',html:'<span>Afro</span><em>house</em>',desc:'Tambores, coro e pôr do sol'},
  {k:'vice',artist:true,theme:'vice',html:'<span>Ocean</span><em>Drive</em>',trend:true,desc:'Crie a soundtrack para roubar um banco ou dar um rolê de conversível pela orla.'},
- {k:'cumbia',artist:true,theme:'cumbia',html:'<span>Cumbia</span><em>$$$</em>',desc:'Duelo de teclados, güiro raspando e o baile inteiro pulando até o sol nascer.'}];
+ {k:'cumbia',artist:true,theme:'cumbia',html:'<em>Cumbia</em>',desc:'Duelo de teclados, güiro raspando e o baile inteiro pulando até o sol nascer.'}];
 const CHN=i=>'CH'+String(i+1).padStart(2,'0');
 // I de traço único com a mesma largura das outras letras da fonte mono: espaçamento igual em VICECITY, AFTERPARTY etc.
 function monoFix(){try{const c=document.createElement('canvas').getContext('2d'),F=100,LS=-.075;
@@ -5163,7 +5162,7 @@ function genreWave(k){const W=1200,H=100,m=50,pts=[];
  const sv='<svg class="osc" viewBox="0 0 '+W+' 100" preserveAspectRatio="none"><path d="'+pts.join('')+'"/></svg>';return sv+sv}
 // ---------- Tela inicial: destaque do último canal + fileiras que deslizam ----------
 const HPAL={vice:['#FF4FA0','#FF45C8'],house:['#FFE600','#FFA63D'],deep:['#3DFFC8','#3D7BFF'],acid:['#C8FF3D','#FFE600'],techno:['#6C8BFF','#C9D3FF'],acidtechno:['#5CFF8A','#FF3B3B'],
-  funk:['#FF3DAE','#FFE600'],dnb:['#22E1FF','#EDEDED'],solomun:['#B026FF','#E2B8FF'],afro:['#FF6B2C','#FFC23D'],cumbia:['#74ACDF','#F6B40E']};
+  funk:['#FF3DAE','#FFE600'],dnb:['#22E1FF','#EDEDED'],solomun:['#B026FF','#E2B8FF'],afro:['#FF6B2C','#FFC23D'],cumbia:['#FF4B1F','#F4F2EA']};
 const hHash=s=>{let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0};
 const hRnd=n=>{const x=Math.sin(n*127.1+311.7)*43758.5453;return x-Math.floor(x)};
 function ugPal(g){const h=hHash(g.id||g.name||'x');return ['#2F5BEA','hsl('+(185+h%80)+',95%,62%)']}
@@ -5184,7 +5183,7 @@ const COVER={
  solomun:{lay:'sun',bg:'#16062a',blk:'#B026FF',ink:'#E9C8FF',lab:'#E2B8FF',w:'6AM',pro:true},
  afro:{lay:'band',bg:'#FF6B2C',blk:'#1a0c04',ink:'#FFF1DC',lab:'#FFC23D',w:'AFRO',low:true,pro:true},
  vice:{lay:'vi',bg:'#2a0a3a',blk:'#FF8A3D',ink:'#FF45C8',lab:'#FFB3E6',w:'VI',pro:true},
- cumbia:{lay:'sol',bg:'#74ACDF',blk:'#F4F2EA',ink:'#0B2A55',lab:'#0B2A55',sun:'#F6B40E',w:'CUMBIA',pro:true,vl:'#F6B40E',vt:'#0B2A55'}
+ cumbia:{lay:'teclas',bg:'#FF4B1F',blk:'#F4F2EA',ink:'#111111',lab:'#111111',w:'CUMBIA',pro:true}
 };
 const COVF='"Big Shoulders Display","Archivo",sans-serif';
 let COVG=null;function coverGrain(){if(COVG)return COVG;const c=document.createElement('canvas');c.width=c.height=180;const g=c.getContext('2d'),d=g.createImageData(180,180);for(let i=0;i<d.data.length;i+=4){const v=Math.random()<.5?0:255;d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=Math.random()*200|0}g.putImageData(d,0,0);return COVG=c}
@@ -5247,16 +5246,15 @@ function drawCoverCtx(x,w,h,sp,t,mode){
     x.save();x.translate(w*.54,h*.6);x.rotate(-.28);const f=h*1.36;x.font='900 '+f+'px '+COVF;x.fillStyle=C.ink;x.textAlign='center';shOn();x.fillText(C.w,0,f*.36);shOff();x.restore();
     x.fillStyle=C.blk;x.fillRect(0,h-Math.round(h*.09),w*.55,Math.round(h*.09));
     lab(cat,pad,pad+lh*.9,C.lab);
-  }else if(C.lay==='sol'){ // cartaz de baile: faixas celeste e branca, sol dourado com o cifrão e o nome em bloco
-    const y1=h*.34,y2=h*.66;x.fillStyle=C.blk;x.fillRect(0,y1,w,y2-y1);
-    const cx=w*.5,cy=h*.5,r0=h*.115,r1=h*.255;x.fillStyle=C.sun;x.beginPath();
-    for(let i=0;i<32;i++){const a=i/32*Math.PI*2-Math.PI/2,rr=i%2?r0*1.18:(i%4?r1*.8:r1);i?x.lineTo(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr):x.moveTo(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr)}
-    x.closePath();shOn();x.fill();shOff();x.beginPath();x.arc(cx,cy,r0,0,Math.PI*2);x.fill();
-    x.strokeStyle=C.ink;x.globalAlpha=.35;x.lineWidth=Math.max(1,h*.008);x.beginPath();x.arc(cx,cy,r0*.86,0,Math.PI*2);x.stroke();x.globalAlpha=1;
-    const fs=r0*1.7;x.font='900 '+fs+'px '+COVF;x.fillStyle=C.ink;x.textAlign='center';x.fillText('$',cx,cy+fs*.35);
-    let f=coverFit(x,C.w,w-pad*1.1,h*.42);f=Math.min(f,(y1-h*.09)/.74);x.font='900 '+f+'px '+COVF;x.fillStyle=C.ink;x.textAlign='center';shOn();x.fillText(C.w,w/2,y1-h*.04);shOff();
-    x.fillStyle=C.ink;x.fillRect(0,y2,w,Math.max(1,Math.round(h*.012)));x.fillRect(0,y1-Math.max(1,Math.round(h*.012)),w,Math.max(1,Math.round(h*.012)));
-    lab(cat,w-pad,h-pad,C.lab,'right');
+  }else if(C.lay==='teclas'){ // teclado: teclas na diagonal cruzando a capa e o nome em bloco
+    const f=coverFit(x,C.w,w*1.04,h*.5);
+    x.save();x.translate(w*.5,h*.5);x.rotate(-.2);const kw=Math.max(8,h*.1),kh=h*.9,n=Math.ceil(w*1.7/kw)+4,gap=Math.max(1,kw*.07);
+    x.fillStyle='#111';x.fillRect(-n*kw,0,2*n*kw,kh);
+    for(let i=-n;i<n;i++){x.fillStyle=C.blk;x.fillRect(i*kw+gap/2,0,kw-gap,kh)}
+    for(let i=-n;i<n;i++){if([0,1,3,4,5].includes(((i%7)+7)%7)){x.fillStyle=C.ink;x.fillRect(i*kw+kw*.66,0,kw*.6,kh*.36)}}
+    x.restore();
+    x.font='900 '+f+'px '+COVF;x.fillStyle=C.ink;x.textAlign='left';shOn();x.fillText(C.w,-f*.02,f*.74);shOff();
+    lab(cat,pad*.8,f*.74+lh*1.2,C.lab);
   }else{ // stack
     const f=coverFit(x,C.w2.length>C.w.length?C.w2:C.w,w*1.08,h*.46);x.font='900 '+f+'px '+COVF;x.fillStyle=C.ink;x.textAlign='left';
     shOn();x.fillText(C.w,pad*.6,h*.5);shOff();shOn();x.fillText(C.w2,pad*.6,h*.5+f*.86);shOff();
@@ -5544,7 +5542,7 @@ function tuneIn(b,k){
   if(tuning)return;tuning=true;stopPreview();initAudio();genreSting(k);
   b.classList.add('tune');
   const G=GENRES.find(g=>g.k===k),art=!!(G&&G.artist),afro=!!(G&&G.theme==='afro'),vice=!!(G&&G.theme==='vice'),cum=!!(G&&G.theme==='cumbia');
-  pageWipe({c:cum?'#74ACDF':vice?'#FF5E8A':afro?'#FF6B2C':art?'#B026FF':'#FFE600',ink:cum?'#0B2A55':art?'#fff':'#000',ch:CHN(GENRES.indexOf(G)),nm:art?(G.html?G.html.replace(/<\/?span>/g,''):'After<em>party</em>'):STYLES[k].name,art,cls:cum?'cumbia':vice?'vice':''},()=>{b.classList.remove('tune');tuning=false;enterGenre(k)});
+  pageWipe({c:cum?'#FF4B1F':vice?'#FF5E8A':afro?'#FF6B2C':art?'#B026FF':'#FFE600',ink:cum?'#111':art?'#fff':'#000',ch:CHN(GENRES.indexOf(G)),nm:art?(G.html?G.html.replace(/<\/?span>/g,''):'After<em>party</em>'):STYLES[k].name,art,cls:cum?'cumbia':vice?'vice':''},()=>{b.classList.remove('tune');tuning=false;enterGenre(k)});
 }
 // troca de página: uma faixa na cor do canal atravessa a tela
 function pageWipe(o,mid){
