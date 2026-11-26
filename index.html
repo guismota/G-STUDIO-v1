@@ -1140,6 +1140,7 @@ body.dev-phone .rlmt{display:none}
 .rxst{position:relative;flex:1;width:100%;min-height:0;background:#111;border:1px solid #232323;cursor:ns-resize;touch-action:none;overflow:hidden;background-image:linear-gradient(transparent calc(25% - 1px),#1f1f1f calc(25% - 1px),#1f1f1f 25%,transparent 25%,transparent calc(50% - 1px),#1f1f1f calc(50% - 1px),#1f1f1f 50%,transparent 50%,transparent calc(75% - 1px),#1f1f1f calc(75% - 1px),#1f1f1f 75%,transparent 75%)}
 .rxst .rxfill{position:absolute;left:0;right:0;bottom:0;height:var(--v,0%);background:color-mix(in srgb,var(--yel) 22%,transparent);border-top:2px solid var(--yel);opacity:0}
 .rxsl.on .rxfill{opacity:1}
+#rxD .rxst::after{content:"";position:absolute;left:0;right:0;top:50%;height:2px;margin-top:-1px;background:#3a3a3a;pointer-events:none}
 .rxsd{position:absolute;left:0;right:0;top:6px;text-align:center;font:800 9px "Archivo",sans-serif;letter-spacing:.08em;color:#777}
 .rxsn{flex:none;font:700 8.5px "Archivo",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#777}
 .rxmid{display:flex;flex-direction:column;gap:6px;min-height:0}
@@ -1795,8 +1796,8 @@ body.th-afro .nrow.root .ncell{background:#1c0a03!important}body.th-afro .nrow.r
       <button class="rxa" data-a="scr" aria-label="Scratch"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="2.4" fill="currentColor"/><path d="M15 4.5l4 7" stroke="currentColor" stroke-width="2"/></svg><span>Scratch</span></button>
       <button class="rxa" data-a="stop" aria-label="Tape stop"><svg viewBox="0 0 24 24"><rect x="6.5" y="6.5" width="11" height="11" fill="currentColor"/></svg><span>Tape stop</span></button>
     </div>
-    <div class="rxsl" id="rxD" data-k="crush"><div class="rxst"><i class="rxfill"></i><span class="rxsd"></span></div><span class="rxsn">Downsampler</span></div>
-    <div class="rxpad" id="rxE"><div class="rxph"><button class="rxlock" aria-label="Travar">LOCK</button><button class="rxn rxsel" id="rxSel">Wobble ▾</button></div><div class="rxs"><i class="rxv"></i><i class="rxhz"></i><i class="rxdot"></i><span class="rxay"></span><span class="rxax"></span></div></div>
+    <div class="rxsl" id="rxD" data-k="crush"><div class="rxst"><i class="rxfill"></i><span class="rxsd"></span></div><span class="rxsn">Pitch</span></div>
+    <div class="rxpad" id="rxE"><div class="rxph"><button class="rxlock" aria-label="Travar">LOCK</button><span class="rxn" id="rxSel">Dub Echo</span></div><div class="rxs"><i class="rxv"></i><i class="rxhz"></i><i class="rxdot"></i><span class="rxay"></span><span class="rxax"></span></div></div>
   </div>
   <div class="rxgr" aria-label="Redimensionar"></div>
 </div>
@@ -1917,7 +1918,7 @@ let ctx,out,mix,filt,dly,fb,wet,noiseBuf,fin,anL,anR,anS,CMP=null;
 const CFG_DEF={launch:'bar',swing:true,wake:true,pvol:1,sting:true,autoKey:true,rec:'m4a',limit:true,anim:true,size:'n',eco:false,noflash:false,noshake:false,mono:false,keys:true};
 const CFG=Object.assign({},CFG_DEF,(()=>{try{const j=JSON.parse(localStorage.getItem('gstudio_cfg'));return j&&typeof j==='object'?j:{}}catch(e){return{}}})());
 function saveCfg(){try{localStorage.setItem('gstudio_cfg',JSON.stringify(CFG))}catch(e){}}
-const APPV='1.7.7.6';
+const APPV='1.7.7.7';
 const DEV=(()=>{const ua=navigator.userAgent||'',pf=navigator.platform||'',tp=navigator.maxTouchPoints||0;
   const ipad=/iPad/.test(ua)||((pf==='MacIntel'||/Macintosh/.test(ua))&&tp>1),iphone=/iPhone|iPod/.test(ua),android=/Android/.test(ua);
   const os=ipad?'ipados':iphone?'ios':android?'android':(/Mac/.test(pf)||/Macintosh/.test(ua))?'mac':(/Win/.test(pf)||/Windows/.test(ua))?'windows':/CrOS/.test(ua)?'chromeos':/Linux/.test(ua)?'linux':'other';
@@ -4707,9 +4708,9 @@ function rxEnsure(){
   if(!ctx||RX.n)return;const N=RX.n={},t=ctx.currentTime;
   N.in=ctx.createGain();N.lp=ctx.createBiquadFilter();N.lp.type='lowpass';N.lp.frequency.value=20000;N.lp.Q.value=.7;
   N.hp=ctx.createBiquadFilter();N.hp.type='highpass';N.hp.frequency.value=20;N.hp.Q.value=.7;
-  N.gate=ctx.createGain();N.cDry=ctx.createGain();N.cWet=ctx.createGain();N.cWet.gain.value=0;N.crush=ctx.createWaveShaper();N.crush.curve=rxCurve(8);N.cLp=ctx.createBiquadFilter();N.cLp.type='lowpass';N.cLp.frequency.value=9000;
+  N.gate=ctx.createGain();N.cDry=ctx.createGain();N.cWet=ctx.createGain();N.cWet.gain.value=0;N.pit=rxPitchNode();
   N.eIn=ctx.createGain();N.eDry=ctx.createGain();N.eWet=ctx.createGain();N.eWet.gain.value=0;N.live=ctx.createGain();N.tape=ctx.createGain();N.out=ctx.createGain();
-  N.in.connect(N.lp);N.lp.connect(N.hp);N.hp.connect(N.gate);N.gate.connect(N.cDry);N.gate.connect(N.crush);N.crush.connect(N.cLp);N.cLp.connect(N.cWet);
+  N.in.connect(N.lp);N.lp.connect(N.hp);N.hp.connect(N.gate);N.gate.connect(N.cDry);N.gate.connect(N.pit.input);N.pit.output.connect(N.cWet);
   N.cDry.connect(N.eIn);N.cWet.connect(N.eIn);N.eIn.connect(N.eDry);N.eDry.connect(N.live);N.eWet.connect(N.live);N.live.connect(N.out);N.tape.connect(N.out);
   try{filt.disconnect(out)}catch(e){}filt.connect(N.in);N.out.connect(out);
   // memória curta do que está tocando (para reverse, scratch e tape stop)
@@ -4737,31 +4738,43 @@ function rxGate(v,on){const N=RX.n;if(!N)return;const t=ctx.currentTime;
     const per=1/f,st=playing?Math.max(t+.005,tT0+Math.ceil((t+.005-tT0)/per)*per):t+.005;o.start(st);N.gOsc=o;N.gDv=dv}
   return '1/'+(dv*4)}
 // ---- downsampler (slider da direita): som de bits reduzidos
-function rxCrush(v,on){const N=RX.n;if(!N)return;const t=ctx.currentTime;
+function rxPitchNode(){const sr=ctx.sampleRate,BT=.1,FT=.05,L1=Math.round(BT*sr),L2=Math.round((BT-2*FT)*sr),L=L1+L2;
+  const mk=f=>{const b=ctx.createBuffer(1,L,sr),d=b.getChannelData(0);for(let i=0;i<L;i++)d[i]=i<L1?f(i):0;return b};
+  const fadeL=FT*sr,fade=mk(i=>i<fadeL?Math.sqrt(i/fadeL):i>=L1-fadeL?Math.sqrt(1-(i-(L1-fadeL))/fadeL):1),down=mk(i=>i/L1),up=mk(i=>(L1-i)/L);
+  const P={input:ctx.createGain(),output:ctx.createGain()},src=b=>{const s=ctx.createBufferSource();s.buffer=b;s.loop=true;return s};
+  P.m=[src(down),src(down),src(up),src(up)];P.mg=P.m.map(()=>ctx.createGain());P.mg[2].gain.value=P.mg[3].gain.value=0;
+  P.md=[ctx.createGain(),ctx.createGain()];P.d=[ctx.createDelay(1),ctx.createDelay(1)];P.f=[src(fade),src(fade)];P.x=[ctx.createGain(),ctx.createGain()];
+  P.m.forEach((m,i)=>{m.connect(P.mg[i]);P.mg[i].connect(P.md[i%2])});P.md.forEach((g,i)=>g.connect(P.d[i].delayTime));
+  P.x.forEach((x,i)=>{x.gain.value=0;P.f[i].connect(x.gain);P.input.connect(P.d[i]);P.d[i].connect(x);x.connect(P.output)});
+  const t=ctx.currentTime+.05,t2=t+BT-FT;P.m[0].start(t);P.m[2].start(t);P.f[0].start(t);P.m[1].start(t2);P.m[3].start(t2);P.f[1].start(t2);
+  P.set=semi=>{const r=Math.pow(2,semi/12),up=r>=1,mult=up?(r-1)/.5:(1-r)/.5,tt=ctx.currentTime;
+    P.mg[0].gain.setValueAtTime(up?0:1,tt);P.mg[1].gain.setValueAtTime(up?0:1,tt);P.mg[2].gain.setValueAtTime(up?1:0,tt);P.mg[3].gain.setValueAtTime(up?1:0,tt);
+    P.md.forEach(g=>g.gain.setTargetAtTime(.5*BT*Math.min(2,mult),tt,.01))};
+  P.set(0);return P}
+// ---- pitch (slider da direita): meio = tom original, em cima até +12, embaixo até -12 semitons
+function rxPitch(v,on){const N=RX.n;if(!N)return;const t=ctx.currentTime;
   if(!on){N.cWet.gain.setTargetAtTime(0,t,.015);N.cDry.gain.setTargetAtTime(1,t,.015);return null}
-  const bits=Math.round(8-v*6.5);N.crush.curve=rxCurve(Math.max(1.5,bits));N.cLp.frequency.setTargetAtTime(9000-v*7200,t,.02);
-  N.cWet.gain.setTargetAtTime(1,t,.01);N.cDry.gain.setTargetAtTime(0,t,.01);return Math.max(2,bits)+' bit'}
+  const st=Math.round((v-.5)*24);N.pit.set(st);
+  if(st===0){N.cWet.gain.setTargetAtTime(0,t,.015);N.cDry.gain.setTargetAtTime(1,t,.015)}else{N.cWet.gain.setTargetAtTime(1,t,.01);N.cDry.gain.setTargetAtTime(0,t,.01)}
+  return (st>0?'+':'')+st+' st'}
 // ---- efeito do pad da direita
-function rxBuildEff(){const N=RX.n;if(!N)return;if(N.eff){N.eff.stop&&N.eff.stop();try{N.eff.out.disconnect()}catch(e){}try{N.eIn.disconnect(N.eff.in)}catch(e){}}
-  const E={},k=RX.eff;E.in=ctx.createGain();E.out=ctx.createGain();N.eIn.connect(E.in);E.out.connect(N.eWet);
-  if(k==='wobble'){E.f=ctx.createBiquadFilter();E.f.type='lowpass';E.f.Q.value=8;E.f.frequency.value=900;E.l=ctx.createOscillator();E.l.type='sine';E.d=ctx.createGain();E.d.gain.value=0;E.l.connect(E.d);E.d.connect(E.f.frequency);E.in.connect(E.f);E.f.connect(E.out);E.l.start();E.stop=()=>{try{E.l.stop()}catch(e){}}}
-  else if(k==='repeat'){E.g=ctx.createGain();E.g.gain.value=0;E.dl=ctx.createDelay(4);E.fb=ctx.createGain();E.fb.gain.value=0;E.in.connect(E.g);E.g.connect(E.dl);E.dl.connect(E.fb);E.fb.connect(E.dl);E.dl.connect(E.out)}
-  else if(k==='delay'){E.dl=ctx.createDelay(4);E.fb=ctx.createGain();E.tone=ctx.createBiquadFilter();E.tone.type='lowpass';E.tone.frequency.value=4500;E.in.connect(E.dl);E.dl.connect(E.tone);E.tone.connect(E.fb);E.fb.connect(E.dl);E.tone.connect(E.out)}
-  else if(k==='reverb'){E.cv=ctx.createConvolver();E.in.connect(E.cv);E.cv.connect(E.out);E.size=-1}
-  else{E.dl=ctx.createDelay(.05);E.dl.delayTime.value=.004;E.l=ctx.createOscillator();E.l.type='sine';E.d=ctx.createGain();E.d.gain.value=0;E.fb=ctx.createGain();E.fb.gain.value=0;E.l.connect(E.d);E.d.connect(E.dl.delayTime);E.in.connect(E.dl);E.dl.connect(E.fb);E.fb.connect(E.dl);E.dl.connect(E.out);E.in.connect(E.out);E.l.start();E.stop=()=>{try{E.l.stop()}catch(e){}}}
-  N.eff=E}
+function rxBuildEff(){const N=RX.n;if(!N||N.eff)return;
+  // eco de dub: atraso com fita (oscila de leve), filtros e saturação dentro da realimentação; tocar joga o som no eco, soltar deixa o rabo sumir
+  const E={};E.in=ctx.createGain();E.send=ctx.createGain();E.send.gain.value=0;E.dl=ctx.createDelay(4);E.dl.delayTime.value=60/bpm*.75;
+  E.hp=ctx.createBiquadFilter();E.hp.type='highpass';E.hp.frequency.value=260;E.lp=ctx.createBiquadFilter();E.lp.type='lowpass';E.lp.frequency.value=2600;E.lp.Q.value=.9;
+  E.sat=ctx.createWaveShaper();const c=new Float32Array(1024);for(let i=0;i<1024;i++){const x=i/511.5-1;c[i]=Math.tanh(x*1.6)/Math.tanh(1.6)}E.sat.curve=c;
+  E.fb=ctx.createGain();E.fb.gain.value=0;E.out=ctx.createGain();E.out.gain.value=.9;
+  E.wob=ctx.createOscillator();E.wob.frequency.value=.35;E.wg=ctx.createGain();E.wg.gain.value=.0012;E.wob.connect(E.wg);E.wg.connect(E.dl.delayTime);E.wob.start();
+  N.eIn.connect(E.in);E.in.connect(E.send);E.send.connect(E.dl);E.dl.connect(E.hp);E.hp.connect(E.lp);E.lp.connect(E.sat);E.sat.connect(E.fb);E.fb.connect(E.dl);E.sat.connect(E.out);E.out.connect(N.eWet);
+  N.eWet.gain.value=1;N.eDry.gain.value=1;N.eff=E}
+const DUBDIV=[[.5,'1/8'],[.75,'3/16'],[1,'1/4'],[1.5,'3/8'],[2,'1/2']];
+function rxDubKill(){const N=RX.n;if(!N||!N.eff)return;const E=N.eff,t=ctx.currentTime;E.send.gain.setTargetAtTime(0,t,.01);E.fb.gain.setTargetAtTime(0,t,.03)}
+function rxEff(x,y,on,first){const N=RX.n;if(!N)return '';rxBuildEff();const E=N.eff,t=ctx.currentTime,beat=60/bpm;
+  if(!on){E.send.gain.setTargetAtTime(0,t,.03);return ''}
+  const i=Math.min(DUBDIV.length-1,Math.floor(x*DUBDIV.length));E.dl.delayTime.setTargetAtTime(beat*DUBDIV[i][0],t,first?.005:.12);
+  const fb=.3+y*.68;E.fb.gain.setTargetAtTime(fb,t,.03);E.lp.frequency.setTargetAtTime(3400-y*1900,t,.05);E.send.gain.setTargetAtTime(1,t,.008);
+  return DUBDIV[i][1]+' · '+Math.round(fb*100)+'%'}
 function rxIR(sec){const sr=ctx.sampleRate,n=Math.round(sr*sec),b=ctx.createBuffer(2,n,sr);for(let c=0;c<2;c++){const d=b.getChannelData(c);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,2.6)}return b}
-function rxEff(x,y,on,first){const N=RX.n;if(!N)return '';const E=N.eff,t=ctx.currentTime,k=RX.eff,beat=60/bpm;
-  if(!on){N.eWet.gain.setTargetAtTime(0,t,.03);N.eDry.gain.setTargetAtTime(1,t,.03);if(E.g){E.g.gain.cancelScheduledValues(t);E.g.gain.setValueAtTime(0,t)}if(E.fb&&k==='repeat')E.fb.gain.setTargetAtTime(0,t,.05);return ''}
-  if(k==='wobble'){const dv=[.5,1,2,4,8][Math.min(4,Math.floor(x*5))];E.l.frequency.setTargetAtTime(bpm/60*dv,t,.02);E.d.gain.setTargetAtTime(200+y*2600,t,.02);E.f.frequency.setTargetAtTime(500+y*500,t,.02);
-    N.eWet.gain.setTargetAtTime(1,t,.02);N.eDry.gain.setTargetAtTime(0,t,.02);return ['1/2','1/4','1/8','1/16','1/32'][Math.min(4,Math.floor(x*5))]}
-  if(k==='repeat'){const dv=[1,2,4,8][Math.min(3,Math.floor(x*4))],len=beat/dv;
-    if(first||E.len!==len){E.len=len;E.dl.delayTime.setValueAtTime(len,t);E.fb.gain.setValueAtTime(.98,t);E.g.gain.cancelScheduledValues(t);E.g.gain.setValueAtTime(1,t);E.g.gain.setValueAtTime(0,t+len)}
-    N.eWet.gain.setTargetAtTime(.35+y*.65,t,.01);N.eDry.gain.setTargetAtTime(1-y,t,.01);return '1/'+(dv*4)}
-  if(k==='delay'){const ds=[.25,.5,.75,1,1.5,2],i=Math.min(5,Math.floor(x*6));E.dl.delayTime.setTargetAtTime(beat*ds[i],t,.05);E.fb.gain.setTargetAtTime(.2+y*.68,t,.02);
-    N.eWet.gain.setTargetAtTime(.6,t,.02);N.eDry.gain.setTargetAtTime(1,t,.02);return ['1/16','1/8','3/16','1/4','3/8','1/2'][i]}
-  if(k==='reverb'){const sz=Math.round((.8+x*4.2)*4)/4;if(sz!==E.size){E.size=sz;E.cv.buffer=rxIR(sz)}N.eWet.gain.setTargetAtTime(y*1.4,t,.03);N.eDry.gain.setTargetAtTime(1-y*.35,t,.03);return sz.toFixed(1)+' s'}
-  E.l.frequency.setTargetAtTime(.08+x*x*5,t,.03);E.d.gain.setTargetAtTime(.0005+y*.0032,t,.03);E.fb.gain.setTargetAtTime(y*.7,t,.03);N.eWet.gain.setTargetAtTime(.7,t,.02);N.eDry.gain.setTargetAtTime(0,t,.02);return (.08+x*x*5).toFixed(2)+' Hz'}
 // ---- reverse, scratch e tape stop: tocam a memória curta por cima do som ao vivo
 function rxTape(a,on){const N=RX.n;if(!N)return;const t=ctx.currentTime,beat=60/bpm;
   if(N.tsrc){const s0=N.tsrc,g0=N.tg;g0.gain.setTargetAtTime(0,t,.02);setTimeout(()=>{try{s0.stop()}catch(e){}s0.disconnect();if(N.tlfo){try{N.tlfo.stop()}catch(e){}N.tlfo=null}},120);N.tsrc=null}
@@ -4770,14 +4783,14 @@ function rxTape(a,on){const N=RX.n;if(!N)return;const t=ctx.currentTime,beat=60/
   if(a==='rev'){const b=rxLast(Math.min(3.5,beat*2));for(let c=0;c<2;c++)b.getChannelData(c).reverse();src.buffer=b;src.loop=true}
   else if(a==='scr'){const ch=rxLast(beat/2),n=ch.length,b=ctx.createBuffer(2,n*2,ctx.sampleRate);for(let c=0;c<2;c++){const s=ch.getChannelData(c),d=b.getChannelData(c);d.set(s,0);for(let i=0;i<n;i++)d[n+i]=s[n-1-i]}
     src.buffer=b;src.loop=true;const l=N.tlfo=ctx.createOscillator(),lg=ctx.createGain();l.frequency.value=bpm/60*2;lg.gain.value=.55;l.connect(lg);lg.connect(src.playbackRate);src.playbackRate.value=1.05;l.start()}
-  else{const b=rxLast(.45);src.buffer=b;src.playbackRate.setValueAtTime(1,t);src.playbackRate.linearRampToValueAtTime(.02,t+.9);g.gain.setValueAtTime(1,t+.75);g.gain.linearRampToValueAtTime(0,t+.95)}
+  else{const D=2.2,b=rxLast(D*.5+.05);src.buffer=b;src.playbackRate.setValueAtTime(1,t);src.playbackRate.linearRampToValueAtTime(.015,t+D);g.gain.setValueAtTime(1,t+D*.82);g.gain.linearRampToValueAtTime(0,t+D+.05)}
   N.live.gain.cancelScheduledValues(t);N.live.gain.setTargetAtTime(0,t,.008);src.start(t)}
 // ---- interface
 function rxPadUI(el,o,on){const s=el.querySelector('.rxs');s.style.setProperty('--x',(o.x*100)+'%');s.style.setProperty('--y',((1-o.y)*100)+'%');s.classList.toggle('on',on)}
-function rxLabels(){const E=RXEFF[RX.eff];$('#rxSel').textContent=E.n+' ▾';const p=$('#rxE');p.querySelector('.rxay').textContent=E.y;p.querySelector('.rxax').textContent=E.x}
+function rxLabels(){const p=$('#rxE');p.querySelector('.rxay').textContent='Feedback';p.querySelector('.rxax').textContent='Tempo'}
 function rxPad(id,which){const el=$(id),s=el.querySelector('.rxs'),lk=el.querySelector('.rxlock');let pid=null;
   const at=e=>{const r=s.getBoundingClientRect();return {x:Math.max(0,Math.min(1,(e.clientX-r.left)/r.width)),y:Math.max(0,Math.min(1,1-(e.clientY-r.top)/r.height))}};
-  const apply=(on,first)=>{const o=RX[which];if(which==='f'){RX.fOn=on;rxFilter(o.x,o.y,on)}else{RX.eOn=on;const v=rxEff(o.x,o.y,on,first);el.querySelector('.rxax').textContent=on&&v?RXEFF[RX.eff].x+' · '+v:RXEFF[RX.eff].x}rxPadUI(el,o,on)};
+  const apply=(on,first)=>{const o=RX[which];if(which==='f'){RX.fOn=on;rxFilter(o.x,o.y,on)}else{RX.eOn=on;const v=rxEff(o.x,o.y,on,first);el.querySelector('.rxax').textContent=on&&v?v:'Tempo'}rxPadUI(el,o,on)};
   s.addEventListener('pointerdown',e=>{e.preventDefault();initAudio();rxEnsure();pid=e.pointerId;try{s.setPointerCapture(pid)}catch(_){}RX[which]=at(e);apply(true,true)});
   s.addEventListener('pointermove',e=>{if(pid!==e.pointerId)return;RX[which]=at(e);apply(true,false)});
   const end=e=>{if(pid!==e.pointerId)return;pid=null;const locked=which==='f'?RX.lockF:RX.lockE;if(!locked){if(which==='f')RX.f={x:.5,y:RX.f.y};apply(false)}};
@@ -4789,14 +4802,13 @@ function rxSlider(id,fn){const el=$(id),st=el.querySelector('.rxst');let pid=nul
   const set=(v,on)=>{const lab=fn(v,on);el.classList.toggle('on',on);st.style.setProperty('--v',(v*100)+'%');el.querySelector('.rxsd').textContent=on&&lab?lab:''};
   st.addEventListener('pointerdown',e=>{e.preventDefault();initAudio();rxEnsure();pid=e.pointerId;try{st.setPointerCapture(pid)}catch(_){}set(at(e),true)});
   st.addEventListener('pointermove',e=>{if(pid===e.pointerId)set(at(e),true)});
-  const end=e=>{if(pid!==e.pointerId)return;pid=null;set(0,false)};st.addEventListener('pointerup',end);st.addEventListener('pointercancel',end);el._off=()=>set(0,false)}
-rxPad('#rxF','f');rxPad('#rxE','e');rxSlider('#rxG',rxGate);rxSlider('#rxD',rxCrush);rxLabels();rxPadUI($('#rxF'),RX.f,false);rxPadUI($('#rxE'),RX.e,false);
+  const rest=id==='#rxD'?.5:0;const end=e=>{if(pid!==e.pointerId)return;pid=null;set(rest,false)};st.addEventListener('pointerup',end);st.addEventListener('pointercancel',end);el._off=()=>set(rest,false)}
+rxPad('#rxF','f');rxPad('#rxE','e');rxSlider('#rxG',rxGate);rxSlider('#rxD',rxPitch);rxLabels();rxPadUI($('#rxF'),RX.f,false);rxPadUI($('#rxE'),RX.e,false);
 document.querySelectorAll('#rmx .rxa').forEach(b=>{let pid=null;
   b.addEventListener('pointerdown',e=>{e.preventDefault();initAudio();rxEnsure();pid=e.pointerId;try{b.setPointerCapture(pid)}catch(_){}document.querySelectorAll('#rmx .rxa').forEach(x=>x.classList.toggle('on',x===b));rxTape(b.dataset.a,true)});
   const end=e=>{if(pid!==e.pointerId)return;pid=null;b.classList.remove('on');rxTape(b.dataset.a,false)};b.addEventListener('pointerup',end);b.addEventListener('pointercancel',end)});
-$('#rxSel').onclick=e=>showXMenu(e.currentTarget,[{sep:'Efeito do pad'}].concat(Object.keys(RXEFF).map(k=>({l:RXEFF[k].n,on:k===RX.eff,f:()=>{if(RX.eOn)rxEff(0,0,false);RX.eff=k;RX.lockE=false;$('#rxE .rxlock').classList.remove('on');rxLabels();rxPadUI($('#rxE'),RX.e,false);if(RX.n)rxBuildEff();rxSave()}}))));
 function rxReset(){RX.lockF=RX.lockE=false;document.querySelectorAll('#rmx .rxlock').forEach(b=>b.classList.remove('on'));RX.f={x:.5,y:.2};RX.e={x:.5,y:.5};
-  if(RX.n){rxFilter(.5,0,false);rxEff(0,0,false);rxGate(0,false);rxCrush(0,false);rxTape(null,false)}
+  if(RX.n){rxFilter(.5,0,false);rxDubKill();rxGate(0,false);rxPitch(.5,false);rxTape(null,false)}
   ['#rxG','#rxD'].forEach(q=>$(q)._off&&$(q)._off());document.querySelectorAll('#rmx .rxa').forEach(b=>b.classList.remove('on'));rxPadUI($('#rxF'),RX.f,false);rxPadUI($('#rxE'),RX.e,false);rxLabels()}
 $('#rxReset').onclick=rxReset;
 // janela: abre embaixo ocupando boa parte da tela; arrasta pelo topo e redimensiona pelo canto
