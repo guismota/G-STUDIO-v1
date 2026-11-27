@@ -3,7 +3,7 @@
 //   engine.send({ type: 'remix.filter', x, y, on })   manda um comando
 //   engine.on('transport.state', fn)                   escuta um evento
 // Os comandos são atendidos na mesma hora: no iPad, o áudio só é liberado se o pedido chegar dentro do próprio toque.
-import { RXA, fireOneShot, initAudio, osVolume, rxCap, rxDubKill, rxEff, rxEnsure, rxFilter, rxGate, rxPitch, rxTape } from '../app/all.js';
+import { RXA, fireOneShot, genreSting, initAudio, osVolume, previewStart, previewStop, previewVolume, rxCap, rxDubKill, rxEff, rxEnsure, rxFilter, rxGate, rxPitch, rxTape } from '../app/all.js';
 const H = {
   'audio.unlock': () => initAudio(),
   // Remix FX: os nós de áudio só são montados quando o painel abre ou um controle é ligado
@@ -18,6 +18,11 @@ const H = {
   // One Shots
   'oneshot.fire': c => { const inMs = fireOneShot(c.index, c.quantize, c.volume); emit({ type: 'oneshot.hit', index: c.index, inMs }) },
   'oneshot.volume': c => osVolume(c.value),
+  // prévia da tela inicial, da biblioteca e dos gêneros do usuário
+  'preview.start': c => previewStart(c),
+  'preview.stop': () => previewStop(),
+  'preview.volume': c => previewVolume(c.value),
+  'sting.play': c => genreSting(c.genre),
 };
 const listeners = new Map();
 function send(cmd) {
@@ -33,4 +38,4 @@ function on(type, fn) {
 // usado pelo código do motor para avisar as telas
 function emit(evt) { const s = listeners.get(evt.type); if (s) for (const fn of s) fn(evt) }
 const engine = { send, on };
-export { engine };
+export { emit, engine };

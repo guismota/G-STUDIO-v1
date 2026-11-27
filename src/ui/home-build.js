@@ -1,4 +1,4 @@
-import { $, CFG, CHN, GENRES, HART, HPAL, ICO_SPK, LASTK, STYLES, artSpec, ctx, enterNovo, fin, hEnterUg, hEsc, hNameHTML, hRow, hTile, hartReg, hartStart, histList, maybeTour, noise, noiseBuf, togglePreview, tuneIn, tuneInX, ugenList } from '../app/all.js';
+import { $, CFG, CHN, GENRES, HART, HPAL, ICO_SPK, LASTK, STYLES, artSpec, enterNovo, hEnterUg, hEsc, hNameHTML, hRow, hTile, hartReg, hartStart, histList, maybeTour, togglePreview, tuneIn, tuneInX, ugenList } from '../app/all.js';
 function buildHome(){
   const box=$('#cards');box.innerHTML='';HART.list=[];if(HART.io){HART.io.disconnect();HART.io=null}
   const ug=ugenList();let last=null;try{last=localStorage.getItem(LASTK)}catch(e){}
@@ -49,9 +49,4 @@ function flickLoop(){clearTimeout(flickT);flickT=setTimeout(()=>{
 flickLoop();
 function brandRestart(){document.querySelectorAll('#home .fbrand .bk1,#home .fbrand .bk2').forEach(e=>{if(e.getAnimations)e.getAnimations().forEach(x=>{try{x.currentTime=0}catch(_){}})})}
 function powerOnHome(){brandRestart();const h=$('#home');h.classList.remove('tvon');void h.offsetWidth;h.classList.add('tvon');setTimeout(()=>{if(typeof maybeTour==='function')maybeTour('home')},900)}
-function staticBurst(){
-  if(!ctx||!noiseBuf)return;const t=ctx.currentTime,n=noise(t,.4),f=ctx.createBiquadFilter(),g=ctx.createGain();
-  f.type='bandpass';f.frequency.value=3200;f.Q.value=.6;g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.09,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.38);
-  n.connect(f);f.connect(g);g.connect(fin);
-}
 export { buildHome, flickLoop, flickT, powerOnHome, reduceMotion };

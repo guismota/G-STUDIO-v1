@@ -1,5 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, CFG, LASTK, MODE_N, NOTE_PT, NOVO, NV, SC, STYLES, TYPES, UGEN, XCATC, bpm, buildSession, ctx, ensureGain, flash, goHome, histPush, initAudio, loadBuf, makeLane, openNvKey, playing, pvStart, refreshSlots, routeAll, saveUser, screen, setScreen, setStyle, showXMenu, stopLaneSrc, stopPreview, stopTransport, updNvKey, userPats, xAsk, xToast } from '../app/all.js';
+import { $, CFG, LASTK, MODE_N, NOTE_PT, NOVO, NV, SC, STYLES, TYPES, UGEN, XCATC, bpm, buildSession, ctx, engine, ensureGain, flash, goHome, histPush, initAudio, loadBuf, makeLane, openNvKey, playing, previewPlay, refreshSlots, routeAll, saveUser, screen, setScreen, setStyle, showXMenu, stopLaneSrc, stopPreview, stopTransport, updNvKey, userPats, xAsk, xToast } from '../app/all.js';
 // ---------- Criar novo: estado ----------
 const NOVO_STY=STYLES.novo={name:'Criar novo',bpm:124,swing:0,key:{root:9,mode:'minor'},snd:STYLES.house.snd,p:{},novo:true};
 Object.keys(TYPES).forEach(t=>{NOVO_STY.p[t]=[]});
@@ -51,15 +51,13 @@ function ugenPlan(g){
   const all={},dr={};(g.lanes||[]).forEach(l=>{all[l.key]=0;if(TYPES[l.type]&&(TYPES[l.type].kind||'drum')==='drum')dr[l.key]=0});
   return {plan:b=>b<2&&Object.keys(dr).length?dr:all,bars:6};
 }
-function ugenPreview(id,done,isCan){
+function ugenPreview(id,done){
   const g=ugenList().find(x=>x.id===id);if(!g||!(g.lanes||[]).length){done&&done();return}
-  initAudio();
+  engine.send({type:'audio.unlock'});
   const nk={root:(g.nv||{}).root??9,mode:(g.nv||{}).mode||'minor',auto:(g.nv||{}).auto!==false};
-  const lanes=g.lanes.map(o=>{const l=novoLane(o);l.nvk=nk;l.upats=(g.pats&&g.pats[o.key])||[null,null,null,null];const m=(g.mix||[]).find(x=>x.key===o.key);if(m){l.vol=+m.vol;l.muted=!!m.muted}return l});
+  const lanes=g.lanes.map(o=>{const m=(g.mix||[]).find(x=>x.key===o.key);return {def:o,nvk:nk,pats:(g.pats&&g.pats[o.key])||[null,null,null,null],mix:m?{vol:+m.vol,muted:!!m.muted}:null}});
   const P=ugenPlan(g),k=ugenStingKey(g)==='novo'?'house':ugenStingKey(g);
-  Promise.all(lanes.filter(l=>l.smp).map(l=>loadBuf(l.smp))).then(()=>{if(isCan&&isCan())return;
-    pvStart(k,()=>{done&&done()},{custom:lanes,plan:P.plan,bars:P.bars,end:false,vol:.62,bpm:(g.nv&&g.nv.bpm)||124});
-  });
+  previewPlay({type:'preview.start',id:'ug:'+id,genre:k,lanes,plan:Array.from({length:P.bars},(_,b)=>P.plan(b)),bars:P.bars,end:false,volume:.62,bpm:(g.nv&&g.nv.bpm)||124},()=>{done&&done()});
 }
 function openNovoSession(){
   stopPreview();initAudio();

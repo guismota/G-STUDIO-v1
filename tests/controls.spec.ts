@@ -26,6 +26,21 @@ const SCEN: Record<string, (page: Page) => Promise<void>> = {
   'oneshot riser': page => oneShot(page, 6),
   'oneshot crash': page => oneShot(page, 7),
 };
+// na tela inicial, sem entrar num gênero: só a prévia ou a audição tocando, medida pela saída final
+const HOME: Record<string, { act: (page: Page) => Promise<void>; sec: number }> = {
+  'previa house': { sec: 4, act: async page => { await page.locator('#hero .hprev').click() } },
+  'audicao instrumento': { sec: 3, act: page => audition(page, 'Instrumentos dos gêneros') },
+  // na 1.7.8.1, a primeira audição de um som gravado logo ao abrir o app não toca ("Som indisponível"): os sons só são
+  // preparados depois que o áudio é liberado. Então toca uma vez, espera e mede a segunda.
+  'audicao gravado': { sec: 5, act: async page => { await audition(page, 'Gravados do G-STUDIO'); await page.waitForTimeout(2500); await audition(page, 'Gravados do G-STUDIO', false) } },
+};
+async function audition(page: Page, section: string, open = true) {
+  if (open) { await page.locator('#expOpen').click(); await page.waitForTimeout(1500) }
+  const h = page.locator('#explore .xsec', { hasText: section }).first();
+  await h.waitFor({ state: 'visible' });
+  const b = await h.evaluateHandle(el => { let n = el.nextElementSibling; while (n && !n.classList.contains('xrow')) n = n.nextElementSibling; return n!.querySelector('.xplay') });
+  await (b as any).click();
+}
 async function oneShot(page: Page, i: number) {
   await page.evaluate(() => (document.querySelector('#osBtn') as HTMLElement).click());
   await page.waitForTimeout(400);
@@ -33,7 +48,7 @@ async function oneShot(page: Page, i: number) {
   await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2); await page.mouse.down(); await page.mouse.up();
 }
 
-for (const name of Object.keys(SCEN)) {
+for (const name of [...Object.keys(SCEN), ...Object.keys(HOME)]) {
   test(`controle: ${name}`, async ({ page }, info) => {
     test.skip(!isMainView(info), 'roda no tamanho principal');
     test.setTimeout(300_000);
@@ -44,6 +59,7 @@ for (const name of Object.keys(SCEN)) {
       await tile.waitFor({ state: 'visible' });
       await page.waitForTimeout(1500);
       await page.evaluate(n => (window as any).__gsSeed(n), SEED);
+      if (HOME[name]) { await HOME[name].act(page); return gs<Run>(page, 'measureIdle', HOME[name].sec) }
       await tile.click({ force: true });
       await page.waitForFunction(() => document.body.classList.contains('in-session'));
       await page.waitForTimeout(6000);

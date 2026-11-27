@@ -1,5 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, CFG, CHN, PREVIEW, coverOf, drawCover, drawCoverCtx, enterUgen, hRnd, hexA, prevOn, pvStop, reduceMotion, togglePreview, tuneInX, ugenPreview, ugenStingKey } from '../app/all.js';
+import { $, CFG, CHN, PREVIEW, coverOf, drawCover, drawCoverCtx, engine, enterUgen, hRnd, hexA, prevOn, reduceMotion, togglePreview, tuneInX, ugenPreview, ugenStingKey } from '../app/all.js';
 // desenha um quadro do visual do canal. modo: 'hero' (lento e sem repetir), 'amb' (cards: quase parado), 'live' (prévia tocando, no tempo)
 function drawArt(cv,sp,t0,mode,W,H){
   const dpr=W?1:Math.min(2,window.devicePixelRatio||1),w=W||cv.clientWidth,h=H||cv.clientHeight;if(!w||!h)return;
@@ -140,7 +140,7 @@ const ICO_SPK='<svg viewBox="0 0 16 16"><path d="M2 6h3l4-3v10l-4-3H2z" fill="cu
 const hEsc=v=>String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 function hNameHTML(G,S){return G&&G.artist?(G.html||'<span>After</span><em>party</em>'):hEsc(S.name)}
 function hEnterUg(el,g,i){tuneInX(el,()=>enterUgen(g.id),{c:'#2F5BEA',ink:'#fff',ch:CHN(i),nm:g.name.replace(/[<>&]/g,'')},ugenStingKey(g))}
-function hUgPreview(g){PREVIEW[g.id]=bb=>{let can=false;ugenPreview(g.id,()=>{if(prevOn&&prevOn.b===bb){bb.classList.remove('playing');LATE.prevOn=null}},()=>can);return()=>{can=true;pvStop(false)}}}
+function hUgPreview(g){PREVIEW[g.id]=bb=>{ugenPreview(g.id,()=>{if(prevOn&&prevOn.b===bb){bb.classList.remove('playing');LATE.prevOn=null}});return()=>engine.send({type:'preview.stop'})}}
 function hTile(o){
   const b=document.createElement('div');b.className='htile'+(o.cls?' '+o.cls:'');b.setAttribute('role','button');b.tabIndex=0;
   b.style.setProperty('--gc',o.gc);b.style.setProperty('--d',o.d+'ms');b.dataset.ch=o.ch;

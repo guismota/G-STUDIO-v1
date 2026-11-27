@@ -46,6 +46,7 @@ export * from '../ui/covers.js';
 export * from '../ui/visuals.js';
 export * from '../ui/home-build.js';
 export * from '../engine/preview.js';
+export * from '../ui/preview.js';
 export * from '../ui/navigation.js';
 export * from '../ui/terms.js';
 export * from '../ui/onboarding.js';

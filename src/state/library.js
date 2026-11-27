@@ -1,5 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, CC0, GENRES, LANECAT, LIBM, NOVO, NOVO_STY, NV, SMP, STYLES, TYPES, UBUF, UPEND, XCATN, XS, bpm, buildSession, ctx, ensureGain, guessHit, initAudio, novoLane, novoLoadDraft, openNovoSession, out, playing, pvStart, pvStop, refreshPads, routeAll, saveNovo, saveUser, screen, sortByKind, stopPreview, stopTransport, undoReset, userPats, xRender, xToast } from '../app/all.js';
+import { $, CC0, GENRES, LANECAT, LIBM, NOVO, NOVO_STY, NV, SMP, STYLES, TYPES, UBUF, UPEND, XCATN, XS, bpm, buildSession, ctx, engine, ensureGain, guessHit, initAudio, novoLane, novoLoadDraft, openNovoSession, out, playing, previewPlay, refreshPads, routeAll, saveNovo, saveUser, screen, sortByKind, stopPreview, stopTransport, undoReset, userPats, xRender, xToast } from '../app/all.js';
 // ---------- buffers ----------
 function decodeAB(ab){return new Promise((res,rej)=>{
   const c=ctx||(XS.oac=XS.oac||new (window.OfflineAudioContext||window.webkitOfflineAudioContext)(1,1,44100));
@@ -92,12 +92,12 @@ async function importFiles(files){
 function xStopAud(){const a=XS.aud;XS.aud=null;if(a&&a.stop)a.stop();document.querySelectorAll('#explore .on-aud').forEach(e=>e.classList.remove('on-aud'))}
 function xAudition(it,li,btn){
   const same=XS.aud&&XS.aud.id===it.id&&XS.aud.li===li;xStopAud();if(same)return;
-  initAudio();stopPreview();if(playing)stopTransport();
+  engine.send({type:'audio.unlock'});stopPreview();if(playing)stopTransport();
   if(btn)btn.classList.add('on-aud');
   if(it.kind==='inst'){
     const idx=li!=null?li:Math.max(0,it.loops.findIndex(Boolean));
-    pvStart(it.g,()=>{if(XS.aud&&XS.aud.id===it.id)xStopAud()},{plan:()=>({[it.t]:idx}),bars:4,end:false,vol:.7});
-    XS.aud={id:it.id,li,stop:()=>pvStop(false)};return;
+    previewPlay({type:'preview.start',id:'aud:'+it.id,genre:it.g,plan:Array.from({length:4},()=>({[it.t]:idx})),bars:4,end:false,volume:.7},()=>{if(XS.aud&&XS.aud.id===it.id)xStopAud()});
+    XS.aud={id:it.id,li,stop:()=>engine.send({type:'preview.stop'})};return;
   }
   const go=b=>{if(!b){xToast('Som indisponível');xStopAud();return}
     const s=ctx.createBufferSource(),g=ctx.createGain();s.buffer=b;g.gain.value=.9;s.connect(g);g.connect(out);

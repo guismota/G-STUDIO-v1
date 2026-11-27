@@ -1,6 +1,5 @@
-import { LATE, late } from '../app/late.js';
-import { $, CFG, CHN, DEF_SCENES, GENRES, STYLES, TYPES, bpm, ctx, enterGenre, fxHit, genreSting, getPat, initAudio, kick, makeIR, out, pageWipe, playCol, stopLaneSrc } from '../app/all.js';
-late({get prevOn(){return prevOn},set prevOn(v){prevOn=v}});
+import { LATE } from '../app/late.js';
+import { CFG, DEF_SCENES, STYLES, TYPES, bpm, chord, ctx, emit, fin, fxHit, getPat, initAudio, kick, lead, loadBuf, makeIR, noise, noiseBuf, novoLane, out, playCol, stopLaneSrc } from '../app/all.js';
 // ----- prévia de cada gênero: 8 compassos com os próprios loops do gênero (sem One Shots) -----
 // partes de 2 compassos: intro -> groove -> break (riser) -> pico (impacto), depois um golpe final
 const PV_SECTIONS=[0,1,3,2];
@@ -45,23 +44,41 @@ function pvStop(natural){
   if(PV.cl)Object.values(PV.cl).forEach(c=>stopLaneSrc(c));PV.k=null;PV.out=null;PV.dk=null;PV.lanes=null;PV.cl=null;
   const d=PV.done;PV.done=null;if(natural&&d)d();
 }
-const PREVIEW={};let prevOn=null;
-document.addEventListener('visibilitychange',()=>{if(document.hidden)stopPreview()});
-GENRES.forEach(g=>{if(STYLES[g.k])PREVIEW[g.k]=b=>{pvStart(g.k,()=>{if(prevOn&&prevOn.b===b){b.classList.remove('playing');prevOn=null}});return()=>pvStop(false)}});
-function homeToast(m){let t=$('#htoast');if(!t){t=document.createElement('div');t.id='htoast';$('#home').appendChild(t)}
-  t.textContent=m;t.classList.remove('show');void t.offsetWidth;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2200)}
-function stopPreview(){if(!prevOn)return;prevOn.b.classList.remove('playing');if(prevOn.stop)prevOn.stop();prevOn=null}
-function togglePreview(b,k){
-  const was=prevOn&&prevOn.b===b;stopPreview();if(was)return;
-  if(!PREVIEW[k]){b.classList.add('playing');prevOn={b};setTimeout(()=>{if(prevOn&&prevOn.b===b)stopPreview()},1400);homeToast('Prévia no forno. Já já sai');return}
-  initAudio();b.classList.add('playing');prevOn={b};prevOn.stop=PREVIEW[k](b);
+// prévia pedida pela tela (protocolo preview.start): o roteiro vem como dados (o que toca em cada compasso) e as
+// linhas de um gênero do usuário vêm descritas; os sons gravados dessas linhas são carregados antes de começar
+let pvTok=0; // preview.stop cancela a prévia que ainda está carregando sons
+function previewStart(c){
+  const tok=pvTok,opt={};
+  if(c.plan)opt.plan=b=>c.plan[b];if(c.bars)opt.bars=c.bars;if(c.end===false)opt.end=false;if(c.volume)opt.vol=c.volume;if(c.bpm)opt.bpm=c.bpm;
+  const done=()=>emit({type:'preview.state',id:c.id,playing:false});
+  if(!c.lanes){pvStart(c.genre,done,opt);return}
+  initAudio();
+  const lanes=c.lanes.map(d=>{const l=novoLane(d.def);l.nvk=d.nvk;l.upats=d.pats;if(d.mix){l.vol=+d.mix.vol;l.muted=!!d.mix.muted}return l});
+  Promise.all(lanes.filter(l=>l.smp).map(l=>loadBuf(l.smp))).then(()=>{if(tok!==pvTok)return;opt.custom=lanes;pvStart(c.genre,done,opt)});
 }
-let tuning=false;
-function tuneInX(b,fn,w,sk){if(tuning)return;tuning=true;stopPreview();initAudio();genreSting(sk||'novo');b&&b.classList.add('tune');pageWipe(w||{c:'#EDEDED',ch:b&&b.querySelector('.ch')?b.querySelector('.ch').textContent:'',nm:'Criar <em>novo</em>',art:true},()=>{b&&b.classList.remove('tune');tuning=false;fn()})}
-function tuneIn(b,k){
-  if(tuning)return;tuning=true;stopPreview();initAudio();genreSting(k);
-  b.classList.add('tune');
-  const G=GENRES.find(g=>g.k===k),art=!!(G&&G.artist),afro=!!(G&&G.theme==='afro'),vice=!!(G&&G.theme==='vice'),cum=!!(G&&G.theme==='cumbia');
-  pageWipe({c:cum?'#FF4B1F':vice?'#FF5E8A':afro?'#FF6B2C':art?'#B026FF':'#FFE600',ink:cum?'#111':art?'#fff':'#000',ch:CHN(GENRES.indexOf(G)),nm:art?(G.html?G.html.replace(/<\/?span>/g,''):'After<em>party</em>'):STYLES[k].name,art,cls:cum?'cumbia':vice?'vice':''},()=>{b.classList.remove('tune');tuning=false;enterGenre(k)});
+function previewStop(){pvTok++;pvStop(false)}
+function previewVolume(v){if(PV.out&&PV.timer)PV.out.gain.value=Math.max(.0001,(PV.base||.6)*v)}
+// som ao entrar num canal (desligado desde a 1.7.x: a função sai logo na primeira linha)
+function genreSting(k){
+  return; // sem som nas animações de entrada
+  if(!CFG.sting||!ctx||!noiseBuf)return;
+  const g=STYLES[k]&&!STYLES[k].novo?k:'house',S=STYLES[g],t=ctx.currentTime+.02,o=ctx.createGain();o.gain.value=.5;o.connect(out);
+  const n=noise(t,.34),f=ctx.createBiquadFilter(),ng=ctx.createGain();f.type='bandpass';f.Q.value=2.2;
+  f.frequency.setValueAtTime(320,t);f.frequency.exponentialRampToValueAtTime(7500,t+.3);
+  ng.gain.setValueAtTime(.0001,t);ng.gain.exponentialRampToValueAtTime(.32,t+.27);ng.gain.linearRampToValueAtTime(.0001,t+.31);n.connect(f);f.connect(ng);ng.connect(o);
+  const th=t+.32,b0=bpm;LATE.bpm=S.bpm;LATE.LSND=S.snd;
+  try{kick(th,o,1);
+    const cp=(S.p.chord||[]).find(Boolean);let ch=null;
+    if(cp&&Array.isArray(cp.data)){const n0=cp.data.find(x=>Array.isArray(x)&&Array.isArray(x[1]));if(n0)ch=n0[1]}
+    if(k==='novo'){[0,4,7,12].forEach((iv,j)=>lead(th+j*.07,69+iv,.12,o,.6))}
+    else if(ch)chord(th,ch,.34,o,cp.syn);
+  }catch(e){}finally{LATE.LSND=null;LATE.bpm=b0}
+  setTimeout(()=>{try{o.disconnect()}catch(e){}},3000);
 }
-export { PREVIEW, PV, prevOn, pvDuck, pvStart, pvStop, stopPreview, togglePreview, tuneIn, tuneInX };
+// chiado de TV na tela inicial (sem uso hoje)
+function staticBurst(){
+  if(!ctx||!noiseBuf)return;const t=ctx.currentTime,n=noise(t,.4),f=ctx.createBiquadFilter(),g=ctx.createGain();
+  f.type='bandpass';f.frequency.value=3200;f.Q.value=.6;g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.09,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.38);
+  n.connect(f);f.connect(g);g.connect(fin);
+}
+export { PV, genreSting, previewStart, previewStop, previewVolume, pvDuck };

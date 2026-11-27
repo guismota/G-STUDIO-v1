@@ -55,9 +55,13 @@ export type Command =
   | { type: 'note.play'; lane: LaneKey; note: number; velocity?: number; duration?: number } // audição e Musical Typing
   | { type: 'drum.play'; lane: LaneKey; row?: number; velocity?: number } // audição no sequenciador
   // prévia da tela inicial e som de entrada no canal
-  | { type: 'preview.start'; genre: string }
+  // id: quem pediu (volta no evento preview.state); plan: o que toca em cada compasso ({linha: slot}); lanes: linhas de
+  // um gênero criado pelo usuário (def = como foi salvo, pats = os 4 loops, mix = volume e mute)
+  | { type: 'preview.start'; id: string; genre: string; plan?: Record<LaneKey, Slot>[]; bars?: number; end?: boolean; volume?: number; bpm?: number;
+      lanes?: { def: Record<string, unknown>; nvk: { root: number; mode: string; auto: boolean }; pats: unknown[]; mix: { vol: number; muted: boolean } | null }[] }
   | { type: 'preview.stop' }
-  | { type: 'sting.play'; genre: string }
+  | { type: 'preview.volume'; value: number } // volume das prévias (Ajustes)
+  | { type: 'sting.play'; genre: string } // som ao entrar num canal (desligado hoje)
   // gravação da master e microfone
   | { type: 'rec.start' }
   | { type: 'rec.stop' }
@@ -75,7 +79,7 @@ export type EngineEvent =
   | { type: 'scene.fired'; index: number } // a cena entrou de fato (para a animação)
   | { type: 'oneshot.hit'; index: number; inMs: number } // daqui a quanto o som do One Shot entra (para piscar o pad)
   | { type: 'meters'; master: [number, number]; clip: boolean; lanes: Record<LaneKey, number>; spectrum: number[] }
-  | { type: 'preview.state'; genre: string | null; playing: boolean }
+  | { type: 'preview.state'; id: string; playing: boolean } // a prévia pedida com esse id terminou sozinha
   | { type: 'rec.state'; on: boolean; counting: boolean }
   | { type: 'rec.done'; file: string; mime: string }
   | { type: 'mic.level'; value: number }

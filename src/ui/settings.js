@@ -1,4 +1,4 @@
-import { $, APPV, BIP, CFG, CMP, DEV, MAIN, PV, bkClose, bkExport, bkPick, bkSheet, closeModal, ctx, fin, fmtDate, fmtMB, idbDo, idbEntries, installNow, isStandalone, kbTitles, layoutRows, openDoc, openKb, out, playing, plural, saveCfg, showOnb, startTour, stopTransport, termsAt, two } from '../app/all.js';
+import { $, APPV, BIP, CFG, CMP, DEV, MAIN, bkClose, bkExport, bkPick, bkSheet, closeModal, ctx, engine, fin, fmtDate, fmtMB, idbDo, idbEntries, installNow, isStandalone, kbTitles, layoutRows, openDoc, openKb, out, playing, plural, saveCfg, showOnb, startTour, stopTransport, termsAt, two } from '../app/all.js';
 // ---------- Configurações ----------
 const WAKE={s:null};
 async function wakeOn(){if(!CFG.wake||!playing||WAKE.s||!navigator.wakeLock)return;try{const s=await navigator.wakeLock.request('screen');if(!playing||!CFG.wake){s.release().catch(()=>{});return}WAKE.s=s;s.addEventListener('release',()=>{if(WAKE.s===s)WAKE.s=null})}catch(e){}}
@@ -44,7 +44,7 @@ function renderCfg(){
       else if(R.seg){r.classList.add('wide');const g=document.createElement('div');g.className='seg';
         R.seg.forEach(([v,l])=>{const b=document.createElement('button');b.textContent=l;b.classList.toggle('on',CFG[R.k]===v);b.onclick=()=>{cfgSet(R.k,v);g.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))};g.appendChild(b)});cc.appendChild(g)}
       else if(R.rng){r.classList.add('wide');const i=document.createElement('input');i.type='range';i.min=0;i.max=100;i.step=5;i.value=Math.round(CFG.pvol*100);i.setAttribute('aria-label',R.t);
-        const o=document.createElement('span');o.className='rv';const up=()=>{o.textContent=i.value+'%'};up();i.oninput=()=>{CFG.pvol=i.value/100;up();if(PV.out&&PV.timer)PV.out.gain.value=Math.max(.0001,(PV.base||.6)*CFG.pvol)};i.onchange=()=>saveCfg();cc.appendChild(i);cc.appendChild(o)}
+        const o=document.createElement('span');o.className='rv';const up=()=>{o.textContent=i.value+'%'};up();i.oninput=()=>{CFG.pvol=i.value/100;up();engine.send({type:'preview.volume',value:CFG.pvol})};i.onchange=()=>saveCfg();cc.appendChild(i);cc.appendChild(o)}
       sec.appendChild(r);
     });
     box.appendChild(sec);

@@ -28,6 +28,10 @@ window.__gs={
     const iv=setInterval(()=>{if(ctx.currentTime<tT0)return;if(ctx.currentTime>=end){clearInterval(iv);stopTransport();
       const lanes={},raw={};taps.forEach(t=>{try{t.node.disconnect(t.a)}catch(e){}if(t.key!=='_master'){lanes[t.key]=dbv(t.pk);raw[t.key]=t.pk}});
       const ms=taps.find(t=>t.key==='_master');res({on,lanes,raw,lv,master:dbv(ms.pk),masterRaw:ms.pk,masterRms:rn?rs/rn:0,clip,seconds:end-tT0});return}poll()},10)}),
+  // mede só a saída final por alguns segundos, sem mexer no transporte (prévias e audições)
+  measureIdle:sec=>new Promise(res=>{initAudio();const N=8192,a=ctx.createAnalyser();a.fftSize=N;fin.connect(a);const buf=new Float32Array(N);let pk=0,rs=0,rn=0;const t0=ctx.currentTime;
+    const iv=setInterval(()=>{a.getFloatTimeDomainData(buf);let q=0;for(let k=0;k<N;k++){const v=buf[k]<0?-buf[k]:buf[k];if(v>pk)pk=v;q+=v*v}rs+=Math.sqrt(q/N);rn++;
+      if(ctx.currentTime-t0>=sec){clearInterval(iv);try{fin.disconnect(a)}catch(e){}res({master:dbv(pk),masterRaw:pk,masterRms:rn?rs/rn:0})}},10)}),
   enterGenre:k=>enterGenre(k),
   goHome:()=>goHome(),
   openClipEditor:(lane,i)=>{const ci=cols.findIndex(x=>x.key===lane);openClipEditor(ci,i)},
