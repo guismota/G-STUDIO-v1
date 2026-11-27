@@ -1,0 +1,51 @@
+/* letras do Musical Typing nas teclas */
+.kw .mtk,.kbk .mtk{position:absolute;left:50%;transform:translateX(-50%);font:800 9.5px "Archivo",sans-serif;letter-spacing:0;color:#777;pointer-events:none}
+.kw{position:relative}.kw .mtk{bottom:24px}.kbk .mtk{bottom:6px;color:#999}
+.kw.dn .mtk,.kbk.dn .mtk{color:#000}
+.rkeys>.hw{flex-direction:column;gap:2px}
+.rkeys>.hw small{display:block;margin-top:4px;font-size:9px;color:#777;letter-spacing:.1em}
+.rlmt{align-self:center;color:#888;white-space:nowrap}
+body.dev-phone .rlmt{display:none}
+/* pausado: loops e cena escolhidos ficam marcados, mais apagados, até soltar o play ou tocar em Parar tudo */
+.clip.play.held{opacity:.5}
+#scenes .sc.held{box-shadow:inset 0 0 0 1px var(--yel)!important}
+/* ===== Remix FX ===== */
+#rmxBtn{flex:none;margin-left:10px;gap:7px;min-height:32px;padding:0 12px;display:flex;align-items:center}#rmxBtn svg{width:14px;height:14px}
+#rmxBtn.on{background:var(--yel)!important;border-color:var(--yel)!important;color:#000!important}
+#kFilt{display:none!important}
+#rmx{position:fixed;z-index:2600;left:12px;top:50%;width:600px;height:320px;display:none;flex-direction:column;background:#0b0b0b;border:1px solid #2a2a2a;box-shadow:0 18px 50px rgba(0,0,0,.7);touch-action:none;user-select:none;-webkit-user-select:none}
+#rmx.open{display:flex}
+.rxh{flex:none;display:flex;align-items:center;gap:8px;height:40px;padding:0 8px 0 10px;border-bottom:1px solid #1f1f1f;cursor:move}
+.rxh b{font:800 11px "Archivo",sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#fff}
+.rxgrip{display:flex;flex-direction:column;gap:3px}.rxgrip i{width:14px;height:2px;background:#555}
+.rxsp{flex:1}
+.rxh .hw{height:28px;padding:0 10px;background:#111;border:1px solid #333;color:#ccc;font:800 10px "Archivo",sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+.rxb{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 64px 110px 64px minmax(0,1fr);gap:8px;padding:8px}
+.rxpad{display:flex;flex-direction:column;min-width:0;min-height:0;background:#111;border:1px solid #232323}
+.rxph{flex:none;display:flex;align-items:center;justify-content:space-between;gap:8px;height:28px;padding:0 8px;border-bottom:1px solid #1d1d1d}
+.rxn{font:700 10.5px "Archivo",sans-serif;letter-spacing:.08em;color:#bbb;text-transform:uppercase}
+.rxsel{background:none;border:0;cursor:pointer;padding:4px 0;color:#eee}
+.rxlock{background:none;border:1px solid #333;color:#777;font:800 8.5px "Archivo",sans-serif;letter-spacing:.14em;padding:3px 6px;cursor:pointer}
+.rxlock.on{background:var(--yel);border-color:var(--yel);color:#000}
+.rxs{position:relative;flex:1;min-height:0;overflow:hidden;cursor:crosshair;touch-action:none;background-color:#0d0d0d;background-image:linear-gradient(#1c1c1c 1px,transparent 1px),linear-gradient(90deg,#1c1c1c 1px,transparent 1px);background-size:25% 25%;background-position:-1px -1px}
+.rxs .rxv,.rxs .rxhz{position:absolute;background:color-mix(in srgb,var(--yel) 55%,transparent);opacity:0;pointer-events:none}
+.rxs .rxv{top:0;bottom:0;width:1px;left:var(--x,50%)}.rxs .rxhz{left:0;right:0;height:1px;top:var(--y,50%)}
+#rmx .rxs .rxdot{position:absolute;left:var(--x,50%);top:var(--y,50%);width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%!important;border:2px solid #555;pointer-events:none}
+.rxs.on .rxv,.rxs.on .rxhz{opacity:1}
+.rxs.on .rxdot{background:var(--yel);border-color:var(--yel);box-shadow:0 0 18px color-mix(in srgb,var(--yel) 60%,transparent)}
+.rxay,.rxax{position:absolute;font:700 8.5px "Archivo",sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#4a4a4a;pointer-events:none}
+.rxax{bottom:5px;left:50%;transform:translateX(-50%)}
+.rxay{left:5px;top:50%;transform:translateX(-50%) rotate(-90deg) translateY(50%);transform-origin:50% 50%;left:12px}
+.rxsl{display:flex;flex-direction:column;align-items:center;gap:6px;min-height:0}
+.rxst{position:relative;flex:1;width:100%;min-height:0;background:#111;border:1px solid #232323;cursor:ns-resize;touch-action:none;overflow:hidden;background-image:linear-gradient(transparent calc(25% - 1px),#1f1f1f calc(25% - 1px),#1f1f1f 25%,transparent 25%,transparent calc(50% - 1px),#1f1f1f calc(50% - 1px),#1f1f1f 50%,transparent 50%,transparent calc(75% - 1px),#1f1f1f calc(75% - 1px),#1f1f1f 75%,transparent 75%)}
+.rxst .rxfill{position:absolute;left:0;right:0;bottom:0;height:var(--v,0%);background:color-mix(in srgb,var(--yel) 22%,transparent);border-top:2px solid var(--yel);opacity:0}
+.rxsl.on .rxfill{opacity:1}
+#rxD .rxst::after{content:"";position:absolute;left:0;right:0;top:50%;height:2px;margin-top:-1px;background:#3a3a3a;pointer-events:none}
+.rxsd{position:absolute;left:0;right:0;top:6px;text-align:center;font:800 9px "Archivo",sans-serif;letter-spacing:.08em;color:#777}
+.rxsn{flex:none;font:700 8.5px "Archivo",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#777}
+.rxmid{display:flex;flex-direction:column;gap:6px;min-height:0}
+.rxa{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;background:#111;border:1px solid #232323;color:#bbb;cursor:pointer;touch-action:none}
+.rxa svg{width:24px;height:24px}.rxa span{font:700 8.5px "Archivo",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#666}
+.rxa.on{background:var(--yel);border-color:var(--yel);color:#000}.rxa.on span{color:#000}
+.rxgr{position:absolute;right:0;bottom:0;width:22px;height:22px;cursor:nwse-resize;touch-action:none;background:linear-gradient(135deg,transparent 50%,#444 50%,#444 58%,transparent 58%,transparent 70%,#444 70%,#444 78%,transparent 78%)}
+@media (max-width:640px){.rxb{grid-template-columns:minmax(0,1fr) 48px 84px 48px minmax(0,1fr);gap:5px;padding:5px}.rxsn,.rxa span{display:none}}

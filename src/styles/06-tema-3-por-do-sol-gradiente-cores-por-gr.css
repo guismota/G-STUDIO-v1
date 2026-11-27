@@ -1,0 +1,31 @@
+/* ===== Tema 3: pôr do sol (gradiente) + cores por grupo ===== */
+:root{--gA:#FFE600;--gB:#FFE600;--grad:linear-gradient(135deg,#FFE600,#FFE600);--acid:#FFE600;--amb:#FFE600;--grn:#FFE600;--warm:#ff9a3c;--cool:#7d8bff}
+#lights{background:radial-gradient(70% 50% at 50% 115%,rgba(255,230,0,.22),transparent 70%),radial-gradient(40% 35% at -5% -5%,rgba(255,230,0,.14),transparent 70%),radial-gradient(40% 35% at 105% -5%,rgba(255,230,0,.16),transparent 70%)}
+#laser{background:linear-gradient(90deg,transparent,#FFE600 20%,#fff 50%,#FFE600 80%,transparent);box-shadow:0 0 14px #FFE600,0 0 30px rgba(255,230,0,.45)}
+.hw.on,.rocker button.on,.mute.on,#scenes .sc.on,.chip.sel,.hw.pri,.mrow .hw.sel{background:var(--grad);border-color:transparent;color:#000;box-shadow:0 0 18px rgba(255,230,0,.28)}
+.lch.sel{background:var(--c);border-color:var(--c);color:#000;box-shadow:none}
+.mrow .hw.sel{background:var(--c);box-shadow:none}
+.fxbtn.open{border-color:#f2f2f2}
+.knob .val{stroke:var(--acid)}
+.lh .knob .val{stroke:var(--c)}
+.lcd .bpm span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tabs .tab{position:relative}
+.tabs .tab.on{box-shadow:none}
+.tabs .tab.on::after{content:"";position:absolute;left:12px;right:12px;bottom:0;height:2px;border-radius:2px;background:var(--grad)}
+.ix{color:var(--c);opacity:.85}
+.gl{color:var(--gc,#444)}
+.fxt{color:#FFE600}
+.clip.play{background:var(--c);border-color:var(--c);color:#000;box-shadow:0 0 20px -4px var(--c)}
+.clip.q{border-color:var(--c);animation:blz2 .38s steps(2) infinite}
+@keyframes blz2{50%{background:#1d1416;color:#fff}}
+.strip i.hit{background:var(--c);opacity:.85}
+.strip i.ph{box-shadow:inset 0 0 0 1px #fff}
+.strip i.hit.ph{background:#fff;opacity:1}
+.lm span,.mmb span{background:linear-gradient(to top,#3ddc84 0 62%,#ffd60a 62% 84%,#ff3b3b 84% 100%)}
+.plcd{color:#FFE600;text-shadow:0 0 10px rgba(255,230,0,.35)}
+.bk .val{stroke:var(--acid);filter:drop-shadow(0 0 4px rgba(255,230,0,.6))}
+.pw.on>.led{background:#FFE600;box-shadow:0 0 8px #FFE600}
+.nrow.root .ncell{background:#1a1310}.nrow.root .ncell.beat{background:#21170f}
+.nrow.root span{color:var(--c)}
+.sh-title i{background:var(--grad)}
+.on>.led,#scenes .sc.on>.led{background:#000;box-shadow:none}

@@ -1,0 +1,33 @@
+/* v6: ondas + número gigante */
+.band .screen{left:34%;right:0;top:0;bottom:0;aspect-ratio:auto;opacity:1;display:block;background:none;border:0;
+ -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 30%);mask-image:linear-gradient(90deg,transparent 0,#000 30%);-webkit-mask-size:100% 100%;mask-size:100% 100%}
+.band .bignum{position:absolute;right:168px;top:50%;transform:translateY(-50%);font-family:var(--poster);font-weight:900;font-stretch:62%;font-size:calc(100% * 0 + 230px);line-height:.8;color:transparent;-webkit-text-stroke:2px rgba(255,230,0,.35);background:repeating-linear-gradient(-45deg,rgba(255,230,0,.28) 0 2px,transparent 2px 7px);-webkit-background-clip:text;background-clip:text}
+.band .oscw{position:absolute;inset:14% 0;overflow:hidden;-webkit-mask-image:radial-gradient(circle,#000 58%,transparent 66%);-webkit-mask-size:4px 4px;mask-image:radial-gradient(circle,#000 58%,transparent 66%);mask-size:4px 4px}
+.band .screen svg.osc{position:absolute;top:0;left:0;height:100%;width:100%;filter:none;fill:none;stroke:var(--yel);stroke-width:6;vector-effect:non-scaling-stroke}
+.band .screen svg.osc+svg.osc{left:100%}
+@media (prefers-reduced-motion:no-preference){.band .osc{animation:oscm var(--loop) linear infinite}@keyframes oscm{to{transform:translateX(-100%)}}}
+.band:not(.soon):not(:has(.bprev:active)):active .osc{stroke:#000}
+.band:not(.soon):not(:has(.bprev:active)):active .bignum{-webkit-text-stroke-color:rgba(0,0,0,.4);background:repeating-linear-gradient(-45deg,rgba(0,0,0,.3) 0 2px,transparent 2px 7px);-webkit-background-clip:text;background-clip:text}
+@media (max-width:900px){.band .screen{left:24%}.band .bignum{right:120px}}
+
+.band .oscw{-webkit-mask-image:radial-gradient(circle,#000 58%,transparent 66%),linear-gradient(90deg,transparent 0,#000 25%,#000 58%,transparent 72%);-webkit-mask-size:4px 4px,100% 100%;-webkit-mask-composite:source-in;
+ mask-image:radial-gradient(circle,#000 58%,transparent 66%),linear-gradient(90deg,transparent 0,#000 25%,#000 58%,transparent 72%);mask-size:4px 4px,100% 100%;mask-composite:intersect}
+.band .screen{-webkit-mask-image:none;mask-image:none}
+
+/* botão de prévia */
+.band .bprev{position:relative;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:2px solid #fff;background:rgba(0,0,0,.55);color:#fff;cursor:pointer}
+.band .bprev svg{width:16px;height:16px}
+.band .bprev:active,.band .bprev.playing,.band.playing .bprev{background:var(--yel);border-color:var(--yel);color:#000}
+@media (prefers-reduced-motion:no-preference){.band.playing .bprev .sw{animation:spk .6s steps(2) infinite}@keyframes spk{50%{opacity:.2}}}
+@media (max-width:900px){.band .bprev{width:30px;height:30px}}
+#htoast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);background:#f2f2ee;color:#000;font-size:12px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;font-stretch:72%;padding:9px 14px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:50}
+#htoast.show{opacity:1;transform:translate(-50%,0) rotate(-1deg)}
+
+/* ondas mais discretas */
+.band .oscw{inset:24% 0;opacity:.42}
+.band .screen svg.osc{stroke-width:3.5}
+.band .bignum{-webkit-text-stroke-color:rgba(255,230,0,.26);background:repeating-linear-gradient(-45deg,rgba(255,230,0,.18) 0 2px,transparent 2px 7px);-webkit-background-clip:text;background-clip:text}
+.band:not(.soon):not(:has(.bprev:active)):active .oscw{opacity:.7}
+
+.band .bignum{filter:drop-shadow(0 0 10px rgba(255,230,0,.22)) drop-shadow(0 2px 0 rgba(255,230,0,.08))}
+

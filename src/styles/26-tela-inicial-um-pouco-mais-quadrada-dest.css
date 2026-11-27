@@ -1,0 +1,108 @@
+/* tela inicial um pouco mais quadrada; destaque com BPM sob o nome e seta de entrar */
+#home .htile{border-radius:6px}
+#home .hchip,#home .ttag{border-radius:4px}
+#home .hgo{width:48px;padding:0;justify-content:center;border-radius:50%}
+#home .hgo svg{width:20px;height:20px}
+#home .hbpm{align-self:flex-start;text-align:left;font-size:26px;padding:0;margin-top:-2px;display:flex;align-items:baseline;gap:6px}
+#home .hbpm small{display:inline;margin:0;font-size:10px}
+.hsep{position:relative;display:flex;align-items:center;gap:0;margin:2px 0 -6px;height:10px}
+.hsep b{flex:1;height:2px;background:#f2f2ee}
+.hsep i{width:9px;height:9px;background:#f2f2ee;transform:rotate(45deg);flex:none}
+.hsep i:first-child{margin-right:10px}.hsep i:last-child{margin-left:10px}
+.hstick{position:sticky;top:0;z-index:30;margin:0 calc(var(--hp) * -1);padding:max(18px,env(safe-area-inset-top)) var(--hp) 16px;background:#000}
+.hstick::after{content:"";position:absolute;left:0;right:0;top:100%;height:30px;background:linear-gradient(#000 20%,rgba(0,0,0,0));pointer-events:none}
+.hstick .hxnew{position:absolute;right:var(--hp);top:calc(100% + 14px);z-index:2}
+.hxtop{min-height:44px}
+@supports (overflow:clip){.hstick{overflow-x:clip;overflow-y:visible}}
+.hx{display:flex;flex-direction:column;gap:28px;padding:6px 0 24px}
+.hxtop{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:20px 0 -6px}
+.hxtop h1{margin:0;padding-left:12px;font-family:var(--serif);font-weight:400;font-size:clamp(21px,2.7vh,25px);line-height:1;letter-spacing:0;color:#b5b5b5;display:flex;flex-direction:column;align-items:flex-start}
+.hxtop h1 .w1{display:block;padding-left:.05em}
+.hxtop h1 .w2{display:block;margin:-.42em 0 0 1.45em;font-size:1.32em;white-space:nowrap;transform:rotate(-3deg);transform-origin:left center}
+.hxtop h1 .q{color:#b5b5b5;font-style:normal;margin-left:.16em}
+.hxtop h1 mark{background:none;color:var(--yel);font-style:italic;padding:0 .04em 0 0}
+.hxnew{flex:none;display:inline-flex;align-items:center;gap:9px;height:42px;padding:0 13px 0 6px;border-radius:999px;background:#EDEDED;color:#000;border:0;cursor:pointer;font-family:var(--artist);font-weight:400;font-size:20px;letter-spacing:0;box-shadow:0 0 0 1px #EDEDED,0 8px 24px rgba(237,237,237,.12)}
+.hxnew i{font-style:normal;width:30px;height:30px;line-height:30px;border-radius:50%;background:#000;color:#EDEDED;display:grid;place-items:center;font:300 24px/1 "Archivo",sans-serif}
+.hxnew em{font:800 8.5px "Archivo",sans-serif;letter-spacing:.2em;text-transform:uppercase;font-style:normal;border:1px solid #000;border-radius:999px;padding:3px 6px 2px;opacity:.55}
+.hxnew:active{transform:scale(.96)}
+.hero{position:relative;border-radius:24px;overflow:hidden;min-height:clamp(230px,38vh,380px);background:#050505;border:1px solid #1c1c1c;display:flex;align-items:flex-end;cursor:pointer;outline:none;transition:transform .15s}
+.hero:active{transform:scale(.99)}
+.hero:focus-visible,.htile:focus-visible{box-shadow:0 0 0 2px var(--gc)}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(15,15,22,.85),rgba(15,15,22,0) 45%);pointer-events:none}
+.hin{position:relative;z-index:2;width:100%;padding:22px 22px 20px;display:flex;flex-direction:column;gap:10px}
+.hchip{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;padding:5px 11px 4px 9px;border-radius:999px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.18);font:800 10px "Archivo",sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#ddd}
+.hchip i{width:8px;height:8px;border-radius:50%;background:var(--gc);box-shadow:0 0 10px var(--gc)}
+.hnrow{display:flex;align-items:flex-end;justify-content:space-between;gap:18px}
+.hname{min-width:0;font-family:var(--poster);font-weight:900;font-stretch:62%;font-size:clamp(48px,9vw,104px);line-height:.84;letter-spacing:.005em;text-transform:uppercase;color:#fff}
+.hero.art .hname{font-family:var(--artist);font-weight:400;font-stretch:100%;text-transform:none;letter-spacing:-.075em;word-spacing:.1em;font-size:clamp(30px,5.2vw,66px);line-height:1}
+.hero.art .hname em,.htile .tn.art em{font-style:normal;color:var(--gc)}
+.hbpm{flex:none;text-align:right;font-family:var(--poster);font-weight:900;font-stretch:62%;font-size:40px;line-height:1;color:#fff;padding-bottom:4px}
+.hbpm small{display:block;font:800 9.5px "Archivo",sans-serif;letter-spacing:.2em;color:var(--gc);margin-top:3px}
+.hact{display:flex;align-items:center;gap:10px}
+.hdesc{flex:1;min-width:0;color:#c9c9c9;font-size:14px;line-height:1.35}
+.hprev{flex:none;width:48px;height:48px;border-radius:50%;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.35);color:#fff;display:grid;place-items:center;cursor:pointer;padding:0}
+.hprev svg{width:20px;height:20px}
+.hgo{flex:none;display:inline-flex;align-items:center;gap:10px;height:48px;padding:0 20px 0 24px;border-radius:999px;background:var(--gc);color:#000;border:0;font:900 13px "Archivo",sans-serif;letter-spacing:.16em;text-transform:uppercase;cursor:pointer}
+.hgo svg{width:16px;height:16px}
+.hero.ug .hgo,.hero.art .hgo{color:#fff}
+.hero.playing .hprev,.htile.playing .tprev{background:var(--gc);border-color:var(--gc);color:#000}
+.hrow{display:flex;flex-direction:column;gap:12px}
+.hrh{display:flex;align-items:baseline;gap:10px}
+.plock{width:1.15em;height:1.15em;vertical-align:-.16em;margin-left:.45em;color:var(--gc,#fff)}
+.hrow.pro h2 .plock{color:#fff;width:14px;height:14px;margin-left:8px}
+.tch .plock{width:11px;height:11px;margin-left:6px;vertical-align:-1px}
+.hchip .plock{width:11px;height:11px;margin-left:2px;vertical-align:-1px}
+.hrh h2{margin:0;font:900 12px "Archivo",sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#fff}
+.hrh span{font:800 11px "Archivo",sans-serif;color:#666;letter-spacing:.1em}
+.hscroll{display:flex;gap:14px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding:0 var(--hp);padding:2px var(--hp) 8px;margin:0 calc(var(--hp) * -1);scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.hscroll::-webkit-scrollbar{display:none}
+.htile{--ah:clamp(96px,12.5vw,138px);position:relative;flex:none;width:clamp(156px,21vw,232px);scroll-snap-align:start;border-radius:18px;overflow:hidden;background:#0a0a0a;border:1px solid #1d1d1d;display:flex;flex-direction:column;cursor:pointer;color:#fff;outline:none;transition:transform .15s,border-color .15s}
+.htile:active{transform:scale(.97)}
+.htile.cur{border-color:color-mix(in srgb,var(--gc) 55%,#1d1d1d)}
+.htile canvas{width:100%;height:var(--ah);display:block}
+.htile .tv{display:none!important}
+.htile .tv0{position:absolute;left:0;right:0;top:0;height:var(--ah);pointer-events:none;z-index:1;overflow:hidden;background:repeating-linear-gradient(0deg,rgba(0,0,0,.24) 0 1px,transparent 1px 3px);box-shadow:inset 0 0 26px rgba(0,0,0,.8)}
+.htile .tv::before{content:"";position:absolute;inset:-20px;opacity:.06;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='120' height='120' filter='url(%23n)'/></svg>")}
+.htile .tv::after{content:"";position:absolute;left:0;right:0;top:-45%;height:45%;background:linear-gradient(180deg,transparent,rgba(255,255,255,.055) 50%,transparent)}
+.tin{padding:11px 13px 14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.thd{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.ttag{font:800 8px "Archivo",sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#f4d9ff;border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:2px 6px 1px;margin-right:auto;margin-left:-2px;line-height:1.2}
+.hin .ttag.hero-tag{align-self:flex-start;margin:-4px 0 0;font-size:8.5px}
+.tch{font:800 9px "Archivo",sans-serif;letter-spacing:.22em;color:var(--gc);text-transform:uppercase}
+.tb{font:800 10px "Archivo",sans-serif;color:#9a9a9a;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+.tn{font-family:var(--poster);font-weight:900;font-stretch:62%;font-size:clamp(23px,2.6vw,30px);line-height:.92;letter-spacing:.005em;text-transform:uppercase;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.iI{font-family:"Rubik","Archivo Black",sans-serif;font-weight:900;font-style:normal;text-transform:uppercase;letter-spacing:0;margin:0 var(--iMR,0) 0 var(--iML,0)}
+.tn.art{font-family:var(--artist);font-weight:400;font-stretch:100%;text-transform:none;letter-spacing:-.075em;word-spacing:.1em;font-size:clamp(14px,1.55vw,18px);line-height:1.15}
+.tn.art span{color:#fff}.tn .cherry{width:.6em;height:.68em}
+.tprev{position:absolute;top:9px;right:9px;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.28);color:#fff;display:grid;place-items:center;z-index:2}
+.tprev svg{width:16px;height:16px}
+.htile.add{background:transparent;border:1.5px dashed #3a3a3a}
+.htile.add .tplus{height:var(--ah);display:grid;place-items:center;font:200 64px/1 "Archivo",sans-serif;color:#EDEDED}
+.htile.add .tch{color:#9a9a9a}
+@media (prefers-reduced-motion:no-preference){
+ #home.tvon .hxtop,#home.tvon .hero,#home.tvon .htile{animation:hxIn .55s cubic-bezier(.2,.8,.2,1) both;animation-delay:var(--d,0ms)}
+ #home.tvon .hero{--d:40ms}
+ .hxtop h1 mark{animation:vibeC 12s steps(1) infinite}
+ @keyframes vibeC{0%{color:#FFA63D}16.6%{color:#FF6A3D}33.3%{color:#C8FF3D}50%{color:#6C8BFF}66.6%{color:#5CFF8A}83.3%{color:#FF3DAE}}
+ .htile .tv::after{animation:tvRoll 8s linear infinite;animation-delay:calc(var(--d) * -4)}
+ .htile .tv::before{animation:tvGrain 1.4s steps(4) infinite}
+ @keyframes hxIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+ @keyframes tvRoll{to{transform:translateY(330%)}}
+ @keyframes tvGrain{25%{transform:translate(-8px,5px)}50%{transform:translate(6px,-7px)}75%{transform:translate(-4px,8px)}}
+}
+body.noanim .htile .tv::after,body.noanim .htile .tv::before,body.eco .htile .tv::after,body.eco .htile .tv::before{animation:none!important}
+body.eco .htile .tv::before{display:none}
+@media (max-width:700px){
+ #home.flyer{--hp:16px;padding-left:16px;padding-right:16px}
+ .hx{gap:24px}
+ .hxtop h1{font-size:21px}
+ .hin{padding:18px 16px 16px}
+ .hname{font-size:clamp(46px,14vw,70px)}
+ .hero.art .hname{font-size:clamp(24px,8.6vw,36px)}
+ .hbpm{font-size:34px}
+ .hact{flex-wrap:wrap}
+ .hdesc{flex-basis:100%;font-size:13px}
+ .hact .hprev{margin-left:auto}
+}
+

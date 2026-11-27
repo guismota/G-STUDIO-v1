@@ -1,0 +1,41 @@
+/* Criar novo com a fonte do Afterparty */
+.band.xnovo .bname{font-family:var(--artist);font-weight:800;font-stretch:100%;text-transform:none;letter-spacing:-.02em;font-size:clamp(26px,min(4.6vh,5.6vw),48px);line-height:.9;color:#fff;display:flex;flex-direction:row;align-items:baseline;gap:.22em}
+.band.xnovo .bname em{font-style:normal;color:var(--nov);text-shadow:0 0 18px rgba(237,237,237,.7)}
+.band.xnovo:not(:has(.bprev:active)):active .bname em,.band.xnovo:not(:has(.bprev:active)):active .bname span{color:#000;text-shadow:none}
+/* troca de página */
+#wipe{position:fixed;inset:0;z-index:7000;pointer-events:none;display:none;overflow:hidden}
+#wipe.on{display:block;pointer-events:auto}
+#wipe .wp{position:absolute;top:-4%;bottom:-4%;left:-15%;right:-15%;background:var(--wc);color:var(--wi);transform:translateX(120%) skewX(-12deg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  background-image:repeating-linear-gradient(-45deg,rgba(0,0,0,.07) 0 2px,transparent 2px 10px)}
+#wipe.in .wp{animation:wpIn .3s cubic-bezier(.75,0,.25,1) forwards}
+#wipe.out .wp{animation:wpOut .34s cubic-bezier(.75,0,.25,1) forwards}
+@keyframes wpIn{from{transform:translateX(120%) skewX(-12deg)}to{transform:translateX(0) skewX(-12deg)}}
+@keyframes wpOut{from{transform:translateX(0) skewX(-12deg)}to{transform:translateX(-120%) skewX(-12deg)}}
+#wipe .wch{transform:skewX(12deg);font:900 13px "Archivo",sans-serif;letter-spacing:.5em;text-transform:uppercase;border:2px solid currentColor;padding:6px 10px 5px 14px}
+#wipe .wnm{transform:skewX(12deg);font:900 clamp(54px,11vw,150px) "Archivo",sans-serif;text-transform:uppercase;letter-spacing:-.03em;line-height:.88;text-align:center}
+#wipe.art .wnm{font-family:var(--artist);font-weight:400;font-stretch:100%;text-transform:none;letter-spacing:-.075em;font-size:clamp(30px,6.4vw,92px)}
+#wipe.art .wnm em{font-style:normal;color:#000;opacity:.85}
+#wipe .wnm .cherry{width:.55em;height:.62em;vertical-align:.05em}
+#wipe.in .wnm{animation:wpTxt .3s ease-out both}@keyframes wpTxt{from{letter-spacing:.2em;opacity:0}to{letter-spacing:-.03em;opacity:1}}
+#explore.open{animation:xin .3s cubic-bezier(.2,.8,.2,1)}@keyframes xin{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+/* cena solta */
+#sceneFx{position:fixed;inset:0;z-index:5000;pointer-events:none;display:none;overflow:hidden}
+#sceneFx.go{display:block}
+body.novo #sceneFx{--yel:#EDEDED}
+.sfx-flash{position:absolute;inset:0;background:var(--yel);opacity:0}
+#sceneFx.go .sfx-flash{animation:sfxFlash .55s linear forwards}
+@keyframes sfxFlash{0%{opacity:.42}10%{opacity:0}20%{opacity:.25}30%{opacity:0}42%{opacity:.12}55%,100%{opacity:0}}
+.sfx-ring{position:absolute;left:var(--x);top:var(--y);width:60px;height:60px;margin:-30px 0 0 -30px;border:8px solid var(--yel);border-radius:50%!important;opacity:0;box-shadow:0 0 30px var(--yel)}
+#sceneFx.go .sfx-ring{animation:sfxRing .8s cubic-bezier(.1,.75,.25,1) forwards}
+#sceneFx.go .sfx-ring.r2{animation-delay:.09s;border-color:#fff;border-width:3px}
+@keyframes sfxRing{0%{transform:scale(.2);opacity:1}100%{transform:scale(34);opacity:0;border-width:1px}}
+#session.sfx .lane::after{content:"";position:absolute;inset:-2px;pointer-events:none;z-index:3;mix-blend-mode:screen;opacity:0;
+  background:linear-gradient(90deg,var(--c) 0%,var(--yel) 35%,rgba(255,61,174,.6) 60%,transparent 90%);background-size:220% 100%;
+  animation:laneSweep .6s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(var(--i) * 26ms)}
+@keyframes laneSweep{0%{opacity:0;background-position:120% 0}25%{opacity:.75}100%{opacity:0;background-position:-40% 0}}
+.dev.shake{animation:shk .34s linear}
+@keyframes shk{0%{left:0;top:0}15%{left:5px;top:-4px}30%{left:-6px;top:3px}45%{left:4px;top:4px}60%{left:-3px;top:-2px}80%{left:2px;top:1px}100%{left:0;top:0}}
+.sc.boom{position:relative}.sc.boom::after{content:"";position:absolute;inset:-3px;background:var(--yel);mix-blend-mode:screen;pointer-events:none;animation:slotBoom .5s ease-out forwards}
+@keyframes slotBoom{0%{opacity:.9}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){#sceneFx,#wipe{display:none!important}}
+

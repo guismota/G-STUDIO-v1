@@ -24,7 +24,7 @@ App de loops musicais (estilo live set). Hoje roda como PWA no iPad e no computa
 ## Conteúdo e direitos
 - Nenhum nome de artista visível no app.
 - Descrições dos gêneros sem nomes protegidos por direitos autorais (jogos, marcas, festas etc.).
-- Samples novos só com licença que permita distribuí-los dentro de um app (CC0 ou contrato de cessão), sempre registrando a origem em `smp/CREDITOS.txt`.
+- Samples novos só com licença que permita distribuí-los dentro de um app (CC0 ou contrato de cessão), sempre registrando a origem em `public/smp/CREDITOS.txt`.
 
 ## Design (estado atual, a preservar)
 - Capas tipográficas desenhadas em canvas, com grão. O asterisco amarelo (Helvetica Bold, girado 30°) aparece só nas capas dos gêneros PRO.
@@ -34,6 +34,12 @@ App de loops musicais (estilo live set). Hoje roda como PWA no iPad e no computa
 - Depois de mexer em sons, rodar o teste de níveis: nada pode clipar e nenhuma faixa pode ficar muda.
 - Conferir no tamanho de iPad e de Mac antes de entregar.
 - Rodar todos os testes antes de cada commit.
+
+## Como rodar
+- `npm run dev`: servidor de desenvolvimento (também abre no iPad pela rede Wi-Fi).
+- `npm run build`: build final em `dist/` (o que vai para o site).
+- `npm test`: monta o build e roda todos os testes contra a 1.7.8.1 (`legacy/`). Detalhes em `tests/README.md`.
+- A versão fica só em `package.json` (`appVersion`); o build grava no app (`APPV`) e no nome do cache do service worker.
 
 ## Partes delicadas (não podem quebrar)
 1. Tela de compatibilidade: o primeiro `<script>` do `index.html` é ES5 de propósito e fica inline, antes de tudo. Não pode virar módulo nem passar pelo Vite/TypeScript. Ele depende dos elementos `#onb`, `#obCompat`, `#obGo`, `#obNote` e `#welcome` já existirem no HTML acima dele.

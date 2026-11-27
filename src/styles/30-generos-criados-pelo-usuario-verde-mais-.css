@@ -1,0 +1,36 @@
+/* gêneros criados pelo usuário: verde mais escuro */
+.band.xugen .ch{background:var(--ug);color:#fff}
+.band.xugen{background:linear-gradient(90deg,#040a1c,#000 60%)}
+.band.xugen .bignum{-webkit-text-stroke-color:rgba(47,91,234,.5);background:repeating-linear-gradient(-45deg,rgba(47,91,234,.3) 0 2px,transparent 2px 7px);-webkit-background-clip:text;background-clip:text}
+.band.xugen .bbpm small{color:var(--ug)}
+.band.xugen:not(:has(.bprev:active)):active{background:var(--ug)}
+.band.xugen .bprev:active,.band.xugen.playing .bprev{background:var(--ug);border-color:var(--ug);color:#fff}
+.nvsave,.nvug{display:none!important}
+body.novo .nvug{display:inline-flex!important;align-items:center;height:34px;padding:0 12px;font:800 11px "Archivo",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#6F8FFF!important;border-color:#2F5BEA!important}
+body.ugen #sceneFx{--yel:#2F5BEA}
+.ugd b{font:900 20px "Archivo",sans-serif;text-transform:uppercase}.ugp{color:#9a9a9a!important;font-weight:500!important;font-size:13px!important}
+.xdlg .xrn input{height:44px;background:#000;border:1px solid #333;color:#fff;padding:0 12px;font:600 16px "Archivo",sans-serif;outline:0;-webkit-user-select:text;user-select:text;border-radius:0;text-transform:none;letter-spacing:0}
+
+#lcdMsg{max-width:168px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+
+.band.xnovo .bname .nplus{font-family:"Archivo",sans-serif;font-weight:900;font-size:clamp(44px,min(7vh,8vw),76px);line-height:.8;color:var(--nov);text-shadow:0 0 22px rgba(237,237,237,.6)}
+
+/* tour */
+#tour{position:fixed;inset:0;z-index:8000;display:none}
+#tour.on{display:block}
+#tour .thole{position:fixed;border:2px solid #FFE600;box-shadow:0 0 0 9999px rgba(0,0,0,.74),0 0 24px rgba(255,230,0,.45);transition:all .32s cubic-bezier(.2,.8,.2,1);pointer-events:none;border-radius:0}
+#tour .tcard{position:fixed;background:#0b0b0b;border:2px solid #fff;padding:16px 16px 14px;display:flex;flex-direction:column;gap:8px;color:#fff;transition:left .32s cubic-bezier(.2,.8,.2,1),top .32s cubic-bezier(.2,.8,.2,1);border-radius:0}
+#tour .tcard::before{content:"";position:absolute;left:var(--ax,40px);top:-9px;width:14px;height:14px;margin-left:-7px;background:#0b0b0b;border-left:2px solid #fff;border-top:2px solid #fff;transform:rotate(45deg)}
+#tour .tcard.up::before{top:auto;bottom:-9px;transform:rotate(225deg)}
+#tour .tcard.pop{animation:tpop .3s cubic-bezier(.2,.8,.2,1)}@keyframes tpop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+#tour .th{display:flex;justify-content:space-between;align-items:center}
+#tour .tn{font:800 10px "Archivo",sans-serif;letter-spacing:.22em;text-transform:uppercase;color:#FFE600}
+#tour .tskip{background:none;border:0;color:#8a8a8a;font:700 11px "Archivo",sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:6px 0 6px 10px;cursor:pointer}
+#tour .tt{font:900 20px "Archivo",sans-serif;text-transform:uppercase;line-height:1.05}
+#tour .td{margin:0;color:#cfcfcf;font:500 14px "Archivo",sans-serif;line-height:1.45}
+#tour .tf{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+#tour .tdots{display:flex;gap:6px}#tour .tdots i{width:7px;height:7px;background:#333;transform:rotate(45deg)}#tour .tdots i.on{background:#FFE600}
+#tour .tgo{height:40px;padding:0 18px;background:#FFE600;border:0;color:#000;font:900 12px "Archivo",sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:0}
+#tourAgain{background:none;border:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;text-decoration:underline;cursor:pointer;padding:0}
+
+

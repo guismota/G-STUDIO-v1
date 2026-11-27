@@ -1,0 +1,33 @@
+/* ===== X-Pad, Master e One Shots ===== */
+.pmode{align-self:stretch;display:flex}
+.pmode button{flex:1}
+.plug .xpad{display:none}
+.plug.xm .bigk{display:none}
+.plug.xm .xpad{display:block}
+.xpad{position:relative;align-self:stretch;height:clamp(96px,calc(var(--w,340px)*.36),150px);background:#050505;border:1px solid #333;touch-action:none;cursor:pointer;overflow:hidden;
+ background-image:repeating-linear-gradient(90deg,transparent 0 calc(100%/var(--n,5) - 1px),#1e1e1e calc(100%/var(--n,5) - 1px) calc(100%/var(--n,5)))}
+.xseg{position:absolute;left:0;right:0;bottom:0;display:flex}
+.xseg span{flex:1;text-align:center;font-size:11px;font-weight:900;letter-spacing:.08em;color:#666;padding:6px 0;border-top:1px solid #1e1e1e}
+.xseg span.on{color:#000;background:var(--yel)}
+.xglow{position:absolute;top:0;bottom:28px;left:var(--x,50%);width:46px;margin-left:-23px;background:radial-gradient(closest-side,rgba(255,230,0,.95),rgba(255,230,0,.25) 60%,transparent);opacity:0;transition:opacity .12s;pointer-events:none}
+.xpad.touch .xglow{opacity:1}
+.xpad.touch{border-color:var(--yel)}
+.xhint{position:absolute;left:0;right:0;top:38%;text-align:center;font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:#4a4a4a;pointer-events:none}
+.xpad.touch .xhint{opacity:0}
+.lkl.dis{opacity:.35;pointer-events:none}
+.chip.mst{font-weight:900}
+.chip.mst.sel{background:var(--yel)!important;color:#000!important;border-color:var(--yel)!important}
+/* one shots */
+.oswin .osic{width:10px;height:10px;background:var(--yel);transform:rotate(45deg);margin:0 6px 0 4px;flex:none}
+.ospads{align-self:stretch;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.ospad{position:relative;aspect-ratio:1/.82;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;padding:9px;background:#0b0b0b;border:1px solid #2c2c2c;color:#fff;text-align:left;touch-action:none;user-select:none;-webkit-user-select:none}
+.ospad b{font-family:var(--poster);font-weight:900;font-stretch:62%;font-size:clamp(15px,calc(var(--pw,380px)*.05),24px);line-height:.95;text-transform:uppercase;letter-spacing:.01em}
+.ospad .osn{font-size:10px;font-weight:800;color:#666;letter-spacing:.1em}
+.ospad i{position:absolute;right:9px;top:10px;width:7px;height:7px;background:var(--c);transform:rotate(45deg)}
+.ospad:active{border-color:var(--yel)}
+.ospad.hit{animation:oshit .35s ease-out}
+@keyframes oshit{0%{background:var(--yel);color:#000}100%{background:#0b0b0b;color:#fff}}
+.osbar{align-self:stretch;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.ossoon{color:#555;font-size:10.5px;letter-spacing:.06em}
+#osBtn.open{border-color:#f2f2f2}
+

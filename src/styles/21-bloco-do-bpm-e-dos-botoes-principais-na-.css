@@ -1,0 +1,33 @@
+/* bloco do BPM e dos botões principais na mesma altura */
+.top .lcd{height:64px;box-sizing:border-box;padding:6px 14px 6px;align-content:center;row-gap:0}
+.top .lcd .bpm{font-size:29px}
+.top .lcd .pos{font-size:19px}
+.top .lcd .msg{margin-top:3px;line-height:1}
+.top .vbtn{height:64px;justify-content:space-between;gap:0}
+.top .vbtn .mini{height:30px}
+.top #play,.top #recBtn,.top #editTog{height:64px}
+/* sequenciador de passos (bateria), no estilo do step sequencer roxo */
+#edGrid.stepseq{--sq:#9D6BFF;--sqh:#C3A2FF;gap:12px}
+.sqbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.sqmode,.sqpages{display:flex;gap:3px}
+.sqbar button{height:32px;padding:0 12px;background:#141416;border:1px solid #2a2a30;color:#9a9aa8;font:800 10.5px "Archivo",sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+.sqbar button.sel{background:var(--sq);border-color:var(--sq);color:#fff}
+.sqpages .sqpg{width:40px;padding:0;position:relative}
+.sqpages .sqpg.has::after{content:"";position:absolute;left:50%;bottom:4px;width:5px;height:5px;margin-left:-2.5px;border-radius:50%!important;background:var(--sqh)}
+.sqpages .sqpg.sel.has::after{background:#fff}
+.sqpages .sqpg.off{opacity:.25;cursor:default}
+.sqfollow{margin-left:auto}
+.sqgrid{display:flex;flex-direction:column;gap:6px}
+.sqrow{display:grid;grid-template-columns:86px repeat(4,minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr));column-gap:5px;align-items:stretch}
+.sqrow>.cell:nth-of-type(4n+1):not(:first-of-type){margin-left:8px}
+.sqname{align-self:center;font:800 10.5px "Archivo",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#cfcfd8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:6px}
+#edGrid .cell.sqs{position:relative;height:clamp(44px,9vh,72px);background:#1b1b20!important;border:1px solid #26262d;border-radius:5px!important;overflow:hidden;box-shadow:none!important;padding:0}
+#edGrid .cell.sqs.beat{background:#222229!important}
+#edGrid .cell.sqs i{position:absolute;left:0;right:0;bottom:0;height:100%;background:var(--sq);opacity:0;transition:opacity .08s}
+#edGrid .cell.sqs.on i{opacity:calc(.45 + var(--v,1) * .55)}
+#edGrid .sqgrid.vel .cell.sqs i{height:calc(var(--v,0) * 100%);opacity:0}
+#edGrid .sqgrid.vel .cell.sqs.on i{opacity:1;border-top:2px solid var(--sqh)}
+#edGrid .cell.sqs.ph{border-color:#fff;box-shadow:inset 0 0 0 1px #fff!important}
+.sqrule b{font:800 9.5px "Archivo",sans-serif;color:#666;letter-spacing:.06em;text-align:left;padding-left:2px}
+.sqrule>b:nth-of-type(4n+1):not(:first-of-type){margin-left:8px}
+@media (max-width:760px){.sqrow{grid-template-columns:54px repeat(16,minmax(0,1fr));column-gap:3px}.sqrow>.cell:nth-of-type(4n+1):not(:first-of-type),.sqrule>b:nth-of-type(4n+1):not(:first-of-type){margin-left:4px}}

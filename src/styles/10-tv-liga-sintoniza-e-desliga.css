@@ -1,0 +1,50 @@
+/* TV liga, sintoniza e desliga */
+@media (prefers-reduced-motion:no-preference){
+ .tape .tk{animation:tick 40s linear infinite}
+ #home.tvon .band .screen{animation:crtOn .65s cubic-bezier(.2,.8,.2,1) both;animation-delay:var(--d)}
+ #home.tvon .band .bname,#home.tvon .band .bdesc,#home.tvon .band .bbpm{animation:fadeup .5s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--d) + 120ms)}
+ @keyframes crtOn{0%{transform:scale(0,.01);filter:brightness(6)}35%{transform:scale(1,.01);filter:brightness(6)}65%{transform:scale(1,1);filter:brightness(2.4)}100%{transform:none;filter:none}}
+ .band .static::after{animation:roll 7s linear infinite;animation-delay:var(--d)}
+ @keyframes roll{0%{top:-30%}35%,100%{top:130%}}
+ .band .static{animation:snow .5s steps(3) infinite}
+ @keyframes snow{33%{background-position:30px 20px,0 0}66%{background-position:-20px 40px,0 1px}}
+ .band.tune .screen{animation:tune .42s steps(6) both}
+ .band.tune .static{opacity:.85;animation:snow .12s steps(3) infinite}
+ .band.tune .bname{animation:glitch .42s steps(5)}
+ @keyframes tune{0%{transform:translateX(0);filter:brightness(1)}20%{transform:translateX(-14px) skewX(8deg);filter:brightness(2.5) contrast(2)}40%{transform:translateX(10px);filter:brightness(.4)}60%{transform:translateX(-6px) skewX(-6deg);filter:brightness(3)}80%{transform:scale(1,.02);filter:brightness(6)}100%{transform:scale(1,.02);filter:brightness(6)}}
+ @keyframes glitch{0%,100%{text-shadow:none;transform:none}25%{text-shadow:-4px 0 var(--gc),4px 0 #fff;transform:translateX(3px)}50%{text-shadow:3px 0 var(--gc);transform:translateX(-4px)}75%{text-shadow:-2px 0 #fff,2px 0 var(--gc);transform:translateX(2px)}}
+ .dev.crtoff{animation:crtOff .38s cubic-bezier(.6,0,.4,1) both}
+ @keyframes crtOff{0%{transform:none;filter:none}55%{transform:scale(1,.006);filter:brightness(4)}100%{transform:scale(0,.006);filter:brightness(6);opacity:0}}
+ #welcome .wl{animation:crtOn .8s cubic-bezier(.2,.8,.2,1) both}
+ .flive i{animation:breathe 1.4s ease-in-out infinite}
+}
+@media (max-width:900px){.band{grid-template-columns:52px minmax(0,1fr) auto 30px 30px;gap:0 10px}.band .bdesc{display:none}.band .screen,.band .static{left:20%}.band.soon .tapeb{grid-column:3/6}}
+
+/* v2: cor por gênero + movimento */
+.fhead h1 mark{background:#fff}
+.band .screen{opacity:.72}
+.band .screen .ink{position:absolute;inset:0;background:var(--gc);mix-blend-mode:multiply}
+.band .bbpm{display:flex;align-items:baseline;gap:0}
+.band .eq{display:inline-flex;align-items:flex-end;gap:2px;height:18px;margin-right:10px;align-self:center}
+.band .eq i{width:3px;height:100%;background:var(--gc);transform-origin:50% 100%;transform:scaleY(.3)}
+.tape b{background:#000}
+.tape b:nth-of-type(6n+1){background:#FFA63D}.tape b:nth-of-type(6n+2){background:#FF6A3D}.tape b:nth-of-type(6n+3){background:#C8FF3D;outline:1px solid #000}.tape b:nth-of-type(6n+4){background:#6C8BFF}.tape b:nth-of-type(6n+5){background:#5CFF8A;outline:1px solid #000}.tape b:nth-of-type(6n){background:#FF3DAE}
+@media (prefers-reduced-motion:no-preference){
+ .fhead h1 mark{animation:vibe 9s steps(1) infinite}
+ @keyframes vibe{0%{background:#FFA63D}16.6%{background:#FF6A3D}33.3%{background:#C8FF3D}50%{background:#6C8BFF}66.6%{background:#5CFF8A}83.3%{background:#FF3DAE}}
+ .band .screen img{animation:drift 16s ease-in-out infinite alternate;animation-delay:calc(var(--d) * -9)}
+ @keyframes drift{0%{transform:scale(1.04) translate(0,0)}100%{transform:scale(1.16) translate(-4%,-3%)}}
+ .band .eq i{animation:eqb var(--beat) ease-out infinite}
+ .band .eq i:nth-child(2){animation-duration:calc(var(--beat) / 2);animation-delay:-.07s}
+ .band .eq i:nth-child(3){animation-duration:calc(var(--beat) * 2);animation-delay:-.21s}
+ .band .eq i:nth-child(4){animation-duration:calc(var(--beat) / 2);animation-delay:-.13s}
+ .band .eq i:nth-child(5){animation-delay:calc(var(--beat) / -2)}
+ @keyframes eqb{0%{transform:scaleY(1)}60%{transform:scaleY(.25)}100%{transform:scaleY(.15)}}
+ .band .ch{animation:chpulse var(--beat) steps(1) infinite}
+ @keyframes chpulse{0%{filter:brightness(1.15)}12%{filter:none}}
+ .band.flick .screen{animation:flick .5s steps(5) both}
+ .band.flick .static{opacity:.6}
+ .band.flick .bname{animation:glitch .5s steps(5)}
+ @keyframes flick{0%{transform:none;filter:none}20%{transform:translateX(-10px) skewX(6deg);filter:brightness(2) contrast(1.6)}40%{transform:translateY(3px);filter:brightness(.3)}60%{transform:translateX(8px);filter:hue-rotate(60deg) brightness(1.8)}80%{transform:skewX(-4deg)}100%{transform:none;filter:none}}
+}
+

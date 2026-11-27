@@ -1,0 +1,36 @@
+/* logo da tela inicial: alterna devagar entre só o knob e só o G-STUDIO */
+#home .fbrand{display:grid;place-items:center;gap:0}
+#home .fbrand .bk1,#home .fbrand .bk2{grid-area:1/1;display:block;will-change:opacity,transform}
+/* logo: knob 22 s, gira parado até o zero e some encolhendo; o nome abre do centro, fica 22 s e fecha; sem fade */
+#home .fbrand .bk1{animation:bkKnob 48.8s linear infinite}
+#home .fbrand .bk2{animation:bkWord 48.8s linear infinite}
+@keyframes bkKnob{0%,45.08%{transform:rotate(0) scale(1);animation-timing-function:cubic-bezier(.55,0,.25,1)}47.95%{transform:rotate(-135deg) scale(1);animation-timing-function:cubic-bezier(.6,0,.9,.4)}48.77%,97.54%{transform:rotate(-135deg) scale(0);animation-timing-function:cubic-bezier(.1,.6,.3,1)}98.36%{transform:rotate(-135deg) scale(1);animation-timing-function:cubic-bezier(.45,0,.25,1)}100%{transform:rotate(0) scale(1)}}
+@keyframes bkWord{0%,48.77%{-webkit-clip-path:inset(0 50% 0 50%);clip-path:inset(0 50% 0 50%);animation-timing-function:cubic-bezier(.2,.7,.2,1)}50.82%,95.9%{-webkit-clip-path:inset(0 0 0 0);clip-path:inset(0 0 0 0);animation-timing-function:cubic-bezier(.6,0,.8,.4)}97.54%,100%{-webkit-clip-path:inset(0 50% 0 50%);clip-path:inset(0 50% 0 50%)}}
+
+body.noanim #home .fbrand,body.eco #home .fbrand{display:flex;gap:10px}
+body.noanim #home .fbrand .bk1,body.noanim #home .fbrand .bk2,body.eco #home .fbrand .bk1,body.eco #home .fbrand .bk2{animation:none}
+@media (prefers-reduced-motion:reduce){#home .fbrand{display:flex;gap:10px}#home .fbrand .bk1,#home .fbrand .bk2{animation:none}}
+/* termos de uso e privacidade */
+#terms{position:fixed;inset:0;z-index:4900;background:#000;display:none;overflow-y:auto;-webkit-overflow-scrolling:touch}
+#terms.show{display:block;animation:obup .5s cubic-bezier(.2,.8,.2,1) both}
+.tgin{max-width:640px;margin:0 auto;min-height:100%;padding:max(30px,env(safe-area-inset-top)) 24px max(30px,env(safe-area-inset-bottom));display:flex;flex-direction:column;justify-content:center;gap:18px}
+.tgh{margin:4px 0 0;font-family:var(--poster);font-weight:900;font-stretch:62%;text-transform:uppercase;font-size:clamp(48px,9vw,96px);line-height:.88;color:#fff}
+.tgl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.tgl li{padding:12px 14px;background:#0a0a0a;border:1px solid #222;color:#bdbdbd;font-size:14.5px;line-height:1.45}
+.tgl li b{color:#fff;font-weight:800}
+.tgdocs{display:flex;flex-wrap:wrap;gap:8px}
+.tgdocs .hw{height:40px;padding:0 14px;background:#0b0b0b;border:1px solid #333;color:#eee;font:800 11px "Archivo",sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.tgchk{display:flex;gap:12px;align-items:flex-start;padding:14px;border:1px solid #333;background:#0a0a0a;cursor:pointer;color:#ddd;font-size:14px;line-height:1.45}
+.tgchk input{flex:none;width:22px;height:22px;margin:0;accent-color:var(--yel);cursor:pointer}
+#tgGo{flex:none;height:58px;min-height:58px}
+#tgGo:disabled{opacity:.35;cursor:not-allowed}
+#docv{position:fixed;inset:0;z-index:5000;background:#050505;display:none;flex-direction:column}
+#docv.show{display:flex}
+.dvh{flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:max(14px,env(safe-area-inset-top)) 20px 14px;border-bottom:1px solid #222}
+.dvh b{font:900 22px/1 var(--poster);font-stretch:62%;text-transform:uppercase;color:#fff;letter-spacing:.01em}
+.dvh .hw{height:38px;padding:0 14px;background:#111;border:1px solid #333;color:#eee;font:800 11px "Archivo",sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.dvb{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:22px 20px max(40px,env(safe-area-inset-bottom));max-width:760px;width:100%;margin:0 auto;box-sizing:border-box;color:#c9c9c9;font-size:15px;line-height:1.6;-webkit-user-select:text;user-select:text}
+.dvb .dvm{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#777;font-weight:800;margin:0 0 18px}
+.dvb h4{margin:24px 0 6px;color:#fff;font-size:15px;font-weight:800}
+.dvb p{margin:0 0 10px}.dvb ul{margin:0 0 10px;padding-left:20px}.dvb li{margin:4px 0}
+.dvb .dvbox{border-left:3px solid var(--yel);background:#0d0d0d;padding:12px 14px;margin:0 0 16px;color:#ddd}

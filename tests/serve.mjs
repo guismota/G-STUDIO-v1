@@ -1,6 +1,7 @@
 // Servidor local simples para os testes.
 // Uso: node tests/serve.mjs <alvo> <porta>
 //   legacy  -> a cópia intocada da 1.7.8.1 (legacy/index.html e legacy/sw.js); o resto vem de public/ ou da raiz
+//   build   -> o build de teste da versão nova (pasta dist-test/, gerada com npm run build:test)
 //   dist    -> o build final (pasta dist/)
 // Com GS_HOOK=1, injeta na versão antiga o gancho de teste window.__gs (só na resposta, o arquivo não muda).
 import http from 'node:http';
@@ -18,7 +19,7 @@ const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; ch
   '.css': 'text/css; charset=utf-8', '.json': 'application/json', '.webmanifest': 'application/manifest+json', '.png': 'image/png',
   '.svg': 'image/svg+xml', '.ico': 'image/x-icon', '.wav': 'audio/wav', '.txt': 'text/plain; charset=utf-8', '.woff2': 'font/woff2' };
 
-const dirs = target === 'dist' ? [path.join(ROOT, 'dist')] : [path.join(ROOT, 'legacy'), path.join(ROOT, 'public'), ROOT];
+const dirs = target === 'build' ? [path.join(ROOT, 'dist-test')] : target === 'dist' ? [path.join(ROOT, 'dist')] : [path.join(ROOT, 'legacy'), path.join(ROOT, 'public'), ROOT];
 
 function find(rel) {
   for (const d of dirs) {

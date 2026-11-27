@@ -1,0 +1,45 @@
+/* v3: mais discreto, imagens legíveis, grain animado */
+.band .bname{text-shadow:0 2px 14px rgba(0,0,0,.7)}
+.band .eq{display:none}
+.band .screen{left:auto;right:136px;width:auto;height:100%;aspect-ratio:3/1;opacity:.9;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 30%,#000 80%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 30%,#000 80%,transparent 100%)}
+.band .screen img{filter:brightness(.9) contrast(1.05)}
+.band .screen .ink{mix-blend-mode:color;opacity:.9}
+.band .static{left:0;opacity:.09;mix-blend-mode:screen}
+.band .static::after{display:none}
+.band .ch{color:rgba(0,0,0,.82)}
+@media (max-width:900px){.band .screen{right:96px}}
+@media (prefers-reduced-motion:no-preference){
+ .band .ch{animation:none}
+ .band .static{animation:grain .9s steps(6) infinite}
+ @keyframes grain{0%{background-position:0 0,0 0}17%{background-position:-37px 21px,0 1px}33%{background-position:52px -14px,0 0}50%{background-position:-18px -46px,0 2px}67%{background-position:41px 33px,0 1px}83%{background-position:-55px 8px,0 0}}
+ @keyframes drift{0%{transform:scale(1.02)}100%{transform:scale(1.09) translate(-2%,-2%)}}
+ .fhead h1 mark{animation-duration:18s}
+}
+
+/* v4: símbolos por gênero, logo no centro */
+.fh{display:grid;grid-template-columns:1fr auto 1fr}
+.fh .fbrand{justify-self:center}
+.fch{justify-self:end;font-size:10.5px;font-weight:800;letter-spacing:.2em;color:#666;font-stretch:80%}
+.band .screen{left:auto;right:136px;top:6px;bottom:6px;height:auto;aspect-ratio:4/3;opacity:1;-webkit-mask-image:none;mask-image:none;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 45%,rgba(255,255,255,.05),transparent 70%),#070707;border:1px solid #262626;color:var(--gc)}
+.band .screen svg{height:84%;width:auto;filter:drop-shadow(0 0 6px color-mix(in srgb,var(--gc) 55%,transparent));position:relative}
+.band .screen::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.28) 0 1px,transparent 1px 3px);pointer-events:none}
+.band:not(.soon):not(:has(.bprev:active)):active .screen{mix-blend-mode:normal;background:#000;opacity:1}
+@media (max-width:900px){.band .screen{right:96px}}
+
+/* v5: tudo amarelo + imagens xerox recortadas no rosto */
+.band .screen{left:auto;right:0;top:0;bottom:0;height:auto;aspect-ratio:4/1;border:0;background:none;opacity:.8;display:block;
+ -webkit-mask-image:radial-gradient(circle,#000 55%,transparent 62%),linear-gradient(90deg,transparent 0,#000 38%);-webkit-mask-size:3px 3px,100% 100%;-webkit-mask-composite:source-in;
+ mask-image:radial-gradient(circle,#000 55%,transparent 62%),linear-gradient(90deg,transparent 0,#000 38%);mask-size:3px 3px,100% 100%;mask-composite:intersect}
+.band .screen::after{display:none}
+.band .screen img{width:100%;height:100%;object-fit:cover;filter:none}
+.band:not(.soon):not(:has(.bprev:active)):active .screen{mix-blend-mode:multiply;opacity:.9}
+.band .bbpm,.band .barrow{text-shadow:0 1px 10px #000}
+.band .barrow{background:rgba(0,0,0,.55)}
+@media (max-width:900px){.band .screen{right:0}}
+
+.band .screen{aspect-ratio:5/1;opacity:1;
+ -webkit-mask-image:radial-gradient(circle,#000 62%,transparent 72%),linear-gradient(90deg,transparent 0,#000 30%);-webkit-mask-size:4px 4px,100% 100%;
+ mask-image:radial-gradient(circle,#000 62%,transparent 72%),linear-gradient(90deg,transparent 0,#000 30%);mask-size:4px 4px,100% 100%}
+.band .screen img{filter:brightness(1.15) contrast(1.1)}
+@media (max-width:900px){.band .screen{aspect-ratio:4/1}}
+

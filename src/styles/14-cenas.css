@@ -1,0 +1,39 @@
+/* cenas */
+#scenes .sc{background:#0b0b0b;border:1px solid #2c2c2c;box-shadow:none}
+#scenes .sc b,#scenes .sc .n{font-family:var(--poster);font-stretch:62%}
+/* plugins */
+.plug{background:#050505!important;border:1px solid #333!important;box-shadow:0 18px 40px rgba(0,0,0,.7)!important}
+.plug .ph{border-bottom:1px solid #1e1e1e}
+.plug .ph b,.plug .pt{font-family:var(--poster);font-weight:900;font-stretch:62%;font-size:22px;letter-spacing:.02em;text-transform:uppercase}
+.pw{background:#0b0b0b!important;border:1px solid #333!important}
+.pw.on>.led{background:var(--yel)!important;box-shadow:0 0 8px rgba(255,230,0,.6)!important}
+.bk .val{stroke:var(--yel)!important;filter:drop-shadow(0 0 4px rgba(255,230,0,.45))!important}
+.bk .ind{stroke:var(--yel)!important}
+/* editor de bateria */
+.modal .sheet,.modal>div{background:#050505;border:1px solid #333;box-shadow:0 18px 40px rgba(0,0,0,.7)}
+#edGrid,#mgrid,.rgrid{background:#000!important;border:1px solid #1e1e1e!important}
+.cell{background:#111!important}.cell.beat{background:#1a1a1a!important}
+.cell.on{background:var(--yel)!important;box-shadow:none!important}
+#ceTitle,.sh-title b{font-family:var(--poster);font-weight:900;font-stretch:62%;font-size:22px;letter-spacing:.02em}
+.sh-title i{width:7px;height:7px;transform:rotate(45deg);background:var(--c)!important}
+/* piano roll */
+#roll{background:#000!important}
+#rlTitle{font-family:var(--poster);font-weight:900;font-stretch:62%;font-size:30px;letter-spacing:.02em;text-transform:uppercase}
+.rgrid .nrow .ncell.on{background:var(--yel)!important}
+.rgrid .nrow.root span{background:var(--yel)!important;color:#000}
+.nrow.root .ncell{background:#141200!important}.nrow.root .ncell.beat{background:#1c1900!important}
+.kw.dn,.kbk.dn{background:var(--yel)!important;color:#000}
+.kw.root{box-shadow:inset 0 -4px 0 var(--yel)}
+
+.empty-state b{font-family:var(--poster);font-weight:900;font-stretch:62%;font-size:44px;letter-spacing:.01em;text-transform:uppercase;color:#fff}
+
+/* título central e menor */
+.fhead{flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;margin-top:4px}
+.fhead h1{font-size:clamp(28px,4.2vh,44px)}
+.fhead p{font-size:12px}
+
+.lh{padding-left:16px!important}
+.well{overflow-y:auto}
+
+.rgrid .nrow.root .ncell.on,.rgrid .nrow .ncell.beat.on{background:var(--yel)!important}
+

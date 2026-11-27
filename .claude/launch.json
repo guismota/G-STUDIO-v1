@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "G-STUDIO build",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["vite", "preview", "--host", "--port", "4175", "--strictPort"],
+      "port": 4175
+    },
+    {
+      "name": "G-STUDIO dev",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["vite", "--host", "--port", "5173", "--strictPort"],
+      "port": 5173
+    }
+  ]
+}

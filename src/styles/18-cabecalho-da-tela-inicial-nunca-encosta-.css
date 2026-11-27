@@ -1,0 +1,43 @@
+/* cabeçalho da tela inicial nunca encosta na fita */
+#home .fh{position:relative;z-index:3;min-height:38px;margin-bottom:6px}
+#home .tape{position:relative;z-index:1;margin-top:20px;pointer-events:none}
+.fproj{line-height:1;white-space:nowrap}
+
+/* ===== faixa de artista (Inspired by) ===== */
+:root{--pur:#B026FF;--artist:"Rubik Mono One","Archivo Black","Archivo",sans-serif;--serif:"Instrument Serif",Georgia,"Times New Roman",serif}
+.band.artist .ch{background:var(--pur);color:#fff}
+.band.artist .bname{font-family:var(--artist);font-weight:800;font-stretch:100%;text-transform:none;letter-spacing:-.075em;font-size:clamp(28px,min(5vh,6.6vw),52px);line-height:.9;color:#fff;display:flex;flex-direction:column;gap:2px}
+.band.artist .bname small{font-family:"Archivo",sans-serif;font-stretch:80%;font-weight:800;font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--pur)}
+.band.artist .bname span{background:linear-gradient(90deg,#fff 30%,#e2b8ff);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 14px rgba(176,38,255,.35))}
+.band.artist .screen svg.osc{stroke:var(--pur)}
+.band.artist .bignum{-webkit-text-stroke-color:rgba(176,38,255,.45);background:repeating-linear-gradient(-45deg,rgba(176,38,255,.3) 0 2px,transparent 2px 7px);-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 10px rgba(176,38,255,.3))}
+.band.artist .bbpm small{color:var(--pur)}
+.band.artist{background:linear-gradient(90deg,#0b0613,#000 60%)}
+.band.artist:not(.soon):not(:has(.bprev:active)):active{background:var(--pur)}
+.band.artist:not(.soon):not(:has(.bprev:active)):active .bname span{background:none;color:#000;filter:none}
+.band.artist:not(.soon):not(:has(.bprev:active)):active .bname small{color:#000}
+.band.artist .bprev:active,.band.artist.playing .bprev{background:var(--pur);border-color:var(--pur)}
+
+/* ===== faixa e sessão do artista: roxo vibrante ===== */
+.band.artist .bname{flex-direction:row;align-items:baseline;gap:.22em;font-size:clamp(26px,min(4.6vh,5.6vw),48px)}
+.band.artist .bname span{background:none;color:#fff;-webkit-background-clip:border-box;background-clip:border-box;filter:none}
+.band.artist .bname em{font-style:normal;color:var(--pur);text-shadow:0 0 18px rgba(176,38,255,.75)}
+.band.artist:not(.soon):not(:has(.bprev:active)):active .bname em,.band.artist:not(.soon):not(:has(.bprev:active)):active .bname span{color:#000;text-shadow:none}
+.band.artist{background:linear-gradient(90deg,#14051f,#000 60%)}
+body.th-art{--yel:#B026FF;--grad:linear-gradient(#B026FF,#B026FF);--acid:#B026FF;--amb:#B026FF;--grn:#B026FF;--warm:#B026FF}
+body.th-art .bk .val{filter:drop-shadow(0 0 5px rgba(176,38,255,.7))!important}
+body.th-art .pw.on>.led{box-shadow:0 0 8px rgba(176,38,255,.8)!important}
+body.th-art .xfill{background:linear-gradient(90deg,rgba(176,38,255,0),rgba(176,38,255,.2) 70%,rgba(176,38,255,.4))}
+body.th-art .xline{box-shadow:0 0 12px 2px rgba(176,38,255,.8)}
+body.th-art .xglow{background:radial-gradient(closest-side,rgba(176,38,255,.65),rgba(176,38,255,.15) 55%,transparent)!important}
+body.th-art .xseg span.on{text-shadow:0 0 10px rgba(176,38,255,.8)}
+body.th-art .xpad.touch{border-color:rgba(176,38,255,.7)}
+body.th-art #laser{background:#B026FF!important}
+body.th-art .nrow.root .ncell{background:#12041c!important}body.th-art .nrow.root .ncell.beat{background:#1a0628!important}
+body.th-art .clip.q{animation:qp .38s steps(2) infinite!important}
+@keyframes qp{50%{background:#22053a;color:#fff}}
+
+
+
+.fbeta{margin:2px 0 0;text-align:center;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#2c2c2c;font-weight:600;user-select:none;-webkit-user-select:none}
+

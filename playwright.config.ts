@@ -2,7 +2,7 @@ import { defineConfig } from '@playwright/test';
 
 // Qual versão os testes abrem:
 //   legacy -> a cópia intocada da 1.7.8.1 (referência)
-//   dist   -> o build de teste da versão nova (fase 3)
+//   build  -> o build de teste da versão nova (dist-test/, gerado por npm run build:test)
 const TARGET = process.env.GS_TARGET || 'legacy';
 const PORT = TARGET === 'legacy' ? 4173 : 4174;
 
@@ -48,7 +48,7 @@ export default defineConfig({
     metadata: { ipad: v.ipad },
   }))),
   webServer: {
-    command: TARGET === 'legacy' ? `GS_HOOK=1 node tests/serve.mjs legacy ${PORT}` : `node tests/serve.mjs dist ${PORT}`,
+    command: TARGET === 'legacy' ? `GS_HOOK=1 node tests/serve.mjs legacy ${PORT}` : `node tests/serve.mjs build ${PORT}`,
     url: `http://localhost:${PORT}/`,
     reuseExistingServer: true,
   },

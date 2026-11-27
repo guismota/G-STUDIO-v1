@@ -1,0 +1,11 @@
+/* faixa da tela inicial no amarelo do app */
+#home .tape{background:var(--yel)}
+#home .tape b{background:#000!important;outline:none!important}
+/* what's poppin' fora: a fileira some e o + fica no cabeçalho */
+#home .hxtop{display:none!important}
+
+/* destaque em faixa de ponta a ponta; cards mais espaçados */
+#home .hero{background:#0f0f16;margin:0 calc(var(--hp) * -1);border-radius:0!important;border-left:0;border-right:0;border-color:#1a1a1a}
+#home .hero:active{transform:none}
+#home .hero .hin{padding-left:calc(var(--hp) + 20px);padding-right:calc(var(--hp) + 20px)}
+#home .hscroll{gap:22px}
