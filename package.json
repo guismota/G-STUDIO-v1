@@ -1,0 +1,16 @@
+{
+  "name": "g-studio",
+  "private": true,
+  "appVersion": "1.7.8.1",
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "test:baseline": "GS_BASELINE=1 playwright test tests/screens.spec.ts tests/data.spec.ts --update-snapshots=all && GS_BASELINE=1 playwright test tests/audio-levels.spec.ts && node tests/levels-report.mjs",
+    "test:fixtures": "GS_MAKE_FIXTURES=1 playwright test tests/data.spec.ts --project=chromium-ipad-1180x820",
+    "levels:report": "node tests/levels-report.mjs",
+    "serve:legacy": "GS_HOOK=1 node tests/serve.mjs legacy 4173"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.1"
+  }
+}
