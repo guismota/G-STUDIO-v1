@@ -3,6 +3,17 @@
 // e as funções de todos já existem antes de qualquer um rodar, como no script único da 1.7.8.1.
 export * from './core/prelude.js';
 export * from '../genres/notation.js';
+export * from '../genres/house.js';
+export * from '../genres/deep.js';
+export * from '../genres/acid.js';
+export * from '../genres/techno.js';
+export * from '../genres/acidtechno.js';
+export * from '../genres/funk.js';
+export * from '../genres/solomun.js';
+export * from '../genres/dnb.js';
+export * from '../genres/vice.js';
+export * from '../genres/cumbia.js';
+export * from '../genres/afro.js';
 export * from '../genres/styles.js';
 export * from '../state/session.js';
 export * from '../engine/context.js';

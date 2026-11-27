@@ -49,6 +49,8 @@ window.__gs={
   lib:()=>JSON.parse(JSON.stringify(LIBM)),
   idbKeys:()=>idbEntries().then(e=>e.map(x=>[x[0],x[1]&&x[1].byteLength||0]).sort()),
   snapshot:()=>snapshot(),
+  // dados de todos os gêneros (padrões, sons, card, paleta, capa e símbolo), para conferir que nada mudou
+  genreData:()=>JSON.parse(JSON.stringify({styles:Object.fromEntries(Object.entries(STYLES).filter(([k])=>k!=='novo')),styleOrder:Object.keys(STYLES),genres:GENRES,hpal:HPAL,cover:COVER,gsym:GSYM})),
   projects:()=>JSON.parse(JSON.stringify(PROJ.list)),
   ugen:()=>JSON.parse(JSON.stringify(ugenList())),
   voices:()=>Object.assign({},VBS),

@@ -1,19 +1,7 @@
-import { GENRES, ugenList } from '../app/all.js';
+import { GENRES, gAcid, gAcidtechno, gAfro, gCumbia, gDeep, gDnb, gFunk, gHouse, gSolomun, gTechno, gVice, ugenList } from '../app/all.js';
 // ---------- Capas tipográficas dos cards (estilo capa de disco de selo) ----------
 // lay: band (faixa de cor em cima), block (bloco de cor na lateral), side (palavra deitada), outline (contorno), stack (duas linhas)
-const COVER={
- house:{lay:'band',bg:'#0c0c0c',blk:'#FFE600',ink:'#f2f2ee',lab:'#000',w:'HOUSE'},
- deep:{lay:'block',bg:'#ECE9E1',blk:'#3D7BFF',ink:'#0c0c0c',lab:'#0c0c0c',w:'DEEP'},
- acid:{lay:'side',bg:'#C8FF3D',blk:'#0c0c0c',ink:'#0c0c0c',lab:'#0c0c0c',w:'ACID'},
- techno:{lay:'outline',bg:'#0c0c0c',blk:'#6C8BFF',ink:'#6C8BFF',lab:'#f2f2ee',w:'TECHNO'},
- acidtechno:{lay:'split',bg:'#0c0c0c',blk:'#5CFF8A',ink:'#5CFF8A',lab:'#5CFF8A',w:'ACID',w2:'TECHNO'},
- funk:{lay:'band',bg:'#FF3DAE',blk:'#0c0c0c',ink:'#FFE600',lab:'#FFE600',w:'MPEB',low:true},
- dnb:{lay:'block',bg:'#0c0c0c',blk:'#22E1FF',ink:'#f2f2ee',lab:'#f2f2ee',w:'D&B',left:true},
- solomun:{lay:'sun',bg:'#16062a',blk:'#B026FF',ink:'#E9C8FF',lab:'#E2B8FF',w:'6AM',pro:true},
- afro:{lay:'band',bg:'#FF6B2C',blk:'#1a0c04',ink:'#FFF1DC',lab:'#FFC23D',w:'AFRO',low:true,pro:true},
- vice:{lay:'vi',bg:'#2a0a3a',blk:'#FF8A3D',ink:'#FF45C8',lab:'#FFB3E6',w:'VI',pro:true},
- cumbia:{lay:'teclas',bg:'#FF4B1F',blk:'#F4F2EA',ink:'#111111',lab:'#111111',w:'CUMBIA',pro:true}
-};
+const COVER={house:gHouse.cover,deep:gDeep.cover,acid:gAcid.cover,techno:gTechno.cover,acidtechno:gAcidtechno.cover,funk:gFunk.cover,dnb:gDnb.cover,solomun:gSolomun.cover,afro:gAfro.cover,vice:gVice.cover,cumbia:gCumbia.cover};
 const COVF='"Big Shoulders Display","Archivo",sans-serif';
 let COVG=null;function coverGrain(){if(COVG)return COVG;const c=document.createElement('canvas');c.width=c.height=180;const g=c.getContext('2d'),d=g.createImageData(180,180);for(let i=0;i<d.data.length;i+=4){const v=Math.random()<.5?0:255;d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=Math.random()*200|0}g.putImageData(d,0,0);return COVG=c}
 function coverOf(sp){
@@ -101,4 +89,4 @@ function drawCoverCtx(x,w,h,sp,t,mode){
   }
 }
 function hexA(c,a){if(c[0]==='#'){const n=parseInt(c.slice(1),16);return 'rgba('+(n>>16)+','+(n>>8&255)+','+(n&255)+','+a+')'}return c.replace('hsl(','hsla(').replace(')',','+a+')')}
-export { coverOf, drawCover, drawCoverCtx, hexA };
+export { COVER, coverOf, drawCover, drawCoverCtx, hexA };

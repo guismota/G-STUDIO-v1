@@ -33,12 +33,5 @@ function ARP(name,len,chords,o,ex){
 function FXP(name,str){const s=str.replace(/\s/g,''),M={R:1,D:2,I:3,V:4,S:5},data=[];for(let i=0;i<s.length;i++)if(M[s[i]])data.push([i,M[s[i]]]);return {name,data,len:s.length}}
 const FX4=[FXP('Riser','R...............................'),FXP('Impact','I...............................'),FXP('Down','D...............'),FXP('Reverse','V...............')];
 
-// cumbia: tudo sobre a cadência andaluza Am · G · F · E (meio compasso cada, 2 compassos)
-const CUMR=[['A1','E2','A2','C2'],['G1','D2','G2','B1'],['F1','C2','F2','A1'],['E1','B1','E2','G#1']]; // raiz, quinta, oitava, terça
-const CUMV=[['A3','C4','E4'],['G3','B3','D4'],['F3','A3','C4'],['E3','G#3','B3']];
-const CUMG=[['A4','C5','E5'],['G4','B4','D5'],['F4','A4','C5'],['E4','G#4','B4']];
-function CUMB(name,tpl,ex){const L=[];CUMR.forEach((r,i)=>tpl.forEach(([s,k,l])=>L.push([i*8+s,r[k],l])));return B(name,32,L,ex)}
-function CUMC(name,tpl,ex,len){const d=len||8,data=[];CUMV.forEach((v,i)=>tpl.forEach(([s,l])=>data.push([i*d+s,v.map(N),l,false])));return Object.assign({name,len:d*4,data},ex||{})}
-function CUMA(name,seq,gate,ex){const data=[];CUMG.forEach((v,i)=>{const m=v.map(N).concat([N(v[0])+12]);seq.forEach((k,j)=>{if(k!=null)data.push([i*8+j,m[k],gate,1,0])})});return Object.assign({name,len:32,data},ex||{})}
 
-export { ARP, B, C, CUMA, CUMB, CUMC, D, FX4, FXP, T };
+export { ARP, B, C, D, FX4, FXP, N, T };
