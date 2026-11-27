@@ -95,3 +95,27 @@ test('tocando: visor, pads, medidores e luzes andam; parado, voltam', async ({ p
   await expect(page.locator('#play')).not.toHaveClass(/on/);
   await expect(page.locator('#lcdPos')).toHaveText('1.1.1');
 });
+
+test('pads, fila, cena e parar tudo pela tela', async ({ page }, info) => {
+  test.skip(!isMainView(info), 'roda no tamanho principal');
+  await prepare(page, info);
+  await enterHouse(page);
+  const pad = (lane: number, slot: number) => page.locator('#session .lane').nth(lane).locator('.clip').nth(slot);
+  const press = async (loc: ReturnType<typeof pad>) => { const b = await loc.boundingBox(); await page.mouse.move(b!.x + b!.width / 2, b!.y + b!.height / 2); await page.mouse.down(); await page.mouse.up() };
+  await press(pad(0, 0)); // kick, loop 1: começa a tocar
+  await expect(page.locator('#play')).toHaveClass(/on/);
+  await expect(pad(0, 0)).toHaveClass(/play/);
+  await press(pad(3, 1)); // hi-hat, loop 2: vai para a fila e entra no próximo compasso
+  await expect(pad(3, 1)).toHaveClass(/\bq\b/);
+  await expect(pad(3, 1)).toHaveClass(/play/, { timeout: 4000 });
+  const scene3 = page.locator('#scenes .sc').nth(2);
+  await press(scene3); // cena 3 entra no próximo compasso
+  await expect(scene3).toHaveClass(/\bon\b/, { timeout: 4000 });
+  await expect(pad(0, 0)).not.toHaveClass(/play/, { timeout: 4000 });
+  // parar tudo no fim do compasso, pelo botão Parar (na 1.7.8.1 o atalho 0 não funciona: ele "clica" no botão, mas o
+  // botão só reage ao toque)
+  await press(page.locator('#stopall'));
+  await expect(page.locator('#session .clip.play')).toHaveCount(0, { timeout: 4000 });
+  await page.locator('#play').click();
+  await expect(page.locator('#play')).not.toHaveClass(/on/);
+});

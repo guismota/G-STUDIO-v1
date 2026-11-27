@@ -1,5 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, MAIN, STYLES, arpSynth, bass, chord, clapOnly, cols, ctx, flash, fxHit, getPat, hat, inVoice, initAudio, kick, lead, openRoll, padSynth, perc, playing, refreshPads, saveUser, smpHit, snare, startTransport, style, subBass, tom, userPats } from '../app/all.js';
+import { $, MAIN, STYLES, arpSynth, bass, chord, clapOnly, cols, ctx, engine, flash, fxHit, getPat, hat, inVoice, kick, lead, openRoll, padSynth, perc, playing, refreshPads, saveUser, smpHit, snare, style, subBass, tom, userPats } from '../app/all.js';
 // ---------- Editor de loops ----------
 const ED={ci:-1,kind:'drum',len:16,grid:[],notes:[],rows:[],bar:0,chrom:false,target:0,prev:false,cells:[],pat:null,lastPos:-1};
 let painting=null;
@@ -65,7 +65,7 @@ function noteAt(m,i){return ED.notes.find(n=>n.m===m&&i>=n.s&&i<n.s+n.l)}
 function curData(){const c=cols[ED.ci];return ED.kind==='note'?notesToData(c):gridToData(c)}
 function syncPreview(){
   const c=cols[ED.ci];ED.pat={len:ED.len,data:curData(),syn:ED.syn};
-  if(ED.prev)c.preview=ED.pat;
+  if(ED.prev)engine.send({type:'clip.preview',lane:c.key,pattern:ED.pat});
 }
 function auditionHit(r,v){return inVoice(auditionHit0,null,[r,v])}
 function auditionHit0(r,v){
@@ -86,7 +86,7 @@ function loadInto(c,pat){
 }
 function openClipEditor(ci,pi){
   if(cols[ci].kind==='note'){openRoll(ci,pi);return}
-  initAudio();
+  engine.send({type:'audio.unlock'});
   const c=cols[ci],src=getPat(c,pi);
   ED.ci=ci;ED.kind=c.kind;ED.target=pi>=4?pi-4:firstEmpty(c);
   ED.len=src?(src.len||16):16;ED.bar=0;ED.page=0;ED.prev=false;ED.lastPos=-1;
@@ -224,9 +224,9 @@ $('#ceLen').querySelectorAll('button').forEach(b=>b.onclick=()=>{
 $('#ceBar').querySelectorAll('button').forEach(b=>b.onclick=()=>{const v=+b.dataset.b;if(v>=ED.len/16)return;ED.bar=v;buildEd()});
 $('#ceScale').querySelectorAll('button').forEach(b=>b.onclick=()=>{ED.chrom=+b.dataset.c===1;buildEd()});
 $('#cePrev').onclick=()=>{
-  initAudio();ED.prev=!ED.prev;$('#cePrev').classList.toggle('on',ED.prev);
+  engine.send({type:'audio.unlock'});ED.prev=!ED.prev;$('#cePrev').classList.toggle('on',ED.prev);
   const c=cols[ED.ci];
-  if(ED.prev){syncPreview();c.preview=ED.pat;if(!playing)startTransport()}else c.preview=null;
+  if(ED.prev){syncPreview();engine.send({type:'clip.preview',lane:c.key,pattern:ED.pat});if(!playing)engine.send({type:'transport.play'})}else engine.send({type:'clip.preview',lane:c.key,pattern:null});
 };
 $('#ceClear').onclick=()=>{
   const c=cols[ED.ci];
@@ -234,7 +234,7 @@ $('#ceClear').onclick=()=>{
   syncPreview();buildEd();
 };
 function closeClipEditor(){
-  if(ED.ci>=0)cols[ED.ci].preview=null;
+  if(ED.ci>=0)engine.send({type:'clip.preview',lane:cols[ED.ci].key,pattern:null});
   ED.ci=-1;ED.prev=false;$('#clipEd').classList.remove('open');
 }
 $('#ceCancel').onclick=closeClipEditor;

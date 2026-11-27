@@ -1,5 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, CFG, LASTK, MODE_N, NOTE_PT, NOVO, NV, SC, STYLES, TYPES, UGEN, XCATC, bpm, buildSession, ctx, engine, ensureGain, flash, goHome, histPush, initAudio, loadBuf, makeLane, openNvKey, playing, previewPlay, refreshSlots, routeAll, saveUser, screen, setScreen, setStyle, showXMenu, stopLaneSrc, stopPreview, stopTransport, updNvKey, userPats, xAsk, xToast } from '../app/all.js';
+import { $, CFG, LASTK, MODE_N, NOTE_PT, NOVO, NV, SC, STYLES, TYPES, UGEN, XCATC, bpm, buildSession, ctx, engine, ensureGain, flash, goHome, histPush, loadBuf, makeLane, openNvKey, playing, previewPlay, refreshSlots, routeAll, saveUser, screen, setScreen, setStyle, showXMenu, stopLaneSrc, stopPreview, updNvKey, userPats, xAsk, xToast } from '../app/all.js';
 // ---------- Criar novo: estado ----------
 const NOVO_STY=STYLES.novo={name:'Criar novo',bpm:124,swing:0,key:{root:9,mode:'minor'},snd:STYLES.house.snd,p:{},novo:true};
 Object.keys(TYPES).forEach(t=>{NOVO_STY.p[t]=[]});
@@ -60,7 +60,7 @@ function ugenPreview(id,done){
   previewPlay({type:'preview.start',id:'ug:'+id,genre:k,lanes,plan:Array.from({length:P.bars},(_,b)=>P.plan(b)),bars:P.bars,end:false,volume:.62,bpm:(g.nv&&g.nv.bpm)||124},()=>{done&&done()});
 }
 function openNovoSession(){
-  stopPreview();initAudio();
+  stopPreview();engine.send({type:'audio.unlock'});
   NOVO_STY.bpm=NV.bpm;LATE.screen='novo';setStyle('novo');
   document.body.classList.add('in-session','novo');document.body.classList.toggle('ugen',NV.ctx!=='draft');
   const d=document.querySelector('.dev');d.classList.remove('enter');void d.offsetWidth;d.classList.add('enter');
@@ -69,7 +69,7 @@ function openNovoSession(){
 }
 function enterUgen(id){
   const g=ugenList().find(x=>x.id===id);if(!g)return;try{localStorage.setItem(LASTK,'ug:'+id)}catch(e){}histPush('ug:'+id);
-  if(playing)stopTransport();
+  if(playing)engine.send({type:'transport.stop'});
   if(NV.ctx==='draft')saveNovo();
   novoFill({nv:g.nv,lanes:g.lanes,scenes:g.scenes,pats:g.pats,mix:g.mix},id);NOVO_STY.name=g.name;
   openNovoSession();
@@ -81,7 +81,7 @@ function saveAsGenre(){
 function saveAsGenreGo(){
   const name=($('#ugName').value||'').trim().slice(0,18);if(!name){$('#ugName').focus();return}
   const desc=($('#ugDesc').value||'').trim().slice(0,44);
-  if(playing)stopTransport();
+  if(playing)engine.send({type:'transport.stop'});
   NV.bpm=bpm;const id='g'+Date.now().toString(36),map={};
   const lanes=NOVO.map((c,i)=>{const o=novoSer(c),nk=id+'_'+(i+1);map[c.key]=nk;o.key=nk;return o});
   const pats={};NOVO.forEach(c=>{pats[map[c.key]]=JSON.parse(JSON.stringify(c.upats||userPats[c.key]||[null,null,null,null]))});

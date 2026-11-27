@@ -1,5 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, FREE, FX, FXKEYS, MAIN, NOVO, SC, TYPES, buildSession, ctx, ensureGain, flash, freeN, fxSyncAll, makeLane, playing, refreshSlots, saveFree, saveFx, saveNovo, saveScenes, saveUser, screen, sortByKind, stopLaneSrc, stopTransport, userPats } from '../app/all.js';
+import { $, FREE, FX, FXKEYS, MAIN, NOVO, SC, TYPES, buildSession, ctx, engine, ensureGain, flash, freeN, fxSyncAll, makeLane, playing, refreshSlots, saveFree, saveFx, saveNovo, saveScenes, saveUser, screen, sortByKind, stopLaneSrc, userPats } from '../app/all.js';
 // ---------- Tela livre ----------
 function addLane(type){
   LATE.freeN++;const same=FREE.filter(l=>l.type===type).length;
@@ -28,7 +28,7 @@ function openPicker(){
 }
 $('#pkDone').onclick=()=>$('#picker').classList.remove('open');
 function setScreen(s){
-  if(playing)stopTransport();
+  if(playing)engine.send({type:'transport.stop'});
   [MAIN,NOVO,FREE].forEach(A=>A.forEach(c=>{c.solo=false}));
   LATE.screen=s;LATE.cols=s==='main'?MAIN:s==='novo'?NOVO:FREE;LATE.scenes=SC[s];LATE.sceneOn=-1;
   document.querySelectorAll('.tabs .tab').forEach(b=>b.classList.toggle('on',b.dataset.s===s));

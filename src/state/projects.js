@@ -1,5 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, ALL, FREE, FX, FXKEYS, K, NOVO, NOVO_STY, NV, OS, SC, STYLES, TYPES, bpm, enterGenre, flash, freeN, fxSyncAll, kFiltK, kMstK, kPump, makeLane, novoFill, novoSer, playing, refreshFx, saveAsGenre, saveFree, saveFx, saveNovo, saveOs, saveScenes, saveUser, screen, setBpm, setFilter, setMaster, setScreen, showXMenu, stopTransport, style, ugenList, updOsUI, userPats } from '../app/all.js';
+import { $, ALL, FREE, FX, FXKEYS, K, NOVO, NOVO_STY, NV, OS, SC, STYLES, TYPES, bpm, engine, enterGenre, flash, freeN, fxSyncAll, kFiltK, kMstK, kPump, makeLane, novoFill, novoSer, playing, refreshFx, saveAsGenre, saveFree, saveFx, saveNovo, saveOs, saveScenes, saveUser, screen, setBpm, setScreen, showXMenu, style, ugenList, updOsUI, userPats } from '../app/all.js';
 // ---------- Projetos: guardar e abrir ideias com nome ----------
 const PROJ={list:[],cur:null};
 (()=>{try{const a=JSON.parse(localStorage.getItem('gstudio_projects'));if(Array.isArray(a))PROJ.list=a.filter(x=>x&&x.id&&x.data)}catch(e){}
@@ -15,7 +15,7 @@ function snapshot(){
     mix:ALL().map(l=>({key:l.key,vol:l.vol,muted:l.muted})),fx,K:{sc:K.sc,fv:K.fv,mv:K.mv},os:{vol:OS.vol,q:OS.q}}));
 }
 function restore(d){
-  if(playing)stopTransport();
+  if(playing)engine.send({type:'transport.stop'});
   Object.keys(userPats).forEach(k=>delete userPats[k]);Object.assign(userPats,d.user||{});saveUser();LATE.userVer++;
   const ok8=a=>Array.isArray(a)&&a.length===8?a:Array(8).fill(null);
   SC.main=ok8(d.scenes&&d.scenes.main);SC.free=ok8(d.scenes&&d.scenes.free);SC.novo=ok8(d.scenes&&d.scenes.novo);saveScenes();
@@ -28,7 +28,7 @@ function restore(d){
   if(d.os){OS.vol=+d.os.vol||.8;OS.q=!!d.os.q;saveOs()}
   enterGenre(STYLES[d.style]?d.style:'house');
   setBpm(d.bpm||STYLES[style].bpm);
-  if(d.K){K.sc=+d.K.sc||0;K.fv=d.K.fv!=null?+d.K.fv:1;K.mv=d.K.mv!=null?+d.K.mv:.8;kPump.set(K.sc);kFiltK.set(K.fv);kMstK.set(K.mv);setFilter();setMaster()}
+  if(d.K){K.sc=+d.K.sc||0;K.fv=d.K.fv!=null?+d.K.fv:1;K.mv=d.K.mv!=null?+d.K.mv:.8;kPump.set(K.sc);kFiltK.set(K.fv);kMstK.set(K.mv);engine.send({type:'master.pump',value:K.sc});engine.send({type:'master.filter',value:K.fv});engine.send({type:'master.volume',value:K.mv})}
   fxSyncAll('project');
   setScreen(screen);refreshFx();updOsUI();
 }

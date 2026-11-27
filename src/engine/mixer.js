@@ -1,4 +1,4 @@
-import { FXA, K, cols, ctx, duck, filt, makeShaper, mix, out, routeLane, updDly, updEch, updFltLfo } from '../app/all.js';
+import { CFG, CMP, FXA, K, cols, ctx, duck, filt, fin, makeShaper, mix, out, routeLane, updDly, updEch, updFltLfo } from '../app/all.js';
 // cadeia de cada linha: volume -> (seco | distorção) -> saída -> mix + envios de reverb e delay
 function ensureGain(c){
   if(ctx&&!c.gain){
@@ -20,9 +20,11 @@ function ensureGain(c){
 const SOLO=()=>cols.some(x=>x.solo);
 const audible=c=>!c.muted&&(!c.solo&&SOLO()?false:true);
 function applyGain(c){if(c.gain)c.gain.gain.value=audible(c)?c.vol:0}
-function applySolo(){const any=SOLO();cols.forEach(c=>{applyGain(c);if(c.padEls&&c.padEls[0]){const row=c.padEls[0].parentElement;row.classList.toggle('soloff',any&&!c.solo);const sb=row.querySelector('.solo');if(sb)sb.classList.toggle('on',!!c.solo)}})}
+function applySolo(){cols.forEach(applyGain)} // o visual do solo (linhas apagadas) fica na tela: updSoloUI em ui/session.js
+function setMono(){if(!fin||!out)return;out.channelCount=CFG.mono?1:2;out.channelCountMode=CFG.mono?'explicit':'max';out.channelInterpretation='speakers';fin.channelCount=2;fin.channelCountMode=CFG.mono?'explicit':'max';fin.channelInterpretation='speakers'}
+function setLimit(){if(!ctx||!CMP)return;try{out.disconnect()}catch(e){}out.connect(CFG.limit?CMP:fin)}
 function setFilter(){if(filt)filt.frequency.value=20000} // controle saiu da barra: o filtro de DJ agora é o pad do Remix FX
 function setMaster(){if(out)out.gain.value=K.mv}
 function setBpmDelay(){if(ctx&&FXA.dly.in){updDly();updEch()}updFltLfo()} // os visores dos plugins são atualizados pela tela (ui/transport.js)
 
-export { SOLO, applyGain, applySolo, audible, ensureGain, setBpmDelay, setFilter, setMaster };
+export { applyGain, applySolo, audible, ensureGain, setBpmDelay, setFilter, setLimit, setMaster, setMono };

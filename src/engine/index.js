@@ -1,9 +1,13 @@
+import { LATE } from '../app/late.js';
 // Porta de entrada do motor de áudio em JavaScript: a implementação de referência do protocolo
 // (src/engine/protocol.ts). As telas falam com o motor só por aqui:
 //   engine.send({ type: 'remix.filter', x, y, on })   manda um comando
 //   engine.on('transport.state', fn)                   escuta um evento
 // Os comandos são atendidos na mesma hora: no iPad, o áudio só é liberado se o pedido chegar dentro do próprio toque.
-import { AUD, MIC, REC, RXA, UBUF, audStop, auditionSample, fireOneShot, fxApply, genreSting, initAudio, micPlay, micSave, micStart, micStop, osVolume, previewStart, previewStop, previewVolume, recCancel, recCountIn, recFileById, recStop, rxCap, rxDubKill, rxEff, rxEnsure, rxFilter, rxGate, rxPitch, rxTape, sampleLoad } from '../app/all.js';
+// Observação: neste motor em JavaScript, a tela e o motor ainda compartilham alguns objetos na memória (as linhas, os
+// ajustes CFG e os knobs K), então alguns comandos só repetem o que a tela já gravou. Os comandos levam os dados mesmo
+// assim, porque o motor em C++ vai guardar a sua própria cópia. Os efeitos já têm cópia separada (FXE).
+import { ALL, AUD, CFG, K, MET, MIC, REC, RXA, UBUF, applyGain, applySolo, audStop, auditionSample, clipTap, emitClips, fireOneShot, fxApply, genreSting, initAudio, micPlay, micSave, micStart, micStop, novoBpmChanged, osVolume, previewStart, previewStop, previewVolume, recCancel, recCountIn, recFileById, recStop, rxCap, rxDubKill, rxEff, rxEnsure, rxFilter, rxGate, rxPitch, rxTape, sampleLoad, sceneLaunch, setBpmDelay, setFilter, setLimit, setMaster, setMono, startTransport, stopAll, stopTransport } from '../app/all.js';
 const H = {
   'audio.unlock': () => initAudio(),
   // Remix FX: os nós de áudio só são montados quando o painel abre ou um controle é ligado
@@ -43,7 +47,26 @@ const H = {
   // efeitos: a cópia do estado que é do motor
   'fx.sync': c => fxApply(c),
   'fx.set': c => fxApply(c),
+  // transporte, clipes e cenas
+  'transport.play': c => startTransport(c.countIn, c.at),
+  'transport.stop': c => stopTransport(c.keep),
+  'transport.metronome': c => { MET.on = !!c.on },
+  'clip.tap': c => clipTap(c.lane, c.slot),
+  'clip.stopAll': () => stopAll(),
+  'clips.set': c => { const L = ALL(); for (const k in c.lanes) { const l = L.find(x => x.key === k); if (l) l.active = c.lanes[k] } emitClips() },
+  'clip.preview': c => { const l = ALL().find(x => x.key === c.lane); if (l) l.preview = c.pattern || null }, // loop em edição toca no lugar do ativo
+  'scene.launch': c => sceneLaunch(c),
+  // mixer, master, andamento e ajustes
+  'mixer.volume': c => { const l = laneOf(c.lane); if (l) { l.vol = c.value; applyGain(l) } },
+  'mixer.mute': c => { const l = laneOf(c.lane); if (l) { l.muted = !!c.on; applyGain(l) } },
+  'mixer.solo': c => { const l = laneOf(c.lane); if (l) { l.solo = !!c.on; applySolo() } },
+  'master.volume': c => { K.mv = c.value; setMaster() },
+  'master.filter': c => { K.fv = c.value; setFilter() },
+  'master.pump': c => { K.sc = c.value },
+  'transport.bpm': c => { LATE.bpm = c.bpm; setBpmDelay(); if (c.novo) novoBpmChanged() },
+  'settings.set': c => { Object.assign(CFG, c.cfg); setLimit(); setMono() },
 };
+const laneOf = key => ALL().find(x => x.key === key);
 const listeners = new Map();
 function send(cmd) {
   const h = H[cmd.type];

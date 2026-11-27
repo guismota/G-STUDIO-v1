@@ -1,4 +1,4 @@
-import { $, CFG, DEV, FX, FXKEYS, OS, RL, RX, TOUR, XS, bkClose, bkSheet, bpm, closeDoc, closeExplore, closeFx, closeOnb, closeOs, closeRmx, closeXMenu, cols, doRedo, doUndo, launchScene, openCfg, openProjList, openProjSave, openRmx, padTap, setBpm, stopAll } from '../app/all.js';
+import { $, CFG, DEV, FX, FXKEYS, OS, RL, RX, TOUR, XS, bkClose, bkSheet, bpm, closeDoc, closeExplore, closeFx, closeOnb, closeOs, closeRmx, closeXMenu, cols, doRedo, doUndo, engine, launchScene, openCfg, openProjList, openProjSave, openRmx, padTap, setBpm } from '../app/all.js';
 // ---------- Aparelho, instalação e atalhos de teclado ----------
 const MODK=DEV.apple?'⌘':'Ctrl',SHK=DEV.apple?'⇧':'Shift';
 let BIP=null; // pedido de instalação do Chrome/Edge/Android
@@ -92,7 +92,7 @@ document.addEventListener('keydown',e=>{
   // sessão
   if(k===' '){e.preventDefault();if(!e.repeat)$('#play').click();return}
   if(/^[1-8]$/.test(k)){e.preventDefault();if(!e.repeat)launchScene(+k-1);return}
-  if(k==='0'){e.preventDefault();const s=$('#stopall');if(s)s.click();else stopAll();return}
+  if(k==='0'){e.preventDefault();const s=$('#stopall');if(s)s.click();else engine.send({type:'clip.stopAll'});return}
   if(k==='ArrowUp'||k==='ArrowDown'||k==='ArrowLeft'||k==='ArrowRight'){e.preventDefault();
     if(KB.show){if(k==='ArrowUp')KB.li--;if(k==='ArrowDown')KB.li++;if(k==='ArrowLeft')KB.pi--;if(k==='ArrowRight')KB.pi++}
     KB.show=true;kbMark();return}

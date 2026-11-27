@@ -31,19 +31,24 @@ export type Command =
   // transporte
   | { type: 'transport.play'; countIn?: boolean; at?: number }
   | { type: 'transport.stop'; keep?: boolean } // keep: pausa mantendo os loops escolhidos para voltar de onde estava
-  | { type: 'transport.toggle' } // botão tocar/parar (volta com os loops que estavam tocando, ou solta a cena 1)
-  | { type: 'transport.bpm'; bpm: number }
+  | { type: 'transport.bpm'; bpm: number; novo?: boolean } // novo: na tela Criar novo (os loops gravados acompanham o andamento)
   | { type: 'transport.metronome'; on: boolean }
   // clipes e cenas
   | { type: 'clip.tap'; lane: LaneKey; slot: Slot } // solta (ou tira) o loop no tempo certo
   | { type: 'clip.stopAll' } // parar tudo no fim do compasso
-  | { type: 'scene.launch'; index: number }
+  | { type: 'clips.set'; lanes: Record<LaneKey, Slot> } // escolhe o loop de cada linha sem fila (com o transporte parado)
+  | { type: 'clip.preview'; lane: LaneKey; pattern: unknown | null } // no editor: o loop em edição toca no lugar do ativo
+  | { type: 'scene.launch'; index: number; lanes: Record<LaneKey, Slot> } // slot de cada linha na cena (-1 = desligada)
   // mixer
   | { type: 'mixer.volume'; lane: LaneKey; value: number }
   | { type: 'mixer.mute'; lane: LaneKey; on: boolean }
   | { type: 'mixer.solo'; lane: LaneKey; on: boolean }
   | { type: 'master.volume'; value: number }
+  | { type: 'master.filter'; value: number }
   | { type: 'master.pump'; value: number } // sidechain: quanto o resto abaixa a cada kick
+  // ajustes que o motor usa: quantização ao soltar (bar, 2bar, beat), swing, limitador, mono, volume das prévias,
+  // modo econômico (sem medidores das linhas) e som de entrada nos canais
+  | { type: 'settings.set'; cfg: { launch: string; swing: boolean; limit: boolean; mono: boolean; pvol: number; eco: boolean; sting: boolean } }
   // efeitos de linha e da master (reverb, delay, echo, distorção, filtro)
   // o motor guarda a sua cópia do estado de cada efeito: tudo de uma vez (fx.sync: ao abrir o app, ao abrir um projeto,
   // ao desfazer) ou um efeito por vez (fx.set), dizendo o que mudou (action)
@@ -94,7 +99,7 @@ export type EngineEvent =
   | { type: 'transport.state'; playing: boolean }
   | { type: 'transport.step'; step: number; bar: number } // posição tocando, no quadro em que o som chega na caixa (visor, pads)
   | { type: 'pulse'; value: number } // batida agora (acende as luzes da sessão)
-  | { type: 'clips'; lanes: Record<LaneKey, { active: Slot; queued: Slot | null }> }
+  | { type: 'clips'; scene: number; lanes: Record<LaneKey, { active: Slot; queued: Slot | null }> } // tocando, na fila e cena ativa (-1 = nenhuma)
   | { type: 'scene.fired'; index: number } // a cena entrou de fato (para a animação)
   | { type: 'oneshot.hit'; index: number; inMs: number } // daqui a quanto o som do One Shot entra (para piscar o pad)
   // a cada quadro: picos da saída (l, r) e de cada linha (0 a 1, sem escala de medidor), espectro (0 a 255) e taxa de amostragem

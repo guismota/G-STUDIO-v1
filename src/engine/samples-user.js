@@ -1,6 +1,6 @@
 // ---------- sons do usuário e amostras no motor: decodificar, guardar em memória e tocar ----------
 // (os arquivos ficam no IndexedDB; a lista da biblioteca fica na tela, em state/library.js)
-import { SMP, bpm, ctx, emit, idbGet, out } from '../app/all.js';
+import { NOVO, SMP, bpm, ctx, emit, idbGet, out } from '../app/all.js';
 var UBUF={},UPEND={};
 let OAC=null; // contexto só para decodificar antes de o áudio ser liberado
 // ---------- buffers ----------
@@ -26,6 +26,8 @@ function loopStep(c,t){
 function stopLaneSrc(c,at){const t=at||(ctx?ctx.currentTime:0);
   if(c.lsrc){try{c.lsrcG.gain.setTargetAtTime(0,t,.01);c.lsrc.stop(t+.08)}catch(e){}c.lsrc=null;c.lend=0}
   if(c.hsrc&&!at){try{c.hsrc.stop(t+.02)}catch(e){}c.hsrc=null}}
+// mudou o andamento: os loops gravados que estão tocando acompanham
+function novoBpmChanged(){if(!ctx)return;const n=ctx.currentTime;NOVO.forEach(c=>{if(c.lsrc){const r=bpm/(c.lbpm||bpm);try{c.lsrc.playbackRate.setValueAtTime(r,n)}catch(e){}c.lend=n+(c.lend-n)*c.lrate/r;c.lrate=r}})}
 // audição na biblioteca (som gravado, importado ou a gravação do microfone): uma de cada vez
 const AUD={src:null,g:null,tm:0,token:null};
 function audStop(){const a=AUD;if(!a.src)return;clearTimeout(a.tm);try{a.g.gain.setTargetAtTime(0,ctx.currentTime,.02);a.src.stop(ctx.currentTime+.1)}catch(e){}AUD.src=null;AUD.token=null}
@@ -39,4 +41,4 @@ function auditionSample(c){
 }
 // prepara um som que a tela acabou de guardar (importar): devolve se abriu e a duração
 function sampleLoad(c){loadBuf(c.id).then(b=>emit({type:'sample.loaded',token:c.token,id:c.id,ok:!!b,duration:b?b.duration:0}))}
-export { AUD, UBUF, audStop, auditionSample, loadBuf, loopStep, sampleLoad, smpHit, stopLaneSrc };
+export { AUD, UBUF, audStop, auditionSample, loadBuf, loopStep, novoBpmChanged, sampleLoad, smpHit, stopLaneSrc };

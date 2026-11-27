@@ -1,17 +1,14 @@
 import { LATE } from '../app/late.js';
-import { $, CFG, ICON, LN, bpm, cols, ctx, draft, editMode, editing, flash, getPat, initAudio, nextTime, playing, qSteps, reduceMotion, saveScenes, sceneOn, scenes, startTransport, stopAll } from '../app/all.js';
+import { $, CFG, ICON, LN, cols, draft, editMode, editing, engine, flash, getPat, reduceMotion, saveScenes, scenes } from '../app/all.js';
 // ---------- Cenas ----------
 function launchScene(i){
   const sc=scenes[i];
   if(!sc){openSceneEditor(i);return}
   if(!cols.length){flash('Chama um instrumento primeiro');return}
-  initAudio();LATE.sceneOn=i;
-  const slot=c=>{const v=sc[c.key];return Number.isInteger(v)&&getPat(c,v)?v:-1};
-  if(!playing){cols.forEach(c=>{c.active=slot(c);c.queued=null});startTransport();sceneFx(i);return}
-  cols.forEach(c=>{const v=slot(c);c.queued=(v===c.active)?null:v});
-  const sd=60/bpm/4,tb=nextTime+qSteps()*sd,dl=Math.max(0,(tb-ctx.currentTime+(ctx.outputLatency||0))*1000);
-  clearTimeout(launchScene._t);launchScene._t=setTimeout(()=>{if(sceneOn===i&&playing)sceneFx(i)},dl);
+  const lanes={};cols.forEach(c=>{const v=sc[c.key];lanes[c.key]=Number.isInteger(v)&&getPat(c,v)?v:-1});
+  engine.send({type:'scene.launch',index:i,lanes}); // a animação vem quando a cena entra de fato (scene.fired)
 }
+engine.on('scene.fired',e=>sceneFx(e.index));
 // animação ao soltar uma cena: flash, onda de choque, número gigante com glitch e as linhas acendendo em cascata
 function sceneFx(i){
   if(reduceMotion())return;
@@ -71,7 +68,7 @@ function buildScenes(){
     slotEls.push(b);s.appendChild(b);
   }
   const x=document.createElement('button');x.className='hw sc';x.id='stopall';x.innerHTML=ICON.stop+'Parar';
-  x.addEventListener('pointerdown',e=>{e.preventDefault();stopAll()});s.appendChild(x);
+  x.addEventListener('pointerdown',e=>{e.preventDefault();engine.send({type:'clip.stopAll'})});s.appendChild(x);
   refreshSlots();
 }
 

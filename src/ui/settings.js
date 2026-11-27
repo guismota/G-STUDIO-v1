@@ -1,14 +1,12 @@
-import { $, APPV, BIP, CFG, CMP, DEV, MAIN, bkClose, bkExport, bkPick, bkSheet, closeModal, ctx, engine, fin, fmtDate, fmtMB, idbDo, idbEntries, installNow, isStandalone, kbTitles, layoutRows, openDoc, openKb, out, playing, plural, saveCfg, showOnb, startTour, stopTransport, termsAt, two } from '../app/all.js';
+import { $, APPV, BIP, CFG, DEV, MAIN, bkClose, bkExport, bkPick, bkSheet, closeModal, engine, fmtDate, fmtMB, idbDo, idbEntries, installNow, isStandalone, kbTitles, layoutRows, openDoc, openKb, playing, plural, saveCfg, showOnb, startTour, termsAt, two } from '../app/all.js';
 // ---------- Configurações ----------
 const WAKE={s:null};
 async function wakeOn(){if(!CFG.wake||!playing||WAKE.s||!navigator.wakeLock)return;try{const s=await navigator.wakeLock.request('screen');if(!playing||!CFG.wake){s.release().catch(()=>{});return}WAKE.s=s;s.addEventListener('release',()=>{if(WAKE.s===s)WAKE.s=null})}catch(e){}}
 function wakeOff(){if(WAKE.s){const s=WAKE.s;WAKE.s=null;s.release().catch(()=>{})}}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')wakeOn()});
-function setMono(){if(!fin||!out)return;out.channelCount=CFG.mono?1:2;out.channelCountMode=CFG.mono?'explicit':'max';out.channelInterpretation='speakers';fin.channelCount=2;fin.channelCountMode=CFG.mono?'explicit':'max';fin.channelInterpretation='speakers'}
-function setLimit(){if(!ctx||!CMP)return;try{out.disconnect()}catch(e){}out.connect(CFG.limit?CMP:fin)}
 function applyCfg(){
   const b=document.body;b.classList.toggle('eco',!!CFG.eco);b.classList.toggle('sz-s',CFG.size==='s');b.classList.toggle('sz-l',CFG.size==='l');b.classList.toggle('noflash',!!CFG.noflash);b.classList.toggle('noanim',!CFG.anim);b.classList.toggle('noshake',!!CFG.noshake);
-  setLimit();setMono();if(typeof layoutRows==='function')layoutRows();
+  engine.send({type:'settings.set',cfg:engineCfg()});if(typeof layoutRows==='function')layoutRows();
   if(CFG.wake)wakeOn();else wakeOff();
 }
 const CFG_SPEC=[
@@ -31,6 +29,9 @@ const CFG_SPEC=[
   {k:'mono',t:'Áudio mono',d:'Junta esquerda e direita num canal só. Bom para quem usa um fone só ou ouve melhor de um lado.',tg:1}]}
 ];
 function cfgRow(t,d){const r=document.createElement('div');r.className='cfgrow';r.innerHTML='<div class="ct"><b></b><small></small></div><div class="cc"></div>';r.querySelector('b').textContent=t;const s=r.querySelector('small');if(d)s.textContent=d;else s.remove();return r}
+// ajustes que o motor usa (quantização, swing, limitador, mono, volume das prévias, modo econômico, som de entrada)
+const engineCfg=()=>({launch:CFG.launch,swing:CFG.swing,limit:CFG.limit,mono:CFG.mono,pvol:CFG.pvol,eco:CFG.eco,sting:CFG.sting});
+engine.send({type:'settings.set',cfg:engineCfg()});
 function cfgSet(k,v){CFG[k]=v;saveCfg();applyCfg()}
 function armBtn(b,label,fn){let t=null;b.onclick=()=>{if(!t){b.classList.add('armed');b.textContent=label;t=setTimeout(()=>{t=null;b.classList.remove('armed');b.textContent=b.dataset.l},3000);return}clearTimeout(t);t=null;fn()};b.dataset.l=b.textContent}
 function renderCfg(){
@@ -102,14 +103,14 @@ async function cfgSpace(){
     e.textContent='Sons seus: '+(n?fmtMB(snd)+' em '+plural(n,'arquivo','arquivos'):'nenhum')+' · Projetos e ajustes: '+fmtMB(ls);
 }
 function cfgResetMain(){
-  if(playing)stopTransport();
+  if(playing)engine.send({type:'transport.stop'});
   try{const u=JSON.parse(localStorage.getItem('looppads_user'))||{};MAIN.forEach(l=>{delete u[l.key]});localStorage.setItem('looppads_user',JSON.stringify(u))}catch(e){}
   try{const j=JSON.parse(localStorage.getItem('gstudio_scenes'))||{};delete j.main;localStorage.setItem('gstudio_scenes',JSON.stringify(j))}catch(e){}
   ['gstudio_fx','gstudio_layout','looppads_scenes'].forEach(k=>localStorage.removeItem(k));
   location.reload();
 }
 async function cfgWipe(){
-  if(playing)stopTransport();
+  if(playing)engine.send({type:'transport.stop'});
   try{await idbDo('readwrite',st=>st.clear())}catch(e){}
   const ks=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&(k.startsWith('gstudio_')||k.startsWith('looppads_')))ks.push(k)}
   ks.forEach(k=>localStorage.removeItem(k));location.reload();
@@ -120,4 +121,4 @@ $('#cfgModal').addEventListener('click',e=>{if(e.target.id==='cfgModal')closeMod
 applyCfg();
 
 
-export { openCfg, setMono, wakeOff, wakeOn };
+export { openCfg, wakeOff, wakeOn };

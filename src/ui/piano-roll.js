@@ -1,16 +1,16 @@
 import { LATE } from '../app/late.js';
-import { $, CFG, DEV, ED, ICON, LN, MET, STYLES, auditionNote, barOff, bpm, buildRows, cellAt, cols, ctx, cur, curBar, curData, firstEmpty, flash, getPat, inScale, initAudio, isChordT, isMono, isRoot, keyName, loadInto, nName, noteDown, noteMove, paintNotes, painting, playing, pmN, refreshPads, saveUser, startTransport, stopTransport, style, syncPreview, tT0, typing, userPats } from '../app/all.js';
+import { $, CFG, DEV, ED, ICON, LN, STYLES, auditionNote, barOff, bpm, buildRows, cellAt, cols, ctx, cur, curBar, curData, engine, firstEmpty, flash, getPat, inScale, isChordT, isMono, isRoot, keyName, loadInto, nName, noteDown, noteMove, paintNotes, painting, playing, pmN, refreshPads, saveUser, style, syncPreview, tT0, typing, userPats } from '../app/all.js';
 // ---------- Piano roll (página cheia, com gravação) ----------
 const RL={open:false,base:36,rec:false,count:true,met:true,keys:{},kbEls:{},last:''};
 const BLACK=[1,3,6,8,10];
 function openRoll(ci,pi){
-  initAudio();
+  engine.send({type:'audio.unlock'});
   const c=cols[ci],src=getPat(c,pi);
   ED.ci=ci;ED.kind='note';ED.target=pi>=4?pi-4:firstEmpty(c);
   ED.len=src?(src.len||16):16;ED.prev=false;ED.lastPos=-1;ED.bar=0;
   loadInto(c,src);
   RL.base=c.type==='sub'?24:c.type==='bass'?36:isChordT(c.type)?48:60;
-  RL.rec=false;MET.on=false;RL.last='';
+  RL.rec=false;engine.send({type:'transport.metronome',on:false});RL.last='';
   const r=$('#roll');r.style.setProperty('--c',c.color);
   $('#rlTitle').textContent=LN(c);
   $('#rlKey').textContent=STYLES[style].name+' · '+keyName();
@@ -19,8 +19,8 @@ function openRoll(ci,pi){
   rlChips();rlBuild();rlBuildKb();rlUI();
 }
 function closeRoll(){
-  RL.rec=false;MET.on=false;
-  if(ED.ci>=0)cols[ED.ci].preview=null;
+  RL.rec=false;engine.send({type:'transport.metronome',on:false});
+  if(ED.ci>=0)engine.send({type:'clip.preview',lane:cols[ED.ci].key,pattern:null});
   ED.ci=-1;ED.prev=false;RL.open=false;$('#roll').classList.remove('open');
   Object.keys(RL.keys).forEach(id=>delete RL.keys[id]);
 }
@@ -87,7 +87,7 @@ function rlKeys(e){
   if(document.querySelector('.modal.open,.xdlg.open'))return;
   const down=e.type==='keydown',i=MT_CODES.indexOf(e.code);
   if(i>=0){e.preventDefault();e.stopPropagation();if(e.repeat)return;const m=RL.base+i,id='k'+e.code;
-    if(down){if(!RL.keys[id]){initAudio();rlNoteOn(m,id,RL.vel/100)}}else rlNoteOff(id);return}
+    if(down){if(!RL.keys[id]){engine.send({type:'audio.unlock'});rlNoteOn(m,id,RL.vel/100)}}else rlNoteOff(id);return}
   if(!down)return;
   const k=e.code;
   if(k==='KeyZ'){e.preventDefault();e.stopPropagation();$('#rlOctDn').click();return}
@@ -134,22 +134,22 @@ function rlRecord(m,t0,t1,v){
 }
 function rlStartPlay(countIn){
   ED.prev=true;syncPreview();
-  startTransport(countIn);
+  engine.send({type:'transport.play',countIn:!!countIn});
 }
 $('#rlPlay').onclick=()=>{
-  initAudio();
-  if(playing){RL.rec=false;MET.on=false;stopTransport(true)}
+  engine.send({type:'audio.unlock'});
+  if(playing){RL.rec=false;engine.send({type:'transport.metronome',on:false});engine.send({type:'transport.stop',keep:true})}
   else rlStartPlay(false);
   rlUI();
 };
 $('#rlRec').onclick=()=>{
-  initAudio();
-  if(RL.rec){RL.rec=false;MET.on=false;rlUI();return}
-  RL.rec=true;MET.on=RL.met;
+  engine.send({type:'audio.unlock'});
+  if(RL.rec){RL.rec=false;engine.send({type:'transport.metronome',on:false});rlUI();return}
+  RL.rec=true;engine.send({type:'transport.metronome',on:RL.met});
   rlStartPlay(RL.count);
   rlUI();
 };
-$('#rlMet').onclick=()=>{RL.met=!RL.met;if(RL.rec)MET.on=RL.met;rlUI()};
+$('#rlMet').onclick=()=>{RL.met=!RL.met;if(RL.rec)engine.send({type:'transport.metronome',on:RL.met});rlUI()};
 $('#rlCount').onclick=()=>{RL.count=!RL.count;rlUI()};
 $('#rlLen').querySelectorAll('button').forEach(b=>b.onclick=()=>{
   const nl=+b.dataset.l;if(nl===ED.len)return;

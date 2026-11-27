@@ -31,7 +31,15 @@ const SCEN: Record<string, (page: Page) => Promise<void>> = {
   'fx echo': page => fxOn(page, 'Ech'),
   'fx distorcao': page => fxOn(page, 'Dist'),
   'fx filtro': page => fxOn(page, 'Flt'),
+  // mixer e andamento
+  'mixer mute kick': page => laneBtn(page, 0, '.mute'),
+  'mixer solo kick': page => laneBtn(page, 0, '.solo'),
+  'andamento +6': async page => { for (let i = 0; i < 6; i++) await page.keyboard.press('+') },
 };
+async function laneBtn(page: Page, lane: number, sel: string) {
+  const b = await page.locator('#session .lane').nth(lane).locator(sel).boundingBox(); if (!b) throw new Error('sem ' + sel);
+  await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2); await page.mouse.down(); await page.mouse.up();
+}
 async function fxOn(page: Page, tag: string) {
   await page.getByRole('button', { name: tag, exact: true }).click();
   await page.waitForTimeout(200);

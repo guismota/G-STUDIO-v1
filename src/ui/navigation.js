@@ -1,5 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, FX, FXKEYS, LASTK, MAIN, RECU, RL, SC, buildHome, closeFx, closeOs, closeRmx, closeRoll, engine, enterNovo, histPush, initAudio, maybeTour, playing, powerOnHome, reduceMotion, saveNovo, screen, setScreen, setStyle, stopTransport, szClose, undoReset } from '../app/all.js';
+import { $, FX, FXKEYS, LASTK, MAIN, RECU, RL, SC, buildHome, closeFx, closeOs, closeRmx, closeRoll, engine, enterNovo, histPush, maybeTour, playing, powerOnHome, reduceMotion, saveNovo, screen, setScreen, setStyle, szClose, undoReset } from '../app/all.js';
 // troca de página: uma faixa na cor do canal atravessa a tela
 function pageWipe(o,mid){
   const w=$('#wipe');if(reduceMotion()||!w){mid();return}
@@ -13,7 +13,7 @@ function enterGenre(k){
   if(k==='novo'){enterNovo();return}
   try{localStorage.setItem(LASTK,k)}catch(e){}histPush(k);
   if(screen==='novo'){saveNovo();LATE.screen='main';LATE.cols=MAIN;LATE.scenes=SC.main}document.body.classList.remove('novo','ugen');
-  initAudio();setStyle(k);
+  engine.send({type:'audio.unlock'});setStyle(k);
   document.body.classList.add('in-session');
   const d=document.querySelector('.dev');d.classList.remove('enter');void d.offsetWidth;d.classList.add('enter');
   setScreen(screen);
@@ -21,7 +21,7 @@ function enterGenre(k){
 }
 function goHome(){
   if(RL.open)closeRoll();
-  if(playing)stopTransport();
+  if(playing)engine.send({type:'transport.stop'});
   if(screen==='novo'){saveNovo();LATE.screen='main';LATE.cols=MAIN;LATE.scenes=SC.main}document.body.classList.remove('novo','ugen');
   FXKEYS.forEach(k=>{if(FX[k].win.open)closeFx(k)});closeOs();if(RECU.on)engine.send({type:'rec.stop'});
   document.querySelectorAll('.modal.open').forEach(m=>m.classList.remove('open'));

@@ -1,5 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, CFG, HW, ICON, LAY, LN, SOLO, STYLES, SW, applyGain, applySolo, cols, flash, getPat, makeKnob, openExplore, openPicker, padTap, refreshFx, removeLane, saveLay, screen, style } from '../app/all.js';
+import { $, ALL, CFG, HW, ICON, LAY, LN, STYLES, SW, cols, editMode, engine, flash, getPat, makeKnob, openClipEditor, openExplore, openPicker, refreshFx, removeLane, saveLay, screen, style } from '../app/all.js';
 // ---------- Interface ----------
 function refreshPads(){
   cols.forEach(c=>c.padEls.forEach((el,pi)=>{
@@ -9,6 +9,17 @@ function refreshPads(){
     c.padNm[pi].textContent=pat?pat.name:'+';
   }));
 }
+// solo: as outras linhas ficam apagadas
+function updSoloUI(){const any=cols.some(x=>x.solo);cols.forEach(c=>{if(c.padEls&&c.padEls[0]){const row=c.padEls[0].parentElement;row.classList.toggle('soloff',any&&!c.solo);const sb=row.querySelector('.solo');if(sb)sb.classList.toggle('on',!!c.solo)}})}
+// tocar num pad: no modo editar (ou pad vazio) abre o editor; senão, o motor solta o loop no tempo certo
+function padTap(ci,pi){
+  const pat=getPat(cols[ci],pi);
+  if(cols[ci].kind==='loop'&&(editMode||!pat)){flash(pat?'Loop de áudio toca inteiro':'Loops de áudio usam só o primeiro pad');return}
+  if(editMode||!pat){openClipEditor(ci,pi);return}
+  engine.send({type:'clip.tap',lane:cols[ci].key,slot:pi});
+}
+// o motor avisa o que está tocando e na fila (e a cena ativa); a tela guarda o mesmo estado para desenhar os pads
+engine.on('clips',e=>{LATE.sceneOn=e.scene;ALL().forEach(c=>{const s=e.lanes[c.key];if(s){c.active=s.active;c.queued=s.queued}})});
 // arrastar alças: altura de linha e largura de coluna
 function dragger(el,{down,move,up}){
   let on=false,sx=0,sy=0;
@@ -59,11 +70,11 @@ function buildLane(c,ci){
   lh.innerHTML='<span class="tab"></span><span class="ix">'+String(ci+1).padStart(2,'0')+'</span><div class="nmw"><b></b><span class="fxt"></span></div>'+(screen!=='main'?'<button class="rm" aria-label="Remover">'+ICON.x+'</button>':'')+'<span class="ms"><button class="mute'+(c.muted?' on':'')+'" aria-label="Mutar">M</button><button class="solo'+(c.solo?' on':'')+'" aria-label="Solo">S</button></span><div class="kv"></div>';
   lh.querySelector('b').textContent=LN(c);c.fxEl=lh.querySelector('.fxt');
   const lm=document.createElement('span');lm.className='lm';lm.innerHTML='<span></span>';lh.appendChild(lm);c.lmEl=lm.firstChild;c.lvS=null;
-  makeKnob(lh.querySelector('.kv'),{v:c.vol,small:true,onChange:v=>{c.vol=v;applyGain(c)}});
+  makeKnob(lh.querySelector('.kv'),{v:c.vol,small:true,onChange:v=>{c.vol=v;engine.send({type:'mixer.volume',lane:c.key,value:v})}});
   const mb=lh.querySelector('.mute');
-  mb.addEventListener('pointerdown',e=>{e.preventDefault();c.muted=!c.muted;mb.classList.toggle('on',c.muted);row.classList.toggle('muted',c.muted);applyGain(c)});
-  lh.querySelector('.solo').addEventListener('pointerdown',e=>{e.preventDefault();c.solo=!c.solo;applySolo()});
-  if(SOLO()&&!c.solo)row.classList.add('soloff');
+  mb.addEventListener('pointerdown',e=>{e.preventDefault();c.muted=!c.muted;mb.classList.toggle('on',c.muted);row.classList.toggle('muted',c.muted);engine.send({type:'mixer.mute',lane:c.key,on:c.muted})});
+  lh.querySelector('.solo').addEventListener('pointerdown',e=>{e.preventDefault();c.solo=!c.solo;engine.send({type:'mixer.solo',lane:c.key,on:c.solo});updSoloUI()});
+  if(cols.some(x=>x.solo)&&!c.solo)row.classList.add('soloff');
   const rm=lh.querySelector('.rm');if(rm)rm.addEventListener('click',()=>removeLane(c));
   row.appendChild(lh);
   c.padEls=[];c.padNm=[];c.padPg=[];c.pgIdx=-1;c.cells=[];c.shown='';
@@ -106,4 +117,4 @@ function buildSession(){
   }
   g._spec=spec;layoutRows();applyCols();refreshPads();refreshFx();
 }
-export { applyCols, buildSession, layoutRows, refreshPads };
+export { applyCols, buildSession, layoutRows, padTap, refreshPads };

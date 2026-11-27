@@ -1,4 +1,4 @@
-import { $, closeModal, fmtDate, idb, idbDo, idbPut, playing, stopTransport, two } from '../app/all.js';
+import { $, closeModal, engine, fmtDate, idb, idbDo, idbPut, playing, two } from '../app/all.js';
 // ---------- Backup: tudo num arquivo (projetos, gêneros criados, biblioteca, sons do usuário) ----------
 const BK={file:null,data:null,busy:false};
 const BK_SKIP=k=>k.startsWith('gstudio_tour_')||k==='gstudio_onboarded'||k==='gstudio_terms';
@@ -72,7 +72,7 @@ function bkMergeLs(k,inc,cur){
 }
 async function bkApply(mode){
   const d=BK.data;if(!d||BK.busy)return;BK.busy=true;
-  if(playing)stopTransport();
+  if(playing)engine.send({type:'transport.stop'});
   bkSheet('Restaurar backup','Restaurando…','<div class="bkmsg"><i class="bkspin"></i><span>Gravando sons e projetos neste aparelho…</span></div>',[]);
   try{
     if(mode==='replace'){await idbDo('readwrite',st=>st.clear())}
