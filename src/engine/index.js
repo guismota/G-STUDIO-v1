@@ -3,7 +3,7 @@
 //   engine.send({ type: 'remix.filter', x, y, on })   manda um comando
 //   engine.on('transport.state', fn)                   escuta um evento
 // Os comandos são atendidos na mesma hora: no iPad, o áudio só é liberado se o pedido chegar dentro do próprio toque.
-import { RXA, fireOneShot, genreSting, initAudio, osVolume, previewStart, previewStop, previewVolume, rxCap, rxDubKill, rxEff, rxEnsure, rxFilter, rxGate, rxPitch, rxTape } from '../app/all.js';
+import { AUD, MIC, REC, RXA, UBUF, audStop, auditionSample, fireOneShot, genreSting, initAudio, micPlay, micSave, micStart, micStop, osVolume, previewStart, previewStop, previewVolume, recCancel, recCountIn, recFileById, recStop, rxCap, rxDubKill, rxEff, rxEnsure, rxFilter, rxGate, rxPitch, rxTape, sampleLoad } from '../app/all.js';
 const H = {
   'audio.unlock': () => initAudio(),
   // Remix FX: os nós de áudio só são montados quando o painel abre ou um controle é ligado
@@ -23,6 +23,23 @@ const H = {
   'preview.stop': () => previewStop(),
   'preview.volume': c => previewVolume(c.value),
   'sting.play': c => genreSting(c.genre),
+  // gravação da saída
+  'rec.start': () => recCountIn(),
+  'rec.stop': () => recStop(),
+  'rec.cancel': () => recCancel(),
+  'rec.discard': () => { REC.wav = null; REC.m4a = null },
+  // microfone
+  'mic.start': () => micStart(),
+  'mic.stop': () => micStop(),
+  'mic.clear': () => { MIC.buf = null },
+  'mic.save': c => micSave(c),
+  'mic.play': () => micPlay(),
+  'mic.stopPlay': () => { const s = AUD.src; if (AUD.token === 'rec' && s) { try { s.stop() } catch (e) {} AUD.src = null; AUD.token = null } },
+  // sons do usuário
+  'sample.load': c => sampleLoad(c),
+  'sample.forget': c => { delete UBUF[c.id] },
+  'sample.audition': c => { audStop(); auditionSample(c) },
+  'sample.stopAudition': () => audStop(),
 };
 const listeners = new Map();
 function send(cmd) {
@@ -30,6 +47,14 @@ function send(cmd) {
   if (!h) throw new Error('G-STUDIO: o motor não conhece o comando ' + cmd.type);
   h(cmd);
 }
+// pedido que espera resposta: manda o comando com um código e devolve (Promise) o evento de resposta com o mesmo código
+let reqN = 0;
+function request(cmd, replyType) {
+  const token = 'q' + (++reqN);
+  return new Promise(res => { const off = on(replyType, e => { if (e.token === token) { off(); res(e) } }); send({ ...cmd, token }) });
+}
+// arquivos gerados pelo motor (gravações): no app nativo serão arquivos no disco
+function file(id) { return recFileById(id) }
 function on(type, fn) {
   if (!listeners.has(type)) listeners.set(type, new Set());
   listeners.get(type).add(fn);
@@ -37,5 +62,5 @@ function on(type, fn) {
 }
 // usado pelo código do motor para avisar as telas
 function emit(evt) { const s = listeners.get(evt.type); if (s) for (const fn of s) fn(evt) }
-const engine = { send, on };
+const engine = { send, on, request, file };
 export { emit, engine };

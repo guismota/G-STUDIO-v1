@@ -5,7 +5,6 @@ late({get UGEN(){return UGEN},set UGEN(v){UGEN=v}});
 // Biblioteca: instrumentos dos gêneros (4 loops cada), amostras gravadas do G-STUDIO e sons do usuário (importados ou gravados)
 var NOVO=[],NV={n:0,root:9,mode:'minor',auto:CFG.autoKey!==false,bpm:124,ctx:'draft'},UGEN=null;
 var LIBM={items:[],folders:[],favs:[]};
-var UBUF={},UPEND={};
 var XS={open:false,pick:false,view:'all',type:'all',genre:'all',q:'',aud:null,menuId:null};
 const XCAT=[['drums','Drums','#FFA63D'],['perc','Percussão','#FF6A3D'],['bass','Baixo','#6C8BFF'],['keys','Teclados e pads','#FF3DAE'],['synth','Leads e arps','#5CFF8A'],['fx','Efeitos','#C8FF3D'],['vocal','Vozes','#FFE600'],['other','Outros','#BDBDBD']];
 const XCATN=Object.fromEntries(XCAT.map(c=>[c[0],c[1]])),XCATC=Object.fromEntries(XCAT.map(c=>[c[0],c[2]]));
@@ -18,4 +17,4 @@ const CC0=[
  {f:'ride',name:'Prato de condução',cat:'drums',h:'ohat'},{f:'crash',name:'Prato de ataque',cat:'drums',h:'once'},
  {f:'letsgo',name:"Voz: Let's Go",cat:'vocal',h:'once'}];
 
-export { CC0, LANECAT, LIBM, NOVO, NV, UBUF, UGEN, UPEND, XCAT, XCATC, XCATN, XS };
+export { CC0, LANECAT, LIBM, NOVO, NV, UGEN, XCAT, XCATC, XCATN, XS };

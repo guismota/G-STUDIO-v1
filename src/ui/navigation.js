@@ -1,5 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, FX, FXKEYS, LASTK, MAIN, REC, RL, SC, buildHome, closeFx, closeOs, closeRmx, closeRoll, enterNovo, histPush, initAudio, maybeTour, playing, powerOnHome, recStop, reduceMotion, saveNovo, screen, setScreen, setStyle, stopTransport, szClose, undoReset } from '../app/all.js';
+import { $, FX, FXKEYS, LASTK, MAIN, RECU, RL, SC, buildHome, closeFx, closeOs, closeRmx, closeRoll, engine, enterNovo, histPush, initAudio, maybeTour, playing, powerOnHome, reduceMotion, saveNovo, screen, setScreen, setStyle, stopTransport, szClose, undoReset } from '../app/all.js';
 // troca de página: uma faixa na cor do canal atravessa a tela
 function pageWipe(o,mid){
   const w=$('#wipe');if(reduceMotion()||!w){mid();return}
@@ -23,7 +23,7 @@ function goHome(){
   if(RL.open)closeRoll();
   if(playing)stopTransport();
   if(screen==='novo'){saveNovo();LATE.screen='main';LATE.cols=MAIN;LATE.scenes=SC.main}document.body.classList.remove('novo','ugen');
-  FXKEYS.forEach(k=>{if(FX[k].win.open)closeFx(k)});closeOs();if(REC.on)recStop();
+  FXKEYS.forEach(k=>{if(FX[k].win.open)closeFx(k)});closeOs();if(RECU.on)engine.send({type:'rec.stop'});
   document.querySelectorAll('.modal.open').forEach(m=>m.classList.remove('open'));
   const d=document.querySelector('.dev');
   const done=()=>{d.classList.remove('crtoff');document.body.classList.remove('in-session','th-art','th-afro','th-vice','th-cumbia');buildHome();powerOnHome()};

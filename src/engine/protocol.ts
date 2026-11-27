@@ -9,7 +9,10 @@
 //  - evento: { type: 'area.acao', ...dados };
 //  - linhas são identificadas pela chave (lane: 'kick', 'bass', 'n3'...), padrões pelo slot (0 a 3: do gênero; 4 a 7: do usuário);
 //  - valores contínuos (volume, posição nos pads) vão de 0 a 1;
-//  - sons e gravações não viajam dentro do JSON: vão por um código (id) e o arquivo é lido pelo outro lado.
+//  - sons e gravações não viajam dentro do JSON: vão por um código (id) e o arquivo é lido pelo outro lado
+//    (engine.file(id) devolve um arquivo gerado pelo motor, como a gravação; no app nativo será um arquivo no disco);
+//  - pedido que espera resposta leva um código (token) e a resposta chega num evento com o mesmo token
+//    (engine.request(comando, tipoDaResposta) faz isso e devolve a resposta).
 // Para mudar o protocolo: acrescente aqui, suba PROTOCOL_VERSION e implemente nos dois lados.
 
 export const PROTOCOL_VERSION = 1;
@@ -62,13 +65,22 @@ export type Command =
   | { type: 'preview.stop' }
   | { type: 'preview.volume'; value: number } // volume das prévias (Ajustes)
   | { type: 'sting.play'; genre: string } // som ao entrar num canal (desligado hoje)
-  // gravação da master e microfone
+  // gravação da saída (com contagem de 3 tempos)
   | { type: 'rec.start' }
   | { type: 'rec.stop' }
+  | { type: 'rec.cancel' } // durante a contagem
+  | { type: 'rec.discard' }
+  // microfone (Explorar > Gravar)
   | { type: 'mic.start' }
   | { type: 'mic.stop' }
-  // amostras do usuário (o arquivo vai por id)
-  | { type: 'sample.audition'; id: string }
+  | { type: 'mic.clear' }
+  | { type: 'mic.save'; id: string; token?: string } // resposta: mic.saved
+  | { type: 'mic.play' }
+  | { type: 'mic.stopPlay' }
+  // sons do usuário (o arquivo fica guardado com esse id; o motor abre, prepara e toca)
+  | { type: 'sample.load'; id: string; token?: string } // resposta: sample.loaded
+  | { type: 'sample.forget'; id: string }
+  | { type: 'sample.audition'; id: string; kind: string; token: string }
   | { type: 'sample.stopAudition' };
 
 // ---------------------------------------------------------------- eventos (motor -> tela)
@@ -80,10 +92,16 @@ export type EngineEvent =
   | { type: 'oneshot.hit'; index: number; inMs: number } // daqui a quanto o som do One Shot entra (para piscar o pad)
   | { type: 'meters'; master: [number, number]; clip: boolean; lanes: Record<LaneKey, number>; spectrum: number[] }
   | { type: 'preview.state'; id: string; playing: boolean } // a prévia pedida com esse id terminou sozinha
-  | { type: 'rec.state'; on: boolean; counting: boolean }
-  | { type: 'rec.done'; file: string; mime: string }
-  | { type: 'mic.level'; value: number }
-  | { type: 'notice'; text: string }; // aviso para o usuário (sem conexão com o áudio, sem microfone etc.)
+  | { type: 'rec.state'; on: boolean; count: number; t0: number } // count: contagem antes de gravar (3, 2, 1; 0 = gravando)
+  | { type: 'rec.done'; seconds: number; mime: string; wav: { id: string; size: number } | null; m4a: { id: string; size: number } | null }
+  | { type: 'mic.state'; on: boolean }
+  | { type: 'mic.level'; value: number; t0: number }
+  | { type: 'mic.done'; ok: boolean; seconds?: number } // ok=false: não captou som
+  | { type: 'mic.saved'; token: string; ok: boolean; duration?: number; size?: number }
+  | { type: 'sample.loaded'; token: string; id: string; ok: boolean; duration: number }
+  | { type: 'sample.audition'; token: string; ok: false } // o som não está disponível
+  | { type: 'sample.auditionEnded'; token: string }
+  | { type: 'notice'; text: string; kind?: 'toast' }; // aviso para o usuário (kind toast: balão da biblioteca)
 
 export type CommandType = Command['type'];
 export type EventType = EngineEvent['type'];

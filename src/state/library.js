@@ -1,14 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, CC0, GENRES, LANECAT, LIBM, NOVO, NOVO_STY, NV, SMP, STYLES, TYPES, UBUF, UPEND, XCATN, XS, bpm, buildSession, ctx, engine, ensureGain, guessHit, initAudio, novoLane, novoLoadDraft, openNovoSession, out, playing, previewPlay, refreshPads, routeAll, saveNovo, saveUser, screen, sortByKind, stopPreview, stopTransport, undoReset, userPats, xRender, xToast } from '../app/all.js';
-// ---------- buffers ----------
-function decodeAB(ab){return new Promise((res,rej)=>{
-  const c=ctx||(XS.oac=XS.oac||new (window.OfflineAudioContext||window.webkitOfflineAudioContext)(1,1,44100));
-  try{const p=c.decodeAudioData(ab,res,e=>rej(e||new Error('decode')));if(p&&p.catch)p.catch(rej)}catch(e){rej(e)}})}
-function getBuf(id){if(!id)return null;if(id.startsWith('c:'))return SMP[id.slice(2)]||null;if(UBUF[id])return UBUF[id];loadBuf(id);return null}
-function loadBuf(id){
-  if(!id||!id.startsWith('u:')||UBUF[id]||UPEND[id])return UPEND[id]||Promise.resolve(UBUF[id]||null);
-  return UPEND[id]=idbGet(id).then(ab=>ab?decodeAB(ab.slice(0)):null).then(b=>{if(b)UBUF[id]=b;delete UPEND[id];return b}).catch(()=>{delete UPEND[id];return null});
-}
+import { $, CC0, GENRES, LANECAT, LIBM, NOVO, NOVO_STY, NV, STYLES, TYPES, XCATN, XS, bpm, buildSession, ctx, engine, ensureGain, guessHit, novoLane, novoLoadDraft, openNovoSession, playing, previewPlay, refreshPads, routeAll, saveNovo, saveUser, screen, sortByKind, stopPreview, stopTransport, undoReset, userPats, xRender, xToast } from '../app/all.js';
 // ---------- IndexedDB ----------
 var IDBP=null;
 function idb(){if(IDBP)return IDBP;IDBP=new Promise((res,rej)=>{try{const r=indexedDB.open('gstudio',1);r.onupgradeneeded=()=>{r.result.createObjectStore('files')};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}catch(e){rej(e)}});return IDBP}
@@ -72,14 +63,16 @@ function classify(name,dur){
 }
 const uid=()=>'u:'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 async function importFiles(files){
-  initAudio();let ok=0,bad=0;const added=[];
+  engine.send({type:'audio.unlock'});let ok=0,bad=0;const added=[];
   for(const f of files){
     if(f.size>60*1024*1024){bad++;continue}
-    try{const ab=await f.arrayBuffer();const buf=await decodeAB(ab.slice(0));
+    try{const ab=await f.arrayBuffer(),id=uid();
+      await idbPut(id,ab);
+      const r=await engine.request({type:'sample.load',id},'sample.loaded'); // o motor abre e prepara o som
+      if(!r.ok){idbDel(id).catch(()=>{});throw new Error('decode')}
       const base=f.name.replace(/\.[a-z0-9]+$/i,'').replace(/[_]+/g,' ').trim().slice(0,40)||'Som';
-      const c=classify(f.name,buf.duration),id=uid();
-      await idbPut(id,ab);UBUF[id]=buf;
-      LIBM.items.push({id,name:base,cat:c.cat,kind:c.kind,bpm:c.bpm,bars:c.bars,dur:+buf.duration.toFixed(2),added:Date.now(),size:f.size});added.push(id);ok++;
+      const c=classify(f.name,r.duration);
+      LIBM.items.push({id,name:base,cat:c.cat,kind:c.kind,bpm:c.bpm,bars:c.bars,dur:+r.duration.toFixed(2),added:Date.now(),size:f.size});added.push(id);ok++;
     }catch(e){bad++}
   }
   saveLib();
@@ -99,29 +92,13 @@ function xAudition(it,li,btn){
     previewPlay({type:'preview.start',id:'aud:'+it.id,genre:it.g,plan:Array.from({length:4},()=>({[it.t]:idx})),bars:4,end:false,volume:.7},()=>{if(XS.aud&&XS.aud.id===it.id)xStopAud()});
     XS.aud={id:it.id,li,stop:()=>engine.send({type:'preview.stop'})};return;
   }
-  const go=b=>{if(!b){xToast('Som indisponível');xStopAud();return}
-    const s=ctx.createBufferSource(),g=ctx.createGain();s.buffer=b;g.gain.value=.9;s.connect(g);g.connect(out);
-    if(it.kind==='loop'){s.loop=true;s.loopEnd=b.duration}
-    const t=ctx.currentTime+.02;s.start(t);const lim=it.kind==='loop'?Math.min(16,Math.max(b.duration*2,4)):Math.min(b.duration+.05,12);s.stop(t+lim);
-    const tm=setTimeout(()=>{if(XS.aud&&XS.aud.src===s)xStopAud()},lim*1000+80);
-    XS.aud={id:it.id,li,src:s,stop:()=>{clearTimeout(tm);try{g.gain.setTargetAtTime(0,ctx.currentTime,.02);s.stop(ctx.currentTime+.1)}catch(e){}}}};
-  const b=getBuf(it.id);if(b)go(b);else loadBuf(it.id).then(go);
+  const token='a'+(++AUDN);XS.aud={id:it.id,li,token,stop:()=>engine.send({type:'sample.stopAudition'})};
+  engine.send({type:'sample.audition',id:it.id,kind:it.kind,token});
 }
+let AUDN=0;
+engine.on('sample.audition',e=>{if(!e.ok&&XS.aud&&XS.aud.token===e.token){xToast('Som indisponível');xStopAud()}});
+engine.on('sample.auditionEnded',e=>{if(XS.aud&&XS.aud.token===e.token)xStopAud()});
 
-// ---------- tocar lanes de amostra no Criar novo ----------
-function smpHit(c,t,o,v){const b=getBuf(c.smp);if(!b)return;
-  if(c.hsrc){try{c.hsrcG.gain.setTargetAtTime(0,t,.008);c.hsrc.stop(t+.06)}catch(e){}}
-  const s=ctx.createBufferSource(),g=ctx.createGain();s.buffer=b;g.gain.value=.9*(v||1);s.connect(g);g.connect(o);s.start(t);c.hsrc=s;c.hsrcG=g}
-function loopStep(c,t){
-  if(c.lsrc&&t<c.lend-.03)return;
-  const b=getBuf(c.smp);if(!b)return;
-  const rate=bpm/(c.lbpm||bpm),len=(c.bars||1)*240/bpm;
-  const s=ctx.createBufferSource(),g=ctx.createGain();s.buffer=b;s.playbackRate.value=rate;g.gain.value=.9;s.connect(g);g.connect(c.gain);
-  s.start(t);s.stop(t+len+.02);c.lsrc=s;c.lsrcG=g;c.lend=t+len;c.lrate=rate;
-}
-function stopLaneSrc(c,at){const t=at||(ctx?ctx.currentTime:0);
-  if(c.lsrc){try{c.lsrcG.gain.setTargetAtTime(0,t,.01);c.lsrc.stop(t+.08)}catch(e){}c.lsrc=null;c.lend=0}
-  if(c.hsrc&&!at){try{c.hsrc.stop(t+.02)}catch(e){}c.hsrc=null}}
 function novoBpmChanged(){if(!ctx)return;const n=ctx.currentTime;NOVO.forEach(c=>{if(c.lsrc){const r=bpm/(c.lbpm||bpm);try{c.lsrc.playbackRate.setValueAtTime(r,n)}catch(e){}c.lend=n+(c.lend-n)*c.lrate/r;c.lrate=r}})}
 
 // ---------- adicionar à página em branco ----------
@@ -156,4 +133,4 @@ function openNvKey(){
 }
 function nvKeyApply(){NOVO_STY.key={root:NV.root,mode:NV.mode};NOVO.forEach(c=>{c._tp={}});LATE.userVer++;saveNovo();updNvKey();refreshPads();if($('#nvKeyDlg').classList.contains('open'))openNvKey()}
 
-export { MODE_N, NOTE_PT, classify, enterNovo, genreName, idb, idbDel, idbDo, idbPut, importFiles, libAll, libSub, libVisible, loadBuf, loadLib, loopStep, novoAdd, novoBpmChanged, nvKeyApply, openNvKey, saveLib, smpHit, stopLaneSrc, uid, updNvKey, xAudition, xStopAud };
+export { MODE_N, NOTE_PT, classify, enterNovo, genreName, idb, idbDel, idbDo, idbGet, idbPut, importFiles, libAll, libSub, libVisible, loadLib, novoAdd, novoBpmChanged, nvKeyApply, openNvKey, saveLib, uid, updNvKey, xAudition, xStopAud };

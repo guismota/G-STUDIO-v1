@@ -1,4 +1,4 @@
-import { $, GENRES, LIBM, MIC, NV, UBUF, XCAT, XCATC, XCATN, XS, buildHome, buildSession, classify, closeRecDlg, ctx, genreName, idbDel, importFiles, initAudio, libAll, libSub, libVisible, loadLib, loadNovo, micStart, micStop, novoAdd, nvKeyApply, openNvKey, openRecDlg, out, pageWipe, reduceMotion, refreshSlots, saveAsGenre, saveAsGenreGo, saveLib, saveRec, screen, stopPreview, ugenMenu, xAudition, xStopAud } from '../app/all.js';
+import { $, GENRES, LIBM, MICU, NV, XCAT, XCATC, XCATN, XS, buildHome, buildSession, classify, closeRecDlg, engine, genreName, idbDel, importFiles, libAll, libSub, libVisible, loadLib, loadNovo, novoAdd, nvKeyApply, openNvKey, openRecDlg, pageWipe, reduceMotion, refreshSlots, saveAsGenre, saveAsGenreGo, saveLib, saveRec, screen, stopPreview, ugenMenu, xAudition, xStopAud } from '../app/all.js';
 // ---------- interface do Explorar ----------
 function xToast(m){const t=$('#xToast');t.textContent=m;t.classList.remove('show');void t.offsetWidth;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2400)}
 function openExplore(pick){
@@ -88,7 +88,7 @@ function itemMenu(it,anchor){
     E.push({l:it.kind==='loop'?'Usar como som curto':'Usar como loop',f:()=>{const m=LIBM.items.find(x=>x.id===it.id);m.kind=m.kind==='loop'?'oneshot':'loop';if(m.kind==='loop'&&!m.bars){const c=classify(m.name+' loop',m.dur||2);m.bars=c.bars;m.bpm=c.bpm}saveLib();xRender()}});
     if(it.kind==='loop')E.push({l:'BPM do loop ('+Math.round(it.bpm)+')',f:()=>xAsk('BPM original do loop',String(Math.round(it.bpm)),v=>{const b=parseFloat(String(v).replace(',','.'));if(!(b>=60&&b<=200)){xToast('Use um BPM entre 60 e 200');return}const m=LIBM.items.find(x=>x.id===it.id);m.bpm=b;m.bars=Math.max(1,Math.round((m.dur||2)*b/240));saveLib();xRender()})});
     E.push({l:'Mudar tipo ('+(XCATN[it.cat]||'Outros')+')',f:()=>showXMenu(anchor,XCAT.map(c=>({l:c[1],on:c[0]===it.cat,f:()=>{const m=LIBM.items.find(x=>x.id===it.id);m.cat=c[0];saveLib();xRender()}})))});
-    E.push({l:'Apagar som',danger:true,f:()=>xAsk('Apagar "'+it.name+'"? Isso não tem volta.',null,()=>{LIBM.items=LIBM.items.filter(x=>x.id!==it.id);LIBM.folders.forEach(f=>{f.ids=f.ids.filter(i=>i!==it.id)});LIBM.favs=LIBM.favs.filter(i=>i!==it.id);delete UBUF[it.id];saveLib();idbDel(it.id).catch(()=>{});xRender();xToast('Som apagado')},'Apagar')});
+    E.push({l:'Apagar som',danger:true,f:()=>xAsk('Apagar "'+it.name+'"? Isso não tem volta.',null,()=>{LIBM.items=LIBM.items.filter(x=>x.id!==it.id);LIBM.folders.forEach(f=>{f.ids=f.ids.filter(i=>i!==it.id)});LIBM.favs=LIBM.favs.filter(i=>i!==it.id);engine.send({type:'sample.forget',id:it.id});saveLib();idbDel(it.id).catch(()=>{});xRender();xToast('Som apagado')},'Apagar')});
   }
   if(inF)E.push({sep:''},{l:'Tirar desta pasta',f:()=>{inF.ids=inF.ids.filter(i=>i!==it.id);saveLib();xRender()}});
   showXMenu(anchor,E);
@@ -109,12 +109,12 @@ function xAsk(msg,val,cb,okLabel){
 (()=>{
   $('#expOpen').onclick=()=>openExplore(false);
   $('#xBack').onclick=closeExplore;$('#xDone').onclick=closeExplore;
-  $('#xImp').onclick=()=>{initAudio();$('#xFile').click()};
+  $('#xImp').onclick=()=>{engine.send({type:'audio.unlock'});$('#xFile').click()};
   $('#xFile').onchange=e=>{const fs=[...e.target.files];e.target.value='';if(fs.length)importFiles(fs)};
   $('#xRecBtn').onclick=openRecDlg;
   $('#xq').oninput=e=>{XS.q=e.target.value;xRender()};
-  $('#xRecGo').onclick=()=>{if(MIC.on)micStop();else micStart()};
-  $('#xRecPlay').onclick=()=>{if(!MIC.buf)return;xStopAud();const s=ctx.createBufferSource();s.buffer=MIC.buf;s.connect(out);s.start();XS.aud={id:'rec',stop:()=>{try{s.stop()}catch(e){}}}};
+  $('#xRecGo').onclick=()=>{if(MICU.on)engine.send({type:'mic.stop'});else{xStopAud();engine.send({type:'mic.start'})}};
+  $('#xRecPlay').onclick=()=>{if(!MICU.ready)return;xStopAud();engine.send({type:'mic.play'});XS.aud={id:'rec',stop:()=>engine.send({type:'mic.stopPlay'})}};
   $('#xRecSave').onclick=saveRec;$('#xRecX').onclick=closeRecDlg;
   document.addEventListener('pointerdown',e=>{const m=$('#xMenu');if(m.classList.contains('open')&&!m.contains(e.target)&&!e.target.closest('.xmore,.xfm'))closeXMenu()},true);
   $('#nvKey').onclick=openNvKey;$('#nvSave').onclick=saveAsGenre;$('#ugOk').onclick=saveAsGenreGo;$('#ugNo').onclick=()=>$('#ugDlg').classList.remove('open');

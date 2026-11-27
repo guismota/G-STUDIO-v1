@@ -1,6 +1,6 @@
-import { $, CFG, STYLES, bpm, closeModal, ctx, curProj, fin, flash, fmtDate, initAudio, metClick, playing, startTransport, style, tT0, two } from '../app/all.js';
+import { bpm, ctx, emit, fin, initAudio, metClick, playing, startTransport, tT0 } from '../app/all.js';
 // ---------- Gravação: grava o que sai na master e exporta ----------
-const REC={on:false,t0:0,L:[],R:[],len:0,sr:48000,sp:null,z:null,mr:null,mrc:[],mime:'',dst:null,wav:null,m4a:null,uiT:null};
+const REC={on:false,t0:0,L:[],R:[],len:0,sr:48000,sp:null,z:null,mr:null,mrc:[],mime:'',dst:null,wav:null,m4a:null};
 const f2i=a=>{const o=new Int16Array(a.length);for(let i=0;i<a.length;i++){const v=a[i]<-1?-1:a[i]>1?1:a[i];o[i]=v<0?v*32768:v*32767}return o};
 function recStart(from){
   initAudio();REC.L=[];REC.R=[];REC.len=0;REC.sr=ctx.sampleRate;REC.wav=null;REC.m4a=null;REC.from=from||0;
@@ -16,7 +16,7 @@ function recStart(from){
     const mt=['audio/mp4','audio/aac','audio/webm;codecs=opus','audio/webm'].find(t=>MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(t));
     REC.mr=new MediaRecorder(dst.stream,mt?{mimeType:mt,audioBitsPerSecond:256000}:undefined);REC.mime=REC.mr.mimeType||mt||'audio/mp4';
     REC.mr.ondataavailable=e=>{if(e.data&&e.data.size)REC.mrc.push(e.data)};const go=()=>{try{if(REC.on&&REC.mr.state==='inactive')REC.mr.start(1000)}catch(e){}};const w=(REC.from-ctx.currentTime)*1000;if(w>5)setTimeout(go,w);else go()}}catch(e){REC.mr=null}
-  REC.on=true;REC.t0=performance.now()+Math.max(0,(REC.from-ctx.currentTime)*1000);updRecUI();clearInterval(REC.uiT);REC.uiT=setInterval(updRecUI,250);
+  REC.on=true;REC.t0=performance.now()+Math.max(0,(REC.from-ctx.currentTime)*1000);emitRec();
 }
 function encodeWav(){
   const n=REC.len,sr=REC.sr,buf=new ArrayBuffer(44+n*4),dv=new DataView(buf),w=(o,str)=>{for(let i=0;i<str.length;i++)dv.setUint8(o+i,str.charCodeAt(i))};
@@ -28,17 +28,12 @@ function encodeWav(){
 }
 function recStop(){
   if(REC.cnt){recCancel();return}
-  if(!REC.on)return;REC.on=false;clearInterval(REC.uiT);
+  if(!REC.on)return;REC.on=false;
   try{fin.disconnect(REC.sp)}catch(e){}try{REC.sp.disconnect()}catch(e){}try{REC.z.disconnect()}catch(e){}
-  const fin2=()=>{REC.wav=REC.len?encodeWav():null;REC.L=[];REC.R=[];openRecDone()};
+  const fin2=()=>{REC.wav=REC.len?encodeWav():null;REC.L=[];REC.R=[];emitRecDone()};
   if(REC.mr&&REC.mr.state!=='inactive'){REC.mr.onstop=()=>{REC.m4a=REC.mrc.length?new Blob(REC.mrc,{type:REC.mime}):null;try{fin.disconnect(REC.dst)}catch(e){}fin2()};REC.mr.stop()}
   else fin2();
-  updRecUI();
-}
-const fmtT=s=>Math.floor(s/60)+':'+two(Math.floor(s%60));
-function updRecUI(){
-  const b=$('#recBtn');b.classList.toggle('rec',REC.on&&!REC.cnt);b.classList.toggle('cnt',!!REC.cnt);
-  b.querySelector('.rtime').textContent=REC.cnt?String(REC.cnt):REC.on?fmtT(Math.max(0,performance.now()-REC.t0)/1000):'Rec';
+  emitRec();
 }
 // contagem: 3 cliques no tempo e a gravação entra no próximo tempo
 REC.cnt=0;REC.tms=[];
@@ -46,35 +41,18 @@ function recCountIn(){
   initAudio();const beat=60/bpm,now=ctx.currentTime;
   let t0=now+.12;if(playing){const n=Math.ceil((now+.06-tT0)/beat);t0=tT0+n*beat}
   const start=t0+3*beat;REC.tms.forEach(clearTimeout);REC.tms=[];
-  for(let i=0;i<3;i++){const t=t0+i*beat;metClick(t,i===0);REC.tms.push(setTimeout(()=>{REC.cnt=3-i;updRecUI()},Math.max(0,(t-now)*1000)))}
-  REC.cnt=3;updRecUI();flash('Se prepara');
+  for(let i=0;i<3;i++){const t=t0+i*beat;metClick(t,i===0);REC.tms.push(setTimeout(()=>{REC.cnt=3-i;emitRec()},Math.max(0,(t-now)*1000)))}
+  REC.cnt=3;emitRec();notice('Se prepara');
   recStart(start);
   if(!playing)startTransport(false,start); // o relógio já entra no tempo certo depois dos 3 cliques
-  REC.tms.push(setTimeout(()=>{REC.cnt=0;updRecUI();flash('Gravando')},Math.max(0,(start-now)*1000)));
+  REC.tms.push(setTimeout(()=>{REC.cnt=0;emitRec();notice('Gravando')},Math.max(0,(start-now)*1000)));
 }
-function recCancel(){REC.tms.forEach(clearTimeout);REC.tms=[];REC.cnt=0;REC.on=false;clearInterval(REC.uiT);
+function recCancel(){REC.tms.forEach(clearTimeout);REC.tms=[];REC.cnt=0;REC.on=false;
   try{fin.disconnect(REC.sp)}catch(e){}try{REC.sp.disconnect()}catch(e){}try{if(REC.mr&&REC.mr.state!=='inactive')REC.mr.stop()}catch(e){}try{fin.disconnect(REC.dst)}catch(e){}
-  updRecUI();flash('Gravação cancelada')}
-const recPref=()=>CFG.rec==='wav'?(REC.wav||REC.m4a):(REC.m4a||REC.wav);
-const recExt=()=>REC.mime.includes('webm')?'webm':'m4a';
-const recFile=(blob,ext)=>new File([blob],(($('#rdName').value||'G-STUDIO').trim().replace(/[\\/:*?"<>|]+/g,'-')||'G-STUDIO')+'.'+ext,{type:blob.type});
-function dl(blob,ext){const f=recFile(blob,ext),u=URL.createObjectURL(f),a=document.createElement('a');a.href=u;a.download=f.name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),60000)}
-function openRecDone(){
-  if(!REC.wav&&!REC.m4a){flash('Nada gravado');return}
-  const secs=REC.len/REC.sr,mb=x=>(x.size/1048576).toFixed(1)+' MB';
-  $('#rdName').value='G-STUDIO '+(curProj()?curProj().name:STYLES[style].name)+' '+fmtDate(Date.now()).replace(/[/:]/g,'-');
-  $('#rdInfo').textContent=fmtT(secs)+(REC.wav?' · WAV '+mb(REC.wav):'')+(REC.m4a?' · '+recExt().toUpperCase()+' '+mb(REC.m4a):'');
-  $('#rdM4a').style.display=REC.m4a?'':'none';$('#rdM4a').textContent='Baixar '+recExt().toUpperCase();
-  $('#rdWav').style.display=REC.wav?'':'none';
-  const sh=recPref(),canSh=!!(navigator.canShare&&sh&&navigator.canShare({files:[recFile(sh,sh===REC.m4a?recExt():'wav')]}));
-  $('#rdShare').style.display=canSh?'':'none';
-  $('#recDone').classList.add('open');
-}
-$('#recBtn').onclick=()=>REC.cnt?recCancel():REC.on?recStop():recCountIn();
-$('#rdWav').onclick=()=>{if(REC.wav)dl(REC.wav,'wav')};
-$('#rdM4a').onclick=()=>{if(REC.m4a)dl(REC.m4a,recExt())};
-$('#rdShare').onclick=async()=>{const b=recPref(),f=recFile(b,b===REC.m4a?recExt():'wav');try{await navigator.share({files:[f],title:f.name})}catch(e){}};
-$('#rdClose').onclick=()=>closeModal('recDone');
-$('#rdDiscard').onclick=()=>{REC.wav=null;REC.m4a=null;closeModal('recDone');flash('Gravação descartada')};
-
-export { REC, recStop };
+  emitRec();notice('Gravação cancelada')}
+// avisos para a tela: estado do botão REC (gravando, contagem) e gravação pronta (os arquivos vão por código: engine.file)
+const notice=text=>emit({type:'notice',text});
+function emitRec(){emit({type:'rec.state',on:REC.on,count:REC.cnt||0,t0:REC.t0})}
+function emitRecDone(){emit({type:'rec.done',seconds:REC.len/REC.sr,mime:REC.mime,wav:REC.wav?{id:'rec:wav',size:REC.wav.size}:null,m4a:REC.m4a?{id:'rec:m4a',size:REC.m4a.size}:null})}
+function recFileById(id){return id==='rec:wav'?REC.wav:id==='rec:m4a'?REC.m4a:null}
+export { REC, recCancel, recCountIn, recFileById, recStop };
