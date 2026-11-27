@@ -8,7 +8,8 @@ Os navegadores de teste rodam **mudos** (nada sai pelos alto-falantes; o som é 
 
 | Comando | O que faz |
 |---|---|
-| `npm test` | Roda todos os testes contra a versão escolhida em `GS_TARGET` (hoje: `legacy`). |
+| `npm test` | Monta o build final e o build de teste e roda todos os testes contra a versão nova, comparando com a 1.7.8.1. |
+| `npm run test:legacy` | Roda os testes contra a própria 1.7.8.1 (para conferir a régua). |
 | `npm run test:baseline` | Gera a referência a partir da 1.7.8.1: capturas de tela e níveis de áudio (3 rodadas). |
 | `npm run test:fixtures` | Gera de novo os dados salvos de referência (projeto, gênero criado, som importado e backup) na 1.7.8.1. Só é preciso uma vez. |
 | `npm run levels:report` | Resumo dos níveis: variação entre rodadas, clipagem, faixas mudas e faixas no topo do medidor. |
@@ -18,6 +19,7 @@ Os navegadores de teste rodam **mudos** (nada sai pelos alto-falantes; o som é 
 
 - `screens.spec.ts`: 17 telas (início, destaque, cards, os 11 gêneros, Remix FX, Tamanho, sequenciador, piano roll, Ajustes, termos, texto dos termos, boas-vindas e compatibilidade bloqueada) nos 3 tamanhos de iPad e em 1440x900, em Chromium e WebKit. O sorteio é fixo e o relógio da página fica parado, para as capturas saírem idênticas. Tolerância: só serrilhado de borda (no máximo 0,1% dos pontos).
 - `audio-levels.spec.ts`: para cada gênero e cada um dos 4 padrões, toca todas as linhas por 4 compassos, com o app recém-aberto, e mede o pico de cada faixa no mesmo ponto e na mesma escala do medidor do app (0 a 1). Nenhuma faixa com padrão pode ficar muda; a versão nova não pode clipar onde a 1.7.8.1 não clipa (ela já clipa no Acid House, padrão 3); e cada faixa tem que cair dentro da faixa medida na 1.7.8.1 (3 rodadas), com folga de 0,03. Se uma faixa sair, o padrão é medido de novo até 3 vezes.
+- `controls.spec.ts`: controles que mexem no som, acionados pela tela (Remix FX: filtro grave e agudo, eco, gater e pitch; One Shots: buzina, riser e crash). Mede o volume médio e o pico da saída final; a versão nova tem que ficar a no máximo 0,5 dB (volume médio) e 0,03 (pico) da 1.7.8.1.
 - `console.spec.ts`: percorre o app inteiro com som tocando e não pode aparecer nenhum erro no console.
 - `data.spec.ts`: o projeto, o gênero criado e o som importado feitos na 1.7.8.1 (`fixtures/dados-1.7.8.1.json`) abrem iguais, e o backup exportado por ela (`fixtures/backup-1.7.8.1.json`) restaura igual, tanto em "Juntar" quanto em "Substituir tudo".
 - `offline.spec.ts`: depois de abrir com internet, o app abre, carrega as 5 fontes e toca sem internet.
@@ -25,7 +27,7 @@ Os navegadores de teste rodam **mudos** (nada sai pelos alto-falantes; o som é 
 ## Onde ficam as referências
 
 - `baseline/screens/`: capturas da 1.7.8.1. Não vão para o git, porque são grandes e podem ser geradas de novo a qualquer momento com `npm run test:baseline`, já que a 1.7.8.1 está em `legacy/`.
-- `baseline/levels/`: níveis medidos na 1.7.8.1 (um arquivo por gênero e por navegador). Vão para o git.
+- `baseline/levels/` e `baseline/controls/`: níveis medidos na 1.7.8.1 (um arquivo por gênero, ou por controle, e por navegador). Vão para o git.
 - `fixtures/`: dados salvos de referência. Vão para o git.
 
 ## Gancho de teste `window.__gs`

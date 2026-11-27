@@ -1,5 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, ALL, FREE, FX, FXKEYS, LAY, SC, TYPES, applyCols, applyFx, buildSession, ctx, ensureGain, flash, freeN, fxActive, fxLinkedHere, initAudio, layoutRows, makeLane, refreshFx, refreshSlots, routeAll, saveFree, saveFx, saveLay, saveScenes, saveUser, screen, updDly, updEch, updFltLfo, updRev, userPats, userVer } from '../app/all.js';
+import { $, ALL, FREE, FX, FXKEYS, LAY, SC, TYPES, applyCols, applyFx, buildSession, ctx, ensureGain, flash, freeN, fxActive, fxLinkedHere, initAudio, layoutRows, makeLane, refreshFx, refreshSlots, routeAll, saveFree, saveFx, saveLay, saveScenes, saveUser, screen, updDly, updEch, updFltLfo, updRev, userPats } from '../app/all.js';
 // ---------- Desfazer / refazer ----------
 // guarda o estado de padrões, cenas, linhas da tela livre e efeitos; cada mudança vira um passo (agrupa mexidas seguidas)
 const UNDO={st:[],rd:[],cur:null,t:null,lock:false,MAX:60};

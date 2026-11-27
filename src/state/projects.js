@@ -1,5 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, ALL, FREE, FX, FXKEYS, K, MA, NOVO, NOVO_STY, NV, OS, SC, STYLES, TYPES, bpm, buildDelayInner, ctx, dstCurve, ensureGain, enterGenre, flash, freeN, kFiltK, kMstK, kPump, makeLane, makeShaper, novoFill, novoSer, playing, refreshFx, routeAll, saveAsGenre, saveFree, saveFx, saveNovo, saveOs, saveScenes, saveUser, screen, setBpm, setFilter, setMaster, setScreen, showXMenu, stopTransport, style, ugenList, updDly, updEch, updOsUI, updRev, updRevIR, userPats, userVer } from '../app/all.js';
+import { $, ALL, FREE, FX, FXKEYS, K, MA, NOVO, NOVO_STY, NV, OS, SC, STYLES, TYPES, bpm, buildDelayInner, ctx, dstCurve, ensureGain, enterGenre, flash, freeN, kFiltK, kMstK, kPump, makeLane, makeShaper, novoFill, novoSer, playing, refreshFx, routeAll, saveAsGenre, saveFree, saveFx, saveNovo, saveOs, saveScenes, saveUser, screen, setBpm, setFilter, setMaster, setScreen, showXMenu, stopTransport, style, ugenList, updDly, updEch, updOsUI, updRev, updRevIR, userPats } from '../app/all.js';
 // ---------- Projetos: guardar e abrir ideias com nome ----------
 const PROJ={list:[],cur:null};
 (()=>{try{const a=JSON.parse(localStorage.getItem('gstudio_projects'));if(Array.isArray(a))PROJ.list=a.filter(x=>x&&x.id&&x.data)}catch(e){}

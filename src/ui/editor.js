@@ -1,5 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, MAIN, STYLES, arpSynth, bass, chord, clapOnly, cols, ctx, flash, fxHit, getPat, hat, inVoice, initAudio, kick, lead, openRoll, padSynth, perc, playing, refreshPads, saveUser, smpHit, snare, startTransport, style, subBass, tom, userPats, userVer } from '../app/all.js';
+import { $, MAIN, STYLES, arpSynth, bass, chord, clapOnly, cols, ctx, flash, fxHit, getPat, hat, inVoice, initAudio, kick, lead, openRoll, padSynth, perc, playing, refreshPads, saveUser, smpHit, snare, startTransport, style, subBass, tom, userPats } from '../app/all.js';
 // ---------- Editor de loops ----------
 const ED={ci:-1,kind:'drum',len:16,grid:[],notes:[],rows:[],bar:0,chrom:false,target:0,prev:false,cells:[],pat:null,lastPos:-1};
 let painting=null;

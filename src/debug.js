@@ -1,6 +1,6 @@
 // Gancho de teste window.__gs: só existe em desenvolvimento e teste, nunca no build final (veja tests/README.md).
 import { LATE } from './app/late.js';
-import { APPV, FX, LIBM, PROJ, STYLES, VBS, VZ, applyGain, bar, bpm, cols, ctx, dbv, enterGenre, enterNovo, enterUgen, fin, flickLoop, flickT, getPat, goHome, idbEntries, initAudio, novoAdd, openClipEditor, playing, refreshFx, refreshSlots, saveFx, saveScenes, saveUser, scenes, screen, setBpm, snapshot, startTransport, step, stopTransport, style, tT0, ugenList, userPats, userVer } from './app/all.js';
+import { APPV, FX, LIBM, PROJ, STYLES, VBS, VZ, applyGain, bar, bpm, cols, ctx, dbv, enterGenre, enterNovo, enterUgen, fin, flickLoop, flickT, getPat, goHome, idbEntries, initAudio, novoAdd, openClipEditor, playing, refreshFx, refreshSlots, saveFx, saveScenes, saveUser, scenes, screen, setBpm, snapshot, startTransport, step, stopTransport, style, tT0, ugenList, userPats } from './app/all.js';
 window.__gs={
   version:APPV,
   genres:()=>Object.keys(STYLES),
@@ -21,11 +21,11 @@ window.__gs={
     cols.forEach(c=>{if(c.post)mk(c.key,c.post)});mk('_master',fin);
     LATE.sceneOn=-1;const on=[];cols.forEach(c=>{const p=getPat(c,i);c.active=p?i:-1;c.queued=null;if(p)on.push(c.key)});
     startTransport();const end=tT0+bars*4*60/bpm-.06,lv={};let clip=false;
-    const poll=()=>{for(const t of taps){t.a.getFloatTimeDomainData(t.buf);let m=t.pk;for(let k=0;k<N;k++){const v=t.buf[k]<0?-t.buf[k]:t.buf[k];if(v>m)m=v}t.pk=m}
+    let rs=0,rn=0;const poll=()=>{for(const t of taps){t.a.getFloatTimeDomainData(t.buf);let m=t.pk,q=0;for(let k=0;k<N;k++){const v=t.buf[k]<0?-t.buf[k]:t.buf[k];if(v>m)m=v;q+=v*v}t.pk=m;if(t.key==='_master'){rs+=Math.sqrt(q/N);rn++}}
       cols.forEach(c=>{lv[c.key]=Math.max(lv[c.key]||0,c.lv||0)});if(performance.now()<VZ.clipUntil)clip=true};
     const iv=setInterval(()=>{if(ctx.currentTime<tT0)return;if(ctx.currentTime>=end){clearInterval(iv);stopTransport();
       const lanes={},raw={};taps.forEach(t=>{try{t.node.disconnect(t.a)}catch(e){}if(t.key!=='_master'){lanes[t.key]=dbv(t.pk);raw[t.key]=t.pk}});
-      const ms=taps.find(t=>t.key==='_master');res({on,lanes,raw,lv,master:dbv(ms.pk),masterRaw:ms.pk,clip,seconds:end-tT0});return}poll()},10)}),
+      const ms=taps.find(t=>t.key==='_master');res({on,lanes,raw,lv,master:dbv(ms.pk),masterRaw:ms.pk,masterRms:rn?rs/rn:0,clip,seconds:end-tT0});return}poll()},10)}),
   enterGenre:k=>enterGenre(k),
   goHome:()=>goHome(),
   openClipEditor:(lane,i)=>{const ci=cols.findIndex(x=>x.key===lane);openClipEditor(ci,i)},

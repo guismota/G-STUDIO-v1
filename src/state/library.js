@@ -1,5 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, CC0, GENRES, LANECAT, LIBM, NOVO, NOVO_STY, NV, SMP, STYLES, TYPES, UBUF, UPEND, XCATN, XS, bpm, buildSession, ctx, ensureGain, guessHit, initAudio, novoLane, novoLoadDraft, openNovoSession, out, playing, pvStart, pvStop, refreshPads, routeAll, saveNovo, saveUser, screen, sortByKind, stopPreview, stopTransport, undoReset, userPats, userVer, xRender, xToast } from '../app/all.js';
+import { $, CC0, GENRES, LANECAT, LIBM, NOVO, NOVO_STY, NV, SMP, STYLES, TYPES, UBUF, UPEND, XCATN, XS, bpm, buildSession, ctx, ensureGain, guessHit, initAudio, novoLane, novoLoadDraft, openNovoSession, out, playing, pvStart, pvStop, refreshPads, routeAll, saveNovo, saveUser, screen, sortByKind, stopPreview, stopTransport, undoReset, userPats, xRender, xToast } from '../app/all.js';
 // ---------- buffers ----------
 function decodeAB(ab){return new Promise((res,rej)=>{
   const c=ctx||(XS.oac=XS.oac||new (window.OfflineAudioContext||window.webkitOfflineAudioContext)(1,1,44100));
