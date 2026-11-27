@@ -20,6 +20,7 @@ export * from '../engine/play-lane.js';
 export * from '../engine/scheduler.js';
 // porta de entrada do motor: engine.send / engine.on
 export * from '../engine/index.js';
+export * from '../engine/frame.js';
 export * from '../ui/scenes.js';
 export * from '../ui/editor.js';
 export * from '../ui/knobs.js';

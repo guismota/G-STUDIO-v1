@@ -1,5 +1,8 @@
 import { LATE } from '../app/late.js';
-import { $, FX, ICON, K, NV, STYLES, VZ, bpm, cols, editMode, flash, getPat, initAudio, launchScene, makeKnob, novoBpmChanged, playing, refreshPads, scenes, screen, setBpmDelay, setFilter, setMaster, startTransport, stopTransport, updPlugLcd } from '../app/all.js';
+import { $, ED, FX, ICON, K, NV, STYLES, VZ, bpm, cols, editMode, engine, flash, getPat, initAudio, launchScene, makeKnob, novoBpmChanged, playing, refreshPads, scenes, screen, setBpmDelay, setFilter, setMaster, startTransport, stopTransport, updPlugLcd, wakeOff, wakeOn } from '../app/all.js';
+function setPlayUI(){$('#playIco').innerHTML=playing?ICON.stop:ICON.play;$('#play').classList.toggle('on',playing)}
+// tocando ou parado: botão, tela acesa e prévia do editor (o motor avisa por transport.state)
+engine.on('transport.state',e=>{LATE.playing=e.playing;setPlayUI();if(e.playing)wakeOn();else{wakeOff();if(ED.ci>=0){ED.prev=false;$('#cePrev').classList.remove('on')}}});
 function setBpm(v){LATE.bpm=Math.max(70,Math.min(180,Math.round(v)));$('#bpmv').textContent=bpm;setBpmDelay();if(FX.ech.el)updPlugLcd('ech');if(FX.dly.el)updPlugLcd('dly');if(screen==='novo'){NV.bpm=bpm;novoBpmChanged()}}
 function setStyle(k){
   LATE.style=k;setBpm(STYLES[k].bpm);
@@ -34,4 +37,4 @@ var kPump=makeKnob($('#kPump'),{v:K.sc,label:'Pump',onChange:v=>{K.sc=v}});
 var kFiltK=makeKnob($('#kFilt'),{v:K.fv,label:'Filtro',onChange:v=>{K.fv=v;setFilter()}});
 var kMstK=makeKnob($('#kMst'),{v:K.mv,label:'Master',onChange:v=>{K.mv=v;setMaster()}});
 
-export { kFiltK, kMstK, kPump, setBpm, setStyle };
+export { kFiltK, kMstK, kPump, setBpm, setPlayUI, setStyle };

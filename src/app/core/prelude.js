@@ -1,4 +1,4 @@
-import { LATE, late } from '../late.js';
+import { late } from '../late.js';
 import { xToast } from '../all.js';
 late({get CMP(){return CMP},set CMP(v){CMP=v},get anL(){return anL},set anL(v){anL=v},get anR(){return anR},set anR(v){anR=v},get anS(){return anS},set anS(v){anS=v},get bar(){return bar},set bar(v){bar=v},get barOff(){return barOff},set barOff(v){barOff=v},get bpm(){return bpm},set bpm(v){bpm=v},get ctx(){return ctx},set ctx(v){ctx=v},get cur(){return cur},set cur(v){cur=v},get curBar(){return curBar},set curBar(v){curBar=v},get duck(){return duck},set duck(v){duck=v},get filt(){return filt},set filt(v){filt=v},get fin(){return fin},set fin(v){fin=v},get lastKey(){return lastKey},set lastKey(v){lastKey=v},get mix(){return mix},set mix(v){mix=v},get nextTime(){return nextTime},set nextTime(v){nextTime=v},get noiseBuf(){return noiseBuf},set noiseBuf(v){noiseBuf=v},get out(){return out},set out(v){out=v},get playing(){return playing},set playing(v){playing=v},get step(){return step},set step(v){step=v},get tT0(){return tT0},set tT0(v){tT0=v},get timer(){return timer},set timer(v){timer=v}});
 const $=s=>document.querySelector(s);

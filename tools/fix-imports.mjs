@@ -64,6 +64,15 @@ for (const f of [...files, ...extra]) {
   const newImp = imps.length ? `import { ${imps.join(', ')} } from '${rel(f, ALL)}';` : null;
   if (iImp >= 0) { if (newImp) lines[iImp] = newImp; else lines.splice(iImp, 1) }
   else if (newImp) { let at = 0; while (at < lines.length && /^(\/\/|import )/.test(lines[at])) at++; lines.splice(at, 0, newImp) }
+  // ponte LATE: import só quando o arquivo usa
+  {
+    const body = lines.filter(l => !/^import \{[^}]*\} from '[^']*late\.js';$/.test(l)).join('\n');
+    const need = ['LATE', 'late'].filter(n => n === 'LATE' ? /\bLATE\./.test(body) : /^late\(/m.test(body));
+    const iL = lines.findIndex(l => /^import \{[^}]*\} from '[^']*late\.js';$/.test(l));
+    const newL = need.length && f !== 'src/app/late.js' ? `import { ${need.join(', ')} } from '${rel(f, 'src/app/late.js')}';` : null;
+    if (iL >= 0) { if (newL) lines[iL] = newL; else lines.splice(iL, 1) }
+    else if (newL) lines.unshift(newL);
+  }
   const iExp = lines.findIndex(l => /^export \{[^}]*\};$/.test(l));
   const newExp = exps.length ? `export { ${exps.join(', ')} };` : null;
   if (iExp >= 0) { if (newExp) lines[iExp] = newExp; else lines.splice(iExp, 1) }

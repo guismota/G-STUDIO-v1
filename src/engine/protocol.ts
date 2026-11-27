@@ -92,11 +92,13 @@ export type Command =
 // ---------------------------------------------------------------- eventos (motor -> tela)
 export type EngineEvent =
   | { type: 'transport.state'; playing: boolean }
-  | { type: 'transport.step'; bar: number; step: number } // quando o som chega na caixa (para o visor e as luzes)
+  | { type: 'transport.step'; step: number; bar: number } // posição tocando, no quadro em que o som chega na caixa (visor, pads)
+  | { type: 'pulse'; value: number } // batida agora (acende as luzes da sessão)
   | { type: 'clips'; lanes: Record<LaneKey, { active: Slot; queued: Slot | null }> }
   | { type: 'scene.fired'; index: number } // a cena entrou de fato (para a animação)
   | { type: 'oneshot.hit'; index: number; inMs: number } // daqui a quanto o som do One Shot entra (para piscar o pad)
-  | { type: 'meters'; master: [number, number]; clip: boolean; lanes: Record<LaneKey, number>; spectrum: number[] }
+  // a cada quadro: picos da saída (l, r) e de cada linha (0 a 1, sem escala de medidor), espectro (0 a 255) e taxa de amostragem
+  | { type: 'meters'; l: number; r: number; lanes: Record<LaneKey, number>; spectrum: ArrayLike<number>; sr: number }
   | { type: 'preview.state'; id: string; playing: boolean } // a prévia pedida com esse id terminou sozinha
   | { type: 'rec.state'; on: boolean; count: number; t0: number } // count: contagem antes de gravar (3, 2, 1; 0 = gravando)
   | { type: 'rec.done'; seconds: number; mime: string; wav: { id: string; size: number } | null; m4a: { id: string; size: number } | null }

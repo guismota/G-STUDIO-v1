@@ -1,38 +1,31 @@
-import { LATE } from '../app/late.js';
-import { $, CFG, anL, anR, anS, cols, ctx, fin } from '../app/all.js';
+import { $, CFG, cols, engine } from '../app/all.js';
 // ---------- Medidores, espectro e luzes ----------
-const PQ=[];
-const VZ={pulse:0,lastP:-1,clipUntil:0,lvL:0,lvR:0,bufL:null,bufR:null,lb:new Float32Array(256),fq:null,bars:null,caps:null};
+const VZ={pulse:0,lastP:-1,clipUntil:0,lvL:0,lvR:0,fq:null,bars:null,caps:null,m:null,pend:[]};
 const dbv=p=>{if(p<=.00001)return 0;return Math.max(0,Math.min(1,(20*Math.log10(p)+48)/48))};
-function peakOf(an,buf){an.getFloatTimeDomainData(buf);let m=0;for(let i=0;i<buf.length;i++){const a=buf[i]<0?-buf[i]:buf[i];if(a>m)m=a}return m}
 const elL=$('#mL'),elR=$('#mR'),clipLed=$('#clipLed'),lightsEl=$('#lights'),laserEl=$('#laser'),markEl=document.querySelector('#homeBtn .mark');
 const spec=$('#spec'),sctx=spec.getContext('2d');
 const setLvl=(el,v)=>{el.style.clipPath='inset('+((1-v)*100).toFixed(1)+'% 0 0 0)'};
 clipLed.addEventListener('click',()=>{VZ.clipUntil=0;clipLed.classList.remove('hot')});
-function setupMeters(){
-  const sp=ctx.createChannelSplitter(2);fin.connect(sp);
-  LATE.anL=ctx.createAnalyser();anL.fftSize=512;LATE.anR=ctx.createAnalyser();anR.fftSize=512;
-  sp.connect(anL,0);sp.connect(anR,1);
-  LATE.anS=ctx.createAnalyser();anS.fftSize=1024;anS.smoothingTimeConstant=.75;fin.connect(anS);
-  VZ.bufL=new Float32Array(512);VZ.bufR=new Float32Array(512);VZ.fq=new Uint8Array(anS.frequencyBinCount);
-}
+// o motor manda a cada quadro os picos da saída e das linhas, o espectro e as batidas (para as luzes)
+engine.on('meters',e=>{VZ.m=e;VZ.fq=e.spectrum});
+engine.on('pulse',e=>{VZ.pend.push(e.value)});
 function drawViz(){
-  if(ctx&&anS){
-    const now=performance.now(),pl=peakOf(anL,VZ.bufL),pr=peakOf(anR,VZ.bufR);
+  const M=VZ.m;
+  if(M){
+    const now=performance.now(),pl=M.l,pr=M.r;
     if(pl>=.999||pr>=.999)VZ.clipUntil=now+1500;
     VZ.lvL=Math.max(dbv(pl),VZ.lvL-.025);VZ.lvR=Math.max(dbv(pr),VZ.lvR-.025);
     setLvl(elL,VZ.lvL);setLvl(elR,VZ.lvR);
     clipLed.classList.toggle('hot',now<VZ.clipUntil);
     if(!CFG.eco)cols.forEach(c=>{
-      if(!c.an||!c.lmEl)return;
-      const v=Math.max(dbv(peakOf(c.an,VZ.lb)),(c.lv||0)-.03);c.lv=v;
+      const pk=M.lanes[c.key];if(pk==null||!c.lmEl)return;
+      const v=Math.max(dbv(pk),(c.lv||0)-.03);c.lv=v;
       if(Math.abs(v-(c.lvS==null?-1:c.lvS))>.008){c.lvS=v;setLvl(c.lmEl,v)}
     });
-    anS.getByteFrequencyData(VZ.fq);
   }
-  if(CFG.eco){PQ.length=0;return}
+  if(CFG.eco){VZ.pend.length=0;return}
   VZ.pulse*=.88;
-  if(ctx)while(PQ.length&&PQ[0].t<=ctx.currentTime){const q=PQ.shift();if(q.v>VZ.pulse)VZ.pulse=q.v}
+  for(const v of VZ.pend)if(v>VZ.pulse)VZ.pulse=v;VZ.pend.length=0;
   if(VZ.pulse<.01)VZ.pulse=0;
   if(CFG.noflash)VZ.pulse=0;
   if(Math.abs(VZ.pulse-VZ.lastP)>.01){
@@ -50,7 +43,7 @@ function drawSpec(){
   const n=Math.max(16,Math.min(96,Math.floor(w/9)));
   if(!VZ.bars||VZ.bars.length!==n){VZ.bars=new Float32Array(n);VZ.caps=new Float32Array(n)}
   sctx.clearRect(0,0,W,H);
-  const fq=VZ.fq,binHz=ctx?ctx.sampleRate/1024:46.875,f0=35,f1=16000,bw=W/n,gap=Math.max(1,Math.round(bw*.28));
+  const fq=VZ.fq,binHz=VZ.m?VZ.m.sr/1024:46.875,f0=35,f1=16000,bw=W/n,gap=Math.max(1,Math.round(bw*.28));
   for(let i=0;i<n;i++){
     let m=0;
     if(fq){
@@ -65,4 +58,4 @@ function drawSpec(){
   sctx.globalAlpha=1;
 }
 
-export { PQ, VZ, dbv, drawViz, setupMeters };
+export { VZ, dbv, drawViz };

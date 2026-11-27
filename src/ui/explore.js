@@ -1,4 +1,4 @@
-import { LATE, late } from '../app/late.js';
+import { late } from '../app/late.js';
 import { CFG } from '../app/all.js';
 late({get UGEN(){return UGEN},set UGEN(v){UGEN=v}});
 // ===================== EXPLORAR + CRIAR NOVO =====================

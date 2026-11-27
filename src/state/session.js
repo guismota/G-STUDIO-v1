@@ -1,4 +1,4 @@
-import { LATE, late } from '../app/late.js';
+import { late } from '../app/late.js';
 import { NOVO, NV, STYLES, novoPat, saveNovo } from '../app/all.js';
 late({get HW(){return HW},set HW(v){HW=v},get SW(){return SW},set SW(v){SW=v},get cols(){return cols},set cols(v){cols=v},get draft(){return draft},set draft(v){draft=v},get editMode(){return editMode},set editMode(v){editMode=v},get editing(){return editing},set editing(v){editing=v},get freeN(){return freeN},set freeN(v){freeN=v},get saveFree(){return saveFree},set saveFree(v){saveFree=v},get saveScenes(){return saveScenes},set saveScenes(v){saveScenes=v},get saveUser(){return saveUser},set saveUser(v){saveUser=v},get sceneOn(){return sceneOn},set sceneOn(v){sceneOn=v},get scenes(){return scenes},set scenes(v){scenes=v},get screen(){return screen},set screen(v){screen=v},get style(){return style},set style(v){style=v},get userVer(){return userVer},set userVer(v){userVer=v}});
 let style='house';

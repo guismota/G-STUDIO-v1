@@ -75,3 +75,23 @@ test('gravar pelo microfone e salvar em Meus sons', async ({ page, browserName }
   expect(it.dur).toBeGreaterThan(.5);
   await expect(page.locator('#xRec')).not.toHaveClass(/open/);
 });
+
+test('tocando: visor, pads, medidores e luzes andam; parado, voltam', async ({ page }, info) => {
+  test.skip(!isMainView(info), 'roda no tamanho principal');
+  await prepare(page, info);
+  await enterHouse(page);
+  await page.locator('#play').click();
+  await expect(page.locator('#play')).toHaveClass(/on/);
+  await page.waitForTimeout(2500);
+  await expect(page.locator('#lcdPos')).not.toHaveText('1.1.1');
+  const insets = await page.evaluate(() => {
+    const top = (el: Element | null) => { const m = /inset\(([\d.]+)%/.exec((el as HTMLElement | null)?.style.clipPath || ''); return m ? +m[1] : 100 };
+    return { master: top(document.querySelector('#mL')), lanes: [...document.querySelectorAll('#session .lane')].map(l => top(l.querySelector('[style*="clip-path"]'))) };
+  });
+  expect(insets.master, 'medidor da saída subiu').toBeLessThan(60);
+  expect(insets.lanes.filter(v => v < 90).length, 'medidores das linhas subiram').toBeGreaterThan(3);
+  expect(await page.locator('#session .clip.play').count(), 'pads tocando acesos').toBeGreaterThan(3);
+  await page.locator('#play').click();
+  await expect(page.locator('#play')).not.toHaveClass(/on/);
+  await expect(page.locator('#lcdPos')).toHaveText('1.1.1');
+});

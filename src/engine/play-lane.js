@@ -1,4 +1,4 @@
-import { LATE, late } from '../app/late.js';
+import { late } from '../app/late.js';
 import { PQ, PV, STYLES, arpSynth, audible, bar, barOff, bass, bpm, chord, clapOnly, duckAt, fxHit, getPat, hat, inVoice, kick, lead, loopStep, padSynth, perc, pvDuck, smpHit, snare, style, subBass, sweep, tom } from '../app/all.js';
 // ----- tocar uma linha -----
 late({get LSND(){return LSND},set LSND(v){LSND=v}});
