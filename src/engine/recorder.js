@@ -1,3 +1,4 @@
+import { $, CFG, STYLES, bpm, closeModal, ctx, curProj, fin, flash, fmtDate, initAudio, metClick, playing, startTransport, style, tT0, two } from '../app/all.js';
 // ---------- Gravação: grava o que sai na master e exporta ----------
 const REC={on:false,t0:0,L:[],R:[],len:0,sr:48000,sp:null,z:null,mr:null,mrc:[],mime:'',dst:null,wav:null,m4a:null,uiT:null};
 const f2i=a=>{const o=new Int16Array(a.length);for(let i=0;i<a.length;i++){const v=a[i]<-1?-1:a[i]>1?1:a[i];o[i]=v<0?v*32768:v*32767}return o};
@@ -76,3 +77,4 @@ $('#rdShare').onclick=async()=>{const b=recPref(),f=recFile(b,b===REC.m4a?recExt
 $('#rdClose').onclick=()=>closeModal('recDone');
 $('#rdDiscard').onclick=()=>{REC.wav=null;REC.m4a=null;closeModal('recDone');flash('Gravação descartada')};
 
+export { REC, recStop };

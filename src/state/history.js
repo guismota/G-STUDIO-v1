@@ -1,3 +1,5 @@
+import { LATE } from '../app/late.js';
+import { $, ALL, FREE, FX, FXKEYS, LAY, SC, TYPES, applyCols, applyFx, buildSession, ctx, ensureGain, flash, freeN, fxActive, fxLinkedHere, initAudio, layoutRows, makeLane, refreshFx, refreshSlots, routeAll, saveFree, saveFx, saveLay, saveScenes, saveUser, screen, updDly, updEch, updFltLfo, updRev, userPats, userVer } from '../app/all.js';
 // ---------- Desfazer / refazer ----------
 // guarda o estado de padrões, cenas, linhas da tela livre e efeitos; cada mudança vira um passo (agrupa mexidas seguidas)
 const UNDO={st:[],rd:[],cur:null,t:null,lock:false,MAX:60};
@@ -13,12 +15,12 @@ function undoReset(){clearTimeout(UNDO.t);UNDO.t=null;UNDO.st=[];UNDO.rd=[];UNDO
 function undoApply(str){
   const d=JSON.parse(str);UNDO.lock=true;
   try{
-    Object.keys(userPats).forEach(k=>delete userPats[k]);Object.assign(userPats,d.u||{});userVer++;saveUser();
-    SC.main=d.sc.main;SC.free=d.sc.free;SC.novo=d.sc.novo;scenes=SC[screen];saveScenes();
+    Object.keys(userPats).forEach(k=>delete userPats[k]);Object.assign(userPats,d.u||{});LATE.userVer++;saveUser();
+    SC.main=d.sc.main;SC.free=d.sc.free;SC.novo=d.sc.novo;LATE.scenes=SC[screen];saveScenes();
     const want=(d.fr&&d.fr.l)||[],keep={};FREE.forEach(l=>keep[l.key]=l);
     FREE.forEach(l=>{if(!want.some(w=>w.key===l.key)){l.active=-1;l.queued=null;if(l.gain){try{l.gain.disconnect()}catch(e){}try{l.post&&l.post.disconnect()}catch(e){}l.gain=null}}});
     FREE.length=0;want.forEach(w=>{if(!TYPES[w.type])return;let l=keep[w.key];if(l)l.name=w.name;else{l=makeLane(w.type,w.key,w.name);if(ctx)ensureGain(l)}FREE.push(l)});
-    freeN=d.fr?d.fr.n|0:freeN;saveFree();
+    LATE.freeN=d.fr?d.fr.n|0:freeN;saveFree();
     FXKEYS.forEach(k=>{const v=d.fx&&d.fx[k],F=FX[k];if(!v)return;F.on=!!v.on;F.style=v.style;Object.assign(F.p,v.p||{});F.links=(v.links||[]).slice();F.master=!!v.master});
     if(ctx){ALL().forEach(ensureGain);updRev();updDly();updEch();updFltLfo();routeAll()}
     saveFx();
@@ -28,8 +30,7 @@ function undoApply(str){
 }
 function doUndo(){if(UNDO.t)undoCommit();if(!UNDO.st.length){flash('Nada pra desfazer');return}UNDO.rd.push(UNDO.cur);UNDO.cur=UNDO.st.pop();undoApply(UNDO.cur);undoUI();flash('Desfeito')}
 function doRedo(){if(UNDO.t)undoCommit();if(!UNDO.rd.length){flash('Nada pra refazer');return}UNDO.st.push(UNDO.cur);UNDO.cur=UNDO.rd.pop();undoApply(UNDO.cur);undoUI();flash('Refeito')}
-{const a=saveUser,b=saveScenes,c=saveFx,d=saveFree;saveUser=function(){const r=a.apply(this,arguments);undoMark();return r};saveScenes=function(){const r=b.apply(this,arguments);undoMark();return r};saveFx=function(){const r=c.apply(this,arguments);undoMark();return r};saveFree=function(){const r=d.apply(this,arguments);undoMark();return r}}
-{const eg=enterGenre;enterGenre=function(){const r=eg.apply(this,arguments);undoReset();return r};const en=enterNovo;enterNovo=function(){const r=en.apply(this,arguments);undoReset();return r}}
+{const a=saveUser,b=saveScenes,c=saveFx,d=saveFree;LATE.saveUser=function(){const r=a.apply(this,arguments);undoMark();return r};LATE.saveScenes=function(){const r=b.apply(this,arguments);undoMark();return r};LATE.saveFx=function(){const r=c.apply(this,arguments);undoMark();return r};LATE.saveFree=function(){const r=d.apply(this,arguments);undoMark();return r}}
 $('#undoBtn').onclick=doUndo;$('#redoBtn').onclick=doRedo;
 
 // ligar/desligar efeito pela barra (sem instrumento ligado, vale pra música toda)
@@ -50,3 +51,4 @@ $('#szW').oninput=e=>{LAY.cw=+e.target.value;applyCols();szSync()};
 $('#szH').onchange=$('#szW').onchange=()=>saveLay();
 $('#szAuto').onclick=()=>{LAY.rh=null;LAY.cw=null;layoutRows();applyCols();saveLay();szSync()};
 
+export { doRedo, doUndo, pfFxOn, pfToggleFx, szClose, undoReset };

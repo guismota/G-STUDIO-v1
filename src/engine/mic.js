@@ -1,3 +1,4 @@
+import { $, LIBM, UBUF, XS, classify, ctx, idbPut, initAudio, saveLib, uid, xRender, xStopAud, xToast } from '../app/all.js';
 // ---------- gravação pelo microfone ----------
 var MIC={on:false,stream:null,node:null,src:null,chunks:[],len:0,t0:0,timer:null,buf:null,sr:44100,peak:0,ab:null};
 async function micStart(){
@@ -43,3 +44,4 @@ async function saveRec(){
   saveLib();MIC.buf=null;$('#xRec').classList.remove('open');XS.view='mine';XS.flash=[id];xToast('Gravação salva em Meus sons');xRender();
 }
 
+export { MIC, closeRecDlg, micStart, micStop, openRecDlg, saveRec };

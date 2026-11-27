@@ -1,3 +1,5 @@
+import { LATE } from '../app/late.js';
+import { $, MAIN, STYLES, arpSynth, bass, chord, clapOnly, cols, ctx, flash, fxHit, getPat, hat, inVoice, initAudio, kick, lead, openRoll, padSynth, perc, playing, refreshPads, saveUser, smpHit, snare, startTransport, style, subBass, tom, userPats, userVer } from '../app/all.js';
 // ---------- Editor de loops ----------
 const ED={ci:-1,kind:'drum',len:16,grid:[],notes:[],rows:[],bar:0,chrom:false,target:0,prev:false,cells:[],pat:null,lastPos:-1};
 let painting=null;
@@ -239,13 +241,14 @@ $('#ceCancel').onclick=closeClipEditor;
 $('#ceDel').onclick=()=>{
   const c=cols[ED.ci];userPats[c.key][ED.target]=null;
   if(c.active===4+ED.target)c.active=-1;if(c.queued===4+ED.target)c.queued=null;
-  saveUser();userVer++;refreshPads();closeClipEditor();flash('Apagado. Bola pra frente');
+  saveUser();LATE.userVer++;refreshPads();closeClipEditor();flash('Apagado. Bola pra frente');
 };
 $('#ceSave').onclick=()=>{
   const c=cols[ED.ci],data=curData();
   if(!data.length){flash('Loop vazio. Coloca alguma coisa aí');return}
   userPats[c.key][ED.target]={name:'Meu '+(ED.target+1),len:ED.len,data,syn:ED.syn};
-  saveUser();userVer++;refreshPads();flash('Salvo em Meu '+(ED.target+1)+'. Agora é só soltar');closeClipEditor();
+  saveUser();LATE.userVer++;refreshPads();flash('Salvo em Meu '+(ED.target+1)+'. Agora é só soltar');closeClipEditor();
 };
 
 
+export { ED, LN, auditionNote, buildEdGrid, buildRows, cellAt, curData, firstEmpty, inScale, isChordT, isMono, isRoot, keyName, loadInto, nName, noteDown, noteMove, openClipEditor, paintNotes, painting, syncPreview };

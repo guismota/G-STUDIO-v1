@@ -1,3 +1,4 @@
+// [Ferramenta da modularização, já usada: funciona só no estado do código daquela etapa (veja o git log).]
 // Mapa de dependências entre os pedaços do app (src/app/parts.json): quem declara cada nome do escopo principal,
 // quem usa, se o uso acontece ao carregar (fora de função) ou só depois (dentro de função), e quais nomes recebem
 // valor fora do arquivo onde foram declarados. Serve para planejar a conversão em módulos de verdade.

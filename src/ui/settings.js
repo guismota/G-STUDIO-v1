@@ -1,3 +1,4 @@
+import { $, APPV, BIP, CFG, CMP, DEV, MAIN, PV, bkClose, bkExport, bkPick, bkSheet, closeModal, ctx, fin, fmtDate, fmtMB, idbDo, idbEntries, installNow, isStandalone, kbTitles, layoutRows, openDoc, openKb, out, playing, plural, saveCfg, showOnb, startTour, stopTransport, termsAt, two } from '../app/all.js';
 // ---------- Configurações ----------
 const WAKE={s:null};
 async function wakeOn(){if(!CFG.wake||!playing||WAKE.s||!navigator.wakeLock)return;try{const s=await navigator.wakeLock.request('screen');if(!playing||!CFG.wake){s.release().catch(()=>{});return}WAKE.s=s;s.addEventListener('release',()=>{if(WAKE.s===s)WAKE.s=null})}catch(e){}}
@@ -119,3 +120,4 @@ $('#cfgModal').addEventListener('click',e=>{if(e.target.id==='cfgModal')closeMod
 applyCfg();
 
 
+export { openCfg, setMono, wakeOff, wakeOn };

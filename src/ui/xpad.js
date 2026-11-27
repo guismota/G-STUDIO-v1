@@ -1,3 +1,4 @@
+import { ALL, ECHB, ECHL, FX, FXDEF, ICON, MA, PW_MIN, applyFx, bigKnobSVG, buildDelayInner, ctx, drawBig, dstCurve, fitPlug, fxFront, initAudio, makeKnob, makeShaper, placePlug, pwMax, refreshFx, refreshFxTags, routeAll, saveFx, setFxParam, setLinks, updDly, updEch, updFxUI, updPlugLcd, updRev, updRevIR } from '../app/all.js';
 // ---------- X-Pad (estilo mixer de DJ) ----------
 const XBEAT=k=>k==='dly'||k==='ech';
 function xpadLabels(k){return XBEAT(k)?ECHL:['0','25','50','75','100']}
@@ -103,3 +104,4 @@ function openFx(k){
 }
 function closeFx(k){const F=FX[k];F.win.open=false;F.lnk=false;if(F.el)F.el.style.display='none';updFxUI(k)}
 document.querySelectorAll('.fxbtn').forEach(b=>b.onclick=()=>{const k=b.dataset.fx;FX[k].win.open?closeFx(k):openFx(k)});
+export { closeFx, openFx };

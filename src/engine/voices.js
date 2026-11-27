@@ -1,3 +1,4 @@
+import { ctx } from '../app/all.js';
 // ---------- Limpeza de vozes ----------
 // Cada nota cria osciladores, filtros e ganhos. No Safari/iPad eles continuam ligados à mesa depois de tocar e
 // o processador vai somando milhares de nós mudos até o áudio engasgar (uns minutos de uso). Aqui cada nota vira
@@ -13,3 +14,4 @@ function voiceInit(){
       if(b){b.nodes.push(n);if(typeof n.start==='function'){const st=n.start.bind(n);let on=false;
         n.start=function(){if(!on){on=true;b.live++;n.addEventListener('ended',()=>{b.live--;if(b.closed&&b.live<=0)vbDone(b)})}return st.apply(null,arguments)}}}
       return n}})}
+export { VBS, inVoice, voiceInit };

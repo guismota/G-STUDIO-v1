@@ -1,3 +1,4 @@
+import { STYLES } from '../app/all.js';
 // ---------- Boas-vindas, início e navegação ----------
 const GENRES=[
  {k:'house',gc:'#FFA63D',xpos:'50% 45%',c1:'#3d7bff',c2:'#ff4fd8',pos:'center 70%',fx:'saturate(1.25) contrast(1.1)',tint:.35,desc:'Groove clássico pra mexer o ombro'},
@@ -52,3 +53,4 @@ function artSpec(k,g){
   if(g)return {style:'user',c:ugPal(g),bpm:(g.nv&&g.nv.bpm)||124,seed:hHash(g.id||'u'),name:g.name||'',id:g.id};
   return {style:k,c:HPAL[k]||['#FFE600','#fff'],bpm:(STYLES[k]&&STYLES[k].bpm)||124,seed:hHash(k),name:(STYLES[k]&&STYLES[k].name)||k};
 }
+export { CHN, GENRES, HPAL, LASTK, artSpec, hRnd, histList, histPush };

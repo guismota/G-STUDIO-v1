@@ -1,3 +1,4 @@
+import { $, gateTerms, powerOnHome } from '../app/all.js';
 // ---------- primeira vez: boas-vindas e como instalar ----------
 const ONB={key:'gstudio_onboarded'};
 const isStandalone=()=>(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;
@@ -17,3 +18,4 @@ $('#obGo').onclick=closeOnb;
 {const x=$('#onbAgain');if(x)x.onclick=()=>showOnb(true)}
 (()=>{const w=$('#welcome');setTimeout(()=>{w.classList.add('out');if(window.GSC&&GSC.lvl==='bloq'){showOnb(true);return}gateTerms(()=>{if(!showOnb(false))powerOnHome()})},1000);setTimeout(()=>{w.style.display='none'},1500)})();
 
+export { closeOnb, isStandalone, showOnb };

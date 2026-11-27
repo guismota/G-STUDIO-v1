@@ -1,3 +1,5 @@
+import { LATE } from '../app/late.js';
+import { $, CC0, GENRES, LANECAT, LIBM, NOVO, NOVO_STY, NV, SMP, STYLES, TYPES, UBUF, UPEND, XCATN, XS, bpm, buildSession, ctx, ensureGain, guessHit, initAudio, novoLane, novoLoadDraft, openNovoSession, out, playing, pvStart, pvStop, refreshPads, routeAll, saveNovo, saveUser, screen, sortByKind, stopPreview, stopTransport, undoReset, userPats, userVer, xRender, xToast } from '../app/all.js';
 // ---------- buffers ----------
 function decodeAB(ab){return new Promise((res,rej)=>{
   const c=ctx||(XS.oac=XS.oac||new (window.OfflineAudioContext||window.webkitOfflineAudioContext)(1,1,44100));
@@ -140,6 +142,8 @@ function enterNovo(){
   if(NV.ctx!=='draft')novoLoadDraft();
   NOVO_STY.name='Criar novo';openNovoSession();
 }
+// desfazer: abrir o Criar novo zera o histórico (estava em state/history.js; fica junto da função que modifica)
+{const en=enterNovo;enterNovo=function(){const r=en.apply(this,arguments);undoReset();return r}}
 
 // ---------- tom do Criar novo ----------
 const NOTE_PT=['Dó','Dó#','Ré','Mi♭','Mi','Fá','Fá#','Sol','Lá♭','Lá','Si♭','Si'],MODE_N={minor:'menor',dorian:'dórico',phrygian:'frígio'};
@@ -150,5 +154,6 @@ function openNvKey(){
   Object.keys(MODE_N).forEach(k=>{const b=document.createElement('button');b.className='hw'+(k===NV.mode?' on':'');b.textContent=MODE_N[k];b.onclick=()=>{NV.mode=k;nvKeyApply()};md.appendChild(b)});
   m.querySelector('#nvAuto').checked=NV.auto;m.classList.add('open');
 }
-function nvKeyApply(){NOVO_STY.key={root:NV.root,mode:NV.mode};NOVO.forEach(c=>{c._tp={}});userVer++;saveNovo();updNvKey();refreshPads();if($('#nvKeyDlg').classList.contains('open'))openNvKey()}
+function nvKeyApply(){NOVO_STY.key={root:NV.root,mode:NV.mode};NOVO.forEach(c=>{c._tp={}});LATE.userVer++;saveNovo();updNvKey();refreshPads();if($('#nvKeyDlg').classList.contains('open'))openNvKey()}
 
+export { MODE_N, NOTE_PT, classify, enterNovo, genreName, idb, idbDel, idbDo, idbPut, importFiles, libAll, libSub, libVisible, loadBuf, loadLib, loopStep, novoAdd, novoBpmChanged, nvKeyApply, openNvKey, saveLib, smpHit, stopLaneSrc, uid, updNvKey, xAudition, xStopAud };

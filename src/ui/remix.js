@@ -1,3 +1,4 @@
+import { $, RX, initAudio, rxCap, rxDubKill, rxEff, rxEnsure, rxFilter, rxGate, rxPitch, rxSave, rxTape, szClose } from '../app/all.js';
 // ---- interface
 function rxPadUI(el,o,on){const s=el.querySelector('.rxs');s.style.setProperty('--x',(o.x*100)+'%');s.style.setProperty('--y',((1-o.y)*100)+'%');s.classList.toggle('on',on)}
 function rxLabels(){const p=$('#rxE');p.querySelector('.rxay').textContent='Feedback';p.querySelector('.rxax').textContent='Tempo'}
@@ -40,10 +41,10 @@ function openRmx(){if(RX.open||!document.body.classList.contains('in-session'))r
 function closeRmx(){if(!RX.open)return;RX.open=false;rxReset();rxCap(false);const el=$('#rmx');el.classList.remove('open');el.setAttribute('aria-hidden','true');$('#rmxBtn').classList.remove('on')}
 $('#rmxBtn').onclick=()=>RX.open?closeRmx():openRmx();$('#rxClose').onclick=closeRmx;
 window.addEventListener('resize',()=>{if(RX.open)rxPlace();if($('#szPop').classList.contains('open'))szClose()});
-{const gh=goHome;goHome=function(){closeRmx();szClose();return gh.apply(this,arguments)}}
 
 // easter egg: tocar no knob da logo faz ele girar (sem deixar spamar)
 (()=>{const fb=document.querySelector('#home .fbrand');if(!fb)return;let busy=false;fb.setAttribute('role','button');fb.setAttribute('aria-label','G-STUDIO');fb.tabIndex=-1;
   const knobOk=()=>{const k=fb.querySelector('.bk1');if(!k||!k.getAnimations)return true;const a=k.getAnimations().find(x=>x.animationName==='bkKnob');if(!a||a.currentTime==null)return true;const t=(a.currentTime%48800)/1000;return t>=1&&t<=19.6};
   fb.addEventListener('click',()=>{if(busy||!knobOk())return;busy=true;fb.classList.remove('spin');void fb.offsetWidth;fb.classList.add('spin');
     setTimeout(()=>fb.classList.remove('spin'),1400);setTimeout(()=>{busy=false},2600)})})();
+export { closeRmx, openRmx };

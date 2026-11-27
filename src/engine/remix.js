@@ -1,3 +1,4 @@
+import { bpm, ctx, filt, out, playing, tT0 } from '../app/all.js';
 // ---------- Remix FX: filtro de DJ, gater, downsampler, reverse/scratch/tape stop e um efeito XY à escolha ----------
 const RXEFF={wobble:{n:'Wobble',x:'Rate',y:'Depth'},repeat:{n:'Repeater',x:'Divisão',y:'Mix'},delay:{n:'Delay',x:'Tempo',y:'Feedback'},reverb:{n:'Reverb',x:'Tamanho',y:'Mix'},orbit:{n:'Orbit',x:'Rate',y:'Depth'}};
 const RX=(()=>{let j={};try{j=JSON.parse(localStorage.getItem('gstudio_rmx'))||{}}catch(e){}return {open:false,win:{x:+j.x||null,y:+j.y||null,w:+j.w||null,h:+j.h||null},eff:RXEFF[j.eff]?j.eff:'wobble',lockF:false,lockE:false,f:{x:.5,y:.2},e:{x:.5,y:.5},fOn:false,eOn:false,n:null,tape:null}})();
@@ -85,3 +86,4 @@ function rxTape(a,on){const N=RX.n;if(!N)return;const t=ctx.currentTime,beat=60/
     src.buffer=b;src.loop=true;const l=N.tlfo=ctx.createOscillator(),lg=ctx.createGain();l.frequency.value=bpm/60*2;lg.gain.value=.55;l.connect(lg);lg.connect(src.playbackRate);src.playbackRate.value=1.05;l.start()}
   else{const D=2.2,b=rxLast(D*.5+.05);src.buffer=b;src.playbackRate.setValueAtTime(1,t);src.playbackRate.linearRampToValueAtTime(.015,t+D);g.gain.setValueAtTime(1,t+D*.82);g.gain.linearRampToValueAtTime(0,t+D+.05)}
   N.live.gain.cancelScheduledValues(t);N.live.gain.setTargetAtTime(0,t,.008);src.start(t)}
+export { RX, rxCap, rxDubKill, rxEff, rxEnsure, rxFilter, rxGate, rxPitch, rxSave, rxTape };

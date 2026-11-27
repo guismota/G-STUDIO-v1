@@ -5,14 +5,12 @@
 import { defineConfig } from 'vite';
 import fs from 'node:fs';
 import path from 'node:path';
-import { HOOK } from './tests/legacy-hook.mjs';
 
 // a versão fica num lugar só: package.json, campo appVersion (formato x.y.z.w)
 const VERSION = JSON.parse(fs.readFileSync('package.json', 'utf8')).appVersion;
 if (!/^\d+\.\d+\.\d+(\.\d+)?$/.test(VERSION)) throw new Error('appVersion inválida no package.json: ' + VERSION);
 
-const APP_ID = 'virtual:gstudio-app', APP_RID = '\0gstudio-app';
-const partsList = () => JSON.parse(fs.readFileSync('src/app/parts.json', 'utf8'));
+const DEBUG_ID = 'virtual:gstudio-debug', DEBUG_RID = '\0gstudio-debug';
 
 // arquivos de public/ que o service worker guarda para o modo offline (os mesmos de antes da modularização)
 const SW_PUBLIC = /^(manifest\.webmanifest|logo-\d+\.png|logo\.svg|favicon-64\.png|smp\/[^/]+\.wav)$/;
@@ -22,23 +20,10 @@ function gstudio(mode) {
   const withHook = mode === 'development' || mode === 'test'; // o gancho de teste nunca entra no build final
   return {
     name: 'gstudio',
-    resolveId(id) { if (id === APP_ID) return APP_RID },
-    // junta os pedaços do app num bloco só, na ordem original (etapa de transição)
-    load(id) {
-      if (id !== APP_RID) return;
-      let code = '(()=>{\n';
-      for (const p of partsList()) { this.addWatchFile(path.resolve(p)); code += fs.readFileSync(p, 'utf8') }
-      if (withHook) code += HOOK;
-      return code + '})();\n';
-    },
+    // gancho de teste window.__gs (src/debug.js): entra em desenvolvimento e teste; no build final vira um módulo vazio
+    resolveId(id) { if (id === DEBUG_ID) return withHook ? path.resolve('src/debug.js') : DEBUG_RID },
+    load(id) { if (id === DEBUG_RID) return 'export {};' },
     configureServer(server) {
-      const abs = new Set(partsList().map(p => path.resolve(p)));
-      server.watcher.on('change', f => {
-        if (!abs.has(path.resolve(f))) return;
-        const m = server.moduleGraph.getModuleById(APP_RID);
-        if (m) server.moduleGraph.invalidateModule(m);
-        server.ws.send({ type: 'full-reload' });
-      });
       // em desenvolvimento não há cache offline: este service worker só se desinstala
       server.middlewares.use('/sw.js', (req, res) => {
         res.setHeader('Content-Type', 'text/javascript');

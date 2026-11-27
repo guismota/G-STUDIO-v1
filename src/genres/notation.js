@@ -41,3 +41,4 @@ function CUMB(name,tpl,ex){const L=[];CUMR.forEach((r,i)=>tpl.forEach(([s,k,l])=
 function CUMC(name,tpl,ex,len){const d=len||8,data=[];CUMV.forEach((v,i)=>tpl.forEach(([s,l])=>data.push([i*d+s,v.map(N),l,false])));return Object.assign({name,len:d*4,data},ex||{})}
 function CUMA(name,seq,gate,ex){const data=[];CUMG.forEach((v,i)=>{const m=v.map(N).concat([N(v[0])+12]);seq.forEach((k,j)=>{if(k!=null)data.push([i*8+j,m[k],gate,1,0])})});return Object.assign({name,len:32,data},ex||{})}
 
+export { ARP, B, C, CUMA, CUMB, CUMC, D, FX4, FXP, T };

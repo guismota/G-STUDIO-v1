@@ -1,8 +1,10 @@
+import { LATE } from '../app/late.js';
+import { $, ED, STYLES, buildEdGrid, cols, ctx, cur, curBar, drawViz, getPat, hitsOf, lastKey, nbOf, playing, pmN, rlTick, sceneOn, slotEls, style, uiQ, userVer } from '../app/all.js';
 let lastMsg='',lastPos='';
 function render(){
-  if(ctx)while(uiQ.length&&uiQ[0].t<=ctx.currentTime){const q=uiQ.shift();cur=q.s;curBar=q.b}
+  if(ctx)while(uiQ.length&&uiQ[0].t<=ctx.currentTime){const q=uiQ.shift();LATE.cur=q.s;LATE.curBar=q.b}
   const key=cur+':'+curBar,stepChanged=key!==lastKey;
-  if(stepChanged)lastKey=key;
+  if(stepChanged)LATE.lastKey=key;
   const pos=(playing&&cur>=0)?(curBar<0?'– '+(4-Math.floor(cur/4)):(curBar+1)+'.'+(Math.floor(cur/4)+1)+'.'+(cur%4+1)):'1.1.1';
   if(pos!==lastPos){lastPos=pos;$('#lcdPos').textContent=pos}
   const msg=STYLES[style]?STYLES[style].name:'';
@@ -34,3 +36,4 @@ function render(){
   requestAnimationFrame(render);
 }
 
+export { render };

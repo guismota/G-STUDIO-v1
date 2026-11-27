@@ -1,15 +1,17 @@
-function setBpm(v){bpm=Math.max(70,Math.min(180,Math.round(v)));$('#bpmv').textContent=bpm;setBpmDelay();if(screen==='novo'){NV.bpm=bpm;novoBpmChanged()}}
+import { LATE } from '../app/late.js';
+import { $, ICON, K, NV, STYLES, VZ, bpm, cols, editMode, flash, getPat, initAudio, launchScene, makeKnob, novoBpmChanged, playing, refreshPads, scenes, screen, setBpmDelay, setFilter, setMaster, startTransport, stopTransport } from '../app/all.js';
+function setBpm(v){LATE.bpm=Math.max(70,Math.min(180,Math.round(v)));$('#bpmv').textContent=bpm;setBpmDelay();if(screen==='novo'){NV.bpm=bpm;novoBpmChanged()}}
 function setStyle(k){
-  style=k;setBpm(STYLES[k].bpm);
+  LATE.style=k;setBpm(STYLES[k].bpm);
   document.body.classList.toggle('th-art',!!STYLES[k].artist);document.body.classList.toggle('th-afro',STYLES[k].theme==='afro');document.body.classList.toggle('th-vice',STYLES[k].theme==='vice');document.body.classList.toggle('th-cumbia',STYLES[k].theme==='cumbia');VZ.sg=null;
   K.sc=STYLES[k].snd.sc!=null?STYLES[k].snd.sc:.5;if(kPump)kPump.set(K.sc);
   document.querySelectorAll('#styleSeg button').forEach(b=>b.classList.toggle('on',b.dataset.k===k));
-  refreshPads();lastKey='';
+  refreshPads();LATE.lastKey='';
 }
 
 $('#editIco').innerHTML=ICON.edit;
 $('#editTog').onclick=()=>{
-  editMode=!editMode;$('#editTog').classList.toggle('on',editMode);
+  LATE.editMode=!editMode;$('#editTog').classList.toggle('on',editMode);
   document.body.classList.toggle('editing',editMode);
 };
 $('#play').addEventListener('click',()=>{
@@ -32,3 +34,4 @@ var kPump=makeKnob($('#kPump'),{v:K.sc,label:'Pump',onChange:v=>{K.sc=v}});
 var kFiltK=makeKnob($('#kFilt'),{v:K.fv,label:'Filtro',onChange:v=>{K.fv=v;setFilter()}});
 var kMstK=makeKnob($('#kMst'),{v:K.mv,label:'Master',onChange:v=>{K.mv=v;setMaster()}});
 
+export { kFiltK, kMstK, kPump, setBpm, setStyle };

@@ -1,3 +1,4 @@
+import { $ } from '../app/all.js';
 // ---------- Termos de Uso e Política de Privacidade ----------
 const TERMS={v:'1.0',date:'25/11/2026',key:'gstudio_terms'};
 const DOC_TERMS=`<p class="dvm">Versão ${TERMS.v} · ${TERMS.date} · versão de testes</p>
@@ -47,3 +48,4 @@ $('#tgOk').onchange=e=>{$('#tgGo').disabled=!e.target.checked};
 $('#tgGo').onclick=()=>{if(!$('#tgOk').checked)return;try{localStorage.setItem(TERMS.key,JSON.stringify({v:TERMS.v,at:Date.now()}))}catch(e){}
   const t=$('#terms');t.classList.remove('show');t.setAttribute('aria-hidden','true');const n=termsNext;termsNext=null;n&&n()};
 
+export { closeDoc, gateTerms, openDoc, termsAt };

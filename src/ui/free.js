@@ -1,6 +1,8 @@
+import { LATE } from '../app/late.js';
+import { $, FREE, FX, FXKEYS, MAIN, NOVO, SC, TYPES, buildSession, ctx, ensureGain, flash, freeN, makeLane, playing, refreshSlots, saveFree, saveFx, saveNovo, saveScenes, saveUser, screen, sortByKind, stopLaneSrc, stopTransport, userPats } from '../app/all.js';
 // ---------- Tela livre ----------
 function addLane(type){
-  freeN++;const same=FREE.filter(l=>l.type===type).length;
+  LATE.freeN++;const same=FREE.filter(l=>l.type===type).length;
   const l=makeLane(type,'f'+freeN,TYPES[type].name+(same?' '+(same+1):''));
   FREE.push(l);sortByKind(FREE);userPats[l.key]=[null,null,null,null];
   if(ctx)ensureGain(l);
@@ -28,8 +30,9 @@ $('#pkDone').onclick=()=>$('#picker').classList.remove('open');
 function setScreen(s){
   if(playing)stopTransport();
   [MAIN,NOVO,FREE].forEach(A=>A.forEach(c=>{c.solo=false}));
-  screen=s;cols=s==='main'?MAIN:s==='novo'?NOVO:FREE;scenes=SC[s];sceneOn=-1;
+  LATE.screen=s;LATE.cols=s==='main'?MAIN:s==='novo'?NOVO:FREE;LATE.scenes=SC[s];LATE.sceneOn=-1;
   document.querySelectorAll('.tabs .tab').forEach(b=>b.classList.toggle('on',b.dataset.s===s));
   buildSession();refreshSlots();
 }
 document.querySelectorAll('.tabs .tab').forEach(b=>b.onclick=()=>{if(b.dataset.s!==screen)setScreen(b.dataset.s)});
+export { openPicker, removeLane, setScreen };

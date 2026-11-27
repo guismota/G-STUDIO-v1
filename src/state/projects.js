@@ -1,3 +1,5 @@
+import { LATE } from '../app/late.js';
+import { $, ALL, FREE, FX, FXKEYS, K, MA, NOVO, NOVO_STY, NV, OS, SC, STYLES, TYPES, bpm, buildDelayInner, ctx, dstCurve, ensureGain, enterGenre, flash, freeN, kFiltK, kMstK, kPump, makeLane, makeShaper, novoFill, novoSer, playing, refreshFx, routeAll, saveAsGenre, saveFree, saveFx, saveNovo, saveOs, saveScenes, saveUser, screen, setBpm, setFilter, setMaster, setScreen, showXMenu, stopTransport, style, ugenList, updDly, updEch, updOsUI, updRev, updRevIR, userPats, userVer } from '../app/all.js';
 // ---------- Projetos: guardar e abrir ideias com nome ----------
 const PROJ={list:[],cur:null};
 (()=>{try{const a=JSON.parse(localStorage.getItem('gstudio_projects'));if(Array.isArray(a))PROJ.list=a.filter(x=>x&&x.id&&x.data)}catch(e){}
@@ -14,11 +16,11 @@ function snapshot(){
 }
 function restore(d){
   if(playing)stopTransport();
-  Object.keys(userPats).forEach(k=>delete userPats[k]);Object.assign(userPats,d.user||{});saveUser();userVer++;
+  Object.keys(userPats).forEach(k=>delete userPats[k]);Object.assign(userPats,d.user||{});saveUser();LATE.userVer++;
   const ok8=a=>Array.isArray(a)&&a.length===8?a:Array(8).fill(null);
   SC.main=ok8(d.scenes&&d.scenes.main);SC.free=ok8(d.scenes&&d.scenes.free);SC.novo=ok8(d.scenes&&d.scenes.novo);saveScenes();
   if(d.novo){novoFill({nv:d.novo.nv,lanes:d.novo.lanes,scenes:SC.novo},'draft');NOVO_STY.name='Criar novo';saveNovo()}
-  FREE.length=0;freeN=d.free?d.free.n|0:0;((d.free&&d.free.lanes)||[]).forEach(l=>{if(l&&TYPES[l.type])FREE.push(makeLane(l.type,l.key,l.name))});saveFree();
+  FREE.length=0;LATE.freeN=d.free?d.free.n|0:0;((d.free&&d.free.lanes)||[]).forEach(l=>{if(l&&TYPES[l.type])FREE.push(makeLane(l.type,l.key,l.name))});saveFree();
   ALL().forEach(l=>{const T=TYPES[l.type];l.vol=T.vol;l.muted=false});
   (d.mix||[]).forEach(m=>{const l=ALL().find(x=>x.key===m.key);if(l){l.vol=Math.max(0,Math.min(1.5,+m.vol||0));l.muted=!!m.muted}});
   FXKEYS.forEach(k=>{const v=d.fx&&d.fx[k],F=FX[k];if(!v)return;F.on=!!v.on;F.style=[0,1,2].includes(v.style)?v.style:0;Object.assign(F.p,v.p||{});
@@ -78,3 +80,4 @@ $('#psName').onkeydown=e=>{if(e.key==='Enter')storeProject(false)};
 $('#projOpen').onclick=openProjList;$('#plClose').onclick=()=>closeModal('projList');
 updProjN();
 
+export { PROJ, closeModal, curProj, fmtDate, openProjList, openProjSave, snapshot, two };

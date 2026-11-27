@@ -1,3 +1,4 @@
+import { FX, FXA, K, cols, ctx, duck, filt, makeShaper, mix, out, routeLane, updDly, updEch, updFltLfo, updPlugLcd } from '../app/all.js';
 // cadeia de cada linha: volume -> (seco | distorção) -> saída -> mix + envios de reverb e delay
 function ensureGain(c){
   if(ctx&&!c.gain){
@@ -24,3 +25,4 @@ function setFilter(){if(filt)filt.frequency.value=20000} // controle saiu da bar
 function setMaster(){if(out)out.gain.value=K.mv}
 function setBpmDelay(){if(ctx&&FXA.dly.in){updDly();updEch()}if(FX.ech.el)updPlugLcd('ech');if(FX.dly.el)updPlugLcd('dly');updFltLfo()}
 
+export { SOLO, applyGain, applySolo, audible, ensureGain, setBpmDelay, setFilter, setMaster };

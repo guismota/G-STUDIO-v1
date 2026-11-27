@@ -1,3 +1,4 @@
+import { ctx, m2f, noise, softCurve } from '../../app/all.js';
 // ----- cumbia: güiro, campana, timbales, baixo elétrico, teclado solo, acordeão, flauta e guitarra -----
 // güiro: ruído passando por um "pente" (AM em dente de serra) que acelera durante a raspada. X = raspada longa, x/o = curta
 function guiro(t,o,v){
@@ -76,3 +77,4 @@ function guitarra(t,m,dur,o,v){
   g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.16*v,t+.002);g.gain.exponentialRampToValueAtTime(.0005,t+d);
   a.connect(f);b.connect(bg);bg.connect(f);f.connect(bd);bd.connect(g);g.connect(o);[a,b].forEach(x=>{x.start(t);x.stop(t+d+.05)})}
 
+export { bassElec, campana, chordAco, guiro, guitarra, leadAcordeon, leadCumbia, leadFlauta, timbal };

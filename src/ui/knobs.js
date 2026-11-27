@@ -21,3 +21,4 @@ function makeKnob(host,{v,label,small,onChange}){
   return {set(nv){v=nv;draw()}};
 }
 
+export { makeKnob };

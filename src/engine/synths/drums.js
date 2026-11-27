@@ -1,3 +1,4 @@
+import { SMPF, bleep, breakHit, campana, ctx, env, guiro, hat909, kick909, noise, ride909, rim909, smp, snd, softCurve, timbal, tuim } from '../../app/all.js';
 // ----- bateria -----
 function kick(t,o,v){
   const K=snd().kick;v=(v||1)*(K.lvl||1);if(K.type==='909')return kick909(t,o,v,K);const x=ctx.createOscillator(),g=ctx.createGain();
@@ -69,3 +70,4 @@ function perc(t,o,v,syn){
   if(type==='clave'){const x=ctx.createOscillator(),g=ctx.createGain();x.frequency.value=2500;g.gain.setValueAtTime(.35*v,t);g.gain.exponentialRampToValueAtTime(.001,t+.05);x.connect(g).connect(o);x.start(t);x.stop(t+.06);return}
   const x=ctx.createOscillator(),f=ctx.createBiquadFilter(),g=ctx.createGain();x.type='square';x.frequency.value=1100;f.type='bandpass';f.frequency.value=2000;f.Q.value=4;g.gain.setValueAtTime(.5*v,t);g.gain.exponentialRampToValueAtTime(.001,t+.04);x.connect(f).connect(g).connect(o);x.start(t);x.stop(t+.06)}
 
+export { clapOnly, hat, kick, perc, snare, tom };

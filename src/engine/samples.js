@@ -1,3 +1,4 @@
+import { ctx, noiseBuf } from '../app/all.js';
 // ----- amostras gravadas (CC0, domínio público) com síntese como reserva -----
 const SMP={},SMPRAW={},SMPF={conga_hi:215.3,conga_mid:163.5,conga_lo:137.9};
 const SMPN=['conga_hi','conga_mid','conga_lo','clap909','palma','hat_c','hat_o','ride','crash','letsgo','bongo_hi','bongo_lo','logdrum'];
@@ -10,3 +11,4 @@ const SOFT={};
 function softCurve(k){if(SOFT[k])return SOFT[k];const n=1024,c=new Float32Array(n);for(let i=0;i<n;i++){const x=i/(n-1)*2-1;c[i]=Math.tanh(k*x)/Math.tanh(k)}return SOFT[k]=c}
 function env(g,t,peak,att,dec){g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(peak,t+att);g.gain.exponentialRampToValueAtTime(.0001,t+att+dec)}
 
+export { SMP, SMPF, env, noise, smp, smpDecode, softCurve };

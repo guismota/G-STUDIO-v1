@@ -1,3 +1,4 @@
+import { ALL, DLYST, ECHB, ECHL, FX, FXDEF, FXKEYS, LN, applyFx, cols, dlyTime, echIdx, echTime, fltHz, fmtHz, fxActive, fxOn, revLen, routeAll, routeLane, saveFx } from '../app/all.js';
 // --- interface do plugin
 function bigKnobSVG(id){
   let ticks='',labels='',knurl='';
@@ -114,3 +115,4 @@ function fitPlug(k){
 }
 function fxFront(el){el.style.zIndex=String(++zTop)}
 
+export { PW_MIN, bigKnobSVG, drawBig, fitPlug, fxFront, fxLinkedHere, placePlug, pwMax, refreshFx, refreshFxTags, setFxParam, setLinks, updFxUI, updPlugLcd };

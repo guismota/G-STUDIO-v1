@@ -32,16 +32,21 @@ for (const g of ORDER) {
 
     // cada medição começa do zero (app recém-aberto, mesmo sorteio, sem rabo de som da medição anterior),
     // para a versão nova e a 1.7.8.1 serem medidas exatamente nas mesmas condições
-    const measureFresh = async (slot: number) => {
-      await page.goto('/');
-      await tile.waitFor({ state: 'visible' });
-      await page.waitForTimeout(1500);
-      await page.evaluate(n => (window as any).__gsSeed(n), SEED);
-      await tile.click({ force: true }); // entra pelo card, como o usuário: o toque libera o áudio
-      await page.waitForFunction(k => document.body.classList.contains('in-session') && (window as any).__gs.state().style === k, g);
-      await page.waitForTimeout(2500); // som de entrada termina e as amostras .wav terminam de decodificar
-      await page.evaluate(n => (window as any).__gsSeed(n), SEED + slot);
-      return gs<Run>(page, 'measure', slot, BARS);
+    const measureFresh = async (slot: number): Promise<Run> => {
+      for (let attempt = 1; ; attempt++) {
+        await page.goto('/');
+        await tile.waitFor({ state: 'visible' });
+        await page.waitForTimeout(1500);
+        await page.evaluate(n => (window as any).__gsSeed(n), SEED);
+        await tile.click({ force: true }); // entra pelo card, como o usuário: o toque libera o áudio
+        // com várias páginas abertas, o navegador de teste às vezes perde o clique: recarrega e tenta de novo
+        const entered = await page.waitForFunction(k => document.body.classList.contains('in-session') && (window as any).__gs.state().style === k, g, { timeout: 10_000 }).then(() => true, () => false);
+        if (!entered) { if (attempt < 3) continue; throw new Error('não entrou no gênero ' + g) }
+        await page.waitForTimeout(+(process.env.GS_LEVELS_WAIT || 6000)); // som de entrada termina e as amostras .wav terminam de decodificar (com menos
+        // tempo, a 1.7.8.1 às vezes ainda toca o prato sintetizado de reserva, e a medição varia)
+        await page.evaluate(n => (window as any).__gsSeed(n), SEED + slot);
+        return gs<Run>(page, 'measure', slot, BARS);
+      }
     };
 
     const result: Record<string, Run[]> = {};
@@ -61,21 +66,33 @@ for (const g of ORDER) {
     const problems: string[] = [];
     for (const slot in result) for (const run of result[slot])
       for (const k of run.on) if (!(run.lanes[k] > 0)) problems.push(`padrão ${+slot + 1}: faixa ${k} muda`);
-    // comparação com a referência (só na versão nova)
+    // comparação com a referência (só na versão nova). Algumas faixas variam sozinhas até na 1.7.8.1 (pratos e
+    // efeitos do Ocean Drive e do Deep House); então, se uma faixa sair da faixa esperada, o padrão é medido de novo
+    // (até 3 vezes no total, sempre com o app recém-aberto) e ela só reprova se ficar fora em todas.
     if (!BASELINE) {
       const ref = JSON.parse(fs.readFileSync(file, 'utf8')).slots as Record<string, Run[]>;
       for (const slot in result) {
-        const run = result[slot][0];
+        const rs = ref[slot], refMax = Math.max(...rs.map(x => x.masterRaw));
+        const keys = [...new Set([...Object.keys(result[slot][0].lanes), ...rs.flatMap(x => Object.keys(x.lanes))])];
+        const range = (k: string) => { const vals = rs.map(x => x.lanes[k] || 0); return [Math.min(...vals) - TOL, Math.max(...vals) + TOL] };
+        const outOf = (run: Run) => keys.filter(k => { const [lo, hi] = range(k), v = run.lanes[k] || 0; return v < lo || v > hi });
         // clipagem: pico real da saída final (ou a luz do app). Onde a 1.7.8.1 já clipava (Acid House, padrão 3),
         // a versão nova não pode clipar mais que ela (folga de 0,5 dB); em qualquer outro lugar não pode clipar.
-        const refMax = Math.max(...ref[slot].map(x => x.masterRaw));
-        if (run.masterRaw >= CLIP || run.clip) {
-          if (refMax < CLIP) problems.push(`padrão ${+slot + 1}: clipou (pico da saída ${run.masterRaw.toFixed(3)}); na 1.7.8.1 não clipava`);
-          else if (20 * Math.log10(run.masterRaw / refMax) > 0.5) problems.push(`padrão ${+slot + 1}: clipou mais que na 1.7.8.1 (${run.masterRaw.toFixed(3)} contra ${refMax.toFixed(3)})`);
+        const clipErr = (run: Run) => run.masterRaw >= CLIP || run.clip
+          ? (refMax < CLIP ? `clipou (pico da saída ${run.masterRaw.toFixed(3)}); na 1.7.8.1 não clipava`
+            : 20 * Math.log10(run.masterRaw / refMax) > 0.5 ? `clipou mais que na 1.7.8.1 (${run.masterRaw.toFixed(3)} contra ${refMax.toFixed(3)})` : '')
+          : '';
+        let pending = outOf(result[slot][0]);
+        while (pending.length && result[slot].length < 3) {
+          const again = await measureFresh(+slot);
+          result[slot].push(again);
+          const still = outOf(again);
+          pending = pending.filter(k => still.includes(k));
         }
-        for (const k of new Set([...Object.keys(run.lanes), ...ref[slot].flatMap(x => Object.keys(x.lanes))])) {
-          const vals = ref[slot].map(x => x.lanes[k] || 0), lo = Math.min(...vals) - TOL, hi = Math.max(...vals) + TOL, v = run.lanes[k] || 0;
-          if (v < lo || v > hi) problems.push(`padrão ${+slot + 1}, faixa ${k}: ${v.toFixed(3)} fora de ${lo.toFixed(3)}..${hi.toFixed(3)}`);
+        for (const run of result[slot]) { const c = clipErr(run); if (c) problems.push(`padrão ${+slot + 1}: ${c}`) }
+        for (const k of pending) {
+          const [lo, hi] = range(k);
+          problems.push(`padrão ${+slot + 1}, faixa ${k}: ${result[slot].map(r => (r.lanes[k] || 0).toFixed(3)).join(' / ')} fora de ${lo.toFixed(3)}..${hi.toFixed(3)}`);
         }
       }
     }

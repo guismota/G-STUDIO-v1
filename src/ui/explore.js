@@ -1,3 +1,6 @@
+import { LATE, late } from '../app/late.js';
+import { CFG } from '../app/all.js';
+late({get LSND(){return LSND},set LSND(v){LSND=v},get UGEN(){return UGEN},set UGEN(v){UGEN=v}});
 // ===================== EXPLORAR + CRIAR NOVO =====================
 // Biblioteca: instrumentos dos gêneros (4 loops cada), amostras gravadas do G-STUDIO e sons do usuário (importados ou gravados)
 var LSND=null;
@@ -16,3 +19,4 @@ const CC0=[
  {f:'ride',name:'Prato de condução',cat:'drums',h:'ohat'},{f:'crash',name:'Prato de ataque',cat:'drums',h:'once'},
  {f:'letsgo',name:"Voz: Let's Go",cat:'vocal',h:'once'}];
 
+export { CC0, LANECAT, LIBM, LSND, NOVO, NV, UBUF, UGEN, UPEND, XCAT, XCATC, XCATN, XS };

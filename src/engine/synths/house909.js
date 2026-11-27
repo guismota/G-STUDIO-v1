@@ -1,3 +1,4 @@
+import { SMP, bpm, crushCurve, ctx, m2f, noise, softCurve, vocalChop } from '../../app/all.js';
 // ----- bateria estilo 909 (house e acid) -----
 function kick909(t,o,v,K){
   const x=ctx.createOscillator(),g=ctx.createGain(),ws=ctx.createWaveShaper(),gg=ctx.createGain(),f1=K.f1||50;
@@ -86,3 +87,4 @@ function bassOrgan(t,m,dur,o,v,B){
   g.gain.value=.42*v;lp.connect(ws);ws.connect(g);g.connect(o);
   const n=noise(t,.01),bp=ctx.createBiquadFilter(),ng=ctx.createGain();bp.type='bandpass';bp.frequency.value=2400;ng.gain.setValueAtTime(.06*v,t);ng.gain.exponentialRampToValueAtTime(.001,t+.008);n.connect(bp).connect(ng).connect(o);
 }
+export { bassOrgan, bassRubber, bassStussy, chordM1, chordSuper, hat909, kick909, ride909, rim909, vchop };

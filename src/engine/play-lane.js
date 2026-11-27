@@ -1,8 +1,10 @@
+import { LATE } from '../app/late.js';
+import { PQ, STYLES, arpSynth, audible, bar, barOff, bass, bpm, chord, clapOnly, duckAt, fxHit, getPat, hat, inVoice, kick, lead, loopStep, padSynth, perc, pvDuck, smpHit, snare, style, subBass, sweep, tom } from '../app/all.js';
 // ----- tocar uma linha -----
 const pm2=x=>((x%2)+2)%2;
 const pmN=(x,n)=>((x%n)+n)%n,nbOf=p=>p?Math.max(1,Math.round((p.len||16)/16)):1; // loops de 1, 2 ou 4 compassos
 function hitAt(d,pos){for(const x of d){if(x===pos)return 1;if(Array.isArray(x)&&x[0]===pos)return x[1]||1}return 0}
-function playCol(c,s,t,P){return inVoice(()=>{LSND=c.src?STYLES[c.src].snd:null;try{playCol0(c,s,t,P)}finally{LSND=null}})}
+function playCol(c,s,t,P){return inVoice(()=>{LATE.LSND=c.src?STYLES[c.src].snd:null;try{playCol0(c,s,t,P)}finally{LATE.LSND=null}})}
 function playCol0(c,s,t,P){
   const pat=P?P.pat:(c.preview||(c.active>=0?getPat(c,c.active):null));
   if(!pat)return;
@@ -45,3 +47,4 @@ function hitsOf(pat,half){
 }
 
 
+export { hitsOf, nbOf, playCol, pm2, pmN };

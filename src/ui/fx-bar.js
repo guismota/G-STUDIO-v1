@@ -1,3 +1,4 @@
+import { $, ALL, FX, FXDEF, FXKEYS, MA, buildDelayInner, closeFx, ctx, dstCurve, fxActive, fxLinkedHere, makeKnob, makeShaper, openFx, pfFxOn, pfToggleFx, placePlug, routeAll, saveFx, setFxParam, updDly, updEch, updFxUI, updRev, updRevIR } from '../app/all.js';
 // ---------- Efeitos na barra: abas, 3 knobs, estilo e liga/desliga ----------
 const FXS={k:'rev',kn:[],lv:[-1,-1,-1],last:0};
 const fxsPar=k=>{const D=FXDEF[k];return [D.big,D.small[0],D.small[1]]};

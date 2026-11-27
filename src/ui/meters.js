@@ -1,3 +1,5 @@
+import { LATE } from '../app/late.js';
+import { $, CFG, anL, anR, anS, cols, ctx, fin } from '../app/all.js';
 // ---------- Medidores, espectro e luzes ----------
 const PQ=[];
 const VZ={pulse:0,lastP:-1,clipUntil:0,lvL:0,lvR:0,bufL:null,bufR:null,lb:new Float32Array(256),fq:null,bars:null,caps:null};
@@ -9,9 +11,9 @@ const setLvl=(el,v)=>{el.style.clipPath='inset('+((1-v)*100).toFixed(1)+'% 0 0 0
 clipLed.addEventListener('click',()=>{VZ.clipUntil=0;clipLed.classList.remove('hot')});
 function setupMeters(){
   const sp=ctx.createChannelSplitter(2);fin.connect(sp);
-  anL=ctx.createAnalyser();anL.fftSize=512;anR=ctx.createAnalyser();anR.fftSize=512;
+  LATE.anL=ctx.createAnalyser();anL.fftSize=512;LATE.anR=ctx.createAnalyser();anR.fftSize=512;
   sp.connect(anL,0);sp.connect(anR,1);
-  anS=ctx.createAnalyser();anS.fftSize=1024;anS.smoothingTimeConstant=.75;fin.connect(anS);
+  LATE.anS=ctx.createAnalyser();anS.fftSize=1024;anS.smoothingTimeConstant=.75;fin.connect(anS);
   VZ.bufL=new Float32Array(512);VZ.bufR=new Float32Array(512);VZ.fq=new Uint8Array(anS.frequencyBinCount);
 }
 function drawViz(){
@@ -63,3 +65,4 @@ function drawSpec(){
   sctx.globalAlpha=1;
 }
 
+export { PQ, VZ, dbv, drawViz, setupMeters };

@@ -1,3 +1,5 @@
+import { LATE } from '../app/late.js';
+import { $, ALL, CFG, ED, ICON, MET, NOVO, PQ, STYLES, bar, barOff, bpm, cols, ctx, editMode, flash, getPat, inVoice, initAudio, metClick, nbOf, nextTime, openClipEditor, playCol, playing, pm2, pmN, screen, step, stopLaneSrc, style, timer, uiQ, wakeOff, wakeOn } from '../app/all.js';
 // ---------- Relógio ----------
 function applyQueues(free){
   cols.forEach(c=>{
@@ -22,24 +24,24 @@ function tick(){
       cols.forEach(c=>playCol(c,step,nextTime+sw));
     }
     uiQ.push({t:nextTime,s:step,b:mb});
-    nextTime+=sd;step++;if(step===16){step=0;bar++}
+    LATE.nextTime+=sd;LATE.step++;if(step===16){LATE.step=0;LATE.bar++}
   }
 }
 function setPlayUI(){$('#playIco').innerHTML=playing?ICON.stop:ICON.play;$('#play').classList.toggle('on',playing)}
 function startTransport(countIn,at){
-  step=0;bar=0;barOff=countIn?1:0;nextTime=at&&at>ctx.currentTime+.03?at:ctx.currentTime+.06;tT0=nextTime;playing=true;ALL().forEach(c=>{c.lastM=null});
-  clearInterval(timer);timer=setInterval(tick,25);tick();setPlayUI();wakeOn();
+  LATE.step=0;LATE.bar=0;LATE.barOff=countIn?1:0;LATE.nextTime=at&&at>ctx.currentTime+.03?at:ctx.currentTime+.06;LATE.tT0=nextTime;LATE.playing=true;ALL().forEach(c=>{c.lastM=null});
+  clearInterval(timer);LATE.timer=setInterval(tick,25);tick();setPlayUI();wakeOn();
 }
 // pausa (keep=true): para o relógio mas mantém os loops escolhidos para voltar de onde estava; sem keep, zera tudo
 function stopTransport(keep){
-  clearInterval(timer);playing=false;if(typeof NOVO!=='undefined'&&NOVO)NOVO.forEach(c=>stopLaneSrc(c));uiQ.length=0;PQ.length=0;cur=-1;curBar=0;
+  clearInterval(timer);LATE.playing=false;if(typeof NOVO!=='undefined'&&NOVO)NOVO.forEach(c=>stopLaneSrc(c));uiQ.length=0;PQ.length=0;LATE.cur=-1;LATE.curBar=0;
   if(keep)ALL().forEach(c=>{if(c.queued!==null){c.active=c.queued;c.queued=null}c.preview=null});
-  else{sceneOn=-1;ALL().forEach(c=>{c.active=-1;c.queued=null;c.preview=null})}
+  else{LATE.sceneOn=-1;ALL().forEach(c=>{c.active=-1;c.queued=null;c.preview=null})}
   setPlayUI();wakeOff();
   if(ED.ci>=0){ED.prev=false;$('#cePrev').classList.remove('on')}
 }
 function tap(ci,pi){
-  initAudio();sceneOn=-1;
+  initAudio();LATE.sceneOn=-1;
   const c=cols[ci];
   if(!playing){c.active=pi;c.queued=null;startTransport();return}
   const target=c.queued!==null?c.queued:c.active;
@@ -52,5 +54,6 @@ function padTap(ci,pi){
   if(editMode||!pat){openClipEditor(ci,pi);return}
   tap(ci,pi);
 }
-function stopAll(){if(!playing){sceneOn=-1;cols.forEach(c=>{c.active=-1;c.queued=null});return}cols.forEach(c=>{c.queued=(c.active===-1)?null:-1})}
+function stopAll(){if(!playing){LATE.sceneOn=-1;cols.forEach(c=>{c.active=-1;c.queued=null});return}cols.forEach(c=>{c.queued=(c.active===-1)?null:-1})}
 
+export { padTap, qSteps, setPlayUI, startTransport, stopAll, stopTransport };

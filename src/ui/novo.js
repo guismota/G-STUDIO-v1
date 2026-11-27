@@ -1,3 +1,5 @@
+import { LATE } from '../app/late.js';
+import { $, CFG, LASTK, MODE_N, NOTE_PT, NOVO, NV, SC, STYLES, TYPES, UGEN, XCATC, bpm, buildSession, ctx, ensureGain, flash, goHome, histPush, initAudio, loadBuf, makeLane, openNvKey, playing, pvStart, refreshSlots, routeAll, saveUser, screen, setScreen, setStyle, showXMenu, stopLaneSrc, stopPreview, stopTransport, updNvKey, userPats, xAsk, xToast } from '../app/all.js';
 // ---------- Criar novo: estado ----------
 const NOVO_STY=STYLES.novo={name:'Criar novo',bpm:124,swing:0,key:{root:9,mode:'minor'},snd:STYLES.house.snd,p:{},novo:true};
 Object.keys(TYPES).forEach(t=>{NOVO_STY.p[t]=[]});
@@ -23,7 +25,7 @@ function novoFill(data,cx){
   SC.novo=Array.isArray(data.scenes)&&data.scenes.length===8?data.scenes:Array(8).fill(null);
   NOVO_STY.bpm=NV.bpm;NOVO_STY.key={root:NV.root,mode:NV.mode};
   if(ctxReady())NOVO.forEach(ensureGain);
-  if(screen==='novo')scenes=SC.novo;
+  if(screen==='novo')LATE.scenes=SC.novo;
 }
 function ctxReady(){return !!ctx}
 function novoLoadDraft(){
@@ -31,7 +33,7 @@ function novoLoadDraft(){
   let sc=j&&j.scenes;if(!sc){try{const k=JSON.parse(localStorage.getItem('gstudio_scenes'));sc=k&&k.novo}catch(e){}}
   novoFill({nv:j&&j.nv,lanes:j&&j.lanes,scenes:sc,mix:j&&j.mix},'draft');NOVO_STY.name='Criar novo';
 }
-function loadNovo(){novoLoadDraft();UGEN=ugenList()}
+function loadNovo(){novoLoadDraft();LATE.UGEN=ugenList()}
 function saveNovo(){
   const mix=NOVO.map(c=>({key:c.key,vol:c.vol,muted:c.muted}));
   if(NV.ctx&&NV.ctx!=='draft'){const g=(UGEN||[]).find(x=>x.id===NV.ctx);if(!g)return;
@@ -61,7 +63,7 @@ function ugenPreview(id,done,isCan){
 }
 function openNovoSession(){
   stopPreview();initAudio();
-  NOVO_STY.bpm=NV.bpm;screen='novo';setStyle('novo');
+  NOVO_STY.bpm=NV.bpm;LATE.screen='novo';setStyle('novo');
   document.body.classList.add('in-session','novo');document.body.classList.toggle('ugen',NV.ctx!=='draft');
   const d=document.querySelector('.dev');d.classList.remove('enter');void d.offsetWidth;d.classList.add('enter');
   if(ctx){NOVO.forEach(ensureGain);routeAll()}
@@ -87,7 +89,7 @@ function saveAsGenreGo(){
   const pats={};NOVO.forEach(c=>{pats[map[c.key]]=JSON.parse(JSON.stringify(c.upats||userPats[c.key]||[null,null,null,null]))});
   const scenes=(SC.novo||Array(8).fill(null)).map(sc=>{if(!sc)return null;const o={};for(const k in sc)if(map[k])o[map[k]]=sc[k];return o});
   const mix=NOVO.map(c=>({key:map[c.key],vol:c.vol,muted:c.muted}));
-  UGEN=ugenList();UGEN.push({id,name,desc,created:Date.now(),nv:{root:NV.root,mode:NV.mode,auto:NV.auto,bpm:NV.bpm,n:lanes.length},lanes,pats,scenes,mix});saveUgens();
+  LATE.UGEN=ugenList();UGEN.push({id,name,desc,created:Date.now(),nv:{root:NV.root,mode:NV.mode,auto:NV.auto,bpm:NV.bpm,n:lanes.length},lanes,pats,scenes,mix});saveUgens();
   NOVO.forEach(c=>{stopLaneSrc(c);delete userPats[c.key]});NOVO.length=0;SC.novo=Array(8).fill(null);saveNovo();saveUser();
   $('#ugDlg').classList.remove('open');buildSession();refreshSlots();
   flash(name+' está na tela inicial');xToast('Gênero salvo: '+name+'. Ele está na tela inicial.');
@@ -100,7 +102,7 @@ function ugenMenu(anchor){
     {l:'Renomear',f:()=>xAsk('Nome do gênero',g.name,v=>{if(!v)return;g.name=v.slice(0,18);NOVO_STY.name=g.name;saveUgens();flash('Agora se chama '+g.name)})},
     {l:'Trocar a frase',f:()=>xAsk('Frase do gênero',g.desc||'',v=>{g.desc=(v||'').slice(0,44);saveUgens()})},
     {l:'Apagar gênero',danger:true,f:()=>xAsk('Apagar o gênero "'+g.name+'"? Os sons da biblioteca continuam.',null,()=>{
-      UGEN=ugenList().filter(x=>x!==g);saveUgens();(g.lanes||[]).forEach(l=>delete userPats[l.key]);NV.ctx='x';goHome();},'Apagar')}]);
+      LATE.UGEN=ugenList().filter(x=>x!==g);saveUgens();(g.lanes||[]).forEach(l=>delete userPats[l.key]);NV.ctx='x';goHome();},'Apagar')}]);
 }
 function novoShift(g,K){K=K||NV;let d=((K.root-(STYLES[g].key||{root:9}).root)%12+12)%12;if(d>6)d-=12;return d}
 function novoPat(c,i){
@@ -125,3 +127,4 @@ function guessHit(name,cat){const n=(name||'').toLowerCase();
   if(/open|aberto|ride|ohat|oh\b/.test(n))return 'ohat';if(/hat|chimbal|\bhh\b|shaker|tamb/.test(n))return 'hat';
   if(cat==='perc')return 'perc';if(cat==='drums')return 'perc';return 'once'}
 
+export { NOVO_STY, enterUgen, guessHit, loadNovo, novoFill, novoLane, novoLoadDraft, novoPat, novoSer, openNovoSession, saveAsGenre, saveAsGenreGo, saveNovo, ugenList, ugenMenu, ugenPreview, ugenStingKey };

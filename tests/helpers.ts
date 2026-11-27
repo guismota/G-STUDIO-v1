@@ -18,6 +18,26 @@ export async function prepare(page: Page, info: TestInfo, seed: Seed = {}) {
     let a = 0x9e3779b9;
     (window as any).__gsSeed = (n: number) => { a = n };
     Math.random = () => { a |= 0; a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296 };
+    // taxa de amostragem fixa (48 kHz, a do iPad): sem isso o navegador usa a da placa de som em uso no Mac (44,1 ou
+    // 48 kHz, conforme o alto-falante ou fone ligado), e os ruídos dos pratos mudam de uma para outra
+    const AC0 = window.AudioContext;
+    if (AC0) {
+      const Fixed = class extends AC0 { constructor(o?: AudioContextOptions) { super(Object.assign({ sampleRate: 48000 }, o || {})) } };
+      (window as any).AudioContext = Fixed;
+      if ((window as any).webkitAudioContext) (window as any).webkitAudioContext = Fixed;
+    }
+    // som mudo nos testes: nada sai pelos alto-falantes. A saída final do app vai para um volume zero antes da placa
+    // de som; tudo antes disso (as linhas, a mesa, os medidores e as medições dos testes) continua igual.
+    const BAC = (window as any).BaseAudioContext || window.AudioContext;
+    const dd = BAC && Object.getOwnPropertyDescriptor(BAC.prototype, 'destination');
+    if (dd && dd.get) Object.defineProperty(BAC.prototype, 'destination', {
+      configurable: true,
+      get() {
+        if (typeof OfflineAudioContext !== 'undefined' && this instanceof OfflineAudioContext) return dd.get!.call(this);
+        if (!this.__gsMute) { const g = new GainNode(this, { gain: 0 }); g.connect(dd.get!.call(this)); this.__gsMute = g }
+        return this.__gsMute;
+      },
+    });
     if (ipad || s.iphone) Object.defineProperty(Navigator.prototype, 'maxTouchPoints', { get: () => 5 });
     if (s.iphone) Object.defineProperty(Navigator.prototype, 'platform', { get: () => 'iPhone' });
     if (sessionStorage.getItem('gs_seeded')) return; // só na primeira carga: recarregar não apaga o que o app salvou

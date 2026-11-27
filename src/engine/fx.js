@@ -1,3 +1,6 @@
+import { LATE, late } from '../app/late.js';
+import { ALL, bpm, ctx, mix, softCurve } from '../app/all.js';
+late({get saveFx(){return saveFx},set saveFx(v){saveFx=v}});
 // ---------- Efeitos (plugins) ----------
 const FXDEF={
  rev:{name:'Reverb',tag:'Rev',styles:['Room','Hall','Plate'],big:{k:'mix',l:'Mix'},small:[{k:'decay',l:'Decay'},{k:'tone',l:'Tone'}],def:{mix:.35,decay:.5,tone:.6}},
@@ -200,3 +203,4 @@ function fltQ(){const F=FX.flt;return F.style===2?1+F.p.res*9:.7+F.p.res*14}
 const fmtHz=h=>h<1000?Math.round(h)+' Hz':(h/1000).toFixed(1)+' kHz';
 function updFltLfo(){if(!ctx||!FXA.flt.lfo)return;const t=ctx.currentTime;FXA.flt.lfo.frequency.setTargetAtTime(bpm/120,t,.05);FXA.flt.depth.gain.setTargetAtTime(fxActive('flt')?FX.flt.p.lfo*2400:0,t,.05)}
 
+export { DLYST, ECHB, ECHL, FX, FXA, FXDEF, FXKEYS, MA, applyFx, buildDelayInner, buildFxAudio, buildMaster, dlyTime, dstCurve, echIdx, echTime, fltHz, fmtHz, fxActive, fxOn, makeIR, makeShaper, revLen, routeAll, routeLane, saveFx, updDly, updEch, updFltLfo, updRev, updRevIR };

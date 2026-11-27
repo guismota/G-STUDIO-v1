@@ -43,7 +43,7 @@ export default defineConfig({
       viewport: { width: v.width, height: v.height },
       hasTouch: v.ipad,
       userAgent: v.ipad || b === 'webkit' ? UA_SAFARI : UA_CHROME,
-      ...(b === 'chromium' ? { launchOptions: { args: ['--autoplay-policy=no-user-gesture-required'] } } : {}),
+      ...(b === 'chromium' ? { launchOptions: { args: ['--autoplay-policy=no-user-gesture-required', '--mute-audio'] } } : {}),
     },
     metadata: { ipad: v.ipad },
   }))),

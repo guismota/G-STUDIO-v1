@@ -1,3 +1,6 @@
+import { LATE, late } from '../app/late.js';
+import { $, CFG, CHN, DEF_SCENES, GENRES, STYLES, TYPES, bpm, ctx, enterGenre, fxHit, genreSting, getPat, initAudio, kick, makeIR, out, pageWipe, playCol, stopLaneSrc } from '../app/all.js';
+late({get prevOn(){return prevOn},set prevOn(v){prevOn=v}});
 // ----- prévia de cada gênero: 8 compassos com os próprios loops do gênero (sem One Shots) -----
 // partes de 2 compassos: intro -> groove -> break (riser) -> pico (impacto), depois um golpe final
 const PV_SECTIONS=[0,1,3,2];
@@ -24,7 +27,7 @@ function pvTick(){
 function pvStart(k,onDone,opt){
   pvStop(false);initAudio();opt=opt||{};
   PV.plan=opt.plan||null;PV.bars=opt.bars||8;PV.endHit=opt.end!==false;PV.base=opt.vol||.6;PV.vol=Math.max(.0001,PV.base*CFG.pvol);
-  PV.k=k;PV.done=onDone;PV.bpm0=bpm;bpm=opt.bpm||STYLES[k].bpm;PV.cl=null;
+  PV.k=k;PV.done=onDone;PV.bpm0=bpm;LATE.bpm=opt.bpm||STYLES[k].bpm;PV.cl=null;
   PV.out=ctx.createGain();PV.out.gain.value=.0001;PV.out.connect(out);
   const rv=ctx.createConvolver();rv.buffer=makeIR(1.6,.35);const rg=ctx.createGain();rg.gain.value=.16;rv.connect(rg);rg.connect(PV.out);
   PV.dk=ctx.createGain();PV.dk.connect(PV.out);PV.dk.connect(rv);
@@ -38,7 +41,7 @@ function pvStop(natural){
   if(!PV.timer&&!PV.k)return;
   clearInterval(PV.timer);PV.timer=null;
   if(PV.out&&ctx){const o=PV.out,n=ctx.currentTime;try{o.gain.cancelScheduledValues(n);o.gain.setValueAtTime(o.gain.value,n);o.gain.linearRampToValueAtTime(.0001,n+.25)}catch(e){}setTimeout(()=>{try{o.disconnect()}catch(e){}},600)}
-  if(PV.bpm0){bpm=PV.bpm0;PV.bpm0=0}
+  if(PV.bpm0){LATE.bpm=PV.bpm0;PV.bpm0=0}
   if(PV.cl)Object.values(PV.cl).forEach(c=>stopLaneSrc(c));PV.k=null;PV.out=null;PV.dk=null;PV.lanes=null;PV.cl=null;
   const d=PV.done;PV.done=null;if(natural&&d)d();
 }
@@ -61,3 +64,4 @@ function tuneIn(b,k){
   const G=GENRES.find(g=>g.k===k),art=!!(G&&G.artist),afro=!!(G&&G.theme==='afro'),vice=!!(G&&G.theme==='vice'),cum=!!(G&&G.theme==='cumbia');
   pageWipe({c:cum?'#FF4B1F':vice?'#FF5E8A':afro?'#FF6B2C':art?'#B026FF':'#FFE600',ink:cum?'#111':art?'#fff':'#000',ch:CHN(GENRES.indexOf(G)),nm:art?(G.html?G.html.replace(/<\/?span>/g,''):'After<em>party</em>'):STYLES[k].name,art,cls:cum?'cumbia':vice?'vice':''},()=>{b.classList.remove('tune');tuning=false;enterGenre(k)});
 }
+export { PREVIEW, PV, prevOn, pvDuck, pvStart, pvStop, stopPreview, togglePreview, tuneIn, tuneInX };

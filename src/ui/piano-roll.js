@@ -1,3 +1,5 @@
+import { LATE } from '../app/late.js';
+import { $, CFG, DEV, ED, ICON, LN, MET, STYLES, auditionNote, barOff, bpm, buildRows, cellAt, cols, ctx, cur, curBar, curData, firstEmpty, flash, getPat, inScale, initAudio, isChordT, isMono, isRoot, keyName, loadInto, nName, noteDown, noteMove, paintNotes, painting, playing, pmN, refreshPads, saveUser, startTransport, stopTransport, style, syncPreview, tT0, typing, userPats, userVer } from '../app/all.js';
 // ---------- Piano roll (página cheia, com gravação) ----------
 const RL={open:false,base:36,rec:false,count:true,met:true,keys:{},kbEls:{},last:''};
 const BLACK=[1,3,6,8,10];
@@ -163,7 +165,7 @@ $('#rlSave').onclick=()=>{
   const c=cols[ED.ci],data=curData();
   if(!data.length){flash('Loop vazio. Coloca alguma coisa aí');return}
   userPats[c.key][ED.target]={name:'Meu '+(ED.target+1),len:ED.len,data,syn:ED.syn};
-  saveUser();userVer++;refreshPads();flash('Salvo em Meu '+(ED.target+1)+'. Agora é só soltar');closeRoll();
+  saveUser();LATE.userVer++;refreshPads();flash('Salvo em Meu '+(ED.target+1)+'. Agora é só soltar');closeRoll();
 };
 (()=>{ // teclado na tela: vários dedos e deslizar entre teclas
   const kb=$('#rlKb');
@@ -195,3 +197,4 @@ function rlTick(){ // atualiza o display do piano roll
     $('#rlPlay').innerHTML=playing?ICON.stop:ICON.play;$('#rlPlay').classList.toggle('on',playing)}
 }
 
+export { RL, closeRoll, openRoll, rlTick };

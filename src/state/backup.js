@@ -1,3 +1,4 @@
+import { $, closeModal, fmtDate, idb, idbDo, idbPut, playing, stopTransport, two } from '../app/all.js';
 // ---------- Backup: tudo num arquivo (projetos, gêneros criados, biblioteca, sons do usuário) ----------
 const BK={file:null,data:null,busy:false};
 const BK_SKIP=k=>k.startsWith('gstudio_tour_')||k==='gstudio_onboarded'||k==='gstudio_terms';
@@ -91,3 +92,4 @@ $('#bkModal').addEventListener('click',e=>{if(e.target.id==='bkModal')bkClose()}
 updBkInfo();
 
 
+export { bkClose, bkExport, bkPick, bkSheet, fmtMB, idbEntries, plural };

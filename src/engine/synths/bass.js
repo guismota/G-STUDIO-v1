@@ -1,3 +1,4 @@
+import { bassElec, bassOrgan, bassRubber, bassStussy, bpm, ctx, m2f, noise, snd, softCurve } from '../../app/all.js';
 // ----- baixos -----
 function acid303(t,m,dur,o,v,slide,pm,B){
   const acc=v>1.05,gate=slide?Math.max(dur,.08)+.03:Math.min(Math.max(dur,.06),.35);
@@ -104,3 +105,4 @@ function bass(t,m,dur,o,v,slide,c,syn){
   }
 }
 
+export { acid303, bass, bleep, breakHit, crushCurve, vinylPad };

@@ -1,3 +1,4 @@
+import { $, CFG, DEV, FX, FXKEYS, OS, RL, RX, TOUR, XS, bkClose, bkSheet, bpm, closeDoc, closeExplore, closeFx, closeOnb, closeOs, closeRmx, closeXMenu, cols, doRedo, doUndo, launchScene, openCfg, openProjList, openProjSave, openRmx, padTap, setBpm, stopAll } from '../app/all.js';
 // ---------- Aparelho, instalação e atalhos de teclado ----------
 const MODK=DEV.apple?'⌘':'Ctrl',SHK=DEV.apple?'⇧':'Shift';
 let BIP=null; // pedido de instalação do Chrome/Edge/Android
@@ -106,3 +107,4 @@ document.addEventListener('keydown',e=>{
   if(k==='h'||k==='H'){e.preventDefault();$('#homeBtn').click();return}
 });
 
+export { BIP, installNow, kbTitles, openKb, typing };

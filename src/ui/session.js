@@ -1,3 +1,5 @@
+import { LATE } from '../app/late.js';
+import { $, CFG, HW, ICON, LAY, LN, SOLO, STYLES, SW, applyGain, applySolo, cols, flash, getPat, makeKnob, openExplore, openPicker, padTap, refreshFx, removeLane, saveLay, screen, style } from '../app/all.js';
 // ---------- Interface ----------
 function refreshPads(){
   cols.forEach(c=>c.padEls.forEach((el,pi)=>{
@@ -47,7 +49,7 @@ function colResizer(el,which){
   let s0=0;
   dragger(el,{
     down:()=>{s0=which==='hw'?HW:SW},
-    move:dx=>{if(which==='hw')HW=Math.round(clamp(s0+dx,80,280));else SW=Math.round(clamp(s0-dx,90,360));applyCols()},
+    move:dx=>{if(which==='hw')LATE.HW=Math.round(clamp(s0+dx,80,280));else LATE.SW=Math.round(clamp(s0-dx,90,360));applyCols()},
     up:()=>{LAY.hw=HW;LAY.sw=SW;saveLay()}
   });
 }
@@ -104,3 +106,4 @@ function buildSession(){
   }
   g._spec=spec;layoutRows();applyCols();refreshPads();refreshFx();
 }
+export { applyCols, buildSession, layoutRows, refreshPads };

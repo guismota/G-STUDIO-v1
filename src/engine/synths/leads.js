@@ -1,3 +1,4 @@
+import { bpm, ctx, fin, leadAcordeon, leadCumbia, leadFlauta, m2f, noise, snd, softCurve, vchop } from '../../app/all.js';
 // ----- leads -----
 function pluck(t,m,dur,o,v,L){
   L=L||{};dur=Math.max(dur,.1);const x=ctx.createOscillator(),f=ctx.createBiquadFilter(),g=ctx.createGain();
@@ -122,3 +123,4 @@ function metClick(t,acc){
   x.connect(g);g.connect(fin);x.start(t);x.stop(t+.06)}
 
 
+export { bolha, kalimba, lead, leadFM, metClick, sweep, tuim, vocalChop };

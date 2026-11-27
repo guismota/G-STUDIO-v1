@@ -1,3 +1,4 @@
+import { $, GENRES, LIBM, MIC, NV, UBUF, XCAT, XCATC, XCATN, XS, buildHome, buildSession, classify, closeRecDlg, ctx, genreName, idbDel, importFiles, initAudio, libAll, libSub, libVisible, loadLib, loadNovo, micStart, micStop, novoAdd, nvKeyApply, openNvKey, openRecDlg, out, pageWipe, reduceMotion, refreshSlots, saveAsGenre, saveAsGenreGo, saveLib, saveRec, screen, stopPreview, ugenMenu, xAudition, xStopAud } from '../app/all.js';
 // ---------- interface do Explorar ----------
 function xToast(m){const t=$('#xToast');t.textContent=m;t.classList.remove('show');void t.offsetWidth;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2400)}
 function openExplore(pick){
@@ -122,3 +123,4 @@ function xAsk(msg,val,cb,okLabel){
   loadLib();loadNovo();
 })();
 
+export { closeExplore, closeXMenu, openExplore, showXMenu, xAsk, xRender, xToast };

@@ -1,3 +1,4 @@
+import { K, acid303, bolha, bpm, chordFM, ctx, duck, guitarra, kalimba, leadFM, leadFlauta, m2f, noise, snd, softCurve, tuim, vinylPad } from '../../app/all.js';
 // ----- sidechain: o resto da música abaixa a cada kick -----
 function duckAt(t,v){
   if(!duck||K.sc<.02)return;
@@ -80,3 +81,4 @@ function fxHit(t,code,len,o,v){
   const L=Math.min(len,60/bpm*4),n=noise(t+len-L,L+.05),f=ctx.createBiquadFilter(),g=ctx.createGain(),s0=t+len-L;f.type='highpass';f.frequency.value=4500;
   g.gain.setValueAtTime(.0001,s0);g.gain.exponentialRampToValueAtTime(.38*v,t+len);g.gain.linearRampToValueAtTime(.0001,t+len+.03);n.connect(f).connect(g).connect(o)}
 
+export { arpSynth, duckAt, fxHit, padSynth, subBass };

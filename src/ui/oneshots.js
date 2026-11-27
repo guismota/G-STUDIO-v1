@@ -1,3 +1,4 @@
+import { $, ICON, bpm, ctx, fxFront, fxHit, inVoice, initAudio, makeKnob, mix, noise, playing, smp, softCurve, tT0 } from '../app/all.js';
 // ---------- One Shots: 8 sons de efeito para disparar na hora ----------
 function osHorn(t,o){ // buzina de festa: três toques
   [[0,.11],[.15,.09],[.28,.55]].forEach(([d,l])=>{
@@ -84,3 +85,4 @@ function closeOs(){OS.win.open=false;if(OS.el)OS.el.style.display='none';updOsUI
 $('#osBtn').onclick=()=>OS.win.open?closeOs():openOs();
 window.addEventListener('resize',()=>{if(OS.win.open)placeOs()});
 
+export { OS, closeOs, saveOs, updOsUI };

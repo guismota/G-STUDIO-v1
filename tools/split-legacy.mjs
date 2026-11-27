@@ -1,3 +1,4 @@
+// [Ferramenta da modularização, já usada: funciona só no estado do código daquela etapa (veja o git log).]
 // Ferramenta de uso único (fase 2a da modularização): corta o index.html da 1.7.8.1 (legacy/index.html) em
 // arquivos, sem redigitar nada.
 //  - index.html: só a estrutura da página, o script de compatibilidade ES5 inline e a chamada do app

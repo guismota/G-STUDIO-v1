@@ -2,6 +2,8 @@
 
 Os testes comparam a versão nova com a 1.7.8.1, guardada intocada em `legacy/`. Para quem usa o app, nada pode mudar.
 
+Os navegadores de teste rodam **mudos** (nada sai pelos alto-falantes; o som é gerado e medido dentro do app) e com o áudio fixo em **48 kHz**, a taxa do iPad, para as medições não dependerem do aparelho de som ligado no Mac.
+
 ## Comandos
 
 | Comando | O que faz |
@@ -15,7 +17,7 @@ Os testes comparam a versão nova com a 1.7.8.1, guardada intocada em `legacy/`.
 ## O que cada teste confere
 
 - `screens.spec.ts`: 17 telas (início, destaque, cards, os 11 gêneros, Remix FX, Tamanho, sequenciador, piano roll, Ajustes, termos, texto dos termos, boas-vindas e compatibilidade bloqueada) nos 3 tamanhos de iPad e em 1440x900, em Chromium e WebKit. O sorteio é fixo e o relógio da página fica parado, para as capturas saírem idênticas. Tolerância: só serrilhado de borda (no máximo 0,1% dos pontos).
-- `audio-levels.spec.ts`: para cada gênero e cada um dos 4 padrões, toca todas as linhas por 4 compassos e mede o pico de cada faixa no mesmo ponto e na mesma escala do medidor do app (0 a 1). A luz de clipagem não pode acender, nenhuma faixa com padrão pode ficar muda e, na versão nova, cada faixa tem que cair dentro da faixa medida na 1.7.8.1, com folga de 0,03.
+- `audio-levels.spec.ts`: para cada gênero e cada um dos 4 padrões, toca todas as linhas por 4 compassos, com o app recém-aberto, e mede o pico de cada faixa no mesmo ponto e na mesma escala do medidor do app (0 a 1). Nenhuma faixa com padrão pode ficar muda; a versão nova não pode clipar onde a 1.7.8.1 não clipa (ela já clipa no Acid House, padrão 3); e cada faixa tem que cair dentro da faixa medida na 1.7.8.1 (3 rodadas), com folga de 0,03. Se uma faixa sair, o padrão é medido de novo até 3 vezes.
 - `console.spec.ts`: percorre o app inteiro com som tocando e não pode aparecer nenhum erro no console.
 - `data.spec.ts`: o projeto, o gênero criado e o som importado feitos na 1.7.8.1 (`fixtures/dados-1.7.8.1.json`) abrem iguais, e o backup exportado por ela (`fixtures/backup-1.7.8.1.json`) restaura igual, tanto em "Juntar" quanto em "Substituir tudo".
 - `offline.spec.ts`: depois de abrir com internet, o app abre, carrega as 5 fontes e toca sem internet.

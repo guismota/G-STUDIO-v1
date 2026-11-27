@@ -1,3 +1,4 @@
+import { GENRES, ugenList } from '../app/all.js';
 // ---------- Capas tipográficas dos cards (estilo capa de disco de selo) ----------
 // lay: band (faixa de cor em cima), block (bloco de cor na lateral), side (palavra deitada), outline (contorno), stack (duas linhas)
 const COVER={
@@ -100,3 +101,4 @@ function drawCoverCtx(x,w,h,sp,t,mode){
   }
 }
 function hexA(c,a){if(c[0]==='#'){const n=parseInt(c.slice(1),16);return 'rgba('+(n>>16)+','+(n>>8&255)+','+(n&255)+','+a+')'}return c.replace('hsl(','hsla(').replace(')',','+a+')')}
+export { coverOf, drawCover, drawCoverCtx, hexA };

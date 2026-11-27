@@ -1,3 +1,4 @@
+import { $, XS, screen } from '../app/all.js';
 // ===================== TOUR RÁPIDO (primeiro uso, pode pular) =====================
 const TOURS={
  home:[
@@ -54,3 +55,4 @@ function placeTour(el){
   const again=$('#tourAgain');if(again)again.onclick=()=>{try{localStorage.removeItem('gstudio_tour_home');localStorage.removeItem('gstudio_tour_sess')}catch(e){}startTour('home')};
 })();
 
+export { TOUR, maybeTour, startTour };

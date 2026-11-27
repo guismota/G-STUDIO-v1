@@ -1,3 +1,4 @@
+import { bpm, chordAco, chordM1, chordSuper, ctx, m2f, snd } from '../../app/all.js';
 // ----- acordes -----
 function chordStab(t,notes,dur,o,C){
   const f=ctx.createBiquadFilter(),g=ctx.createGain();f.type='lowpass';f.Q.value=C.q||1;
@@ -57,3 +58,4 @@ function chord(t,notes,dur,o,syn){
   return chordStab(t,notes,dur,o,C);
 }
 
+export { chord, chordFM };

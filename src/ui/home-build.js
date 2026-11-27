@@ -1,3 +1,4 @@
+import { $, CFG, CHN, GENRES, HART, HPAL, ICO_SPK, LASTK, STYLES, artSpec, ctx, enterNovo, fin, hEnterUg, hEsc, hNameHTML, hRow, hTile, hartReg, hartStart, histList, maybeTour, noise, noiseBuf, togglePreview, tuneIn, tuneInX, ugenList } from '../app/all.js';
 function buildHome(){
   const box=$('#cards');box.innerHTML='';HART.list=[];if(HART.io){HART.io.disconnect();HART.io=null}
   const ug=ugenList();let last=null;try{last=localStorage.getItem(LASTK)}catch(e){}
@@ -53,3 +54,4 @@ function staticBurst(){
   f.type='bandpass';f.frequency.value=3200;f.Q.value=.6;g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.09,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.38);
   n.connect(f);f.connect(g);g.connect(fin);
 }
+export { buildHome, flickLoop, flickT, powerOnHome, reduceMotion };

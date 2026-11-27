@@ -1,3 +1,4 @@
+// [Ferramenta da modularização, já usada: funciona só no estado do código daquela etapa (veja o git log).]
 // Confere se o código do app roda igual em "modo estrito" (módulos JavaScript são sempre estritos; o script antigo
 // não era). Procura o que muda de comportamento:
 //  - sintaxe proibida no modo estrito (o analisador acusa ao ler como módulo)

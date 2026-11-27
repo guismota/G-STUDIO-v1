@@ -1,3 +1,4 @@
+import { ARP, B, C, CUMA, CUMB, CUMC, D, FX4, FXP, T } from '../app/all.js';
 const STYLES={
  house:{name:'House',bpm:124,swing:.1,key:{root:5,mode:'minor'},names:{tom:'Toms 909',perc:'Perc',bass:'Órgão M1',chord:'Stabs',lead:'Vocal'},
   scenes:[{kick:0,hat:0,perc:1,bass:0},{kick:0,clap:0,hat:0,ohat:0,perc:1,bass:0,chord:0,lead:0},{pad:0,chord:1,lead:2,fx:0},
@@ -493,3 +494,4 @@ const STYLES={
   }}
 };
 
+export { STYLES };

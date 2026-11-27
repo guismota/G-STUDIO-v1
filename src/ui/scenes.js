@@ -1,9 +1,11 @@
+import { LATE } from '../app/late.js';
+import { $, CFG, ICON, LN, bpm, cols, ctx, draft, editMode, editing, flash, getPat, initAudio, nextTime, playing, qSteps, reduceMotion, saveScenes, sceneOn, scenes, startTransport, stopAll } from '../app/all.js';
 // ---------- Cenas ----------
 function launchScene(i){
   const sc=scenes[i];
   if(!sc){openSceneEditor(i);return}
   if(!cols.length){flash('Chama um instrumento primeiro');return}
-  initAudio();sceneOn=i;
+  initAudio();LATE.sceneOn=i;
   const slot=c=>{const v=sc[c.key];return Number.isInteger(v)&&getPat(c,v)?v:-1};
   if(!playing){cols.forEach(c=>{c.active=slot(c);c.queued=null});startTransport();sceneFx(i);return}
   cols.forEach(c=>{const v=slot(c);c.queued=(v===c.active)?null:v});
@@ -26,8 +28,8 @@ const curMap=()=>{const o={};cols.forEach(c=>o[c.key]=c.active);return o};
 const draftOf=c=>Number.isInteger(draft[c.key])?draft[c.key]:-1;
 function openSceneEditor(i){
   if(!cols.length){flash('Chama um instrumento primeiro');return}
-  editing=i;
-  draft=scenes[i]?Object.assign({},scenes[i]):curMap();
+  LATE.editing=i;
+  LATE.draft=scenes[i]?Object.assign({},scenes[i]):curMap();
   $('#mt').textContent='Cena '+(i+1);
   renderSceneEditor();$('#sceneEd').classList.add('open');
 }
@@ -47,9 +49,9 @@ function renderSceneEditor(){
     g.appendChild(r);
   });
 }
-function closeSceneEditor(){$('#sceneEd').classList.remove('open');editing=-1}
+function closeSceneEditor(){$('#sceneEd').classList.remove('open');LATE.editing=-1}
 $('#mcancel').onclick=closeSceneEditor;
-$('#mcopy').onclick=()=>{draft=curMap();renderSceneEditor()};
+$('#mcopy').onclick=()=>{LATE.draft=curMap();renderSceneEditor()};
 $('#mclear').onclick=()=>{if(editing>=0){scenes[editing]=null;saveScenes()}closeSceneEditor();refreshSlots()};
 $('#msave').onclick=()=>{
   if(editing>=0){
@@ -73,3 +75,4 @@ function buildScenes(){
   refreshSlots();
 }
 
+export { buildScenes, launchScene, refreshSlots, slotEls };
