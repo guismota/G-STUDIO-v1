@@ -119,3 +119,18 @@ test('pads, fila, cena e parar tudo pela tela', async ({ page }, info) => {
   await page.locator('#play').click();
   await expect(page.locator('#play')).not.toHaveClass(/on/);
 });
+
+test('piano roll: gravar uma nota pelo teclado do computador', async ({ page }, info) => {
+  test.skip(!isMainView(info), 'roda no tamanho principal');
+  await prepare(page, info);
+  await enterHouse(page);
+  await gs(page, 'openClipEditor', 'bass', 4); // loop vazio do baixo ("Meu 1")
+  await page.waitForTimeout(800);
+  await expect(page.locator('#rlGrid .st')).toHaveCount(0);
+  await page.locator('#rlRec').click(); // contagem de um compasso e começa a gravar
+  await page.waitForTimeout(2600);
+  await page.keyboard.down('a'); await page.waitForTimeout(250); await page.keyboard.up('a');
+  await expect(page.locator('#rlGrid .st')).toHaveCount(1);
+  await page.locator('#rlPlay').click();
+  await expect(page.locator('#play')).not.toHaveClass(/on/);
+});

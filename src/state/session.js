@@ -1,5 +1,5 @@
 import { late } from '../app/late.js';
-import { NOVO, NV, STYLES, novoPat, saveNovo } from '../app/all.js';
+import { NOVO, NV, STYLES, engine, novoPat, saveNovo } from '../app/all.js';
 late({get HW(){return HW},set HW(v){HW=v},get SW(){return SW},set SW(v){SW=v},get cols(){return cols},set cols(v){cols=v},get draft(){return draft},set draft(v){draft=v},get editMode(){return editMode},set editMode(v){editMode=v},get editing(){return editing},set editing(v){editing=v},get freeN(){return freeN},set freeN(v){freeN=v},get saveFree(){return saveFree},set saveFree(v){saveFree=v},get saveScenes(){return saveScenes},set saveScenes(v){saveScenes=v},get saveUser(){return saveUser},set saveUser(v){saveUser=v},get sceneOn(){return sceneOn},set sceneOn(v){sceneOn=v},get scenes(){return scenes},set scenes(v){scenes=v},get screen(){return screen},set screen(v){screen=v},get style(){return style},set style(v){style=v},get userVer(){return userVer},set userVer(v){userVer=v}});
 let style='house';
 
@@ -37,6 +37,8 @@ function loadFree(){
   return [];
 }
 function saveFree(){try{localStorage.setItem('gstudio_free',JSON.stringify({n:freeN,lanes:FREE.map(l=>({key:l.key,type:l.type,name:l.name,h:l.h}))}))}catch(e){}}
+// linhas descritas para o motor (o que ele precisa para montar o áudio de cada uma)
+const laneDefs=()=>ALL().map(l=>({key:l.key,type:l.type,name:l.name,src:l.src||null,smp:l.smp||null,vol:l.vol,muted:!!l.muted}));
 const ALL=()=>MAIN.concat(FREE,(typeof NOVO!=='undefined'&&NOVO)||[]);
 let screen='main',cols=MAIN;
 function sortByKind(a){const d=a.filter(l=>l.kind==='drum'),n=a.filter(l=>l.kind!=='drum');a.length=0;a.push(...d,...n)}
@@ -51,7 +53,7 @@ function loadUser(){
   ALL().forEach(l=>{if(!u[l.key])u[l.key]=[null,null,null,null]});
   return u;
 }
-function saveUser(){try{localStorage.setItem('looppads_user',JSON.stringify(userPats))}catch(e){}if(typeof NV!=='undefined'&&NV&&NV.ctx&&NV.ctx!=='draft'&&screen==='novo')saveNovo()}
+function saveUser(){try{localStorage.setItem('looppads_user',JSON.stringify(userPats))}catch(e){}engine.send({type:'patterns.set',user:userPats});if(typeof NV!=='undefined'&&NV&&NV.ctx&&NV.ctx!=='draft'&&screen==='novo')saveNovo()}
 function getPat(c,i){
   if(i<0)return null;
   if(i<4){if(c.src)return novoPat(c,i);if(c.bpats)return c.bpats[i]||null;return (STYLES[style].p[c.type]||[])[i]||null}
@@ -97,4 +99,4 @@ loadScenes();
 let scenes=SC.main,sceneOn=-1,editMode=false,editing=-1,draft={};
 function saveScenes(){try{localStorage.setItem('gstudio_scenes',JSON.stringify(SC))}catch(e){}if(typeof NV!=='undefined'&&NV&&screen==='novo')saveNovo()}
 
-export { ALL, DEF_SCENES, FREE, HW, LAY, MAIN, SC, SW, TYPES, cols, draft, editMode, editing, freeN, getPat, makeLane, saveFree, saveLay, saveScenes, saveUser, sceneOn, scenes, screen, sortByKind, style, userPats, userVer };
+export { ALL, DEF_SCENES, FREE, HW, LAY, MAIN, SC, SW, TYPES, cols, draft, editMode, editing, freeN, getPat, laneDefs, makeLane, saveFree, saveLay, saveScenes, saveUser, sceneOn, scenes, screen, sortByKind, style, userPats, userVer };

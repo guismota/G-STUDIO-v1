@@ -1,5 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, CC0, GENRES, LANECAT, LIBM, NOVO, NOVO_STY, NV, STYLES, TYPES, XCATN, XS, buildSession, ctx, engine, ensureGain, guessHit, novoLane, novoLoadDraft, openNovoSession, playing, previewPlay, refreshPads, routeAll, saveNovo, saveUser, screen, sortByKind, stopPreview, undoReset, userPats, xRender, xToast } from '../app/all.js';
+import { $, CC0, GENRES, LANECAT, LIBM, NOVO, NOVO_STY, NV, STYLES, TYPES, XCATN, XS, buildSession, engine, guessHit, laneDefs, novoLane, novoLoadDraft, openNovoSession, playing, previewPlay, refreshPads, saveNovo, saveUser, screen, sortByKind, stopPreview, undoReset, userPats, xRender, xToast } from '../app/all.js';
 // ---------- IndexedDB ----------
 var IDBP=null;
 function idb(){if(IDBP)return IDBP;IDBP=new Promise((res,rej)=>{try{const r=indexedDB.open('gstudio',1);r.onupgradeneeded=()=>{r.result.createObjectStore('files')};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}catch(e){rej(e)}});return IDBP}
@@ -108,7 +108,7 @@ function novoAdd(it){
   else if(it.kind==='loop')o={key,type:'loopa',name:it.name,smp:it.id,cat:it.cat,lbpm:it.bpm,bars:it.bars};
   else o={key,type:'smp',name:it.name,smp:it.id,cat:it.cat,h:it.h||guessHit(it.name,it.cat)};
   const l=novoLane(o);NOVO.push(l);sortByKind(NOVO);userPats[key]=[null,null,null,null];if(NV.ctx!=='draft')l.upats=userPats[key];
-  if(ctx)ensureGain(l),routeAll&&routeAll();
+  engine.send({type:'lanes.sync',lanes:laneDefs()});
   saveNovo();saveUser();
   if(screen==='novo')buildSession();
   xToast(l.name+' entrou na página');xRender();

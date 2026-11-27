@@ -66,8 +66,20 @@ export type Command =
   // sons avulsos
   | { type: 'oneshot.fire'; index: number; quantize?: boolean; volume: number } // quantize: espera o próximo 1/16 se estiver tocando
   | { type: 'oneshot.volume'; value: number }
-  | { type: 'note.play'; lane: LaneKey; note: number; velocity?: number; duration?: number } // audição e Musical Typing
-  | { type: 'drum.play'; lane: LaneKey; row?: number; velocity?: number } // audição no sequenciador
+  | { type: 'note.play'; lane: LaneKey; note: number; velocity?: number } // audição no editor de notas
+  | { type: 'drum.play'; lane: LaneKey; row?: number; velocity?: number } // audição no sequenciador (row: altura do tom)
+  // notas tocadas ao vivo no piano roll (teclado da tela, do computador e, no futuro, MIDI): o motor toca, marca a hora e,
+  // se estiver gravando, encaixa na grade e avisa com note.recorded
+  | { type: 'note.on'; id: string | number; lane: LaneKey; note: number; velocity?: number }
+  | { type: 'note.off'; id: string | number; lane: LaneKey | null; record: boolean; len: number }
+  // linhas: montar o áudio das que entraram, desligar uma linha, parar o som gravado de uma linha; quais estão na tela
+  | { type: 'lanes.sync'; lanes: { key: LaneKey; type: string; name: string; src: string | null; smp: string | null; vol: number; muted: boolean }[] }
+  | { type: 'lanes.view'; screen: string; lanes: LaneKey[] }
+  | { type: 'lane.remove'; lane: LaneKey; stopSource?: boolean; reset?: boolean }
+  | { type: 'lane.stopSource'; lane: LaneKey }
+  // gênero e loops do usuário (o motor em C++ guarda a sua cópia)
+  | { type: 'genre.set'; genre: string }
+  | { type: 'patterns.set'; user: Record<LaneKey, unknown[]> }
   // prévia da tela inicial e som de entrada no canal
   // id: quem pediu (volta no evento preview.state); plan: o que toca em cada compasso ({linha: slot}); lanes: linhas de
   // um gênero criado pelo usuário (def = como foi salvo, pats = os 4 loops, mix = volume e mute)
@@ -101,6 +113,7 @@ export type EngineEvent =
   | { type: 'pulse'; value: number } // batida agora (acende as luzes da sessão)
   | { type: 'clips'; scene: number; lanes: Record<LaneKey, { active: Slot; queued: Slot | null }> } // tocando, na fila e cena ativa (-1 = nenhuma)
   | { type: 'scene.fired'; index: number } // a cena entrou de fato (para a animação)
+  | { type: 'note.recorded'; lane: LaneKey; note: number; start: number; length: number; velocity: number } // gravando no piano roll: passo e duração na grade
   | { type: 'oneshot.hit'; index: number; inMs: number } // daqui a quanto o som do One Shot entra (para piscar o pad)
   // a cada quadro: picos da saída (l, r) e de cada linha (0 a 1, sem escala de medidor), espectro (0 a 255) e taxa de amostragem
   | { type: 'meters'; l: number; r: number; lanes: Record<LaneKey, number>; spectrum: ArrayLike<number>; sr: number }

@@ -1,11 +1,9 @@
 import { late } from '../app/late.js';
-import { PQ, PV, STYLES, arpSynth, audible, bar, barOff, bass, bpm, chord, clapOnly, duckAt, fxHit, getPat, hat, inVoice, kick, lead, loopStep, padSynth, perc, pvDuck, smpHit, snare, style, subBass, sweep, tom } from '../app/all.js';
+import { PQ, PV, STYLES, arpSynth, audible, bar, barOff, bass, bpm, chord, clapOnly, duckAt, fxHit, getPat, hat, inVoice, kick, lead, loopStep, padSynth, perc, pmN, pvDuck, smpHit, snare, style, subBass, sweep, tom } from '../app/all.js';
 // ----- tocar uma linha -----
 late({get LSND(){return LSND},set LSND(v){LSND=v}});
 var LSND=null; // conjunto de sons de outro gênero, quando a linha veio de outro gênero (Criar novo)
 const snd=()=>(typeof LSND!=='undefined'&&LSND)||STYLES[(typeof PV!=='undefined'&&PV.k)||style].snd; // conjunto de sons em uso
-const pm2=x=>((x%2)+2)%2;
-const pmN=(x,n)=>((x%n)+n)%n,nbOf=p=>p?Math.max(1,Math.round((p.len||16)/16)):1; // loops de 1, 2 ou 4 compassos
 function hitAt(d,pos){for(const x of d){if(x===pos)return 1;if(Array.isArray(x)&&x[0]===pos)return x[1]||1}return 0}
 function playCol(c,s,t,P){return inVoice(()=>{LSND=c.src?STYLES[c.src].snd:null;try{playCol0(c,s,t,P)}finally{LSND=null}})}
 function playCol0(c,s,t,P){
@@ -42,12 +40,6 @@ function playCol0(c,s,t,P){
     else lead(t,n[1],n[2]*sd,o,v,syn,n[4]);
   });
 }
-function hitsOf(pat,half){
-  if(!pat)return new Set();
-  const d=pat.data,r=new Set(),add=v=>{const i=v-half*16;if(i>=0&&i<16)r.add(i)};
-  if(typeof d==='string')add(0);else d.forEach(x=>add(Array.isArray(x)?x[0]:x));
-  return r;
-}
 
 
-export { hitsOf, nbOf, playCol, pm2, pmN, snd };
+export { playCol, snd };

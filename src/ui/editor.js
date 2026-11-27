@@ -1,5 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, MAIN, STYLES, arpSynth, bass, chord, clapOnly, cols, ctx, engine, flash, fxHit, getPat, hat, inVoice, kick, lead, openRoll, padSynth, perc, playing, refreshPads, saveUser, smpHit, snare, style, subBass, tom, userPats } from '../app/all.js';
+import { $, MAIN, STYLES, cols, engine, flash, getPat, openRoll, playing, refreshPads, saveUser, style, userPats } from '../app/all.js';
 // ---------- Editor de loops ----------
 const ED={ci:-1,kind:'drum',len:16,grid:[],notes:[],rows:[],bar:0,chrom:false,target:0,prev:false,cells:[],pat:null,lastPos:-1};
 let painting=null;
@@ -66,17 +66,6 @@ function curData(){const c=cols[ED.ci];return ED.kind==='note'?notesToData(c):gr
 function syncPreview(){
   const c=cols[ED.ci];ED.pat={len:ED.len,data:curData(),syn:ED.syn};
   if(ED.prev)engine.send({type:'clip.preview',lane:c.key,pattern:ED.pat});
-}
-function auditionHit(r,v){return inVoice(auditionHit0,null,[r,v])}
-function auditionHit0(r,v){
-  const c=cols[ED.ci];if(!ctx)return;const t=ctx.currentTime+.01,o=c.gain;v=v||1;
-  switch(c.type){case 'smp':smpHit(c,t,o,v);break;case 'kick':kick(t,o,v);break;case 'clap':clapOnly(t,o,v);break;case 'snare':snare(t,o,v);break;case 'hat':hat(t,o,false,v);break;case 'ohat':hat(t,o,true,v);break;case 'perc':perc(t,o,v);break;case 'tom':tom(t,c.rows[r].f,o,v);break;case 'fx':fxHit(t,c.rows[r].f,1.6,o,v);break}
-}
-function auditionNote(m,v){return inVoice(auditionNote0,null,[m,v])}
-function auditionNote0(m,v){
-  const c=cols[ED.ci];if(!ctx)return;const t=ctx.currentTime+.01;let o=c.gain;
-  if(v&&Math.abs(v-1)>.01){const g=ctx.createGain();g.gain.value=v;g.connect(o);o=g;setTimeout(()=>{try{g.disconnect()}catch(e){}},4000)}
-  if(c.type==='bass')bass(t,m,.3,o,1,0,null);else if(c.type==='sub')subBass(t,m,.3,o,1);else if(c.type==='chord')chord(t,[m],.5,o);else if(c.type==='pad')padSynth(t,[m],.8,o);else if(c.type==='arp')arpSynth(t,m,.25,o,1);else lead(t,m,.3,o,1);
 }
 function loadInto(c,pat){
   ED.syn=pat&&pat.syn?pat.syn:undefined;
@@ -181,7 +170,7 @@ function noteDown(el){
       ED.notes=ED.notes.filter(n=>n.s!==i);
       ED.notes.forEach(n=>{if(n.s<i&&n.s+n.l>i)n.l=i-n.s});
     }
-    const n={m,s:i,l:1};ED.notes.push(n);painting={note:n};auditionNote(m);
+    const n={m,s:i,l:1};ED.notes.push(n);painting={note:n};engine.send({type:'note.play',lane:cols[ED.ci].key,note:m});
   }
   paintNotes();syncPreview();
 }
@@ -196,7 +185,7 @@ function noteMove(el){
 }
 function setCell(el,v){
   const r=+el.dataset.r,i=+el.dataset.i;if(ED.grid[r][i]===v)return;
-  const was=ED.grid[r][i];ED.grid[r][i]=v;el.classList.toggle('on',!!v);el.style.setProperty('--v',(v/VMAX).toFixed(3));if(v&&!was)auditionHit(r,v);syncPreview();
+  const was=ED.grid[r][i];ED.grid[r][i]=v;el.classList.toggle('on',!!v);el.style.setProperty('--v',(v/VMAX).toFixed(3));if(v&&!was)engine.send({type:'drum.play',lane:cols[ED.ci].key,row:r,velocity:v});syncPreview();
 }
 function velAt(el,y){const b=el.getBoundingClientRect();return Math.max(.1,Math.min(VMAX,(1-(y-b.top)/b.height)*VMAX))}
 function cellAt(x,y){const e=document.elementFromPoint(x,y);const c=e&&e.closest?e.closest('.cell,.ncell'):null;return c&&c.closest('#edGrid')?c:null}
@@ -251,4 +240,4 @@ $('#ceSave').onclick=()=>{
 };
 
 
-export { ED, LN, auditionNote, buildEdGrid, buildRows, cellAt, curData, firstEmpty, inScale, isChordT, isMono, isRoot, keyName, loadInto, nName, noteDown, noteMove, openClipEditor, paintNotes, painting, syncPreview };
+export { ED, LN, buildEdGrid, buildRows, cellAt, curData, firstEmpty, inScale, isChordT, isMono, isRoot, keyName, loadInto, nName, noteDown, noteMove, openClipEditor, paintNotes, painting, syncPreview };

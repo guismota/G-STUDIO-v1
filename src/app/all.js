@@ -16,7 +16,9 @@ export * from '../engine/synths/bass.js';
 export * from '../engine/synths/chords.js';
 export * from '../engine/synths/leads.js';
 export * from '../engine/synths/sub-pads-arps-fx.js';
+export * from '../shared/pattern.js';
 export * from '../engine/play-lane.js';
+export * from '../engine/notes.js';
 export * from '../engine/scheduler.js';
 // porta de entrada do motor: engine.send / engine.on
 export * from '../engine/index.js';

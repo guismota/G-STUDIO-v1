@@ -1,5 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, CFG, LASTK, MODE_N, NOTE_PT, NOVO, NV, SC, STYLES, TYPES, UGEN, XCATC, bpm, buildSession, ctx, engine, ensureGain, flash, goHome, histPush, loadBuf, makeLane, openNvKey, playing, previewPlay, refreshSlots, routeAll, saveUser, screen, setScreen, setStyle, showXMenu, stopLaneSrc, stopPreview, updNvKey, userPats, xAsk, xToast } from '../app/all.js';
+import { $, CFG, LASTK, MODE_N, NOTE_PT, NOVO, NV, SC, STYLES, TYPES, UGEN, XCATC, bpm, buildSession, engine, flash, goHome, histPush, laneDefs, makeLane, openNvKey, playing, previewPlay, refreshSlots, saveUser, screen, setScreen, setStyle, showXMenu, stopPreview, updNvKey, userPats, xAsk, xToast } from '../app/all.js';
 // ---------- Criar novo: estado ----------
 const NOVO_STY=STYLES.novo={name:'Criar novo',bpm:124,swing:0,key:{root:9,mode:'minor'},snd:STYLES.house.snd,p:{},novo:true};
 Object.keys(TYPES).forEach(t=>{NOVO_STY.p[t]=[]});
@@ -10,12 +10,12 @@ function novoLane(o){
   if(o.smp){l.smp=o.smp;l.cat=o.cat||'other';l.color=XCATC[l.cat]||l.color;l.rows=[{l:o.name}];
     if(o.type==='loopa'){l.kind='loop';l.lbpm=o.lbpm||120;l.bars=o.bars||1;l.bpats=[{name:'Loop',len:16,data:'loop'},null,null,null]}
     else{l.hh=o.h||null;l.bpats=hitPats(o.h||guessHit(o.name,o.cat))}
-    loadBuf(o.smp)}
+    engine.send({type:'sample.load',id:o.smp})}
   return l;
 }
 // carrega um conjunto de faixas na página (o rascunho do Criar novo ou um gênero do usuário)
 function novoFill(data,cx){
-  NOVO.forEach(c=>{stopLaneSrc(c);if(c.gain){try{c.gain.disconnect();c.post.disconnect()}catch(e){}}});NOVO.length=0;
+  NOVO.forEach(c=>engine.send({type:'lane.remove',lane:c.key,stopSource:true}));NOVO.length=0;
   Object.assign(NV,{n:0,root:9,mode:'minor',auto:CFG.autoKey!==false,bpm:124},data.nv||{});NV.ctx=cx;
   (data.lanes||[]).forEach(o=>{if(!o||!TYPES[o.type]||typeof o.key!=='string')return;const l=novoLane(o);
     if(cx!=='draft'){l.upats=(data.pats&&Array.isArray(data.pats[o.key]))?data.pats[o.key]:[null,null,null,null];userPats[o.key]=l.upats}
@@ -24,10 +24,9 @@ function novoFill(data,cx){
   (data.mix||[]).forEach(m=>{const l=NOVO.find(x=>x.key===m.key);if(l){l.vol=Math.max(0,Math.min(1.5,+m.vol||0));l.muted=!!m.muted}});
   SC.novo=Array.isArray(data.scenes)&&data.scenes.length===8?data.scenes:Array(8).fill(null);
   NOVO_STY.bpm=NV.bpm;NOVO_STY.key={root:NV.root,mode:NV.mode};
-  if(ctxReady())NOVO.forEach(ensureGain);
+  engine.send({type:'lanes.sync',lanes:laneDefs()});
   if(screen==='novo')LATE.scenes=SC.novo;
 }
-function ctxReady(){return !!ctx}
 function novoLoadDraft(){
   let j=null;try{j=JSON.parse(localStorage.getItem('gstudio_novo'))}catch(e){}
   let sc=j&&j.scenes;if(!sc){try{const k=JSON.parse(localStorage.getItem('gstudio_scenes'));sc=k&&k.novo}catch(e){}}
@@ -64,7 +63,7 @@ function openNovoSession(){
   NOVO_STY.bpm=NV.bpm;LATE.screen='novo';setStyle('novo');
   document.body.classList.add('in-session','novo');document.body.classList.toggle('ugen',NV.ctx!=='draft');
   const d=document.querySelector('.dev');d.classList.remove('enter');void d.offsetWidth;d.classList.add('enter');
-  if(ctx){NOVO.forEach(ensureGain);routeAll()}
+  engine.send({type:'lanes.sync',lanes:laneDefs()});
   setScreen('novo');updNvKey();
 }
 function enterUgen(id){
@@ -88,7 +87,7 @@ function saveAsGenreGo(){
   const scenes=(SC.novo||Array(8).fill(null)).map(sc=>{if(!sc)return null;const o={};for(const k in sc)if(map[k])o[map[k]]=sc[k];return o});
   const mix=NOVO.map(c=>({key:map[c.key],vol:c.vol,muted:c.muted}));
   LATE.UGEN=ugenList();UGEN.push({id,name,desc,created:Date.now(),nv:{root:NV.root,mode:NV.mode,auto:NV.auto,bpm:NV.bpm,n:lanes.length},lanes,pats,scenes,mix});saveUgens();
-  NOVO.forEach(c=>{stopLaneSrc(c);delete userPats[c.key]});NOVO.length=0;SC.novo=Array(8).fill(null);saveNovo();saveUser();
+  NOVO.forEach(c=>{engine.send({type:'lane.stopSource',lane:c.key});delete userPats[c.key]});NOVO.length=0;SC.novo=Array(8).fill(null);saveNovo();saveUser();
   $('#ugDlg').classList.remove('open');buildSession();refreshSlots();
   flash(name+' está na tela inicial');xToast('Gênero salvo: '+name+'. Ele está na tela inicial.');
 }

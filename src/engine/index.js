@@ -7,7 +7,7 @@ import { LATE } from '../app/late.js';
 // Observação: neste motor em JavaScript, a tela e o motor ainda compartilham alguns objetos na memória (as linhas, os
 // ajustes CFG e os knobs K), então alguns comandos só repetem o que a tela já gravou. Os comandos levam os dados mesmo
 // assim, porque o motor em C++ vai guardar a sua própria cópia. Os efeitos já têm cópia separada (FXE).
-import { ALL, AUD, CFG, K, MET, MIC, REC, RXA, UBUF, applyGain, applySolo, audStop, auditionSample, clipTap, emitClips, fireOneShot, fxApply, genreSting, initAudio, micPlay, micSave, micStart, micStop, novoBpmChanged, osVolume, previewStart, previewStop, previewVolume, recCancel, recCountIn, recFileById, recStop, rxCap, rxDubKill, rxEff, rxEnsure, rxFilter, rxGate, rxPitch, rxTape, sampleLoad, sceneLaunch, setBpmDelay, setFilter, setLimit, setMaster, setMono, startTransport, stopAll, stopTransport } from '../app/all.js';
+import { ALL, AUD, CFG, K, MET, MIC, REC, RXA, UBUF, applyGain, applySolo, audStop, auditionHit, auditionNote, auditionSample, clipTap, ctx, emitClips, ensureGain, fireOneShot, fxApply, genreSting, initAudio, micPlay, micSave, micStart, micStop, noteOff, noteOn, novoBpmChanged, osVolume, previewStart, previewStop, previewVolume, recCancel, recCountIn, recFileById, recStop, routeAll, rxCap, rxDubKill, rxEff, rxEnsure, rxFilter, rxGate, rxPitch, rxTape, sampleLoad, sceneLaunch, setBpmDelay, setFilter, setLimit, setMaster, setMono, startTransport, stopAll, stopLaneSrc, stopTransport } from '../app/all.js';
 const H = {
   'audio.unlock': () => initAudio(),
   // Remix FX: os nós de áudio só são montados quando o painel abre ou um controle é ligado
@@ -65,6 +65,20 @@ const H = {
   'master.pump': c => { K.sc = c.value },
   'transport.bpm': c => { LATE.bpm = c.bpm; setBpmDelay(); if (c.novo) novoBpmChanged() },
   'settings.set': c => { Object.assign(CFG, c.cfg); setLimit(); setMono() },
+  // linhas, gênero e loops do usuário
+  'lanes.sync': () => { if (ctx) { ALL().forEach(ensureGain); routeAll() } },
+  'lanes.view': () => {}, // linhas na tela atual (o motor em JavaScript usa a mesma lista da tela)
+  'lane.remove': c => { const l = laneOf(c.lane); if (!l) return; if (c.stopSource) stopLaneSrc(l);
+    if (c.reset) { l.active = -1; l.queued = null; if (l.gain) { try { l.gain.disconnect() } catch (e) {} try { l.post && l.post.disconnect() } catch (e) {} l.gain = null } }
+    else if (l.gain) { try { l.gain.disconnect() } catch (e) {} try { l.post.disconnect() } catch (e) {} } },
+  'lane.stopSource': c => { const l = laneOf(c.lane); if (l) stopLaneSrc(l) },
+  'genre.set': c => { LATE.style = c.genre },
+  'patterns.set': () => {}, // loops do usuário (o motor em JavaScript lê a mesma memória da tela)
+  // audição nos editores e notas do piano roll
+  'drum.play': c => auditionHit(c.lane, c.row || 0, c.velocity),
+  'note.play': c => auditionNote(c.lane, c.note, c.velocity),
+  'note.on': c => noteOn(c),
+  'note.off': c => noteOff(c),
 };
 const laneOf = key => ALL().find(x => x.key === key);
 const listeners = new Map();

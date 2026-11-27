@@ -46,6 +46,15 @@ async function fxOn(page: Page, tag: string) {
   await page.getByRole('button', { name: 'Ligar ou desligar o efeito' }).click();
   await page.waitForTimeout(300);
 }
+// dentro da sessão, só a audição dos editores (transporte parado), medida pela saída final
+const SESS_IDLE: Record<string, { act: (page: Page) => Promise<void>; sec: number }> = {
+  'editor batida': { sec: 1.5, act: async page => { // sequenciador do Kick num loop vazio: tocar numa casa toca o kick
+    await gs(page, 'openClipEditor', 'kick', 4); await page.waitForTimeout(800);
+    const b = await page.locator('#edGrid .cell').first().boundingBox(); await page.mouse.move(b!.x + b!.width / 2, b!.y + b!.height / 2); await page.mouse.down(); await page.mouse.up() } },
+  'piano roll tecla': { sec: 1.5, act: async page => { // piano roll do baixo: tecla A do computador toca a nota
+    await gs(page, 'openClipEditor', 'bass', 4); await page.waitForTimeout(800);
+    await page.keyboard.down('a'); await page.waitForTimeout(300); await page.keyboard.up('a') } },
+};
 // na tela inicial, sem entrar num gênero: só a prévia ou a audição tocando, medida pela saída final
 const HOME: Record<string, { act: (page: Page) => Promise<void>; sec: number }> = {
   'previa house': { sec: 4, act: async page => { await page.locator('#hero .hprev').click() } },
@@ -68,7 +77,7 @@ async function oneShot(page: Page, i: number) {
   await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2); await page.mouse.down(); await page.mouse.up();
 }
 
-for (const name of [...Object.keys(SCEN), ...Object.keys(HOME)]) {
+for (const name of [...Object.keys(SCEN), ...Object.keys(HOME), ...Object.keys(SESS_IDLE)]) {
   test(`controle: ${name}`, async ({ page }, info) => {
     test.skip(!isMainView(info), 'roda no tamanho principal');
     test.setTimeout(300_000);
@@ -86,6 +95,7 @@ for (const name of [...Object.keys(SCEN), ...Object.keys(HOME)]) {
       await tile.click({ force: true });
       await page.waitForFunction(() => document.body.classList.contains('in-session'));
       await page.waitForTimeout(6000);
+      if (SESS_IDLE[name]) { await page.evaluate(n => (window as any).__gsSeed(n), SEED + 7); const m = gs<Run>(page, 'measureIdle', SESS_IDLE[name].sec); await SESS_IDLE[name].act(page); return m }
       if (name.startsWith('remix')) { await page.locator('#rmxBtn').click(); await page.waitForTimeout(800) }
       await page.evaluate(n => (window as any).__gsSeed(n), SEED + 7);
       await SCEN[name](page);

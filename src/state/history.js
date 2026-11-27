@@ -1,5 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, ALL, FREE, FX, FXKEYS, LAY, SC, TYPES, applyCols, buildSession, ctx, engine, ensureGain, flash, freeN, fxActive, fxLinkedHere, fxSend, fxSyncAll, layoutRows, makeLane, refreshFx, refreshSlots, saveFree, saveFx, saveLay, saveScenes, saveUser, screen, userPats } from '../app/all.js';
+import { $, ALL, FREE, FX, FXKEYS, LAY, SC, TYPES, applyCols, buildSession, engine, flash, freeN, fxActive, fxLinkedHere, fxSend, fxSyncAll, laneDefs, layoutRows, makeLane, refreshFx, refreshSlots, saveFree, saveFx, saveLay, saveScenes, saveUser, screen, userPats } from '../app/all.js';
 // ---------- Desfazer / refazer ----------
 // guarda o estado de padrões, cenas, linhas da tela livre e efeitos; cada mudança vira um passo (agrupa mexidas seguidas)
 const UNDO={st:[],rd:[],cur:null,t:null,lock:false,MAX:60};
@@ -18,8 +18,8 @@ function undoApply(str){
     Object.keys(userPats).forEach(k=>delete userPats[k]);Object.assign(userPats,d.u||{});LATE.userVer++;saveUser();
     SC.main=d.sc.main;SC.free=d.sc.free;SC.novo=d.sc.novo;LATE.scenes=SC[screen];saveScenes();
     const want=(d.fr&&d.fr.l)||[],keep={};FREE.forEach(l=>keep[l.key]=l);
-    FREE.forEach(l=>{if(!want.some(w=>w.key===l.key)){l.active=-1;l.queued=null;if(l.gain){try{l.gain.disconnect()}catch(e){}try{l.post&&l.post.disconnect()}catch(e){}l.gain=null}}});
-    FREE.length=0;want.forEach(w=>{if(!TYPES[w.type])return;let l=keep[w.key];if(l)l.name=w.name;else{l=makeLane(w.type,w.key,w.name);if(ctx)ensureGain(l)}FREE.push(l)});
+    FREE.forEach(l=>{if(!want.some(w=>w.key===l.key)){l.active=-1;l.queued=null;engine.send({type:'lane.remove',lane:l.key,reset:true})}});
+    FREE.length=0;want.forEach(w=>{if(!TYPES[w.type])return;let l=keep[w.key];if(l)l.name=w.name;else{l=makeLane(w.type,w.key,w.name)}FREE.push(l)});engine.send({type:'lanes.sync',lanes:laneDefs()});
     LATE.freeN=d.fr?d.fr.n|0:freeN;saveFree();
     FXKEYS.forEach(k=>{const v=d.fx&&d.fx[k],F=FX[k];if(!v)return;F.on=!!v.on;F.style=v.style;Object.assign(F.p,v.p||{});F.links=(v.links||[]).slice();F.master=!!v.master});
     fxSyncAll('undo');

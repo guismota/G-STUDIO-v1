@@ -1,5 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, CFG, DEV, ED, ICON, LN, STYLES, auditionNote, barOff, bpm, buildRows, cellAt, cols, ctx, cur, curBar, curData, engine, firstEmpty, flash, getPat, inScale, isChordT, isMono, isRoot, keyName, loadInto, nName, noteDown, noteMove, paintNotes, painting, playing, pmN, refreshPads, saveUser, style, syncPreview, tT0, typing, userPats } from '../app/all.js';
+import { $, CFG, DEV, ED, ICON, LN, STYLES, buildRows, cellAt, cols, cur, curBar, curData, engine, firstEmpty, flash, getPat, inScale, isChordT, isMono, isRoot, keyName, loadInto, nName, noteDown, noteMove, paintNotes, painting, playing, pmN, refreshPads, saveUser, style, syncPreview, typing, userPats } from '../app/all.js';
 // ---------- Piano roll (página cheia, com gravação) ----------
 const RL={open:false,base:36,rec:false,count:true,met:true,keys:{},kbEls:{},last:''};
 const BLACK=[1,3,6,8,10];
@@ -108,23 +108,18 @@ function rlUI(){
   $('#rlScale').querySelectorAll('button').forEach(b=>b.classList.toggle('on',(+b.dataset.c===1)===ED.chrom));
 }
 function rlNoteOn(m,id,v){
-  if(!ctx)return;
-  RL.keys[id]={m,t:ctx.currentTime,v:v||1};
+  RL.keys[id]={m,v:v||1};
   const el=RL.kbEls[m];if(el)el.classList.add('dn');
-  auditionNote(m,v||1);
+  engine.send({type:'note.on',id,lane:cols[ED.ci].key,note:m,velocity:v||1}); // o motor toca e marca a hora em que a nota começou
 }
 function rlNoteOff(id){
   const k=RL.keys[id];if(!k)return;delete RL.keys[id];
   if(!Object.values(RL.keys).some(o=>o.m===k.m)){const el=RL.kbEls[k.m];if(el)el.classList.remove('dn')}
-  if(RL.rec&&playing&&ED.ci>=0)rlRecord(k.m,k.t,ctx.currentTime,k.v);
+  engine.send({type:'note.off',id,lane:ED.ci>=0?cols[ED.ci].key:null,record:!!(RL.rec&&playing&&ED.ci>=0),len:ED.len});
 }
-// encaixa a nota tocada na grade (1/16) e grava no loop
-function rlRecord(m,t0,t1,v){
-  const sd=60/bpm/4,lat=(ctx.outputLatency||0)+(ctx.baseLatency||0),start=tT0+barOff*16*sd;
-  const a=t0-lat,b=t1-lat;
-  if(a<start-sd/2)return;
-  let s=Math.round((a-start)/sd),l=Math.max(1,Math.round((b-a)/sd));
-  s=((s%ED.len)+ED.len)%ED.len;l=Math.min(l,ED.len-s);
+// gravando: o motor encaixa a nota tocada na grade (1/16) e avisa (note.recorded); aqui ela entra no loop
+engine.on('note.recorded',e=>{if(ED.ci>=0)rlPlaceNote(e.note,e.start,e.length,e.velocity)});
+function rlPlaceNote(m,s,l,v){
   if(isMono()){ED.notes=ED.notes.filter(n=>n.s!==s);ED.notes.forEach(n=>{if(n.s<s&&n.s+n.l>s)n.l=s-n.s})}
   else ED.notes=ED.notes.filter(n=>!(n.s===s&&n.m===m));
   ED.notes.push(v&&Math.abs(v-1)>.01&&!isChordT(cols[ED.ci].type)?{m,s,l,v}:{m,s,l});

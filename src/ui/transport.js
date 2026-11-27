@@ -5,7 +5,7 @@ function setPlayUI(){$('#playIco').innerHTML=playing?ICON.stop:ICON.play;$('#pla
 engine.on('transport.state',e=>{LATE.playing=e.playing;setPlayUI();if(e.playing)wakeOn();else{wakeOff();if(ED.ci>=0){ED.prev=false;$('#cePrev').classList.remove('on')}}});
 function setBpm(v){LATE.bpm=Math.max(70,Math.min(180,Math.round(v)));$('#bpmv').textContent=bpm;engine.send({type:'transport.bpm',bpm,novo:screen==='novo'});if(FX.ech.el)updPlugLcd('ech');if(FX.dly.el)updPlugLcd('dly');if(screen==='novo')NV.bpm=bpm}
 function setStyle(k){
-  LATE.style=k;setBpm(STYLES[k].bpm);
+  LATE.style=k;engine.send({type:'genre.set',genre:k});setBpm(STYLES[k].bpm);
   document.body.classList.toggle('th-art',!!STYLES[k].artist);document.body.classList.toggle('th-afro',STYLES[k].theme==='afro');document.body.classList.toggle('th-vice',STYLES[k].theme==='vice');document.body.classList.toggle('th-cumbia',STYLES[k].theme==='cumbia');VZ.sg=null;
   K.sc=STYLES[k].snd.sc!=null?STYLES[k].snd.sc:.5;engine.send({type:'master.pump',value:K.sc});if(kPump)kPump.set(K.sc);
   document.querySelectorAll('#styleSeg button').forEach(b=>b.classList.toggle('on',b.dataset.k===k));

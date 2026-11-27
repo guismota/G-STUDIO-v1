@@ -4,6 +4,9 @@ import { test, expect } from '@playwright/test';
 import { prepare, gs, isMainView, watchConsole } from './helpers';
 
 test.use({ serviceWorkers: 'allow' });
+// o service worker do WebKit no navegador de teste às vezes demora a guardar as fontes (acontece igual na 1.7.8.1):
+// o teste pode repetir até 2 vezes
+test.describe.configure({ retries: 2 });
 const FONTS = ['400 20px "Rubik Mono One"', '900 20px "Rubik"', '800 20px "Big Shoulders Display"', '700 20px "Archivo"', '400 20px "Instrument Serif"'];
 
 test('abre e toca sem internet', async ({ page, context }, info) => {
@@ -19,7 +22,15 @@ test('abre e toca sem internet', async ({ page, context }, info) => {
   await page.reload();
   await page.locator('#hero').waitFor({ state: 'visible' });
   await page.evaluate(F => Promise.all(F.map(f => document.fonts.load(f))), FONTS); // baixa as 5 fontes (umas só aparecem na sessão)
-  await page.waitForTimeout(2500);
+  // o service worker guarda em segundo plano: espera os arquivos de fonte baixados estarem de fato no cache
+  await page.waitForFunction(async () => {
+    const got = performance.getEntriesByType('resource').map(e => e.name).filter(n => n.includes('fonts.gstatic.com'));
+    if (!got.length) return false;
+    const urls = new Set<string>();
+    for (const k of await caches.keys()) for (const r of await (await caches.open(k)).keys()) urls.add(r.url);
+    return got.every(u => urls.has(u));
+  }, null, { timeout: 20_000, polling: 250 });
+  await page.waitForTimeout(500);
 
   await context.setOffline(true);
   const errors = watchConsole(page);
