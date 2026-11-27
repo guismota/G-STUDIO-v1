@@ -1,5 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, ED, FX, ICON, K, NV, STYLES, VZ, bpm, cols, editMode, engine, flash, getPat, launchScene, makeKnob, playing, refreshPads, scenes, screen, updPlugLcd, wakeOff, wakeOn } from '../app/all.js';
+import { $, ED, FX, ICON, K, NV, STYLES, VZ, act, bpm, editMode, engine, makeKnob, playing, refreshPads, screen, updPlugLcd, wakeOff, wakeOn } from '../app/all.js';
 function setPlayUI(){$('#playIco').innerHTML=playing?ICON.stop:ICON.play;$('#play').classList.toggle('on',playing)}
 // tocando ou parado: botão, tela acesa e prévia do editor (o motor avisa por transport.state)
 engine.on('transport.state',e=>{LATE.playing=e.playing;setPlayUI();if(e.playing)wakeOn();else{wakeOff();if(ED.ci>=0){ED.prev=false;$('#cePrev').classList.remove('on')}}});
@@ -17,14 +17,7 @@ $('#editTog').onclick=()=>{
   LATE.editMode=!editMode;$('#editTog').classList.toggle('on',editMode);
   document.body.classList.toggle('editing',editMode);
 };
-$('#play').addEventListener('click',()=>{
-  engine.send({type:'audio.unlock'});
-  if(playing){engine.send({type:'transport.stop',keep:true});return}
-  if(!cols.length){flash('Chama um instrumento primeiro');return}
-  if(cols.some(c=>c.active>=0&&getPat(c,c.active))){engine.send({type:'transport.play'});return} // volta com os loops que estavam tocando
-  if(scenes[0]){launchScene(0);return}
-  engine.send({type:'clips.set',lanes:{[cols[0].key]:0}});engine.send({type:'transport.play'});
-});
+$('#play').addEventListener('click',()=>act('transport.toggle'));
 $('#bm').onclick=()=>setBpm(bpm-1);
 $('#bp').onclick=()=>setBpm(bpm+1);
 (()=>{ // arrastar o BPM no display

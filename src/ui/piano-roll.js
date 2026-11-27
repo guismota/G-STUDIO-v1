@@ -1,5 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, CFG, DEV, ED, ICON, LN, STYLES, buildRows, cellAt, cols, cur, curBar, curData, engine, firstEmpty, flash, getPat, inScale, isChordT, isMono, isRoot, keyName, loadInto, nName, noteDown, noteMove, paintNotes, painting, playing, pmN, refreshPads, saveUser, style, syncPreview, typing, userPats } from '../app/all.js';
+import { $, CFG, DEV, ED, ICON, LN, STYLES, act, buildRows, cellAt, cols, cur, curBar, curData, engine, firstEmpty, flash, getPat, inScale, isChordT, isMono, isRoot, keyName, loadInto, nName, noteDown, noteMove, paintNotes, painting, playing, pmN, refreshPads, saveUser, style, syncPreview, userPats } from '../app/all.js';
 // ---------- Piano roll (página cheia, com gravação) ----------
 const RL={open:false,base:36,rec:false,count:true,met:true,keys:{},kbEls:{},last:''};
 const BLACK=[1,3,6,8,10];
@@ -82,21 +82,6 @@ function rlBuildKb(){
 const MT_CODES=['KeyA','KeyW','KeyS','KeyE','KeyD','KeyF','KeyT','KeyG','KeyY','KeyH','KeyU','KeyJ','KeyK','KeyO','KeyL','KeyP','Semicolon','Quote'];
 const MT_KEYS=['A','W','S','E','D','F','T','G','Y','H','U','J','K','O','L','P',';',"'"];
 RL.vel=100;
-function rlKeys(e){
-  if(!RL.open||!CFG.keys||typing(e)||e.metaKey||e.ctrlKey||e.altKey)return;
-  if(document.querySelector('.modal.open,.xdlg.open'))return;
-  const down=e.type==='keydown',i=MT_CODES.indexOf(e.code);
-  if(i>=0){e.preventDefault();e.stopPropagation();if(e.repeat)return;const m=RL.base+i,id='k'+e.code;
-    if(down){if(!RL.keys[id]){engine.send({type:'audio.unlock'});rlNoteOn(m,id,RL.vel/100)}}else rlNoteOff(id);return}
-  if(!down)return;
-  const k=e.code;
-  if(k==='KeyZ'){e.preventDefault();e.stopPropagation();$('#rlOctDn').click();return}
-  if(k==='KeyX'){e.preventDefault();e.stopPropagation();$('#rlOctUp').click();return}
-  if(k==='KeyC'||k==='KeyV'){e.preventDefault();e.stopPropagation();RL.vel=Math.max(1,Math.min(127,RL.vel+(k==='KeyV'?16:-16)));const r=$('#rlMt');if(r)r.textContent='Oitava '+nName(RL.base)+' · Vel '+RL.vel;return}
-  if(k==='Space'){e.preventDefault();e.stopPropagation();if(!e.repeat)$('#rlPlay').click();return}
-  if(k==='KeyR'){e.preventDefault();e.stopPropagation();if(!e.repeat)$('#rlRec').click();return}
-}
-document.addEventListener('keydown',rlKeys,true);document.addEventListener('keyup',rlKeys,true);
 window.addEventListener('blur',()=>{Object.keys(RL.keys).filter(id=>id[0]==='k').forEach(id=>rlNoteOff(id))});
 function rlUI(){
   $('#rlPlay').innerHTML=playing?ICON.stop:ICON.play;
@@ -167,14 +152,14 @@ $('#rlSave').onclick=()=>{
   kb.addEventListener('pointerdown',e=>{
     const el=e.target.closest('[data-m]');if(!el)return;e.preventDefault();
     try{kb.setPointerCapture(e.pointerId)}catch(_){}
-    rlNoteOn(+el.dataset.m,e.pointerId);
+    act('note.on',+el.dataset.m,e.pointerId);
   });
   kb.addEventListener('pointermove',e=>{
     const k=RL.keys[e.pointerId];if(!k)return;
     const el=document.elementFromPoint(e.clientX,e.clientY),m=el&&el.dataset&&el.dataset.m?+el.dataset.m:null;
-    if(m!==null&&m!==k.m){rlNoteOff(e.pointerId);rlNoteOn(m,e.pointerId)}
+    if(m!==null&&m!==k.m){act('note.off',e.pointerId);act('note.on',m,e.pointerId)}
   });
-  ['pointerup','pointercancel'].forEach(ev=>kb.addEventListener(ev,e=>rlNoteOff(e.pointerId)));
+  ['pointerup','pointercancel'].forEach(ev=>kb.addEventListener(ev,e=>act('note.off',e.pointerId)));
   // desenhar notas com o dedo na grade
   const g=$('#rlGrid');
   g.addEventListener('pointerdown',e=>{const el=cellAt(e.clientX,e.clientY);if(!el)return;e.preventDefault();noteDown(el)});
@@ -192,4 +177,4 @@ function rlTick(){ // atualiza o display do piano roll
     $('#rlPlay').innerHTML=playing?ICON.stop:ICON.play;$('#rlPlay').classList.toggle('on',playing)}
 }
 
-export { RL, closeRoll, openRoll, rlTick };
+export { MT_CODES, RL, closeRoll, openRoll, rlNoteOff, rlNoteOn, rlTick };

@@ -1,5 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, CFG, ICON, LN, cols, draft, editMode, editing, engine, flash, getPat, reduceMotion, saveScenes, scenes } from '../app/all.js';
+import { $, CFG, ICON, LN, act, cols, draft, editing, engine, flash, getPat, reduceMotion, saveScenes, scenes } from '../app/all.js';
 // ---------- Cenas ----------
 function launchScene(i){
   const sc=scenes[i];
@@ -64,12 +64,12 @@ function buildScenes(){
   for(let i=0;i<8;i++){
     const b=document.createElement('button');b.className='hw sc';
     b.innerHTML='<span class="led"></span><b>'+(i+1)+'</b><span>Cena</span>';
-    b.addEventListener('pointerdown',e=>{e.preventDefault();if(editMode||!scenes[i])openSceneEditor(i);else launchScene(i)});
+    b.addEventListener('pointerdown',e=>{e.preventDefault();act('scene.pad',i)});
     slotEls.push(b);s.appendChild(b);
   }
   const x=document.createElement('button');x.className='hw sc';x.id='stopall';x.innerHTML=ICON.stop+'Parar';
-  x.addEventListener('pointerdown',e=>{e.preventDefault();engine.send({type:'clip.stopAll'})});s.appendChild(x);
+  x.addEventListener('pointerdown',e=>{e.preventDefault();act('clip.stopAll')});s.appendChild(x);
   refreshSlots();
 }
 
-export { buildScenes, launchScene, refreshSlots, slotEls };
+export { buildScenes, launchScene, openSceneEditor, refreshSlots, slotEls };

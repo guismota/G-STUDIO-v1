@@ -1,4 +1,4 @@
-import { $, CFG, DEV, FX, FXKEYS, OS, RL, RX, TOUR, XS, bkClose, bkSheet, bpm, closeDoc, closeExplore, closeFx, closeOnb, closeOs, closeRmx, closeXMenu, cols, doRedo, doUndo, engine, launchScene, openCfg, openProjList, openProjSave, openRmx, padTap, setBpm } from '../app/all.js';
+import { $, CFG, DEV, FX, FXKEYS, OS, RL, RX, TOUR, XS, act, bkClose, bkSheet, closeDoc, closeExplore, closeFx, closeOnb, closeOs, closeRmx, closeXMenu, cols } from '../app/all.js';
 // ---------- Aparelho, instalação e atalhos de teclado ----------
 const MODK=DEV.apple?'⌘':'Ctrl',SHK=DEV.apple?'⇧':'Shift';
 let BIP=null; // pedido de instalação do Chrome/Edge/Android
@@ -65,6 +65,7 @@ function kbEsc(){
   if($('#onb').classList.contains('show')){closeOnb();return true}
   return false;
 }
+// atalhos de teclado: cada tecla chama uma ação (input/actions.js)
 document.addEventListener('keydown',e=>{
   if(!CFG.keys)return;
   if(typing(e)){if(e.key==='Escape'&&kbEsc()){e.preventDefault();e.target.blur()}return}
@@ -72,39 +73,39 @@ document.addEventListener('keydown',e=>{
   const blocked=!!document.querySelector('.modal.open,.xdlg.open')||RL.open||XS.open||(typeof TOUR!=='undefined'&&TOUR.on)||$('#onb').classList.contains('show')||$('#terms').classList.contains('show')||$('#docv').classList.contains('show');
   if(k==='Escape'){if(kbEsc()){e.preventDefault();const ae=document.activeElement;if(ae&&ae!==document.body&&ae.blur)ae.blur()}return}
   if(mod&&!e.altKey){
-    if(k===','){e.preventDefault();if(!blocked)openCfg();return}
-    if(k==='o'||k==='O'){e.preventDefault();if(!blocked)openProjList();return}
-    if((k==='s'||k==='S')&&inS){e.preventDefault();if(!blocked)openProjSave();return}
-    if((k==='z'||k==='Z')&&inS&&!blocked){e.preventDefault();if(e.shiftKey)doRedo();else doUndo();return}
-    if((k==='y'||k==='Y')&&inS&&!blocked&&!DEV.apple){e.preventDefault();doRedo();return}
+    if(k===','){e.preventDefault();if(!blocked)act('app.settings');return}
+    if(k==='o'||k==='O'){e.preventDefault();if(!blocked)act('projects.open');return}
+    if((k==='s'||k==='S')&&inS){e.preventDefault();if(!blocked)act('project.save');return}
+    if((k==='z'||k==='Z')&&inS&&!blocked){e.preventDefault();if(e.shiftKey)act('redo');else act('undo');return}
+    if((k==='y'||k==='Y')&&inS&&!blocked&&!DEV.apple){e.preventDefault();act('redo');return}
     return;
   }
   if(e.ctrlKey||e.metaKey||e.altKey||blocked)return;
-  if(k==='?'){e.preventDefault();openKb();return}
+  if(k==='?'){e.preventDefault();act('app.shortcuts');return}
   if(!inS){ // tela inicial
-    if(k==='Enter'&&(e.target===document.body||e.target.id==='hero')){e.preventDefault();const g=$('#hero .hgo');if(g)g.click();return}
-    if(k===' '&&(e.target===document.body||e.target.id==='hero')){e.preventDefault();const p=$('#hero .hprev');if(p)p.click();return}
-    if(/^[1-9]$/.test(k)){const t=document.querySelector('.htile[data-ch="CH0'+k+'"]');if(t){e.preventDefault();t.click()}return}
-    if(k==='n'||k==='N'){e.preventDefault();$('#hxNew').click();return}
-    if(k==='e'||k==='E'){e.preventDefault();$('#expOpen').click();return}
+    if(k==='Enter'&&(e.target===document.body||e.target.id==='hero')){e.preventDefault();act('home.hero');return}
+    if(k===' '&&(e.target===document.body||e.target.id==='hero')){e.preventDefault();act('home.preview');return}
+    if(/^[1-9]$/.test(k)){if(document.querySelector('.htile[data-ch="CH0'+k+'"]')){e.preventDefault();act('home.channel',k)}return}
+    if(k==='n'||k==='N'){e.preventDefault();act('home.new');return}
+    if(k==='e'||k==='E'){e.preventDefault();act('home.explore');return}
     return;
   }
   // sessão
-  if(k===' '){e.preventDefault();if(!e.repeat)$('#play').click();return}
-  if(/^[1-8]$/.test(k)){e.preventDefault();if(!e.repeat)launchScene(+k-1);return}
-  if(k==='0'){e.preventDefault();const s=$('#stopall');if(s)s.click();else engine.send({type:'clip.stopAll'});return}
+  if(k===' '){e.preventDefault();if(!e.repeat)act('transport.toggle');return}
+  if(/^[1-8]$/.test(k)){e.preventDefault();if(!e.repeat)act('scene.launch',+k-1);return}
+  if(k==='0'){e.preventDefault();act('clip.stopAllKey');return}
   if(k==='ArrowUp'||k==='ArrowDown'||k==='ArrowLeft'||k==='ArrowRight'){e.preventDefault();
     if(KB.show){if(k==='ArrowUp')KB.li--;if(k==='ArrowDown')KB.li++;if(k==='ArrowLeft')KB.pi--;if(k==='ArrowRight')KB.pi++}
     KB.show=true;kbMark();return}
-  if(k==='Enter'){if(KB.show&&cols[KB.li]){e.preventDefault();padTap(KB.li,KB.pi)}return}
-  if(k==='s'||k==='S'){const c=cols[KB.li];if(c&&c.padEls&&c.padEls[0]){e.preventDefault();const sb=c.padEls[0].parentElement.querySelector('.solo');if(sb)sb.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true}))}return}
-  if(k==='m'||k==='M'){const c=cols[KB.li];if(c&&c.padEls&&c.padEls[0]){e.preventDefault();const mb=c.padEls[0].parentElement.querySelector('.mute');if(mb)mb.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true}))}return}
-  if(k==='+'||k==='='){e.preventDefault();setBpm(bpm+1);return}
-  if(k==='-'||k==='_'||k==='−'){e.preventDefault();setBpm(bpm-1);return}
-  if(k==='r'||k==='R'){e.preventDefault();if(!e.repeat)$('#recBtn').click();return}
-  if(k==='e'||k==='E'){e.preventDefault();$('#editTog').click();return}
-  if(k==='x'||k==='X'){e.preventDefault();RX.open?closeRmx():openRmx();return}
-  if(k==='h'||k==='H'){e.preventDefault();$('#homeBtn').click();return}
+  if(k==='Enter'){if(KB.show&&cols[KB.li]){e.preventDefault();act('clip.pad',KB.li,KB.pi)}return}
+  if(k==='s'||k==='S'){const c=cols[KB.li];if(c&&c.padEls&&c.padEls[0]){e.preventDefault();act('lane.solo',KB.li)}return}
+  if(k==='m'||k==='M'){const c=cols[KB.li];if(c&&c.padEls&&c.padEls[0]){e.preventDefault();act('lane.mute',KB.li)}return}
+  if(k==='+'||k==='='){e.preventDefault();act('bpm.nudge',1);return}
+  if(k==='-'||k==='_'||k==='−'){e.preventDefault();act('bpm.nudge',-1);return}
+  if(k==='r'||k==='R'){e.preventDefault();if(!e.repeat)act('rec.toggle');return}
+  if(k==='e'||k==='E'){e.preventDefault();act('edit.toggle');return}
+  if(k==='x'||k==='X'){e.preventDefault();act('remix.toggle');return}
+  if(k==='h'||k==='H'){e.preventDefault();act('home');return}
 });
 
 export { BIP, installNow, kbTitles, openKb, typing };

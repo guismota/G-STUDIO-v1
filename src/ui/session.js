@@ -1,5 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, ALL, CFG, HW, ICON, LAY, LN, STYLES, SW, cols, editMode, engine, flash, getPat, makeKnob, openClipEditor, openExplore, openPicker, refreshFx, removeLane, saveLay, screen, style } from '../app/all.js';
+import { $, ALL, CFG, HW, ICON, LAY, LN, STYLES, SW, act, cols, editMode, engine, flash, getPat, makeKnob, openClipEditor, openExplore, openPicker, refreshFx, removeLane, saveLay, screen, style } from '../app/all.js';
 // ---------- Interface ----------
 function refreshPads(){
   cols.forEach(c=>c.padEls.forEach((el,pi)=>{
@@ -81,7 +81,7 @@ function buildLane(c,ci){
   for(let pi=0;pi<8;pi++){
     const b=document.createElement('button');b.className='clip';
     b.innerHTML='<span class="nm"></span><span class="pg"></span>';
-    b.addEventListener('pointerdown',e=>{e.preventDefault();padTap(ci,pi)});
+    b.addEventListener('pointerdown',e=>{e.preventDefault();act('clip.pad',ci,pi)});
     c.padEls.push(b);c.padNm.push(b.querySelector('.nm'));c.padPg.push(b.querySelector('.pg'));
     row.appendChild(b);
   }
