@@ -33,7 +33,17 @@ for (const f of [...files, ...extra]) {
   info[f] = { code, declared, free, assignedImports };
 }
 const owner = {}, problems = [];
-for (const f of files) for (const n of info[f].declared) { if (owner[n] && owner[n] !== f) problems.push(`"${n}" declarado em ${owner[n]} e em ${f}`); owner[n] = f }
+// um nome pode existir num arquivo do motor e também num de tela: a versão do motor é PRIVADA dele (lê a cópia do
+// estado que é do motor) e nunca é oferecida às telas; as telas e os outros arquivos usam a versão de fora do motor
+const isEngine = f => f.startsWith('src/engine/');
+const privateIn = {}; // arquivo do motor -> nomes privados
+for (const f of files) for (const n of info[f].declared) {
+  const o = owner[n];
+  if (!o) { owner[n] = f; continue }
+  if (isEngine(o) && !isEngine(f)) { (privateIn[o] = privateIn[o] || new Set()).add(n); owner[n] = f }
+  else if (!isEngine(o) && isEngine(f)) (privateIn[f] = privateIn[f] || new Set()).add(n);
+  else problems.push(`"${n}" declarado em ${o} e em ${f}`);
+}
 const used = {}; // nome -> arquivos que usam de fora
 for (const f of [...files, ...extra]) {
   for (const n of info[f].free) {
@@ -43,11 +53,12 @@ for (const f of [...files, ...extra]) {
   }
   for (const n of info[f].assignedImports) if (n !== 'LATE') problems.push(`"${n}" recebe valor em ${f}, mas é de outro arquivo: use LATE.${n}`);
 }
+if (problems.length) { console.log('PROBLEMAS (nada foi gravado):\n  ' + problems.join('\n  ')); process.exit(1) }
 const rel = (from, to) => { let r = path.relative(path.dirname(from), to).split(path.sep).join('/'); return r.startsWith('.') ? r : './' + r };
 let changed = 0;
 for (const f of [...files, ...extra]) {
   const imps = [...info[f].free].filter(n => owner[n] && owner[n] !== f).sort();
-  const exps = files.includes(f) ? [...info[f].declared].filter(n => used[n]).sort() : [];
+  const exps = files.includes(f) ? [...info[f].declared].filter(n => used[n] && owner[n] === f).sort() : [];
   let lines = info[f].code.split('\n');
   const iImp = lines.findIndex(l => /^import \{[^}]*\} from '(\.\.?\/)+(app\/)?all\.js';$/.test(l));
   const newImp = imps.length ? `import { ${imps.join(', ')} } from '${rel(f, ALL)}';` : null;

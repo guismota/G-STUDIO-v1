@@ -1,5 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, ALL, FREE, FX, FXKEYS, LAY, SC, TYPES, applyCols, applyFx, buildSession, ctx, ensureGain, flash, freeN, fxActive, fxLinkedHere, initAudio, layoutRows, makeLane, refreshFx, refreshSlots, routeAll, saveFree, saveFx, saveLay, saveScenes, saveUser, screen, updDly, updEch, updFltLfo, updRev, userPats } from '../app/all.js';
+import { $, ALL, FREE, FX, FXKEYS, LAY, SC, TYPES, applyCols, buildSession, ctx, engine, ensureGain, flash, freeN, fxActive, fxLinkedHere, fxSend, fxSyncAll, layoutRows, makeLane, refreshFx, refreshSlots, saveFree, saveFx, saveLay, saveScenes, saveUser, screen, userPats } from '../app/all.js';
 // ---------- Desfazer / refazer ----------
 // guarda o estado de padrões, cenas, linhas da tela livre e efeitos; cada mudança vira um passo (agrupa mexidas seguidas)
 const UNDO={st:[],rd:[],cur:null,t:null,lock:false,MAX:60};
@@ -22,7 +22,7 @@ function undoApply(str){
     FREE.length=0;want.forEach(w=>{if(!TYPES[w.type])return;let l=keep[w.key];if(l)l.name=w.name;else{l=makeLane(w.type,w.key,w.name);if(ctx)ensureGain(l)}FREE.push(l)});
     LATE.freeN=d.fr?d.fr.n|0:freeN;saveFree();
     FXKEYS.forEach(k=>{const v=d.fx&&d.fx[k],F=FX[k];if(!v)return;F.on=!!v.on;F.style=v.style;Object.assign(F.p,v.p||{});F.links=(v.links||[]).slice();F.master=!!v.master});
-    if(ctx){ALL().forEach(ensureGain);updRev();updDly();updEch();updFltLfo();routeAll()}
+    fxSyncAll('undo');
     saveFx();
     if(document.body.classList.contains('in-session')){buildSession();refreshSlots()}
     refreshFx();
@@ -35,7 +35,7 @@ $('#undoBtn').onclick=doUndo;$('#redoBtn').onclick=doRedo;
 
 // ligar/desligar efeito pela barra (sem instrumento ligado, vale pra música toda)
 const pfFxOn=k=>fxActive(k)&&(FX[k].master||fxLinkedHere(k)>0);
-function pfToggleFx(k){const F=FX[k];if(pfFxOn(k))F.on=false;else{F.on=true;if(!F.master&&!fxLinkedHere(k))F.master=true}initAudio();applyFx(k);routeAll();refreshFx();saveFx()}
+function pfToggleFx(k){const F=FX[k];if(pfFxOn(k))F.on=false;else{F.on=true;if(!F.master&&!fxLinkedHere(k))F.master=true}engine.send({type:'audio.unlock'});fxSend(k,'power');refreshFx();saveFx()}
 
 
 function szSync(){const h=$('#szH'),w=$('#szW');h.value=LAY.rh||Math.round(($('#grid .lane')||{getBoundingClientRect:()=>({height:44})}).getBoundingClientRect().height);

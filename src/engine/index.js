@@ -3,7 +3,7 @@
 //   engine.send({ type: 'remix.filter', x, y, on })   manda um comando
 //   engine.on('transport.state', fn)                   escuta um evento
 // Os comandos são atendidos na mesma hora: no iPad, o áudio só é liberado se o pedido chegar dentro do próprio toque.
-import { AUD, MIC, REC, RXA, UBUF, audStop, auditionSample, fireOneShot, genreSting, initAudio, micPlay, micSave, micStart, micStop, osVolume, previewStart, previewStop, previewVolume, recCancel, recCountIn, recFileById, recStop, rxCap, rxDubKill, rxEff, rxEnsure, rxFilter, rxGate, rxPitch, rxTape, sampleLoad } from '../app/all.js';
+import { AUD, MIC, REC, RXA, UBUF, audStop, auditionSample, fireOneShot, fxApply, genreSting, initAudio, micPlay, micSave, micStart, micStop, osVolume, previewStart, previewStop, previewVolume, recCancel, recCountIn, recFileById, recStop, rxCap, rxDubKill, rxEff, rxEnsure, rxFilter, rxGate, rxPitch, rxTape, sampleLoad } from '../app/all.js';
 const H = {
   'audio.unlock': () => initAudio(),
   // Remix FX: os nós de áudio só são montados quando o painel abre ou um controle é ligado
@@ -40,6 +40,9 @@ const H = {
   'sample.forget': c => { delete UBUF[c.id] },
   'sample.audition': c => { audStop(); auditionSample(c) },
   'sample.stopAudition': () => audStop(),
+  // efeitos: a cópia do estado que é do motor
+  'fx.sync': c => fxApply(c),
+  'fx.set': c => fxApply(c),
 };
 const listeners = new Map();
 function send(cmd) {

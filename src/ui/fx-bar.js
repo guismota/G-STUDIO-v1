@@ -1,4 +1,4 @@
-import { $, ALL, FX, FXDEF, FXKEYS, MA, buildDelayInner, closeFx, ctx, dstCurve, fxActive, fxLinkedHere, makeKnob, makeShaper, openFx, pfFxOn, pfToggleFx, placePlug, routeAll, saveFx, setFxParam, updDly, updEch, updFxUI, updRev, updRevIR } from '../app/all.js';
+import { $, FX, FXDEF, FXKEYS, closeFx, fxActive, fxLinkedHere, fxSend, makeKnob, openFx, pfFxOn, pfToggleFx, placePlug, saveFx, setFxParam, updFxUI } from '../app/all.js';
 // ---------- Efeitos na barra: abas, 3 knobs, estilo e liga/desliga ----------
 const FXS={k:'rev',kn:[],lv:[-1,-1,-1],last:0};
 const fxsPar=k=>{const D=FXDEF[k];return [D.big,D.small[0],D.small[1]]};
@@ -8,9 +8,7 @@ function fxsLabels(){const k=FXS.k,F=FX[k],D=FXDEF[k];
   $('#fxStN').textContent=D.styles[F.style]||'';
   document.querySelectorAll('.fxtab').forEach(b=>b.classList.toggle('sel',b.dataset.fx===k))}
 function fxSetStyle(k,i){const F=FX[k];if(i===F.style)return;F.style=i;
-  if(ctx){if(k==='rev'){updRevIR();updRev()}else if(k==='dly'){buildDelayInner();updDly()}
-    else if(k==='dst'){ALL().forEach(c=>{if(c.gain)makeShaper(c)});if(MA.sh)MA.sh.curve=dstCurve();routeAll()}
-    else if(k==='ech')updEch();else routeAll()}
+  fxSend(k,'style');
   updFxUI(k);saveFx();if(F.el)F.el.querySelectorAll('.pst button').forEach(b=>b.classList.toggle('sel',+b.dataset.i===i))}
 document.querySelectorAll('.fxtab').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.fx;if(FXS.k===k){FX[k].win.open?closeFx(k):openFx(k)}else fxsSel(k)}));
 $('#fxPw').onclick=()=>pfToggleFx(FXS.k);

@@ -1,6 +1,6 @@
 import { LATE } from '../app/late.js';
-import { $, ICON, K, NV, STYLES, VZ, bpm, cols, editMode, flash, getPat, initAudio, launchScene, makeKnob, novoBpmChanged, playing, refreshPads, scenes, screen, setBpmDelay, setFilter, setMaster, startTransport, stopTransport } from '../app/all.js';
-function setBpm(v){LATE.bpm=Math.max(70,Math.min(180,Math.round(v)));$('#bpmv').textContent=bpm;setBpmDelay();if(screen==='novo'){NV.bpm=bpm;novoBpmChanged()}}
+import { $, FX, ICON, K, NV, STYLES, VZ, bpm, cols, editMode, flash, getPat, initAudio, launchScene, makeKnob, novoBpmChanged, playing, refreshPads, scenes, screen, setBpmDelay, setFilter, setMaster, startTransport, stopTransport, updPlugLcd } from '../app/all.js';
+function setBpm(v){LATE.bpm=Math.max(70,Math.min(180,Math.round(v)));$('#bpmv').textContent=bpm;setBpmDelay();if(FX.ech.el)updPlugLcd('ech');if(FX.dly.el)updPlugLcd('dly');if(screen==='novo'){NV.bpm=bpm;novoBpmChanged()}}
 function setStyle(k){
   LATE.style=k;setBpm(STYLES[k].bpm);
   document.body.classList.toggle('th-art',!!STYLES[k].artist);document.body.classList.toggle('th-afro',STYLES[k].theme==='afro');document.body.classList.toggle('th-vice',STYLES[k].theme==='vice');document.body.classList.toggle('th-cumbia',STYLES[k].theme==='cumbia');VZ.sg=null;

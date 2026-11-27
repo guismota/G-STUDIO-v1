@@ -1,4 +1,4 @@
-import { ALL, DLYST, ECHB, ECHL, FX, FXDEF, FXKEYS, LN, applyFx, cols, dlyTime, echIdx, echTime, fltHz, fmtHz, fxActive, fxOn, revLen, routeAll, routeLane, saveFx } from '../app/all.js';
+import { ALL, DLYST, ECHB, ECHL, FX, FXDEF, FXKEYS, LN, cols, dlyTime, echIdx, echTime, fltHz, fmtHz, fxActive, fxOn, fxSend, revLen, saveFx } from '../app/all.js';
 // --- interface do plugin
 function bigKnobSVG(id){
   let ticks='',labels='',knurl='';
@@ -52,7 +52,7 @@ function updPlugLcd(k,param){
   el.querySelector('.pv').textContent=n==='beat'?'Beat '+ECHL[echIdx()]:lab+' '+Math.round(F.p[n]*100)+'%';
   el.querySelector('.pi').textContent=plugInfo(k);
 }
-function setFxParam(k,n,v){FX[k].p[n]=Math.max(0,Math.min(1,v));applyFx(k,n);updPlugLcd(k,n);saveFx()}
+function setFxParam(k,n,v){FX[k].p[n]=Math.max(0,Math.min(1,v));fxSend(k,'param',{param:n});updPlugLcd(k,n);saveFx()}
 function fxLinkedHere(k){return cols.filter(c=>FX[k].links.includes(c.key)).length}
 function updFxUI(k){
   const F=FX[k],el=F.el;
@@ -85,12 +85,12 @@ function refreshFxTags(){
 function toggleLink(k,c){
   const L=FX[k].links,i=L.indexOf(c.key);FX[k].master=false;
   if(i>=0)L.splice(i,1);else L.push(c.key);
-  routeLane(c);updFxUI(k);refreshFxTags();saveFx();
+  fxSend(k,'routeLane',{lane:c.key});updFxUI(k);refreshFxTags();saveFx();
 }
 function setLinks(k,all){
   const L=FX[k].links;FX[k].master=false;
   cols.forEach(c=>{const i=L.indexOf(c.key);if(all&&i<0)L.push(c.key);if(!all&&i>=0)L.splice(i,1)});
-  routeAll();updFxUI(k);refreshFxTags();saveFx();
+  fxSend(k,'route');updFxUI(k);refreshFxTags();saveFx();
 }
 let zTop=20;
 const PW_MIN=280;

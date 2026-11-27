@@ -1,5 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, ALL, FREE, FX, FXKEYS, K, MA, NOVO, NOVO_STY, NV, OS, SC, STYLES, TYPES, bpm, buildDelayInner, ctx, dstCurve, ensureGain, enterGenre, flash, freeN, kFiltK, kMstK, kPump, makeLane, makeShaper, novoFill, novoSer, playing, refreshFx, routeAll, saveAsGenre, saveFree, saveFx, saveNovo, saveOs, saveScenes, saveUser, screen, setBpm, setFilter, setMaster, setScreen, showXMenu, stopTransport, style, ugenList, updDly, updEch, updOsUI, updRev, updRevIR, userPats } from '../app/all.js';
+import { $, ALL, FREE, FX, FXKEYS, K, NOVO, NOVO_STY, NV, OS, SC, STYLES, TYPES, bpm, enterGenre, flash, freeN, fxSyncAll, kFiltK, kMstK, kPump, makeLane, novoFill, novoSer, playing, refreshFx, saveAsGenre, saveFree, saveFx, saveNovo, saveOs, saveScenes, saveUser, screen, setBpm, setFilter, setMaster, setScreen, showXMenu, stopTransport, style, ugenList, updOsUI, userPats } from '../app/all.js';
 // ---------- Projetos: guardar e abrir ideias com nome ----------
 const PROJ={list:[],cur:null};
 (()=>{try{const a=JSON.parse(localStorage.getItem('gstudio_projects'));if(Array.isArray(a))PROJ.list=a.filter(x=>x&&x.id&&x.data)}catch(e){}
@@ -29,7 +29,7 @@ function restore(d){
   enterGenre(STYLES[d.style]?d.style:'house');
   setBpm(d.bpm||STYLES[style].bpm);
   if(d.K){K.sc=+d.K.sc||0;K.fv=d.K.fv!=null?+d.K.fv:1;K.mv=d.K.mv!=null?+d.K.mv:.8;kPump.set(K.sc);kFiltK.set(K.fv);kMstK.set(K.mv);setFilter();setMaster()}
-  if(ctx){ALL().forEach(ensureGain);updRevIR();updRev();buildDelayInner();updDly();updEch();ALL().forEach(c=>{if(c.gain)makeShaper(c)});if(MA.sh)MA.sh.curve=dstCurve();routeAll()}
+  fxSyncAll('project');
   setScreen(screen);refreshFx();updOsUI();
 }
 function storeProject(asNew){

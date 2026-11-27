@@ -1,4 +1,4 @@
-import { FX, FXA, K, cols, ctx, duck, filt, makeShaper, mix, out, routeLane, updDly, updEch, updFltLfo, updPlugLcd } from '../app/all.js';
+import { FXA, K, cols, ctx, duck, filt, makeShaper, mix, out, routeLane, updDly, updEch, updFltLfo } from '../app/all.js';
 // cadeia de cada linha: volume -> (seco | distorção) -> saída -> mix + envios de reverb e delay
 function ensureGain(c){
   if(ctx&&!c.gain){
@@ -23,6 +23,6 @@ function applyGain(c){if(c.gain)c.gain.gain.value=audible(c)?c.vol:0}
 function applySolo(){const any=SOLO();cols.forEach(c=>{applyGain(c);if(c.padEls&&c.padEls[0]){const row=c.padEls[0].parentElement;row.classList.toggle('soloff',any&&!c.solo);const sb=row.querySelector('.solo');if(sb)sb.classList.toggle('on',!!c.solo)}})}
 function setFilter(){if(filt)filt.frequency.value=20000} // controle saiu da barra: o filtro de DJ agora é o pad do Remix FX
 function setMaster(){if(out)out.gain.value=K.mv}
-function setBpmDelay(){if(ctx&&FXA.dly.in){updDly();updEch()}if(FX.ech.el)updPlugLcd('ech');if(FX.dly.el)updPlugLcd('dly');updFltLfo()}
+function setBpmDelay(){if(ctx&&FXA.dly.in){updDly();updEch()}updFltLfo()} // os visores dos plugins são atualizados pela tela (ui/transport.js)
 
 export { SOLO, applyGain, applySolo, audible, ensureGain, setBpmDelay, setFilter, setMaster };

@@ -1,57 +1,43 @@
-import { LATE, late } from '../app/late.js';
-import { ALL, bpm, ctx, mix, softCurve } from '../app/all.js';
-late({get saveFx(){return saveFx},set saveFx(v){saveFx=v}});
+import { ALL, DLYST, ECHB, REVST, bpm, ctx, ensureGain, mix, softCurve } from '../app/all.js';
 // ---------- Efeitos (plugins) ----------
-const FXDEF={
- rev:{name:'Reverb',tag:'Rev',styles:['Room','Hall','Plate'],big:{k:'mix',l:'Mix'},small:[{k:'decay',l:'Decay'},{k:'tone',l:'Tone'}],def:{mix:.35,decay:.5,tone:.6}},
- dly:{name:'Delay',tag:'Dly',styles:['Eco','Ping-pong','Tape'],big:{k:'mix',l:'Mix'},small:[{k:'fb',l:'Feedback'},{k:'tone',l:'Tone'}],def:{mix:.35,fb:.4,tone:.6}},
- ech:{name:'Echo',tag:'Ech',styles:['Beat','Dub','Space'],big:{k:'mix',l:'Mix'},small:[{k:'beat',l:'Beat'},{k:'fb',l:'Feedback'}],def:{mix:.5,beat:.6,fb:.55}},
- dst:{name:'Distorção',tag:'Dist',styles:['Drive','Fuzz','Crush'],big:{k:'drive',l:'Drive'},small:[{k:'tone',l:'Tone'},{k:'mix',l:'Mix'}],def:{drive:.4,tone:.6,mix:1}},
- flt:{name:'Filter',tag:'Flt',styles:['Low-pass','High-pass','Band-pass'],big:{k:'cut',l:'Cutoff'},small:[{k:'res',l:'Resonance'},{k:'lfo',l:'LFO'}],def:{cut:.6,res:.25,lfo:0}}
-};
-const FXKEYS=Object.keys(FXDEF);
-const FX={};
-(function loadFx(){
-  let j=null;try{j=JSON.parse(localStorage.getItem('gstudio_fx'))}catch(e){}
-  FXKEYS.forEach(k=>{
-    const d=FXDEF[k],s=(j&&typeof j[k]==='object'&&j[k])||{},w=(s.win&&typeof s.win==='object')?s.win:{};
-    const p=Object.assign({},d.def);
-    if(s.p&&typeof s.p==='object')Object.keys(p).forEach(n=>{const v=+s.p[n];if(Number.isFinite(v)&&v>=0&&v<=1)p[n]=v});
-    const num=v=>Number.isFinite(+v)&&v!==null?+v:null;
-    FX[k]={on:s.on!==false,style:[0,1,2].includes(s.style)?s.style:0,p,
-      links:Array.isArray(s.links)?s.links.filter(x=>typeof x==='string'):[],master:!!s.master,mode:s.mode==='xpad'?'xpad':'knob',xt:false,xb:null,
-      win:{open:false,x:num(w.x),y:num(w.y),w:num(w.w)},el:null,lnk:false};
-  });
-})();
-let fxSaveT=null;
-function saveFx(){
-  clearTimeout(fxSaveT);
-  fxSaveT=setTimeout(()=>{
-    const o={};FXKEYS.forEach(k=>{const F=FX[k];o[k]={on:F.on,style:F.style,p:F.p,links:F.links,master:F.master,mode:F.mode,win:{x:F.win.x,y:F.win.y,w:F.win.w}}});
-    try{localStorage.setItem('gstudio_fx',JSON.stringify(o))}catch(e){}
-  },250);
-}
 // efeito ativo: ligado no botão ou segurado no X-Pad
-const fxActive=k=>FX[k].on||FX[k].xt;
-const fxOn=(k,c)=>fxActive(k)&&!FX[k].master&&FX[k].links.includes(c.key);
+const fxActive=k=>FXE[k].on||FXE[k].xt;
+const fxOn=(k,c)=>fxActive(k)&&!FXE[k].master&&FXE[k].links.includes(c.key);
 // na master: escolhido no Link, ou X-Pad tocado sem nenhum instrumento ligado
-const mastOn=k=>fxActive(k)&&(FX[k].master||(FX[k].xt&&!FX[k].links.length));
+const mastOn=k=>fxActive(k)&&(FXE[k].master||(FXE[k].xt&&!FXE[k].links.length));
 const toneHz=v=>600*Math.pow(20,v);
 
+// cópia do estado dos efeitos que é do MOTOR: a tela manda tudo em fx.sync e cada mudança em fx.set
+const FXE={};
+function fxApply(c){
+  if(c.type==='fx.sync'){Object.keys(c.fx).forEach(k=>{FXE[k]=JSON.parse(JSON.stringify(c.fx[k]))});
+    if(!ctx)return;
+    if(c.rebuild==='project'){ALL().forEach(ensureGain);updRevIR();updRev();buildDelayInner();updDly();updEch();ALL().forEach(l=>{if(l.gain)makeShaper(l)});if(MA.sh)MA.sh.curve=dstCurve();routeAll()}
+    else if(c.rebuild==='undo'){ALL().forEach(ensureGain);updRev();updDly();updEch();updFltLfo();routeAll()}
+    return}
+  const k=c.fx;FXE[k]=Object.assign(FXE[k]||{},JSON.parse(JSON.stringify(c.state)));
+  switch(c.action){
+    case 'param':applyFx(k,c.param);break;                   // um parâmetro (knob, X-Pad)
+    case 'power':applyFx(k);routeAll();break;                // ligado/desligado, X-Pad tocado ou solto
+    case 'route':routeAll();break;                           // ligações com as linhas, master
+    case 'routeLane':{const l=ALL().find(x=>x.key===c.lane);if(l)routeLane(l);break}
+    case 'xbeat':updDly();break;                             // divisão do delay escolhida no X-Pad
+    case 'style':if(ctx){if(k==='rev'){updRevIR();updRev()}else if(k==='dly'){buildDelayInner();updDly()}
+      else if(k==='dst'){ALL().forEach(l=>{if(l.gain)makeShaper(l)});if(MA.sh)MA.sh.curve=dstCurve();routeAll()}
+      else if(k==='ech')updEch();else routeAll()}break;
+  }
+}
 // --- áudio: reverb e delay são "sends"; distorção é inserida em cada linha
 const FXA={rev:{},dly:{},ech:{},flt:{}};
 const MA={};
-const REVST=[{t:1,pre:.006,damp:.55},{t:2.6,pre:.022,damp:.35},{t:1.8,pre:.001,damp:.12}];
-const DLYST=[{b:.75,lbl:'1/8 pontuado'},{b:.5,pp:true,lbl:'1/8 ping-pong'},{b:1,tape:true,lbl:'1/4 fita'}];
 const DST_PRE=[12,30,8],DST_OUT=[.6,.4,.55];
-const revLen=()=>REVST[FX.rev.style].t*(.35+FX.rev.p.decay*1.3);
-const dlyTime=()=>Math.min(1.9,(FX.dly.xb||DLYST[FX.dly.style].b)*60/bpm);
-const ECHB=[.125,.25,.5,.75,1,2],ECHL=['1/8','1/4','1/2','3/4','1','2'];
-const echIdx=()=>Math.round(FX.ech.p.beat*(ECHB.length-1));
+const revLen=()=>REVST[FXE.rev.style].t*(.35+FXE.rev.p.decay*1.3);
+const dlyTime=()=>Math.min(1.9,(FXE.dly.xb||DLYST[FXE.dly.style].b)*60/bpm);
+const echIdx=()=>Math.round(FXE.ech.p.beat*(ECHB.length-1));
 const echTime=()=>Math.min(3.9,ECHB[echIdx()]*60/bpm);
 const DCACHE={};
 function dstCurve(){
-  const s=FX.dst.style;if(DCACHE[s])return DCACHE[s];
+  const s=FXE.dst.style;if(DCACHE[s])return DCACHE[s];
   const n=2048,c=new Float32Array(n);
   for(let i=0;i<n;i++){const x=i/(n-1)*2-1;c[i]=s===0?Math.tanh(2.5*x)/Math.tanh(2.5):(s===1?Math.max(-1,Math.min(.85,x*3)):Math.round(x*5)/5)}
   return DCACHE[s]=c;
@@ -80,7 +66,7 @@ function buildEcho(){
   updEch();
 }
 function updEch(){
-  const E=FXA.ech,F=FX.ech;if(!ctx||!E.d)return;const t=ctx.currentTime,st=F.style;
+  const E=FXA.ech,F=FXE.ech;if(!ctx||!E.d)return;const t=ctx.currentTime,st=F.style;
   E.d.delayTime.setTargetAtTime(echTime(),t,.03);
   E.hp.frequency.setTargetAtTime(st===1?380:140,t,.02);E.lp.frequency.setTargetAtTime(st===1?2300:st===2?4200:6500,t,.02);
   E.sat.curve=st===1?softCurve(2):null;E.wg.gain.setTargetAtTime(st===1?.0018:0,t,.05);E.spg.gain.setTargetAtTime(st===2?.6:0,t,.05);
@@ -99,10 +85,10 @@ function buildMaster(){
 }
 function routeMaster(){
   if(!ctx||!MA.mid)return;
-  const t=ctx.currentTime,D=FX.dst,on=mastOn('dst');
+  const t=ctx.currentTime,D=FXE.dst,on=mastOn('dst');
   MA.dPre.gain.setTargetAtTime(1+D.p.drive*DST_PRE[D.style],t,.02);MA.dTone.frequency.setTargetAtTime(toneHz(D.p.tone),t,.02);
   MA.dDry.gain.setTargetAtTime(on?1-D.p.mix:1,t,.02);MA.dWet.gain.setTargetAtTime(on?D.p.mix*DST_OUT[D.style]:0,t,.02);
-  const Fl=FX.flt,fo=mastOn('flt');
+  const Fl=FXE.flt,fo=mastOn('flt');
   MA.flt.type=FLT_TYPE[Fl.style];MA.flt.frequency.setTargetAtTime(fltHz(),t,.02);MA.flt.Q.setTargetAtTime(fltQ(),t,.02);
   MA.fDry.gain.setTargetAtTime(fo?0:1,t,.02);MA.fWet.gain.setTargetAtTime(fo?(Fl.style===2?1.8:1):0,t,.02);
   MA.sRev.gain.setTargetAtTime(mastOn('rev')?1:0,t,.02);MA.sDly.gain.setTargetAtTime(mastOn('dly')?1:0,t,.02);MA.sEch.gain.setTargetAtTime(mastOn('ech')?1:0,t,.02);
@@ -122,7 +108,7 @@ function makeIR(len,damp){
 function updRevIR(){
   if(!ctx)return;
   const R=FXA.rev,cv=ctx.createConvolver();
-  cv.buffer=makeIR(revLen(),REVST[FX.rev.style].damp);
+  cv.buffer=makeIR(revLen(),REVST[FXE.rev.style].damp);
   R.pre.connect(cv);cv.connect(R.tone);
   const old=R.conv;R.conv=cv;
   if(old)setTimeout(()=>{try{R.pre.disconnect(old)}catch(e){}try{old.disconnect()}catch(e){}},60);
@@ -130,14 +116,14 @@ function updRevIR(){
 let irT=null;
 function updRevIRSoon(){clearTimeout(irT);irT=setTimeout(updRevIR,140)}
 function updRev(){
-  if(!ctx)return;const R=FXA.rev,F=FX.rev,t=ctx.currentTime;
+  if(!ctx)return;const R=FXA.rev,F=FXE.rev,t=ctx.currentTime;
   R.pre.delayTime.setTargetAtTime(REVST[F.style].pre,t,.02);
   R.tone.frequency.setTargetAtTime(toneHz(F.p.tone),t,.02);
   R.ret.gain.setTargetAtTime(fxActive('rev')?F.p.mix*5:0,t,fxActive('rev')?.03:.45);
 }
 function panNode(v){if(ctx.createStereoPanner){const p=ctx.createStereoPanner();p.pan.value=v;return p}return ctx.createGain()}
 function buildDelayInner(){
-  const D=FXA.dly,st=DLYST[FX.dly.style],t=dlyTime(),N=[];
+  const D=FXA.dly,st=DLYST[FXE.dly.style],t=dlyTime(),N=[];
   D.nodes.forEach(n=>{try{if(n.stop)n.stop()}catch(e){}try{n.disconnect()}catch(e){}});
   try{D.in.disconnect()}catch(e){}
   const add=n=>{N.push(n);return n};
@@ -162,7 +148,7 @@ function buildDelayInner(){
   D.nodes=N;D.lp=lp;D.fb=fb;
 }
 function updDly(){
-  if(!ctx)return;const D=FXA.dly,F=FX.dly,t=ctx.currentTime;
+  if(!ctx)return;const D=FXA.dly,F=FXE.dly,t=ctx.currentTime;
   D.fb.gain.setTargetAtTime(Math.min(.88,F.p.fb*.9),t,.02);
   D.lp.frequency.setTargetAtTime(toneHz(F.p.tone)*(DLYST[F.style].tape?.35:1),t,.02);
   D.ret.gain.setTargetAtTime(fxActive('dly')?F.p.mix*1.1:0,t,fxActive('dly')?.03:.7);
@@ -170,17 +156,17 @@ function updDly(){
 }
 function makeShaper(c){
   if(c.shaper){try{c.dPre.disconnect()}catch(e){}try{c.shaper.disconnect()}catch(e){}}
-  c.shaper=ctx.createWaveShaper();c.shaper.curve=dstCurve();c.shaper.oversample=FX.dst.style===2?'none':'2x';
+  c.shaper=ctx.createWaveShaper();c.shaper.curve=dstCurve();c.shaper.oversample=FXE.dst.style===2?'none':'2x';
   c.dPre.connect(c.shaper);c.shaper.connect(c.dTone);
 }
 function routeLane(c){
   if(!ctx||!c.gain)return;
-  const t=ctx.currentTime,D=FX.dst,on=fxOn('dst',c);
+  const t=ctx.currentTime,D=FXE.dst,on=fxOn('dst',c);
   c.dPre.gain.setTargetAtTime(1+D.p.drive*DST_PRE[D.style],t,.02);
   c.dTone.frequency.setTargetAtTime(toneHz(D.p.tone),t,.02);
   c.dDry.gain.setTargetAtTime(on?1-D.p.mix:1,t,.02);
   c.dWet.gain.setTargetAtTime(on?D.p.mix*DST_OUT[D.style]:0,t,.02);
-  const Fl=FX.flt,fo=fxOn('flt',c);
+  const Fl=FXE.flt,fo=fxOn('flt',c);
   c.flt.type=FLT_TYPE[Fl.style];c.flt.frequency.setTargetAtTime(fltHz(),t,.02);c.flt.Q.setTargetAtTime(fltQ(),t,.02);
   c.fDry.gain.setTargetAtTime(fo?0:1,t,.02);c.fWet.gain.setTargetAtTime(fo?(Fl.style===2?1.8:1):0,t,.02);
   c.sRev.gain.setTargetAtTime(fxOn('rev',c)?1:0,t,.02);
@@ -198,9 +184,8 @@ function applyFx(k,param){
 }
 // filtro: corte por estilo, ressonância e LFO no tempo da música
 const FLT_TYPE=['lowpass','highpass','bandpass'];
-function fltHz(){const F=FX.flt,v=F.p.cut;return F.style===0?60*Math.pow(300,v):F.style===1?20*Math.pow(400,v):150*Math.pow(40,v)}
-function fltQ(){const F=FX.flt;return F.style===2?1+F.p.res*9:.7+F.p.res*14}
-const fmtHz=h=>h<1000?Math.round(h)+' Hz':(h/1000).toFixed(1)+' kHz';
-function updFltLfo(){if(!ctx||!FXA.flt.lfo)return;const t=ctx.currentTime;FXA.flt.lfo.frequency.setTargetAtTime(bpm/120,t,.05);FXA.flt.depth.gain.setTargetAtTime(fxActive('flt')?FX.flt.p.lfo*2400:0,t,.05)}
+function fltHz(){const F=FXE.flt,v=F.p.cut;return F.style===0?60*Math.pow(300,v):F.style===1?20*Math.pow(400,v):150*Math.pow(40,v)}
+function fltQ(){const F=FXE.flt;return F.style===2?1+F.p.res*9:.7+F.p.res*14}
+function updFltLfo(){if(!ctx||!FXA.flt.lfo)return;const t=ctx.currentTime;FXA.flt.lfo.frequency.setTargetAtTime(bpm/120,t,.05);FXA.flt.depth.gain.setTargetAtTime(fxActive('flt')?FXE.flt.p.lfo*2400:0,t,.05)}
 
-export { DLYST, ECHB, ECHL, FX, FXA, FXDEF, FXKEYS, MA, applyFx, buildDelayInner, buildFxAudio, buildMaster, dlyTime, dstCurve, echIdx, echTime, fltHz, fmtHz, fxActive, fxOn, makeIR, makeShaper, revLen, routeAll, routeLane, saveFx, updDly, updEch, updFltLfo, updRev, updRevIR };
+export { FXA, MA, buildFxAudio, buildMaster, fxApply, makeIR, makeShaper, routeAll, routeLane, updDly, updEch, updFltLfo };

@@ -1,6 +1,6 @@
 // Controles que mexem no som (Remix FX; depois efeitos e mixer): com o controle acionado PELA TELA, toca o House no
-// padrão 1 por 4 compassos e mede o volume médio (RMS) e o pico da saída final. A versão nova tem que soar igual à
-// 1.7.8.1: diferença de no máximo 0,5 dB no volume médio e 0,03 no pico (escala do medidor), além da variação natural
+// padrão 1 por 4 compassos e mede o volume médio (RMS), o volume só dos agudos (acima de 4 kHz) e o pico da saída final. A versão nova tem que soar igual à
+// 1.7.8.1: diferença de no máximo 0,25 dB no volume médio, 0,5 dB nos agudos e 0,03 no pico (escala do medidor), além da variação natural
 // medida em 3 rodadas da 1.7.8.1. Roda mudo e em 48 kHz, como os outros testes de áudio.
 import { test, expect, type Page } from '@playwright/test';
 import fs from 'node:fs';
@@ -10,7 +10,7 @@ import { prepare, gs, isMainView, browserOf, BASELINE } from './helpers';
 
 const RUNS = BASELINE ? 3 : 1, SEED = 20261127, BARS = 4;
 const dir = path.join(path.dirname(fileURLToPath(import.meta.url)), 'baseline', 'controls');
-type Run = { masterRms: number; master: number; masterRaw: number };
+type Run = { masterRms: number; master: number; masterRaw: number; hfRms?: number };
 
 // cada cenário: o que fazer na tela antes de tocar (o controle fica acionado durante toda a medição)
 const box = async (page: Page, sel: string) => { const b = await page.locator(sel).boundingBox(); if (!b) throw new Error('sem ' + sel); return b };
@@ -25,7 +25,19 @@ const SCEN: Record<string, (page: Page) => Promise<void>> = {
   'oneshot buzina': page => oneShot(page, 0),
   'oneshot riser': page => oneShot(page, 6),
   'oneshot crash': page => oneShot(page, 7),
+  // efeitos ligados pela barra (sem linha escolhida, valem para a música toda)
+  'fx reverb': page => fxOn(page, 'Rev'),
+  'fx delay': page => fxOn(page, 'Dly'),
+  'fx echo': page => fxOn(page, 'Ech'),
+  'fx distorcao': page => fxOn(page, 'Dist'),
+  'fx filtro': page => fxOn(page, 'Flt'),
 };
+async function fxOn(page: Page, tag: string) {
+  await page.getByRole('button', { name: tag, exact: true }).click();
+  await page.waitForTimeout(200);
+  await page.getByRole('button', { name: 'Ligar ou desligar o efeito' }).click();
+  await page.waitForTimeout(300);
+}
 // na tela inicial, sem entrar num gênero: só a prévia ou a audição tocando, medida pela saída final
 const HOME: Record<string, { act: (page: Page) => Promise<void>; sec: number }> = {
   'previa house': { sec: 4, act: async page => { await page.locator('#hero .hprev').click() } },
@@ -55,6 +67,9 @@ for (const name of [...Object.keys(SCEN), ...Object.keys(HOME)]) {
     await prepare(page, info);
     const tile = page.locator('.htile[data-ch="CH01"]');
     const once = async (): Promise<Run> => {
+      // cada rodada começa sem efeitos salvos da rodada anterior
+      await page.goto('/__vazio');
+      await page.evaluate(() => localStorage.removeItem('gstudio_fx'));
       await page.goto('/');
       await tile.waitFor({ state: 'visible' });
       await page.waitForTimeout(1500);
@@ -76,16 +91,26 @@ for (const name of [...Object.keys(SCEN), ...Object.keys(HOME)]) {
     const b = browserOf(info), file = path.join(dir, b, name.replace(/\s+/g, '-') + '.json');
     if (BASELINE) {
       fs.mkdirSync(path.dirname(file), { recursive: true });
-      fs.writeFileSync(file, JSON.stringify(runs.map(r => ({ masterRms: r.masterRms, master: r.master, masterRaw: r.masterRaw })), null, 1));
+      fs.writeFileSync(file, JSON.stringify(runs.map(r => ({ masterRms: r.masterRms, hfRms: r.hfRms, master: r.master, masterRaw: r.masterRaw })), null, 1));
       return;
     }
     const ref = JSON.parse(fs.readFileSync(file, 'utf8')) as Run[];
     const db = (x: number) => 20 * Math.log10(Math.max(x, 1e-9));
-    const rmsLo = Math.min(...ref.map(r => db(r.masterRms))) - .5, rmsHi = Math.max(...ref.map(r => db(r.masterRms))) + .5;
+    // a audição de som gravado é um som curto numa janela de 5 s: o volume médio depende de quando ele começa (na própria
+    // 1.7.8.1 varia 2,7 dB entre rodadas); ali o que garante o som certo é o pico, e o volume médio tem folga de 3 dB
+    const rmsTol = name === 'audicao gravado' ? 3 : .25;
+    const rmsLo = Math.min(...ref.map(r => db(r.masterRms))) - rmsTol, rmsHi = Math.max(...ref.map(r => db(r.masterRms))) + rmsTol;
     const pkLo = Math.min(...ref.map(r => r.master)) - .03, pkHi = Math.max(...ref.map(r => r.master)) + .03;
     const v = runs[0], problems: string[] = [];
     if (db(v.masterRms) < rmsLo || db(v.masterRms) > rmsHi) problems.push(`volume médio ${db(v.masterRms).toFixed(2)} dB fora de ${rmsLo.toFixed(2)}..${rmsHi.toFixed(2)}`);
     if (v.master < pkLo || v.master > pkHi) problems.push(`pico ${v.master.toFixed(3)} fora de ${pkLo.toFixed(3)}..${pkHi.toFixed(3)}`);
+    // volume só dos agudos (acima de 4 kHz): mostra filtro, eco e reverb que quase não mudam o volume médio
+    // no gater, o corte começa antes do transporte, então a fase do corte em relação aos pratos varia alguns milissegundos
+    // de uma versão para outra e os agudos mudam; ali vale só o volume médio e o pico
+    if (ref[0].hfRms != null && v.hfRms != null && name !== 'remix gater') {
+      const hLo = Math.min(...ref.map(r => db(r.hfRms!))) - .5, hHi = Math.max(...ref.map(r => db(r.hfRms!))) + .5;
+      if (db(v.hfRms) < hLo || db(v.hfRms) > hHi) problems.push(`agudos ${db(v.hfRms).toFixed(2)} dB fora de ${hLo.toFixed(2)}..${hHi.toFixed(2)}`);
+    }
     expect(problems, problems.join('\n')).toEqual([]);
   });
 }

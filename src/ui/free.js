@@ -1,5 +1,5 @@
 import { LATE } from '../app/late.js';
-import { $, FREE, FX, FXKEYS, MAIN, NOVO, SC, TYPES, buildSession, ctx, ensureGain, flash, freeN, makeLane, playing, refreshSlots, saveFree, saveFx, saveNovo, saveScenes, saveUser, screen, sortByKind, stopLaneSrc, stopTransport, userPats } from '../app/all.js';
+import { $, FREE, FX, FXKEYS, MAIN, NOVO, SC, TYPES, buildSession, ctx, ensureGain, flash, freeN, fxSyncAll, makeLane, playing, refreshSlots, saveFree, saveFx, saveNovo, saveScenes, saveUser, screen, sortByKind, stopLaneSrc, stopTransport, userPats } from '../app/all.js';
 // ---------- Tela livre ----------
 function addLane(type){
   LATE.freeN++;const same=FREE.filter(l=>l.type===type).length;
@@ -12,7 +12,7 @@ function removeLane(c){
   const A=NOVO.includes(c)?NOVO:FREE,i=A.indexOf(c);if(i<0)return;
   if(A===NOVO)stopLaneSrc(c);
   A.splice(i,1);delete userPats[c.key];SC.free.forEach(s=>{if(s)delete s[c.key]});
-  FXKEYS.forEach(k=>{const j=FX[k].links.indexOf(c.key);if(j>=0)FX[k].links.splice(j,1)});saveFx();
+  FXKEYS.forEach(k=>{const j=FX[k].links.indexOf(c.key);if(j>=0)FX[k].links.splice(j,1)});saveFx();fxSyncAll();
   if(c.gain){try{c.gain.disconnect()}catch(e){}try{c.post.disconnect()}catch(e){}}
   if(A===NOVO)saveNovo();else saveFree();saveUser();saveScenes();buildSession();flash(c.name+' saiu da pista');
 }

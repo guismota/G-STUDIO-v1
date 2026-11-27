@@ -19,13 +19,14 @@ window.__gs={
   measure:(i,bars)=>new Promise(res0=>{initAudio();if(playing)stopTransport();clearTimeout(flickT);const res=v=>{flickLoop();res0(v)};
     const N=8192,taps=[],mk=(key,node)=>{const a=ctx.createAnalyser();a.fftSize=N;node.connect(a);taps.push({key,node,a,buf:new Float32Array(N),pk:0})};
     cols.forEach(c=>{if(c.post)mk(c.key,c.post)});mk('_master',fin);
+    const hp=ctx.createBiquadFilter();hp.type='highpass';hp.frequency.value=4000;fin.connect(hp);mk('_hf',hp); // só os agudos da saída
     LATE.sceneOn=-1;const on=[];cols.forEach(c=>{const p=getPat(c,i);c.active=p?i:-1;c.queued=null;if(p)on.push(c.key)});
     startTransport();const end=tT0+bars*4*60/bpm-.06,lv={};let clip=false;
-    let rs=0,rn=0;const poll=()=>{for(const t of taps){t.a.getFloatTimeDomainData(t.buf);let m=t.pk,q=0;for(let k=0;k<N;k++){const v=t.buf[k]<0?-t.buf[k]:t.buf[k];if(v>m)m=v;q+=v*v}t.pk=m;if(t.key==='_master'){rs+=Math.sqrt(q/N);rn++}}
+    let rs=0,rn=0,hs=0;const poll=()=>{for(const t of taps){t.a.getFloatTimeDomainData(t.buf);let m=t.pk,q=0;for(let k=0;k<N;k++){const v=t.buf[k]<0?-t.buf[k]:t.buf[k];if(v>m)m=v;q+=v*v}t.pk=m;if(t.key==='_master'){rs+=Math.sqrt(q/N);rn++}if(t.key==='_hf')hs+=Math.sqrt(q/N)}
       cols.forEach(c=>{lv[c.key]=Math.max(lv[c.key]||0,c.lv||0)});if(performance.now()<VZ.clipUntil)clip=true};
     const iv=setInterval(()=>{if(ctx.currentTime<tT0)return;if(ctx.currentTime>=end){clearInterval(iv);stopTransport();
-      const lanes={},raw={};taps.forEach(t=>{try{t.node.disconnect(t.a)}catch(e){}if(t.key!=='_master'){lanes[t.key]=dbv(t.pk);raw[t.key]=t.pk}});
-      const ms=taps.find(t=>t.key==='_master');res({on,lanes,raw,lv,master:dbv(ms.pk),masterRaw:ms.pk,masterRms:rn?rs/rn:0,clip,seconds:end-tT0});return}poll()},10)}),
+      const lanes={},raw={};try{fin.disconnect(hp)}catch(e){}taps.forEach(t=>{try{t.node.disconnect(t.a)}catch(e){}if(t.key[0]!=='_'){lanes[t.key]=dbv(t.pk);raw[t.key]=t.pk}});
+      const ms=taps.find(t=>t.key==='_master');res({on,lanes,raw,lv,master:dbv(ms.pk),masterRaw:ms.pk,masterRms:rn?rs/rn:0,hfRms:rn?hs/rn:0,clip,seconds:end-tT0});return}poll()},10)}),
   // mede só a saída final por alguns segundos, sem mexer no transporte (prévias e audições)
   measureIdle:sec=>new Promise(res=>{initAudio();const N=8192,a=ctx.createAnalyser();a.fftSize=N;fin.connect(a);const buf=new Float32Array(N);let pk=0,rs=0,rn=0;const t0=ctx.currentTime;
     const iv=setInterval(()=>{a.getFloatTimeDomainData(buf);let q=0;for(let k=0;k<N;k++){const v=buf[k]<0?-buf[k]:buf[k];if(v>pk)pk=v;q+=v*v}rs+=Math.sqrt(q/N);rn++;

@@ -1,4 +1,4 @@
-import { ALL, ECHB, ECHL, FX, FXDEF, ICON, MA, PW_MIN, applyFx, bigKnobSVG, buildDelayInner, ctx, drawBig, dstCurve, fitPlug, fxFront, initAudio, makeKnob, makeShaper, placePlug, pwMax, refreshFx, refreshFxTags, routeAll, saveFx, setFxParam, setLinks, updDly, updEch, updFxUI, updPlugLcd, updRev, updRevIR } from '../app/all.js';
+import { ECHB, ECHL, FX, FXDEF, ICON, PW_MIN, bigKnobSVG, drawBig, engine, fitPlug, fxFront, fxSend, makeKnob, placePlug, pwMax, refreshFx, refreshFxTags, saveFx, setFxParam, setLinks, updFxUI, updPlugLcd } from '../app/all.js';
 // ---------- X-Pad (estilo mixer de DJ) ----------
 const XBEAT=k=>k==='dly'||k==='ech';
 function xpadLabels(k){return XBEAT(k)?ECHL:['0','25','50','75','100']}
@@ -9,17 +9,17 @@ function xpadTouch(k,fr,first){
   if(XBEAT(k)){const n=ECHB.length,i=Math.min(n-1,Math.floor(fr*n));
     xp.querySelectorAll('.xseg span').forEach((x,j)=>x.classList.toggle('on',j===i));
     if(k==='ech'){const v=i/(n-1);if(v!==F.p.beat)setFxParam(k,'beat',v)}
-    else if(F.xb!==ECHB[i]){F.xb=ECHB[i];updDly();updPlugLcd(k)}}
+    else if(F.xb!==ECHB[i]){F.xb=ECHB[i];fxSend(k,'xbeat');updPlugLcd(k)}}
   else setFxParam(k,k==='rev'?'mix':k==='dst'?'drive':'cut',fr);
   xp.style.setProperty('--x',(gl*100).toFixed(1)+'%');
-  if(first){applyFx(k);routeAll();updFxUI(k);refreshFxTags()}
+  if(first){fxSend(k,'power');updFxUI(k);refreshFxTags()}
   else if(k==='rev'||k==='dst'||k==='flt')drawBig(k);
 }
 function xpadEnd(k){
   const F=FX[k],xp=F.el.querySelector('.xpad');
   F.xt=false;xp.classList.remove('touch');xp.querySelectorAll('.xseg span').forEach(x=>x.classList.remove('on'));
-  if(k==='dly'&&F.xb){F.xb=null;updDly()}
-  applyFx(k);routeAll();updFxUI(k);refreshFxTags();saveFx();
+  if(k==='dly'&&F.xb){F.xb=null;fxSend(k,'xbeat')}
+  fxSend(k,'power');updFxUI(k);refreshFxTags();saveFx();
 }
 function buildPlug(k){
   const d=FXDEF[k],F=FX[k],el=document.createElement('div');
@@ -42,26 +42,20 @@ function buildPlug(k){
   document.body.appendChild(el);F.el=el;
   el.addEventListener('pointerdown',()=>fxFront(el),true);
   el.querySelector('.px').onclick=()=>closeFx(k);
-  el.querySelector('.pw').onclick=()=>{F.on=!F.on;applyFx(k);routeAll();refreshFx();saveFx()};
+  el.querySelector('.pw').onclick=()=>{F.on=!F.on;fxSend(k,'power');refreshFx();saveFx()};
   el.querySelectorAll('.pst button').forEach(b=>b.onclick=()=>{
     const i=+b.dataset.i;if(i===F.style)return;F.style=i;
-    if(ctx){
-      if(k==='rev'){updRevIR();updRev()}
-      else if(k==='dly'){buildDelayInner();updDly()}
-      else if(k==='dst'){ALL().forEach(c=>{if(c.gain)makeShaper(c)});if(MA.sh)MA.sh.curve=dstCurve();routeAll()}
-      else if(k==='ech')updEch();
-      else routeAll();
-    }
+    fxSend(k,'style');
     updFxUI(k);saveFx();
   });
   el.querySelector('.lk').onclick=()=>{F.lnk=!F.lnk;updFxUI(k);fitPlug(k)};
   el.querySelectorAll('.lkh .chip[data-a]').forEach(b=>b.onclick=()=>setLinks(k,b.dataset.a==='1'));
-  el.querySelector('.mst').onclick=()=>{F.master=!F.master;routeAll();updFxUI(k);refreshFxTags();saveFx()};
+  el.querySelector('.mst').onclick=()=>{F.master=!F.master;fxSend(k,'route');updFxUI(k);refreshFxTags();saveFx()};
   el.querySelectorAll('.pmode button').forEach(b=>b.onclick=()=>{F.mode=b.dataset.m;updFxUI(k);fitPlug(k);saveFx()});
   // X-Pad: tocar liga o efeito e muda o parâmetro; soltar desliga (se estava desligado)
   const xp=el.querySelector('.xpad');let xid=null;
   const xpos=e=>{const r=xp.getBoundingClientRect();return Math.max(0,Math.min(.999,(e.clientX-r.left)/r.width))};
-  xp.addEventListener('pointerdown',e=>{e.preventDefault();initAudio();xid=e.pointerId;try{xp.setPointerCapture(xid)}catch(_){}xpadTouch(k,xpos(e),true)});
+  xp.addEventListener('pointerdown',e=>{e.preventDefault();engine.send({type:'audio.unlock'});xid=e.pointerId;try{xp.setPointerCapture(xid)}catch(_){}xpadTouch(k,xpos(e),true)});
   xp.addEventListener('pointermove',e=>{if(xid===e.pointerId)xpadTouch(k,xpos(e),false)});
   const xend=e=>{if(xid!==e.pointerId)return;xid=null;xpadEnd(k)};xp.addEventListener('pointerup',xend);xp.addEventListener('pointercancel',xend);
   // knob grande: arraste para cima/baixo; dois toques voltam ao padrão

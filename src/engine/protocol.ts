@@ -18,6 +18,10 @@
 export const PROTOCOL_VERSION = 1;
 
 export type LaneKey = string;
+export type FxKey = 'rev' | 'dly' | 'ech' | 'dst' | 'flt';
+// estado de um efeito: ligado, estilo (0 a 2), parâmetros (0 a 1), linhas ligadas a ele, se vale para a música toda
+// (master), modo da janela, se o X-Pad está sendo tocado (xt) e a divisão de tempo escolhida no X-Pad do delay (xb)
+export type FxState = { on: boolean; style: number; p: Record<string, number>; links: LaneKey[]; master: boolean; mode: 'knob' | 'xpad'; xt: boolean; xb: number | null };
 export type Slot = number;
 
 // ---------------------------------------------------------------- comandos (tela -> motor)
@@ -41,8 +45,10 @@ export type Command =
   | { type: 'master.volume'; value: number }
   | { type: 'master.pump'; value: number } // sidechain: quanto o resto abaixa a cada kick
   // efeitos de linha e da master (reverb, delay, echo, distorção, filtro)
-  | { type: 'fx.set'; fx: 'rev' | 'dly' | 'ech' | 'dst' | 'flt'; on?: boolean; style?: number; params?: Record<string, number>; links?: LaneKey[]; master?: boolean; mode?: 'knob' | 'xpad' }
-  | { type: 'fx.refresh' } // reaplica todos os efeitos (depois de abrir projeto, desfazer etc.)
+  // o motor guarda a sua cópia do estado de cada efeito: tudo de uma vez (fx.sync: ao abrir o app, ao abrir um projeto,
+  // ao desfazer) ou um efeito por vez (fx.set), dizendo o que mudou (action)
+  | { type: 'fx.sync'; fx: Record<FxKey, FxState>; rebuild: 'project' | 'undo' | null }
+  | { type: 'fx.set'; fx: FxKey; state: FxState; action: 'param' | 'power' | 'route' | 'routeLane' | 'xbeat' | 'style'; param?: string; lane?: LaneKey }
   // Remix FX (só ligado enquanto o painel está aberto)
   | { type: 'remix.open' }
   | { type: 'remix.close' }
