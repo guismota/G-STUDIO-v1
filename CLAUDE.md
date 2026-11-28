@@ -35,6 +35,14 @@ App de loops musicais (estilo live set). Hoje roda como PWA no iPad e no computa
 - Conferir no tamanho de iPad e de Mac antes de entregar.
 - Rodar todos os testes antes de cada commit.
 
+## Estrutura e regras do código
+- Mapa das pastas e do protocolo: `docs/arquitetura.md`.
+- As telas falam com o áudio só por `engine.send(...)` e `engine.on(...)`; comando ou evento novo entra primeiro em `src/engine/protocol.ts` e depois no tratamento em `src/engine/index.ts` (o `npm run typecheck` acusa se faltar).
+- Entrada de controles (toques, teclado, atalhos e, no futuro, MIDI) passa pelas ações de `src/input/actions.js`.
+- Cada gênero fica num arquivo em `src/genres/`.
+- Depois de mover código entre arquivos, rodar `node tools/fix-imports.mjs` (acerta imports e exports e acusa problemas).
+- Os testes de áudio rodam mudos e em 48 kHz: nunca tocar som pelos alto-falantes do Mac.
+
 ## Como rodar
 - `npm run dev`: servidor de desenvolvimento (também abre no iPad pela rede Wi-Fi).
 - `npm run build`: build final em `dist/` (o que vai para o site).

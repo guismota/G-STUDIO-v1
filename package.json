@@ -1,19 +1,20 @@
 {
   "name": "g-studio",
   "private": true,
-  "appVersion": "1.7.8.1",
+  "appVersion": "1.7.8.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "build:test": "vite build --mode test",
     "preview": "vite preview",
-    "test": "vite build && vite build --mode test && GS_TARGET=build playwright test",
+    "test": "tsc --noEmit && vite build && vite build --mode test && GS_TARGET=build playwright test",
     "test:legacy": "GS_TARGET=legacy playwright test",
     "test:baseline": "GS_TARGET=legacy GS_BASELINE=1 playwright test tests/screens.spec.ts tests/data.spec.ts tests/genres.spec.ts --update-snapshots=all && GS_TARGET=legacy GS_BASELINE=1 playwright test tests/audio-levels.spec.ts tests/controls.spec.ts --workers=2 && node tests/levels-report.mjs",
     "test:fixtures": "GS_TARGET=legacy GS_MAKE_FIXTURES=1 playwright test tests/data.spec.ts --project=chromium-ipad-1180x820",
     "levels:report": "node tests/levels-report.mjs",
-    "serve:legacy": "GS_HOOK=1 node tests/serve.mjs legacy 4173"
+    "serve:legacy": "GS_HOOK=1 node tests/serve.mjs legacy 4173",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@babel/parser": "^8.1.3",

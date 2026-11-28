@@ -1,0 +1,18 @@
+{
+  // TypeScript aos poucos: os arquivos .js continuam como estão (allowJs, sem checagem); os .ts são checados.
+  // npm run typecheck confere os tipos (o build não depende disso).
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2020", "DOM"],
+    "allowJs": true,
+    "checkJs": false,
+    "strict": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "skipLibCheck": true,
+    "types": []
+  },
+  "include": ["src/**/*.ts", "src/**/*.js", "src/vite-env.d.ts"]
+}

@@ -1,3 +1,4 @@
+import type { Command, CommandType, EngineEvent, EventType } from './protocol.ts';
 import { LATE } from '../app/late.js';
 // Porta de entrada do motor de áudio em JavaScript: a implementação de referência do protocolo
 // (src/engine/protocol.ts). As telas falam com o motor só por aqui:
@@ -8,7 +9,10 @@ import { LATE } from '../app/late.js';
 // ajustes CFG e os knobs K), então alguns comandos só repetem o que a tela já gravou. Os comandos levam os dados mesmo
 // assim, porque o motor em C++ vai guardar a sua própria cópia. Os efeitos já têm cópia separada (FXE).
 import { ALL, AUD, CFG, K, MET, MIC, REC, RXA, UBUF, applyGain, applySolo, audStop, auditionHit, auditionNote, auditionSample, clipTap, ctx, emitClips, ensureGain, fireOneShot, fxApply, genreSting, initAudio, micPlay, micSave, micStart, micStop, noteOff, noteOn, novoBpmChanged, osVolume, previewStart, previewStop, previewVolume, recCancel, recCountIn, recFileById, recStop, routeAll, rxCap, rxDubKill, rxEff, rxEnsure, rxFilter, rxGate, rxPitch, rxTape, sampleLoad, sceneLaunch, setBpmDelay, setFilter, setLimit, setMaster, setMono, startTransport, stopAll, stopLaneSrc, stopTransport } from '../app/all.js';
-const H = {
+// cada comando do protocolo tem o seu tratamento aqui: se faltar algum (ou sobrar algum que não existe no protocolo),
+// o TypeScript acusa (npm run typecheck)
+type Handlers = { [T in CommandType]: (c: Extract<Command, { type: T }>) => void };
+const H: Handlers = {
   'audio.unlock': () => initAudio(),
   // Remix FX: os nós de áudio só são montados quando o painel abre ou um controle é ligado
   'remix.open': () => { initAudio(); rxEnsure(); rxCap(true) },
@@ -53,8 +57,8 @@ const H = {
   'transport.metronome': c => { MET.on = !!c.on },
   'clip.tap': c => clipTap(c.lane, c.slot),
   'clip.stopAll': () => stopAll(),
-  'clips.set': c => { const L = ALL(); for (const k in c.lanes) { const l = L.find(x => x.key === k); if (l) l.active = c.lanes[k] } emitClips() },
-  'clip.preview': c => { const l = ALL().find(x => x.key === c.lane); if (l) l.preview = c.pattern || null }, // loop em edição toca no lugar do ativo
+  'clips.set': c => { const L = ALL(); for (const k in c.lanes) { const l = L.find((x: any) => x.key === k); if (l) l.active = c.lanes[k] } emitClips() },
+  'clip.preview': c => { const l = ALL().find((x: any) => x.key === c.lane); if (l) l.preview = c.pattern || null }, // loop em edição toca no lugar do ativo
   'scene.launch': c => sceneLaunch(c),
   // mixer, master, andamento e ajustes
   'mixer.volume': c => { const l = laneOf(c.lane); if (l) { l.vol = c.value; applyGain(l) } },
@@ -80,27 +84,27 @@ const H = {
   'note.on': c => noteOn(c),
   'note.off': c => noteOff(c),
 };
-const laneOf = key => ALL().find(x => x.key === key);
-const listeners = new Map();
-function send(cmd) {
-  const h = H[cmd.type];
+const laneOf = (key: string) => ALL().find((x: any) => x.key === key);
+const listeners = new Map<string, Set<(e: any) => void>>();
+function send(cmd: Command) {
+  const h = H[cmd.type] as (c: Command) => void;
   if (!h) throw new Error('G-STUDIO: o motor não conhece o comando ' + cmd.type);
   h(cmd);
 }
 // pedido que espera resposta: manda o comando com um código e devolve (Promise) o evento de resposta com o mesmo código
 let reqN = 0;
-function request(cmd, replyType) {
+function request(cmd: Command, replyType: EventType): Promise<any> {
   const token = 'q' + (++reqN);
-  return new Promise(res => { const off = on(replyType, e => { if (e.token === token) { off(); res(e) } }); send({ ...cmd, token }) });
+  return new Promise(res => { const off = on(replyType, (e: any) => { if (e.token === token) { off(); res(e) } }); send({ ...cmd, token } as Command) });
 }
 // arquivos gerados pelo motor (gravações): no app nativo serão arquivos no disco
-function file(id) { return recFileById(id) }
-function on(type, fn) {
+function file(id: string): Blob | null { return recFileById(id) }
+function on<T extends EventType>(type: T, fn: (e: Extract<EngineEvent, { type: T }>) => void) {
   if (!listeners.has(type)) listeners.set(type, new Set());
-  listeners.get(type).add(fn);
-  return () => listeners.get(type).delete(fn);
+  listeners.get(type)!.add(fn);
+  return () => listeners.get(type)!.delete(fn);
 }
 // usado pelo código do motor para avisar as telas
-function emit(evt) { const s = listeners.get(evt.type); if (s) for (const fn of s) fn(evt) }
+function emit(evt: EngineEvent) { const s = listeners.get(evt.type); if (s) for (const fn of s) fn(evt) }
 const engine = { send, on, request, file };
 export { emit, engine };

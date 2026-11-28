@@ -26,7 +26,8 @@ for (const f of [...files, ...extra]) {
   traverse(ast, { Program(p) { prog = p; p.stop() } });
   for (const [n, b] of Object.entries(prog.scope.bindings)) if (b.kind !== 'module') declared.add(n);
   traverse(ast, {
-    ReferencedIdentifier(p) { const n = p.node.name; if (p.parentPath.isExportSpecifier()) return; const b = p.scope.getBinding(n); if (!b || b.kind === 'module') free.add(n) },
+    ReferencedIdentifier(p) { const n = p.node.name; if (p.parentPath.isExportSpecifier()) return;
+      if (p.findParent(x => x.isTSType() || x.isTSTypeAnnotation() || x.isTSTypeAliasDeclaration() || x.isTSInterfaceDeclaration() || x.isTSTypeParameterInstantiation() || x.isTSTypeParameterDeclaration() || x.isTSAsExpression() && x.node.typeAnnotation === p.node)) return; /* só tipo (TypeScript) */ const b = p.scope.getBinding(n); if (!b || b.kind === 'module') free.add(n) },
     AssignmentExpression(p) { const l = p.node.left; if (l.type === 'Identifier') { const b = p.scope.getBinding(l.name); if (!b || b.kind === 'module') assignedImports.push(l.name) } },
     UpdateExpression(p) { const a = p.node.argument; if (a.type === 'Identifier') { const b = p.scope.getBinding(a.name); if (!b || b.kind === 'module') assignedImports.push(a.name) } },
   });
@@ -81,4 +82,11 @@ for (const f of [...files, ...extra]) {
   if (out !== info[f].code) { changed++; if (!CHECK) fs.writeFileSync(f, out); else problems.push(`import/export desatualizado em ${f}`) }
 }
 if (problems.length) { console.log('PROBLEMAS:\n  ' + problems.join('\n  ')); process.exit(1) }
+// tipos do índice para os arquivos .ts: os módulos .js ainda não têm tipos, então tudo que vem do índice é any
+{
+  const names = Object.keys(owner).filter(n => used[n] && owner[n] !== 'src/debug.js').sort();
+  const dts = '// Gerado por tools/fix-imports.mjs. Os módulos .js ainda não têm tipos: para os arquivos .ts, tudo o que vem\n// do índice (src/app/all.js) é "any". Quando um módulo virar .ts, os tipos dele passam a valer.\n' + names.map(n => `export declare const ${n}: any;`).join('\n') + '\n';
+  const cur = fs.existsSync('src/app/all.d.ts') ? fs.readFileSync('src/app/all.d.ts', 'utf8') : '';
+  if (cur !== dts) { if (CHECK) { console.log('PROBLEMAS:\n  src/app/all.d.ts desatualizado'); process.exit(1) } fs.writeFileSync('src/app/all.d.ts', dts) }
+}
 console.log(CHECK ? 'ok: imports e exports em ordem' : `ok: ${changed} arquivo(s) acertado(s)`);
